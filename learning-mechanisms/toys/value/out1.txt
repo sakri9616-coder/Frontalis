@@ -1,0 +1,99 @@
+==== Persona probe vectors after history, then after the NEW event (value of concept at unit level) ====
+
+##### Candidate A
+                           connection authorship   autonomy      music    friendA     others
+rescued-by-collaboration before      0.985     -0.021     -0.666      0.242      0.000      0.903
+rescued-by-collaboration after      1.046     -0.037     -0.665      0.303      0.265      0.902
+rescued-by-collaboration DELTA     +0.060     -0.017     +0.001     +0.062     +0.265     -0.002
+credit-taken before            -0.604      0.605      1.210      0.606      0.000     -0.704
+credit-taken after             -0.447      0.562      1.208      0.760     -0.159     -0.703
+credit-taken DELTA             +0.157     -0.043     -0.002     +0.154     -0.159     +0.001
+explorer before                 0.581      0.000      1.723     -1.357      0.000      0.723
+explorer after                  0.774     -0.052      1.719     -1.159      0.346      0.721
+explorer DELTA                 +0.194     -0.052     -0.003     +0.197     +0.346     -0.001
+   A rescued-by-collaboration felt +0.961 expected +0.842 delta +0.119
+   A credit-taken felt +0.298 expected +0.002 delta +0.296
+   A explorer felt +0.215 expected -0.650 delta +0.865
+
+##### Candidate B
+                           connection authorship   autonomy      music    friendA     others
+rescued-by-collaboration before      0.175      0.004     -0.171      0.025      0.000      0.175
+rescued-by-collaboration after      0.200     -0.018     -0.171      0.049      0.025      0.175
+rescued-by-collaboration DELTA     +0.025     -0.022     +0.000     +0.025     +0.025     +0.000
+credit-taken before            -0.193      0.189      0.262      0.069      0.000     -0.193
+credit-taken after             -0.128      0.127      0.262      0.134      0.065     -0.193
+credit-taken DELTA             +0.065     -0.062     +0.000     +0.065     +0.065     +0.000
+explorer before                 0.023      0.000     -0.003      0.117      0.000      0.023
+explorer after                  0.054     -0.026     -0.003      0.148      0.031      0.023
+explorer DELTA                 +0.031     -0.026     +0.000     +0.031     +0.031     +0.000
+   B rescued-by-collaboration d0=-0.023 d1=0.271 V(s1)=0.288 (TD error of the NEW event second step = surprise)
+   B credit-taken d0=-0.124 d1=0.772 V(s1)=-0.031 (TD error of the NEW event second step = surprise)
+   B explorer d0=-0.014 d1=0.324 V(s1)=0.254 (TD error of the NEW event second step = surprise)
+
+##### Candidate C
+                           connection authorship   autonomy      music    friendA     others
+rescued-by-collaboration before     -0.007      0.005      0.011      0.010      0.000     -0.007
+rescued-by-collaboration after     -0.009      0.005      0.012      0.010     -0.001     -0.009
+rescued-by-collaboration DELTA     -0.002     +0.001     +0.001     -0.000     -0.001     -0.001
+credit-taken before             0.003     -0.012     -0.008     -0.005      0.000      0.003
+credit-taken after              0.007     -0.011     -0.004      0.003      0.006      0.001
+credit-taken DELTA             +0.004     +0.001     +0.004     +0.008     +0.006     -0.002
+explorer before                 0.013      0.000      0.052     -0.001      0.000      0.013
+explorer after                  0.012     -0.001      0.053     -0.001      0.001      0.012
+explorer DELTA                 -0.000     -0.001     +0.001     -0.000     +0.001     -0.001
+   C rescued-by-collaboration felt(drive reduction)=-0.008 h= [0.97 0.76 0.23 0.34] set point h*= [0.972 0.9   0.905 0.849]
+   C credit-taken felt(drive reduction)=+0.066 h= [0.4  0.74 1.09 0.37] set point h*= [0.869 0.896 0.937 0.868]
+   C explorer felt(drive reduction)=+0.019 h= [0.54 0.58 0.2  0.44] set point h*= [0.844 0.909 0.9   0.913]
+
+##### Candidate E
+                           connection authorship   autonomy      music    friendA     others
+rescued-by-collaboration before      0.194      0.027     -0.202     -0.044      0.000      0.194
+rescued-by-collaboration after      0.218     -0.008     -0.202     -0.020      0.057      0.194
+rescued-by-collaboration DELTA     +0.024     -0.034     +0.000     +0.024     +0.057     +0.000
+credit-taken before            -0.164      0.272      0.140     -0.064      0.000     -0.164
+credit-taken after             -0.059      0.222      0.140      0.002      0.176     -0.164
+credit-taken DELTA             +0.105     -0.050     +0.000     +0.066     +0.176     +0.000
+explorer before                 0.031      0.000      0.087      0.188      0.000      0.031
+explorer after                  0.062     -0.032      0.087      0.213      0.041      0.031
+explorer DELTA                 +0.031     -0.032     +0.000     +0.025     +0.041     +0.000
+   E rescued-by-collaboration authorship: belief(MB) -0.018 cache(MF) +0.013 omega 0.33 n=5
+   E credit-taken authorship: belief(MB) +0.178 cache(MF) +0.242 omega 0.68 n=21
+   E explorer authorship: belief(MB) -0.034 cache(MF) -0.017 omega 0.09 n=1
+
+##### Candidate I
+                           connection authorship   autonomy      music    friendA     others
+rescued-by-collaboration before      0.172     -0.007     -0.337      0.010      0.000      0.172
+rescued-by-collaboration after      0.188     -0.072     -0.360      0.035      0.056      0.131
+rescued-by-collaboration DELTA     +0.016     -0.065     -0.023     +0.025     +0.056     -0.040
+credit-taken before            -0.287      0.119      0.322      0.034      0.000     -0.287
+credit-taken after             -0.211      0.067      0.295      0.084      0.203     -0.413
+credit-taken DELTA             +0.077     -0.052     -0.027     +0.050     +0.203     -0.126
+explorer before                 0.028      0.000      0.071      0.127      0.000      0.028
+explorer after                  0.043     -0.235      0.071      0.128      0.031      0.013
+explorer DELTA                 +0.016     -0.235     +0.000     +0.001     +0.031     -0.015
+   I rescued-by-collaboration sd(friendA) 0.659 sd(authorship) 0.363
+   I credit-taken sd(friendA) 0.673 sd(authorship) 0.194
+   I explorer sd(friendA) 0.666 sd(authorship) 0.657
+
+==== Retention of persona differences after n shared new events (mean pairwise L2 distance of probe vectors, relative to n=0) ====
+           0       1       4       8      16      32      64     128
+A       1.00    0.98    0.91    0.91    0.97    1.04    0.80    0.47   (d0=2.92)
+B       1.00    0.93    0.74    0.51    0.33    0.11    0.04    0.01   (d0=0.48)
+C       1.00    1.04    0.83    0.61    0.52    0.20    0.15    0.05   (d0=0.05)
+E       1.00    0.92    0.79    0.63    0.45    0.35    0.24    0.14   (d0=0.52)
+I       1.00    0.94    0.80    0.57    0.48    0.24    0.05    0.02   (d0=0.65)
+
+==== Irrelevant-experience test: 200 null events (cue=music, outcome=music only, no innate-bearing features) ====
+  A credit-taken: ||probe(excluding music)|| 1.640 -> 1.099  (ratio 0.67);  music +0.606 -> +0.464
+  B credit-taken: ||probe(excluding music)|| 0.423 -> 0.423  (ratio 1.00);  music +0.069 -> +0.000
+  C credit-taken: ||probe(excluding music)|| 0.015 -> 0.020  (ratio 1.31);  music -0.005 -> +0.000
+  E credit-taken: ||probe(excluding music)|| 0.384 -> 0.384  (ratio 1.00);  music -0.064 -> -0.001
+  I credit-taken: ||probe(excluding music)|| 0.532 -> 0.535  (ratio 1.01);  music +0.034 -> +0.000
+
+==== Reversal test: credit-taken persona then receives n events drawn (cyclically) from the rescued history; fraction of the initial probe gap to the *rescued persona own end state* that is closed ====
+           0       4       8      16      32      64     128
+A       0.00    0.03    0.13    0.25    0.33    0.40    0.79   (d0=3.03)
+B       0.00    0.12    0.50    0.65    0.77    0.72    0.66   (d0=0.70)
+C       0.00   -0.02    0.02    0.37    0.08    0.37    0.69   (d0=0.03)
+E       0.00    0.07    0.39    0.47    0.61    0.63    0.61   (d0=0.66)
+I       0.00    0.12    0.36    0.47    0.79    0.94    0.83   (d0=0.93)

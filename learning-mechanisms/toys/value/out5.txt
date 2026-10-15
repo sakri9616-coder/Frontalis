@@ -1,0 +1,4 @@
+AMV-L1 cos 0.60 friendA delta [0.0005 0.0009 0.015 ] authorship delta [-0.0003 -0.0776 -0.012 ] retention 8/32/128 [0.75 0.51 0.24] reversal 32/128 [0.55 0.59] null ratio 1.00
+AMV-L2 cos 0.34 friendA delta [-0.  0.  0.] authorship delta [ 0.0008 -0.0003 -0.    ] retention 8/32/128 [0.85 0.72 0.54] reversal 32/128 [0.35 0.47] null ratio 3.05
+L1 belief-swap authorship diff +0.363 = belief +0.263 + cache +0.100
+L1 belief-swap connection diff -0.266 = belief -0.155 + cache -0.110
