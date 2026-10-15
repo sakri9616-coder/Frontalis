@@ -1,0 +1,18 @@
+T5a closed form vs numeric (exogenous input only, a_c=0.1)
+| g | closed form u_c | numeric u_c | steps to reverse at 1.1 u_c / 1.5 u_c / 2 u_c |
+|---|---|---|---|
+| 1.1 | 0.0205 | 0.0205 | [1044, 358, 209] |
+| 1.2 | 0.0564 | 0.0564 | [541, 185, 108] |
+| 1.3 | 0.1010 | 0.1010 | [373, 128, 75] |
+| 1.5 | 0.2075 | 0.2075 | [238, 82, 48] |
+
+T5b endogenous choice-conflict push (k_ch * conflict, conflict in [0,1], pushes toward the chosen option's basin): effective threshold on EXTERNAL counter-evidence
+| g | k_ch*conflict | threshold on external evidence | ratio to closed form |
+|---|---|---|---|
+| 1.3 | 0.0 | 0.1010 | 1.00 |
+| 1.3 | 0.05 | 0.1510 | 1.49 |
+| 1.3 | 0.1 | 0.2010 | 1.99 |
+| 1.3 | 0.2 | 0.3010 | 2.98 |
+
+T5c what e_x level (MF innovation, k_e=2) is needed: u_c(g=1.3)/k_e = 0.0505 innovation-sum per update; typical |innovation sum| in R/K/X histories (v2 core):
+   |sum innovation| median 0.069, 90% 0.181, max 0.765; k_e*|e| median 0.138 vs u_c=0.101

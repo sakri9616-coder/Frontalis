@@ -1,0 +1,2 @@
+Q_b=full Q, c_b=0.0: MF(b) after 400 counterfactual updates = 0.100  (MB only target would give 0.100); absorbed commitment = -0.000 = lam_c*c/(1-omega) = 0.000
+Q_b=full Q, c_b=1.1: MF(b) after 400 counterfactual updates = 0.760  (MB only target would give 0.100); absorbed commitment = 0.660 = lam_c*c/(1-omega) = 0.660

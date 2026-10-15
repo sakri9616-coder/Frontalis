@@ -1,0 +1,3 @@
+q mode=fixed: max radius 1.0000 at ('credit-taken', 'credit-stolen-7', 4); (event, need) pairs with radius>1.0001: 0/345
+q mode=literal: max radius 1.2140 at ('explorer', 'routine-success-19', 2); (event, need) pairs with radius>1.0001: 5/345
+q mode=ema: max radius 1.0851 at ('explorer', 'routine-success-19', 2); (event, need) pairs with radius>1.0001: 5/345

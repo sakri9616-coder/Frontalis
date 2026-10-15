@@ -1,0 +1,5 @@
+open-loop: 1e-3 random perturbation of W (and c if commit) after 'credit-taken' history, 128 shared events; ||d state_final||/||d state_0|| and probe ratio (10 seeds)
+  core RB=.4: state ratio mean 0.701 max 0.785; probe ratio mean 0.393
+  core RB=.4 q=0: state ratio mean 0.733 max 0.809; probe ratio mean 0.439
+  +c lam_c=.1 RB=.4: state ratio mean 2.333 max 3.328; probe ratio mean 0.354
+  +c lam_c=1 RB=.4: state ratio mean 2.333 max 3.328; probe ratio mean 2.267
