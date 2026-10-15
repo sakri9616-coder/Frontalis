@@ -1,16 +1,16 @@
 {
- "gap_with_head": 0.03083441706618988,
- "gap_no_head": 0.09003656355235527,
- "reduction": 0.6575344965463947,
+ "gap_with_head": 0.05585454175222798,
+ "gap_no_head": 0.2014796069848809,
+ "reduction": 0.7227781878866811,
  "seeds_reduction_ge_30pct": 20,
  "seed0": {
   "seed": 0,
-  "gap_head": 0.04068850392466278,
-  "gap_nohead": 0.09003656355235529,
-  "collab_head": 0.47118798841725507,
-  "band_head": 0.4304994844925923,
-  "collab_nohead": 0.3528540055988865,
-  "band_nohead": 0.26281744204653124,
+  "gap_head": 0.07854905781256416,
+  "gap_nohead": 0.20147960698488088,
+  "collab_head": 0.554584049314522,
+  "band_head": 0.4760349915019578,
+  "collab_nohead": 0.4204932459001613,
+  "band_nohead": 0.21901363891528042,
   "head_trained": true,
   "rho_h": 0.8
  }

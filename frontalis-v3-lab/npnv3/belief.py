@@ -19,6 +19,12 @@ v3.1 の変更
       どの型が個体間でどれだけばらつくかは型ごとに違う（誰でも同じ「つながり」と、人で大きく違う「手柄を取る」）。
       データの少ない型は、類全体の κ（全型をまとめた周辺尤度）へ縮約する: 型ごとの log κ の事後 ∝ 型の周辺尤度 × N(log κ_類, σ²)。
   1.4 曖昧な結果の型は観測なし（マスク）: 解釈が信念を自己訓練するループを作らない。
+
+設計の改訂 2（オーケストレーター承認）: 想起・再帰属（docs/04 第5節 手順 7）
+  参加者が行為者の観測（個体, 文脈, 型ごとの y・マスク・割り当てた φ）を記録として保持する。K_r = 10 経験ごとに、全記録を 1 回掃引する:
+  各観測の現在の寄与を計数から引き（retract）、今の信念（π と単位の率）で φ を計算し直し、足し直す（reassign）。オンライン EM の 1 ステップ。
+  引く対象は自分の寄与だけ（leave-one-out）なので、自分の割り当てが自分の説明を強める自己強化はない。1 観測の寄与の和は常に 1、計数の総和は不変。
+  掃引内の更新は同時（全観測の φ を掃引開始時の計数から求め、計数は記録から作り直す）。価値ネットの教師の分割は再帰属しない（非対称）。
 """
 from __future__ import annotations
 
@@ -140,7 +146,14 @@ class BeliefNet:
         self.rb_m = np.ones((cfg.replay_size, K))
         self.rb_len = 0
         self.rb_ptr = 0
-        self._kcache: Dict[str, float] = {}          # κ_e の記憶（純粋な関数の記憶。状態ではない）
+        self.exp_count = 0            # 想起の掃引の周期のための、学習した経験の数
+        self.rec_n = 0                # 想起のための観測の記録（参加者が行為者の観測）
+        self.rec_ind = np.zeros(0, dtype=np.int64)
+        self.rec_ctx = np.zeros(0, dtype=np.int64)
+        self.rec_y = np.zeros((0, K))
+        self.rec_m = np.zeros((0, K))
+        self.rec_phi = np.zeros((0, K))
+        self._kcache: Dict[str, Any] = {}          # κ_e の記憶（純粋な関数の記憶。状態ではない）
         self._grid = np.exp(np.linspace(np.log(cfg.kappa_grid_lo), np.log(cfg.kappa_grid_hi), cfg.kappa_grid_n))
         bias = np.full(K, _logit(self.prior_mean))
         if cfg.head_kind == "mlp":
@@ -363,6 +376,8 @@ class BeliefNet:
             if i is None:
                 i = self._add_individual(p["id"], p["class"])
             m = y_mask[j]
+            if not (cfg.no_scope or cfg.no_reattribution):
+                self._rec_append(i, ci, y_person[j], m, phi[j])
             self.N1[i] += m * phi[j] * y_person[j]
             self.N0[i] += m * phi[j] * (1.0 - y_person[j])
             self.CP1[ci] += m * (1.0 - phi[j]) * y_person[j]
@@ -393,7 +408,96 @@ class BeliefNet:
             for _ in range(cfg.head_batches):
                 idx = rng.integers(0, self.rb_len, size=cfg.head_batch_size)
                 loss = self.head.sgd_step(self.rb_x[idx], self.rb_y[idx], cfg.head_lr, mask=self.rb_m[idx])
-        return {"head_loss": loss}
+        # 想起: K_r 経験ごとに、全記録を 1 回掃引する
+        self.exp_count += 1
+        recall = None
+        if cfg.reattribute_every > 0 and self.exp_count % cfg.reattribute_every == 0:
+            recall = self.reattribute()
+        return {"head_loss": loss, "recall": recall}
+
+    # ------------------------------------------------------------------ 想起・再帰属（設計の改訂 2）
+    def _rec_append(self, i: int, c: int, y: np.ndarray, m: np.ndarray, phi: np.ndarray) -> None:
+        n = self.rec_n
+        if n == self.rec_ind.shape[0]:
+            cap = max(64, 2 * n)
+            K = N_TYPES
+            self.rec_ind = np.concatenate([self.rec_ind, np.zeros(cap - n, dtype=np.int64)])
+            self.rec_ctx = np.concatenate([self.rec_ctx, np.zeros(cap - n, dtype=np.int64)])
+            for name in ("rec_y", "rec_m", "rec_phi"):
+                setattr(self, name, np.vstack([getattr(self, name), np.zeros((cap - n, K))]))
+        self.rec_ind[n], self.rec_ctx[n] = i, c
+        self.rec_y[n], self.rec_m[n], self.rec_phi[n] = y, m, phi
+        self.rec_n = n + 1
+
+    def _rebuild_counts(self) -> None:
+        """計数と π を、記録（観測 y・マスク・φ）から作り直す。引いて足す更新の浮動小数点の誤差を残さない。"""
+        R = self.rec_n
+        ind, ctx = self.rec_ind[:R], self.rec_ctx[:R]
+        y, m, phi = self.rec_y[:R], self.rec_m[:R], self.rec_phi[:R]
+        wp, wc = m * phi, m * (1.0 - phi)
+        ni, nc = len(self.ind_ids), len(self.ctx_names)
+        for k in range(N_TYPES):
+            self.N1[:, k] = np.bincount(ind, weights=wp[:, k] * y[:, k], minlength=ni)
+            self.N0[:, k] = np.bincount(ind, weights=wp[:, k] * (1.0 - y[:, k]), minlength=ni)
+            self.CP1[:, k] = np.bincount(ctx, weights=wc[:, k] * y[:, k], minlength=nc)
+            self.CP0[:, k] = np.bincount(ctx, weights=wc[:, k] * (1.0 - y[:, k]), minlength=nc)
+        self.pi[:, 0] = 1.0 + wp.sum(axis=0)
+        self.pi[:, 1] = 1.0 + wc.sum(axis=0)
+        self._kcache = {}
+
+    def reattribute(self) -> Optional[Dict[str, float]]:
+        """想起: 全記録について 1 回の掃引（retract → reassign）。オンライン EM の 1 ステップ（leave-one-out）。
+        各観測の現在の寄与（人 φ、文脈 1−φ）を自分の単位の計数と π から引いた状態で、今の信念（個体の率・文脈の率・π）から
+        φ を計算し直し、足し直す。1 観測の寄与の和は 1、計数の総和は変わらない。"""
+        cfg = self.cfg
+        R = self.rec_n
+        if R == 0 or cfg.no_scope or cfg.no_reattribution:
+            return None
+        ind, ctx = self.rec_ind[:R], self.rec_ctx[:R]
+        y, m, phi = self.rec_y[:R], self.rec_m[:R], self.rec_phi[:R]
+        ke0 = cfg.kappa_e
+        # 掃引の開始時点の類・世界の水準（掃引の間は固定）
+        agg = self._class_agg()
+        m_gen, _ = self._gen_mean(agg)
+        mw_p, _ = self._world_mean(self.CP1, self.CP0)
+        kc = cfg.kappa_c
+        cls_names = [self.ind_cls[i] for i in ind]
+        m_cls = np.zeros((R, N_TYPES))
+        ke = np.zeros((R, N_TYPES))
+        by_ctx: Dict[int, List[int]] = {}
+        for r in range(R):
+            by_ctx.setdefault(int(ctx[r]), []).append(r)
+        classes = sorted(agg)
+        for c_idx, rows in by_ctx.items():
+            priors, _ = self._priors(classes, self.ctx_names[c_idx], m_gen, agg)
+            table = {c: (kc * priors[j] + agg[c][1]) / (kc + agg[c][0]) for j, c in enumerate(classes)}
+            for r in rows:
+                m_cls[r] = table[cls_names[r]]
+        for c in classes:
+            sel = [r for r in range(R) if cls_names[r] == c]
+            ke[sel] = agg[c][2][None, :]
+        # retract: 自分の寄与だけを引く
+        own_p, own_c = m * phi, m * (1.0 - phi)
+        N1 = self.N1[ind] - own_p * y
+        N0 = self.N0[ind] - own_p * (1.0 - y)
+        C1 = self.CP1[ctx] - own_c * y
+        C0 = self.CP0[ctx] - own_c * (1.0 - y)
+        p_ind = np.clip((ke * m_cls + N1) / (ke + N1 + N0), _P_MIN, _P_MAX)
+        p_ctx = np.clip((ke0 * mw_p[None, :] + C1) / (ke0 + C1 + C0), _P_MIN, _P_MAX)
+        pi_p = (self.pi[:, 0][None, :] - own_p) / (self.pi.sum(axis=1)[None, :] - m)
+        pi_p = np.clip(pi_p, 1e-6, 1.0 - 1e-6)
+        # reassign
+        bp = np.where(y > 0.5, p_ind, 1.0 - p_ind)
+        bc = np.where(y > 0.5, p_ctx, 1.0 - p_ctx)
+        a, b = pi_p * bp, (1.0 - pi_p) * bc
+        new = np.where(m > 0.5, a / (a + b), phi)
+        d = np.abs(new - phi)[m > 0.5]
+        self.rec_phi[:R] = new
+        self._rebuild_counts()
+        piv = self.pi[:, 0] / self.pi.sum(axis=1)
+        return {"n_records": float(R), "mean_abs_dphi": float(d.mean()) if d.size else 0.0,
+                "max_abs_dphi": float(d.max()) if d.size else 0.0,
+                "pi_person_min": float(piv.min()), "pi_person_max": float(piv.max())}
 
     # ------------------------------------------------------------------ 要約（CLI show 用）
     def summary(self) -> Dict[str, Any]:
@@ -417,10 +521,13 @@ class BeliefNet:
     def get_state(self) -> Tuple[Dict[str, Any], Dict[str, np.ndarray]]:
         meta = {"ind_ids": list(self.ind_ids), "ind_cls": list(self.ind_cls), "ctx_names": list(self.ctx_names),
                 "n_obs": int(self.n_obs), "rb_len": int(self.rb_len), "rb_ptr": int(self.rb_ptr),
-                "head_kind": self.cfg.head_kind}
+                "head_kind": self.cfg.head_kind, "exp_count": int(self.exp_count), "rec_n": int(self.rec_n)}
         arrays = {"b_N1": self.N1, "b_N0": self.N0, "b_CP1": self.CP1, "b_CP0": self.CP0, "b_CS1": self.CS1,
                   "b_CS0": self.CS0, "b_pi": self.pi, "b_mag": self.mag, "b_mag_n": self.mag_n,
-                  "b_rb_x": self.rb_x, "b_rb_y": self.rb_y, "b_rb_m": self.rb_m}
+                  "b_rb_x": self.rb_x, "b_rb_y": self.rb_y, "b_rb_m": self.rb_m,
+                  "b_rec_ind": self.rec_ind[: self.rec_n], "b_rec_ctx": self.rec_ctx[: self.rec_n],
+                  "b_rec_y": self.rec_y[: self.rec_n], "b_rec_m": self.rec_m[: self.rec_n],
+                  "b_rec_phi": self.rec_phi[: self.rec_n]}
         if self.head is not None:
             arrays.update(self.head.get_arrays("b_head_"))
         return meta, arrays
@@ -435,6 +542,9 @@ class BeliefNet:
         self.CP1, self.CP0, self.CS1, self.CS0 = g("b_CP1"), g("b_CP0"), g("b_CS1"), g("b_CS0")
         self.pi, self.mag, self.mag_n = g("b_pi"), g("b_mag"), g("b_mag_n")
         self.rb_x, self.rb_y, self.rb_m = g("b_rb_x"), g("b_rb_y"), g("b_rb_m")
+        self.exp_count = int(meta["exp_count"]); self.rec_n = int(meta["rec_n"])
+        self.rec_ind = np.array(arrays["b_rec_ind"], dtype=np.int64); self.rec_ctx = np.array(arrays["b_rec_ctx"], dtype=np.int64)
+        self.rec_y, self.rec_m, self.rec_phi = g("b_rec_y"), g("b_rec_m"), g("b_rec_phi")
         if self.head is not None:
             self.head.set_arrays(arrays, "b_head_")
         self._kcache = {}

@@ -29,7 +29,7 @@ from .lexicon import EmbeddingStore, Lexicon
 from .mlp import sigmoid
 from .schema import validate_experience, validate_probe
 
-SCHEMA_VERSION = 2          # v3.0 は 1。v3.1 で状態に a, C, 所有する埋め込み、効果表などが加わった
+SCHEMA_VERSION = 3          # v3.0 は 1、v3.1 は 2（a, C, 所有する埋め込み, 効果表）。改訂 2 で観測の記録（想起）が加わった
 STATE_FILE = "state.json"
 ARRAY_FILE = "arrays.npz"
 
@@ -308,8 +308,10 @@ class NPN:
             self.emb.register("concept", c)
         self.warnings += ap["warnings"]
         # 5. 信念の更新
-        self.belief.update(e["context"], P, it["y_person"], it["y_mask"], it["y_sw"], it["sw_mask"], it["phi"],
-                           e["outcomes"], self.rng)
+        bu = self.belief.update(e["context"], P, it["y_person"], it["y_mask"], it["y_sw"], it["sw_mask"], it["phi"],
+                                e["outcomes"], self.rng)
+        if bu["recall"] is not None and cfg.record_ledger:        # 想起（帰属のやり直し）。台帳には掃引の要約を残す
+            self.ledger.add({"kind": "recall", "after": e["id"], **{k: float(v) for k, v in bu["recall"].items()}})
         # 6. 価値の更新
         a = self.concern.a.copy()
         mf_before = it["mf"]
