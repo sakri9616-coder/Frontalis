@@ -14,6 +14,7 @@ docs/04（学習機構）と付録 docs/04a・04b を支える数値スケッチ
 - `toys/belief/belief_sims.py`, `belief_sims_extra.py` … 信念ネット候補の玩具検証（04b）
 - `toys/check_n1.py` … オーケストレーターの解析メモ N1, N2, N4 の数値確認
 - `orchestrator-notes.md`, `refs-verified.md` … 解析メモ（N1〜N6）と文献確認表
+- `progress-log.md` … 検討の進捗記録（どの担当が何をしたか。行の番号は記録した順で、一部前後する）
 
 ## 査読と検証（specs/, toys/critique/）
 - `specs/v2-spec.md`, `specs/v3-spec.md` … 価値ネットの改訂仕様（v2 の全文、v3 は v2 からの差分）
