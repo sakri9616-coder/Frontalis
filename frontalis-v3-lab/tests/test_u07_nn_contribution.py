@@ -17,7 +17,7 @@ from helpers import KINDS, SEEDS, dump, feed, load_jsonl, make, persona_gen, pma
 
 COLLAB = {"entity": "u7_new_collab", "class": "collaborator", "context": "music_session"}
 BAND = {"entity": "u7_new_band", "class": "band_mate", "context": "music_session"}
-HEADS = ("mlp", "linear", "knn1", "none")
+HEADS = ("mlp", "linear", "knn1", "none", "mixture")      # v3.2: mixture（既定）を追加。判定は v3.1 のまま mlp 対 none
 
 
 def worker(seed):
@@ -28,6 +28,8 @@ def worker(seed):
         feed(n, train)
         pc, pb = n.probe(COLLAB)["p_person"]["credit_taken"], n.probe(BAND)["p_person"]["credit_taken"]
         out[kind] = {"gap": abs(pc - pb), "collab": pc, "band": pb, "rho": n.belief.rho()}
+        if kind == "mixture":
+            out[kind]["weights"] = n.belief.head_weights_dict()
     out["rho_gen"] = {}
     for k in KINDS:
         n = persona_gen(k, seed)
@@ -40,7 +42,7 @@ class U7NNContribution(unittest.TestCase):
         rows = pmap(worker, SEEDS)
         gaps = {k: float(np.mean([r[k]["gap"] for r in rows])) for k in HEADS}
         ratio = gaps["mlp"] / gaps["none"]
-        beats = {k: float(np.mean([r["mlp"]["gap"] < r[k]["gap"] for r in rows])) for k in ("linear", "knn1", "none")}
+        beats = {k: float(np.mean([r["mlp"]["gap"] < r[k]["gap"] for r in rows])) for k in ("linear", "knn1", "none", "mixture")}
         dump("U07", {"mean_gap": gaps, "mlp_over_none": ratio, "judged_threshold": 0.7,
                      "fraction_of_seeds_mlp_gap_smaller_than": beats,
                      "collab_prediction_mean": {k: float(np.mean([r[k]["collab"] for r in rows])) for k in HEADS},
@@ -49,7 +51,8 @@ class U7NNContribution(unittest.TestCase):
                      "rho_h_RKX_36_experiences": {k: {"n_head_mean": float(np.mean([r["rho_gen"][k]["n_head"] for r in rows])),
                                                       "rho_mean": float(np.mean([r["rho_gen"][k]["rho"] for r in rows]))}
                                                   for k in KINDS},
-                     "mlp_beats_linear_and_knn1": bool(gaps["mlp"] < gaps["linear"] and gaps["mlp"] < gaps["knn1"])})
+                     "mlp_beats_linear_and_knn1": bool(gaps["mlp"] < gaps["linear"] and gaps["mlp"] < gaps["knn1"]),
+                     "mixture_over_none (v3.2 default; reported, not judged here; T8 judges it)": gaps["mixture"] / gaps["none"]})
         self.assertLessEqual(ratio, 0.7)
 
 

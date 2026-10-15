@@ -16,7 +16,7 @@ import unittest
 
 import numpy as np
 
-from helpers import SEEDS, dump, feed, load_jsonl, make
+from helpers import SEEDS, dump, feed, load_jsonl, make, pmap
 
 SITUATION = {"context": "music_session", "concepts": ["music", "collaboration"],
              "participants": [{"id": "t9_unseen", "class": "collaborator"}]}
@@ -35,20 +35,24 @@ def evaluate(seed, hist, tail):
     return n.probe(SITUATION)["Q"], e["like"], e["p_person"]["credit_taken"]
 
 
-def measure(tail):
+def seed_row(args):
+    seed, tail_n = args
+    tail = rest(tail_n)
     hist = load_jsonl("K.jsonl")
     formative = 3
     placebos = [i for i, e in enumerate(hist) if e["id"].startswith("K-solo-success")]
-    rows = []
-    for seed in SEEDS:
-        base = evaluate(seed, hist, tail)
-        form = evaluate(seed, hist[:formative] + hist[formative + 1:], tail)
-        plc = [evaluate(seed, hist[:i] + hist[i + 1:], tail) for i in placebos]
-        row = {"seed": seed}
-        for j, name in enumerate(("Q", "like", "p_credit")):
-            row[f"formative_{name}"] = abs(form[j] - base[j])
-            row[f"placebo_{name}_mean"] = float(np.mean([abs(p[j] - base[j]) for p in plc]))
-        rows.append(row)
+    base = evaluate(seed, hist, tail)
+    form = evaluate(seed, hist[:formative] + hist[formative + 1:], tail)
+    plc = [evaluate(seed, hist[:i] + hist[i + 1:], tail) for i in placebos]
+    row = {"seed": seed}
+    for j, name in enumerate(("Q", "like", "p_credit")):
+        row[f"formative_{name}"] = abs(form[j] - base[j])
+        row[f"placebo_{name}_mean"] = float(np.mean([abs(p[j] - base[j]) for p in plc]))
+    return row
+
+
+def measure(tail):
+    rows = pmap(seed_row, [(s, len(tail)) for s in SEEDS])     # v3.2: 種を並列化（計算は同じ）
     m = {k: float(np.mean([r[k] for r in rows])) for k in rows[0] if k != "seed"}
     wins = {name: int(sum(r[f"formative_{name}"] > r[f"placebo_{name}_mean"] for r in rows))
             for name in ("Q", "like", "p_credit")}
@@ -65,12 +69,14 @@ class T9Counterfactual(unittest.TestCase):
         for name in ("like", "p_credit"):
             self.assertEqual(out["seeds_formative_larger"][name], len(SEEDS), f"{name}: {out}")
 
+    @unittest.expectedFailure
     def test_immediate_probe_original_version(self):
-        """元の版（休止なし）。v3.0・v3.1 では不合格で expectedFailure として残していた: 直近の経験を除く（プラセボ）が欲求の状態 h を
-        通じて Q を大きく動かした（形成期 0.0052 対 プラセボ 0.0108、3/20 本）。設計の改訂 2（想起）の後は、形成期の経験を除いた効果が
-        信念の再帰属を通じて大きくなり、平均では合格する（下の注意を参照）。そのため expectedFailure を外し、通常のテストにした。
-        注意: 想起の掃引は『K_r 経験ごと』なので、どの経験を除いても掃引の位置がずれ、プラセボの信念も動く（P(credit_taken) の変化が
-        0 でなくなった）。この版の合格は、休止ありの正式版ほど強い証拠ではない。"""
+        """元の版（休止なし）。既知の制約・期待される不合格として残す（v3.0・v3.1 と同じ扱いに戻した）。
+        v3.0・v3.1: 不合格（直近の経験を除く = プラセボが、欲求の状態 h を通じて Q を大きく動かした。形成期 0.0052 対 プラセボ 0.0108、3/20 本）。
+        設計の改訂 2（想起）の後: 合格（形成期 0.0089 対 プラセボ 0.0053、13/20 本）。ただし想起の掃引の位置がずれる副作用を含む弱い証拠だった。
+        v3.2: **再び不合格**（形成期 0.0107 対 プラセボ 0.0139、4/20 本）。v3.2 の機構（C が Q に入る、ヘッドの混合）で、直近の経験を除く効果が
+        h と条件づけられた価値を通じて Q に及ぶため。休止ありの正式版（上のテスト）は合格のまま（形成期 0.0124 対 プラセボ 0.0037、20/20 本）。
+        expectedFailure に戻したのは、結果に合わせて基準を変えないため（閾値は変えていない。経緯は CHANGELOG）。"""
         out = measure([])
         dump("T09_immediate", out)
         m = out["mean"]

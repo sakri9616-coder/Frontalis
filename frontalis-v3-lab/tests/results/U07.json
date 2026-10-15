@@ -3,41 +3,46 @@
   "mlp": 0.05585454175222798,
   "linear": 0.10304536861378825,
   "knn1": 0.04033664090791422,
-  "none": 0.2014796069848809
+  "none": 0.2014796069848809,
+  "mixture": 0.04059468193128128
  },
  "mlp_over_none": 0.27722181211331887,
  "judged_threshold": 0.7,
  "fraction_of_seeds_mlp_gap_smaller_than": {
   "linear": 1.0,
   "knn1": 0.1,
-  "none": 1.0
+  "none": 1.0,
+  "mixture": 0.0
  },
  "collab_prediction_mean": {
   "mlp": 0.5807648458773,
   "linear": 0.5217908955871294,
   "knn1": 0.609969851318733,
-  "none": 0.4204932459001613
+  "none": 0.4204932459001613,
+  "mixture": 0.5948545708548874
  },
  "band_prediction_mean": {
   "mlp": 0.5249103041250721,
   "linear": 0.4187455269733412,
   "knn1": 0.5696332104108189,
-  "none": 0.21901363891528042
+  "none": 0.21901363891528042,
+  "mixture": 0.5542598889236061
  },
  "rho_T8": 0.8,
  "rho_h_RKX_36_experiences": {
   "R": {
-   "n_head_mean": 27.0,
-   "rho_mean": 0.47293245954193897
+   "n_head_mean": 27.2,
+   "rho_mean": 0.9421471944361285
   },
   "K": {
    "n_head_mean": 17.4,
-   "rho_mean": 0.3641562898358855
+   "rho_mean": 0.9419502973639233
   },
   "X": {
-   "n_head_mean": 17.1,
-   "rho_mean": 0.3602491100237724
+   "n_head_mean": 17.15,
+   "rho_mean": 0.9486299186199296
   }
  },
- "mlp_beats_linear_and_knn1": false
+ "mlp_beats_linear_and_knn1": false,
+ "mixture_over_none (v3.2 default; reported, not judged here; T8 judges it)": 0.2014828326239862
 }

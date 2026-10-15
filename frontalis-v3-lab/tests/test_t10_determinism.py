@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from helpers import SEEDS, deep_equal, feed, load_json, load_jsonl, make
+from helpers import SEEDS, deep_equal, feed, load_json, load_jsonl, make, pmap
 
 
 def inputs():
@@ -19,17 +19,23 @@ def probes(n):
             n.probe({"concept": "music"})]
 
 
+def check_seed(seed):
+    """同じ種・同じ入力で 2 回作って比べる（v3.2: 種を並列化。比べる内容は同じ）。"""
+    xs = inputs()
+    a, b = make(seed), make(seed)
+    oa, ob = feed(a, xs), feed(b, xs)
+    ma, aa = a.get_state(); mb, ab = b.get_state()
+    return {"outputs": deep_equal(oa, ob), "probes": deep_equal(probes(a), probes(b)), "meta": deep_equal(ma, mb),
+            "arrays": all(np.array_equal(aa[k], ab[k]) for k in aa)}
+
+
 class T10Determinism(unittest.TestCase):
     def test_same_seed_same_result(self):
-        xs = inputs()
-        for seed in SEEDS:
-            a, b = make(seed), make(seed)
-            oa, ob = feed(a, xs), feed(b, xs)
-            self.assertTrue(deep_equal(oa, ob), f"seed {seed}: 出力が一致しない")
-            self.assertTrue(deep_equal(probes(a), probes(b)), f"seed {seed}: プローブが一致しない")
-            ma, aa = a.get_state(); mb, ab = b.get_state()
-            self.assertTrue(deep_equal(ma, mb))
-            self.assertTrue(all(np.array_equal(aa[k], ab[k]) for k in aa))
+        for seed, r in zip(SEEDS, pmap(check_seed, SEEDS)):
+            self.assertTrue(r["outputs"], f"seed {seed}: 出力が一致しない")
+            self.assertTrue(r["probes"], f"seed {seed}: プローブが一致しない")
+            self.assertTrue(r["meta"])
+            self.assertTrue(r["arrays"])
 
     def test_appraise_does_not_change_state(self):
         xs = inputs()

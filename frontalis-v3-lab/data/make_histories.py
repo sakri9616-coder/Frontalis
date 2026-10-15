@@ -196,7 +196,7 @@ def history_T8_train() -> List[Dict[str, Any]]:
 #   （種 0〜19 が独立な標本）。R/K/X の固定の履歴（上）は、デモ用として残す。
 #   経験史には optional: true の申し出（共同作業の誘い）を含める。
 # ======================================================================
-KIND_CODE = {"R": 1, "K": 2, "X": 3}
+KIND_CODE = {"R": 1, "K": 2, "X": 3, "W": 4}
 
 # 結果表: (型, 行為者, 起こる確率, (大きさの下限, 上限))。行為者は "self" / "world" / "partner"
 WORLD: Dict[str, Dict[str, Any]] = {
@@ -254,13 +254,13 @@ def _sample_outcomes(rng: np.random.Generator, table: List[Tuple[str, str, float
     return outs
 
 
-def _collab_event(rng: np.random.Generator, kind: str, eid: str, partner: str, session: str,
+def _collab_event(rng: np.random.Generator, world: Dict[str, Any], eid: str, partner: str, session: str,
                   optional: bool, ambiguous: bool) -> Dict[str, Any]:
     ctx = _choice(rng, COLLAB_CONTEXTS)
     concepts = ["collaboration"] if ctx == "project_meeting" else ["music", "collaboration"]
     if rng.random() < 0.4:
         concepts = concepts + ["authorship"]
-    outs = _sample_outcomes(rng, WORLD[kind]["collab"], partner)
+    outs = _sample_outcomes(rng, world["collab"], partner)
     if ambiguous:
         outs.append({"interpretations": dict(AMBIGUOUS), "actor": partner, "magnitude": round(float(rng.uniform(0.4, 0.9)), 2)})
     e = exp(eid, ctx, concepts, partner_list(partner, "collaborator"), outs)
@@ -274,13 +274,19 @@ def partner_list(pid: str, cls: str) -> List[Dict[str, str]]:
 
 
 def generate_history(kind: str, seed: int, n: int = 36, offer_rate: float = 0.2, ambiguous_rate: float = 0.0,
-                     pool_size: Optional[int] = None) -> List[Dict[str, Any]]:
+                     pool_size: Optional[int] = None, world: Optional[Dict[str, Any]] = None,
+                     praise_rate: float = 0.0) -> List[Dict[str, Any]]:
     """人格の型（R/K/X）の世界から、乱数種ごとに異なる経験史を n 件生成する。
     場面の配分（独り・協働・学び）と各結果は、世界の真の確率からの抽出。協働は offer_rate の割合で optional な申し出になる。
     pool_size が None のとき、協働の相手は 70% が新しい個体、30% が既知の個体。整数のときは、その人数までの個体が繰り返し現れる。
-    連続する 2〜4 件が 1 つの文脈の連続（session）。"""
-    rng = _rng(seed, KIND_CODE[kind], 1)
-    w = WORLD[kind]
+    連続する 2〜4 件が 1 つの文脈の連続（session）。
+
+    v3.2: world を渡すと、WORLD[kind] の代わりにその世界（random_world が作る確率表）から抽出する（kind は "W" など。乱数の流れの区別と id の接頭辞のみに使う）。
+    praise_rate > 0 のとき、協働の前に確率 praise_rate で「同じ相手に褒められる」事象（praise）が同じ文脈の連続の中で先行する
+    （褒め言葉は生得の効果を持たない。何が続くかは世界の確率表が決める）。褒められる事象が申し出（optional）のときは announced = ["praise"]。
+    praise_rate = 0 のときは乱数を余分に引かず、v3.1 と同じ経験史になる。"""
+    rng = _rng(seed, KIND_CODE.get(kind, 4), 1)
+    w = WORLD[kind] if world is None else world
     mix = np.array(w["mix"]) / sum(w["mix"])
     rows: List[Dict[str, Any]] = []
     partners: List[str] = []
@@ -311,8 +317,20 @@ def generate_history(kind: str, seed: int, n: int = 36, offer_rate: float = 0.2,
                 partners.append(pid)
             else:
                 pid = partners[int(rng.integers(len(partners)))]
-            e = _collab_event(rng, kind, eid, pid, sess, optional=bool(rng.random() < offer_rate),
-                              ambiguous=bool(rng.random() < ambiguous_rate))
+            is_offer = bool(rng.random() < offer_rate)
+            amb = bool(rng.random() < ambiguous_rate)
+            pre: Optional[Dict[str, Any]] = None
+            if praise_rate > 0.0 and rng.random() < praise_rate:
+                pre = exp(f"{eid}p", "music_session", ["conversation"], partner_list(pid, "collaborator"),
+                          [o("praise", pid, round(float(rng.uniform(0.5, 1.0)), 2))])
+                pre["session"] = sess
+                pre["optional"] = is_offer
+                if is_offer:
+                    pre["announced"] = ["praise"]
+                is_offer = False
+            e = _collab_event(rng, w, eid, pid, sess, optional=is_offer, ambiguous=amb)
+            if pre is not None:
+                rows.append(pre)
         else:
             mentors += 1
             pid = f"{kind.lower()}{seed}-m{mentors % 4 + 1}" if pool_size is not None else f"{kind.lower()}{seed}-m{mentors}"
@@ -320,7 +338,7 @@ def generate_history(kind: str, seed: int, n: int = 36, offer_rate: float = 0.2,
                     partner_list(pid, "mentor"), _sample_outcomes(rng, w["learn"], pid))
             e["session"] = sess
         rows.append(e)
-    return rows
+    return rows[:n] if praise_rate > 0.0 else rows
 
 
 def generate_offers(kind: str, seed: int, n: int = 40) -> List[Dict[str, Any]]:
@@ -330,15 +348,81 @@ def generate_offers(kind: str, seed: int, n: int = 40) -> List[Dict[str, Any]]:
     rows = []
     for i in range(n):
         pid = f"{kind.lower()}{seed}-offer{int(rng.integers(6)) + 1}"
-        rows.append(_collab_event(rng, kind, f"{kind}{seed:02d}-offer-{i:03d}", pid, f"{kind}{seed}-o{i}",
+        rows.append(_collab_event(rng, WORLD[kind], f"{kind}{seed:02d}-offer-{i:03d}", pid, f"{kind}{seed}-o{i}",
                                   optional=True, ambiguous=False))
     return rows
 
 
-def generate_extended_history(kind: str, seed: int, n: int = 2000) -> List[Dict[str, Any]]:
+def generate_extended_history(kind: str, seed: int, n: int = 2000, praise_rate: float = 0.0) -> List[Dict[str, Any]]:
     """U6: 全機構を使う長い経験史。相手は 12 人の個体が繰り返し現れ、8% の協働に曖昧な結果（手柄を取られた/共有された）を含み、
-    20% の協働は optional な申し出。"""
-    return generate_history(kind, seed, n=n, offer_rate=0.2, ambiguous_rate=0.08, pool_size=12)
+    20% の協働は optional な申し出。v3.2（W6）: praise_rate > 0 で、協働の前に褒められる事象（申し出のときは announced = ["praise"]）が入る。"""
+    return generate_history(kind, seed, n=n, offer_rate=0.2, ambiguous_rate=0.08, pool_size=12, praise_rate=praise_rate)
+
+
+# ======================================================================
+# v3.2 ランダムな世界（SPEC-v3.2 1.5）と、褒め言葉を伴う申し出（W2）
+# ======================================================================
+# 場面ごとに起こりうる結果の型（人格の型を手で書かない）。各（場面, 型）の起こる確率を種ごとに Beta(1, 3) から引く（平均 0.25）。
+# 大きさは全世界で U(0.4, 1.0)。場面の配分は固定（独り 0.3、協働 0.5、学び 0.2）。
+RANDOM_SLOT_TYPES: Dict[str, List[Tuple[str, str]]] = {
+    "solo": [("failure", "self"), ("achievement", "self"), ("autonomy_gain", "self"), ("autonomy_loss", "self"),
+             ("novelty", "world"), ("monotony", "world")],
+    "collab": [("connection", "partner"), ("support", "partner"), ("credit_taken", "partner"), ("credit_shared", "partner"),
+               ("betrayal", "partner"), ("rejection", "partner"), ("criticism", "partner"), ("autonomy_loss", "partner"),
+               ("taught", "partner"), ("achievement", "self"), ("failure", "self")],
+    "learn": [("taught", "partner"), ("connection", "partner"), ("support", "partner"), ("novelty", "world"),
+              ("credit_taken", "partner"), ("criticism", "partner")],
+}
+RANDOM_MIX = (0.30, 0.50, 0.20)
+RANDOM_MAG = (0.4, 1.0)
+
+
+def random_world(seed: int) -> Dict[str, Any]:
+    """種 seed のランダムな世界。WORLD と同じ形式（generate_history の world= に渡せる）。"""
+    rng = _rng(seed, 900)
+    w: Dict[str, Any] = {"mix": RANDOM_MIX}
+    for slot, types in RANDOM_SLOT_TYPES.items():
+        p = rng.beta(1.0, 3.0, size=len(types))
+        w[slot] = [(t, who, float(pi), RANDOM_MAG) for (t, who), pi in zip(types, p)]
+    return w
+
+
+def generate_random_history(seed: int, n: int = 60, offer_rate: float = 0.0, **kw: Any) -> List[Dict[str, Any]]:
+    """ランダムな世界（種 seed）から n 件の経験史。既定は申し出なし（すべて経験される）。"""
+    return generate_history("W", seed, n=n, offer_rate=offer_rate, world=random_world(seed), **kw)
+
+
+def generate_random_offers(seed: int, n: int = 40) -> List[Dict[str, Any]]:
+    """W4: ランダムな世界の共同作業の申し出（optional）を n 回。相手は 6 人の個体が繰り返し現れる。"""
+    rng = _rng(seed, 901)
+    w = random_world(seed)
+    rows = []
+    for i in range(n):
+        pid = f"w{seed}-offer{int(rng.integers(6)) + 1}"
+        rows.append(_collab_event(rng, w, f"W{seed:02d}-offer-{i:03d}", pid, f"W{seed}-o{i}", optional=True, ambiguous=False))
+    return rows
+
+
+def generate_praise_offers(seed: int, n: int = 40, with_partner: bool = False) -> List[Dict[str, Any]]:
+    """W2: 褒め言葉を伴う申し出（optional、announced = ["praise"]）を n 回。H1/H2 のどちらの人格にも同じものを与える。
+    既定は参加者なし・H1/H2 の経験史に現れない文脈（studio）と概念（music）で、結果は褒め言葉だけ（生得の効果なし）。
+    つまり、H1 と H2 の接近率の差は、praise という手がかりに条件づけられた価値 C 以外の経路をほとんど通らない。
+    with_partner=True は参考用: H1/H2 と同じ類 friend の新しい相手が褒める（類への一般化も通る）。
+    1 件ごとに別の文脈の連続。"""
+    rng = _rng(seed, 902)
+    rows = []
+    for i in range(n):
+        m = round(float(rng.uniform(0.5, 1.0)), 2)
+        if with_partner:
+            pid = f"pf{seed}-{i}"
+            e = exp(f"PO-{seed:02d}-{i:03d}", "cafe_chat", ["conversation"], partner_list(pid, "friend"), [o("praise", pid, m)])
+        else:
+            e = exp(f"PO-{seed:02d}-{i:03d}", "studio", ["music"], [], [o("praise", "world", m)])
+        e["optional"] = True
+        e["announced"] = ["praise"]
+        e["session"] = f"PO{seed}-{i}"
+        rows.append(e)
+    return rows
 
 
 def generate_praise_history(variant: str, seed: int, episodes: int = 24) -> List[Dict[str, Any]]:
@@ -422,6 +506,9 @@ def main() -> None:
         write_jsonl(f"gen_{k}_seed0.jsonl", generate_history(k, 0))
     write_jsonl("gen_praise_H1_seed0.jsonl", generate_praise_history("H1", 0))
     write_jsonl("gen_praise_H2_seed0.jsonl", generate_praise_history("H2", 0))
+    # v3.2: ランダムな世界の見本、褒め言葉を伴う申し出の見本（乱数種 0）
+    write_jsonl("gen_random_world_seed0.jsonl", generate_random_history(0))
+    write_jsonl("gen_praise_offers_seed0.jsonl", generate_praise_offers(0))
     print("wrote", sorted(p.name for p in OUT.iterdir()))
 
 

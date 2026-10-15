@@ -1,9 +1,9 @@
 {
- "worst_pi_min": 0.09484451627018527,
- "worst_pi_max": 0.7360354616772525,
- "final_pi_min": 0.09484622499819292,
- "final_pi_max": 0.7360354616772525,
- "max_change_last_sweep": 3.3306690738754696e-16,
+ "worst_pi_min": 0.41476894651559915,
+ "worst_pi_max": 0.9471534682772417,
+ "final_pi_min": 0.41476894651590973,
+ "final_pi_max": 0.9471534682772411,
+ "max_change_last_sweep": 2.447705926833521e-08,
  "n_histories": 24,
  "sweeps": 400
 }

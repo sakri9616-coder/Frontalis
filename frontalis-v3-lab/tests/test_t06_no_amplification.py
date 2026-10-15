@@ -8,7 +8,7 @@ import unittest
 
 import numpy as np
 
-from helpers import dump, feed, load_json, load_jsonl, make
+from helpers import dump, feed, load_json, load_jsonl, make, pmap
 from npnv3 import innate
 
 EPS = 1e-6
@@ -26,6 +26,7 @@ def value_map_radius(npn, exp):
     ptea = [np.array([ap["teachers"]["person"][p["id"]][n] for n in innate.NEEDS]) for p in P]
     stea = np.array([ap["teachers"]["situation"][n] for n in innate.NEEDS])
     base = copy.deepcopy(npn.value)
+    a = npn.concern.a.copy()                                    # v3.2: 観測雑音 R/a_k（この経験を受け止める直前の a）
     base.prepare(P, exp["context"], exp["concepts"])           # 定義域を揃える（新しい特徴は W=0 で追加）
     n_p, n_s = base.person.W.shape[0], base.sit.W.shape[0]
 
@@ -33,7 +34,7 @@ def value_map_radius(npn, exp):
         v = copy.deepcopy(base)
         v.person.W = w[: n_p * 5].reshape(n_p, 5).copy()
         v.sit.W = w[n_p * 5:].reshape(n_s, 5).copy()
-        v.learn(P, exp["context"], exp["concepts"], ptea, stea)
+        v.learn(P, exp["context"], exp["concepts"], ptea, stea, a)
         return np.concatenate([v.person.W.ravel(), v.sit.W.ravel()])
 
     w0 = np.concatenate([base.person.W.ravel(), base.sit.W.ravel()])
@@ -66,27 +67,28 @@ def full_map_radius(npn, exp):
     return float(np.max(np.abs(np.linalg.eigvals(J))))
 
 
+def radius_job(name):
+    """人格 name の履歴の全経験で価値写像の半径を測る（max）、気分も含む写像の半径、n（v3.2: 人格ごとに並列化。計算は同じ）。"""
+    new = load_json("new_event.json")
+    if name == "fixed":       # ablation: fixed_teacher でも半径は 1 以下
+        nf = make(0, fixed_teacher=True); feed(nf, load_jsonl("K.jsonl"))
+        return {"fixed": value_map_radius(nf, new)}
+    n = make(0)
+    r = []
+    for e in load_jsonl(f"{name}.jsonl") + [new]:
+        r.append(value_map_radius(n, e))
+        n.experience(e)
+    m = make(0); feed(m, load_jsonl(f"{name}.jsonl"))
+    return {"max": max(r), "n_experiences": len(r), "full": full_map_radius(m, new)}
+
+
 class T6NoAmplification(unittest.TestCase):
     def test_a_spectral_radius_of_value_map(self):
-        new = load_json("new_event.json")
-        radii = {}
-        worst = 0.0
-        for name in ("R", "K", "X"):
-            n = make(0)
-            r = []
-            for e in load_jsonl(f"{name}.jsonl") + [new]:
-                r.append(value_map_radius(n, e))
-                n.experience(e)
-            radii[name] = {"max": max(r), "n_experiences": len(r)}
-            worst = max(worst, max(r))
-        # 気分も含む全体の写像（新しい経験）
-        full = {}
-        for name in ("R", "K", "X"):
-            n = make(0); feed(n, load_jsonl(f"{name}.jsonl"))
-            full[name] = full_map_radius(n, new)
-        # ablation: fixed_teacher でも半径は 1 以下
-        nf = make(0, fixed_teacher=True); feed(nf, load_jsonl("K.jsonl"))
-        fixed = value_map_radius(nf, new)
+        res = dict(zip(("R", "K", "X", "fixed"), pmap(radius_job, ("R", "K", "X", "fixed"))))
+        radii = {k: {"max": res[k]["max"], "n_experiences": res[k]["n_experiences"]} for k in "RKX"}
+        worst = max(res[k]["max"] for k in "RKX")
+        full = {k: res[k]["full"] for k in "RKX"}       # 気分も含む全体の写像（新しい経験）
+        fixed = res["fixed"]["fixed"]
         dump("T06a", {"value_map_radius": radii, "worst": worst, "W_and_mood_map_radius": full,
                       "fixed_teacher_radius": fixed})
         self.assertLessEqual(worst, 1 + 1e-6)
@@ -106,7 +108,8 @@ class T6NoAmplification(unittest.TestCase):
         probe = n.probe({"context": e["context"], "concepts": e["concepts"], "participants": e["participants"]})
         true_du = ap["du_weighted"]                          # v3.1: V_MF は a で重み付けた量。真の効用変化も a で重み付ける
         rel_err = abs(probe["V_MF"] - true_du) / abs(true_du)
-        diag_max = max(float(np.diag(n.value.person.S).max()), float(np.diag(n.value.sit.S).max()))
+        diag_max = max(float(n.value.person.S[:, np.arange(n.value.person.S.shape[1]), np.arange(n.value.person.S.shape[1])].max()),
+                       float(n.value.sit.S[:, np.arange(n.value.sit.S.shape[1]), np.arange(n.value.sit.S.shape[1])].max()))
         dump("T06b", {"V_MF": probe["V_MF"], "true_du": true_du, "relative_error": rel_err,
                       "max_abs_W": max_w, "max_diag_Sigma": diag_max, "h": [float(x) for x in n.h],
                       "mood": n.mood})

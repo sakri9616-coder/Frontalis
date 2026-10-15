@@ -1,9 +1,9 @@
-# frontalis-v3-lab: NPN 最小実装 v3.1
+# frontalis-v3-lab: NPN 最小実装 v3.2
 
 経験によって人格が形成される外部ニューラルネットワーク（NPN）の、**実際に動く最小実装**です。
 経験の入力 → 評価 → 学習 → 次の評価への反映、までを実行し、テストで検証します。
 
-- 仕様: [`SPEC.md`](SPEC.md)（v3.0。判定基準 T1〜T10）と [`SPEC-v3.1.md`](SPEC-v3.1.md)（v3.1 の差分。判定基準 U1〜U9）。どちらも実装前に固定
+- 仕様: [`SPEC.md`](SPEC.md)（v3.0。判定基準 T1〜T10）、[`SPEC-v3.1.md`](SPEC-v3.1.md)（v3.1 の差分。判定基準 U1〜U9）、[`SPEC-v3.2.md`](SPEC-v3.2.md)（v3.2 の差分。判定基準 W1〜W7）。いずれも実装前に固定
 - 設計の根拠: `docs/04-learning-mechanisms.md`（精度配分・階層型フレーム v3）
 - 結果: [`REPORT.md`](REPORT.md)　仕様からの変更の記録: [`CHANGELOG.md`](CHANGELOG.md)
 
@@ -39,6 +39,23 @@ v3.1 は、自己増幅を起こさずに、**経験が評価基準そのもの�
 | 1.8 | **確率的な経験史の生成器** | 乱数種 20 本が独立な標本になる（`data/make_histories.py`） |
 | 改訂 2 | **想起・再帰属**（オーケストレーター承認） | 責任 φ を経験の時点で凍結せず、K_r = 10 経験ごとに信念の帰属をやり直す（docs/04 第5節 手順7）。価値ネットの教師の分割は再帰属しない（非対称） |
 
+### v3.2 で変わったこと
+
+v3.1 への理念優先の再批評の判定は「限定つきで可」でした。期待・解釈・選択の軸では循環が動きますが、**評価基準（関心の重み a、条件づけ価値 C）が次の学習や行動を変える経路がない**ため、
+研究思想 §6 の中心仮説「学習の方向は、その経験を受け止める直前の評価状態によって変化する」が評価基準の軸では成り立っていませんでした。v3.2 はこの経路を作ります。
+
+| 節 | 変更 | 何が変わるか |
+| --- | --- | --- |
+| 1.1 | **a → 学習の精度** | 欲求 k の観測雑音を `R_k = R / a_k` にする。大事な欲求ほど精度高く・速く学ぶ。Σ は欲求ごと（形 (5, n, n)）。a の目標は \|Δu\|（外生）で W に依存しない（a → W の一方向だけ） |
+| 1.2 | **C → 予期 Q → 選択** | `Q = U_val + λ_CQ ΣC(手がかり)`、λ_CQ = 1。手がかり = 概念・参加者・申し出に付いている結果の型（`announced`）。「褒められた後に害を受けた」人生では、褒め言葉を伴う申し出を避ける |
+| 1.3 | **a の方向は実験条件** | `concern_direction`: `sensitize`（既定。揺さぶられた欲求ほど上がる）／ `habituate`（下がる）。どちらが人に近いかは主張しない |
+| 1.4 | **ヘッドの重みは予測性能で決まる** | `head_kind = "mixture"`（既定）: mlp・linear・knn1・none（一般の率）を、前向きの対数尤度の移動平均の softmax で混ぜる。NN は予測が良いときにだけ寄与する |
+| 1.5 | **ランダムな世界** | 人格の型を手で書かず、結果型ごとの確率を Beta(1, 3) から引く（`data/make_histories.py` の `random_world`） |
+
+v3.2 の追加は、3 つの切り替え（`no_precision_weighting`、`no_cq`、`head_kind="mlp"`）で完全に外せます（外すと v3.1 の数値に戻る）。
+**v3.2 の結果（REPORT.md、CHANGELOG の B・F 節）**: W1・W3・W5・W6 は合格、W2（C → 行動）は 0.133 で不合格（選ぶ時点の効果は 0.27 だが、40 回の閉ループで C が消去される）、
+W4 は (a) 0.521 で不合格・(b) 0.698 で合格。U8 は不合格のまま、事後に定義した U8′ は持続が合格で可塑性（m = 8）が不合格。W7: どの課題でも非パラメトリックな knn1 が最も予測が良く、MLP は勝たない。
+
 > この実装が確かめるのは学習の機構です。「人格らしい発言」ができるかは対象外で、LLM との接続も含みません。
 > **「人格が形成された」「循環が成立した」とは主張しません。** 何が確かめられ、何が確かめられていないかは REPORT.md を見てください。
 
@@ -61,8 +78,8 @@ frontalis-v3-lab/
     lexicon.json          手で意味を持たせた 8 次元ベクトル（供給源）
     make_histories.py     経験史の生成（固定の R/K/X と、確率的な生成器 generate_*）
     histories/            R, K, X（固定。デモ用）、T4_*, T7_*, T8_train、new_event.json、gen_*（生成器の見本）
-  tests/                  unittest（T1〜T10、U1〜U9、機構の単体検査）、results/ に数値、diagnostics_m_scale.py（診断）
-  examples/demo.py        3 人格が同じ新しい経験をどう評価し、何を学ぶか（v3.1 の機構つき）
+  tests/                  unittest（T1〜T10、U1〜U9、W1〜W7、U8′、機構の単体検査）、results/ に数値、diagnostics_*.py（診断）
+  examples/demo.py        3 人格が同じ新しい経験をどう評価し、何を学ぶか（v3.2 の機構つき: C が選択を変える、a が学習を変える）
 ```
 
 `npnv3/config.py` は SPEC の構成にない追加ファイルです（係数を 1 か所に集め、保存・復元の対象にするため）。
@@ -72,11 +89,11 @@ frontalis-v3-lab/
 `experience(exp)` は次の順に進みます（SPEC 第6節＋v3.1）。
 
 1. スキーマ検証。
-2. **予期**（結果を見る前）: 信念の予測 → `V_MB`, `V_MF`（a で重み付け）, `ω`, `Q`。曖昧な結果は、ここで信念により解釈の重みが決まる。
+2. **予期**（結果を見る前）: 信念の予測 → `V_MB`, `V_MF`（a で重み付け）, `ω`, `U_val`、**`Q = U_val + λ_CQ ΣC(手がかり)`**（v3.2）。曖昧な結果は、ここで信念により解釈の重みが決まる。
 3. `optional: true` なら、接近確率 `σ(4 (Q + 0.05))` で接近・回避を選ぶ。**回避したら、回避したことだけ台帳に記録して終わり**（学習しない。信念の計数は不変）。
 4. 欲求の変化 Δh、効用変化 Δu（5 欲求のベクトル）、結果ごとの寄与、感じた価値 `f`（生得＋条件づけ＋参照点）、驚き `δ`、感情。
 5. **信念の更新**: 責任 φ（人のせい／場面のせい）→ 計数、スコープの事前 π、型の大きさ、リプレイ緩衝 → 事前ヘッドの SGD（目標は観測そのもの）。**曖昧な結果の型は観測なし**（計数しない）。参加者が行為者の観測は記録に残り、**10 経験ごとに想起**（下）で帰属をやり直す。
-6. **価値の更新**: Δu を φ で人モデルと状況モデルに分け、それぞれカルマン更新。**条件づけ C を TD(0) で更新**（直前の事象の手がかりを、この事象の `r + γ C_frozen` へ）。
+6. **価値の更新**: Δu を φ で人モデルと状況モデルに分け、それぞれカルマン更新（**欲求 k の観測雑音は R/a_k**、a はこの経験を受け止める直前のもの。v3.2）。**条件づけ C を TD(0) で更新**（直前の事象の手がかりを、この事象の `r + γ C_frozen` へ）。
 7. **関心の重み a**、欲求の状態 `h`、気分 `m` の更新。
 8. 台帳に記録（経験 id、各特徴の ΔW、ΔC、a、φ、Δu、Q、f、δ）。
 
@@ -99,7 +116,8 @@ frontalis-v3-lab/
     {"type": "taught", "actor": "friendA", "magnitude": 0.6}
   ],
   "optional": false,
-  "session": "day-12"
+  "session": "day-12",
+  "announced": []
 }
 ```
 
@@ -108,7 +126,8 @@ frontalis-v3-lab/
   `{"interpretations": {"credit_taken": 0.5, "credit_shared": 0.5}, "actor": "friendA", "magnitude": 0.8}`
 - `session`（任意）: 文脈の連続。条件づけの TD は、同じ session（またはどちらも未指定）の連続する事象の間だけつなぎます。途切れたら次の価値を 0 とします。
 - `context`・`concepts`・参加者の `class` は、lexicon にない語でも受け付けます。**ゼロベクトルとして状態に登録し、警告を記録します**（結果の型と actor は未知ならエラー）。個体の `class` は途中で変えられません。
-- `optional: true` のとき、NPN が予期 Q に基づいて接近・回避を選びます。
+- `optional: true` のとき、NPN が予期 Q（C を含む）に基づいて接近・回避を選びます。
+- `announced`（任意、v3.2）: 申し出に前もって付いている結果の型のリスト（例: 褒め言葉を伴う申し出は `["praise"]`）。予期 Q の手がかり `type:praise` になる。結果そのものではない（結果は `outcomes` に書く）。
 - `outcomes` は空でもよい（何も起きなかった経験。欲求の状態が基準へ戻るだけ）。
 
 ### プローブ（学習しない評価）
@@ -120,7 +139,7 @@ frontalis-v3-lab/
 {"cue": "type:praise"}                                                       // 条件づけられた価値 C（v3.1）
 ```
 
-状況プローブは `Q, V_MB, V_MF, ω` と予測確率を、エンティティプローブは好悪 `like`（人モデルの予測を a で重み付けた合計）・`p_person`・`Q`・`conditioned`（C）を、
+状況プローブは `Q`（= `Q_val` + `C_Q`）、`V_MB, V_MF, ω`、人に帰属する部分 `Q_person`（`V_MF_person`・`V_MB_person` から。U8′）と予測確率を（`announced` も渡せる）、エンティティプローブは好悪 `like`（人モデルの予測を a で重み付けた合計）・`p_person`・`Q`・`conditioned`（C）を、
 概念プローブは `like` と `conditioned` を、手がかりプローブは `C` を返します。手がかりの名前は `concept:<x>`、`ind:<id>`、`cls:<c>`、`type:<結果型>`。
 
 ## 効果表 M（生得・固定）
@@ -167,8 +186,9 @@ M は NPN ごとに引数 `effect_table` で差し替えられます（U3 の頑
 - 個体 `p_ind = (κ_e m_cls + n1) / (κ_e + n)`、類 `m_cls = (κ_c prior_cls + Σ w_i r_i) / (κ_c + Σ w_i)`、`w_i = n_i / (n_i + κ_e)`。
   **類の有効標本数は個体の数で上限が決まる。** 一般 `m_gen` は、類の生の率 `Σ w_i r_i / Σ w_i` を重み `W_cls/(W_cls + κ_c)` で集計し、事前 Beta(1, 4) を `κ_g` 分加える。文脈の層も同じ形。`κ_c = κ_g = 4`（固定）。
 - **κ_e（v3.1。設計の改訂でオーケストレーター承認）**: 格子（0.3〜50 の対数 12 点）上の Beta–Binomial 周辺尤度の事後平均。類全体の値κ_c は全型をまとめた尤度、**型 k の値は log κ の事後 ∝ 型 k の尤度 × N(log κ_c, 1.0²)**（データの少ない型は類全体の値へ縮約）。正の計数が 1 つもない型は κ_c。個体が 2 人未満の類は κ_e = 2。文脈の層の κ_e は 2 のまま。`kappa_per_type=False` で類ごとに 1 つ（改訂前）。
-- **事前ヘッド（v3.1）**: `prior_cls = ρ_h · head + (1 − ρ_h) · m_gen`、`ρ_h = n_head/(n_head + 30)`、n_head は学習した参加者の観測数。ヘッドは 8+8 次元 → 16 tanh → 19 ロジット（`head_kind = "mlp"`）。
-  基線: `linear`（ロジスティック回帰）、`knn1`（既知の類のうち埋め込みが最も近い類の率）、`none`（`no_head=True` と同じ）。学習は直近 500 件のリプレイ緩衝から毎経験 4 ミニバッチ（各 16 件）、SGD 学習率 0.05、**目標は観測 y であり事後平均ではない**。
+- **事前ヘッド（v3.2、既定 `head_kind = "mixture"`）**: ヘッド h ∈ {mlp, linear, knn1, none（= 一般の率 `m_gen`）} ごとに、**新しい観測を見る前の予測の対数尤度**（その経験の参加者の観測されたセルの `y log p + (1−y) log(1−p)` の和）を移動平均（速さ max(1/(n+1), 0.05)）で記録する（前向き評価）。
+  類の事前は `prior_cls = Σ_h w_h · prior_h`、`w = softmax(移動平均 / 1)`（ベイズのモデル平均の簡約）。観測が 0 件のときは `m_gen`。NN は予測が実際に良いときにだけ寄与する。ヘッドは 8+8 次元 → 16 tanh → 19 ロジット（mlp）、ロジスティック回帰（linear）、`knn1`（既知の類のうち埋め込みが最も近い類の率。**自分自身を含む**）。
+- **事前ヘッド（単一ヘッド。v3.1 の基線）**: `head_kind = "mlp" | "linear" | "knn1" | "none"` では `prior_cls = ρ_h · head + (1 − ρ_h) · m_gen`、`ρ_h = n_head/(n_head + 30)`（`no_head=True` は none）。学習は直近 500 件のリプレイ緩衝から毎経験 4 ミニバッチ（各 16 件）、SGD 学習率 0.05、**目標は観測 y であり事後平均ではない**。
 - スコープ帰属: `φ_person ∝ π_{k,person} Bern(y; p_ind)`、`φ_ctx ∝ π_{k,ctx} Bern(y; p_ctx^person)`。計数は φ で重み付けして加え、π（Dirichlet(1,1)）の計数にも φ を加える。
   予測 `P(y_{e,k}=1) = π̄_person p_ind + π̄_ctx p_ctx^person`。
 - **想起・再帰属（設計の改訂 2）**: 参加者が行為者の観測（個体・文脈・型ごとの y・マスク・当時の φ）を記録として持つ（保存・復元に含む）。`reattribute_every = 10` 経験ごとに全記録を 1 回掃引する。
@@ -181,16 +201,21 @@ M は NPN ごとに引数 `effect_table` で差し替えられます（U3 の頑
 
 - 人モデル: 特徴 `people`(0.01) + `cls:<c>`(0.04) + `ind:<id>`(0.25) + 類の埋め込み 8 次元(各 0.02)。
   状況モデル: `world`(0.01) + `ctx:<c>`(0.1) + `concept:<x>`(各 0.1) + 概念埋め込みの平均 8 次元(各 0.02)。（括弧は事前分散）
-- カルマン更新（観測雑音 R = 0.01、欲求 5 つで共分散を共有）: `K = Σz / (zᵀΣz + R)`、`W += K (Δu − zᵀW)`、`Σ ← Σ − K zᵀΣ`、続いて関与した特徴の対角に過程雑音 q（ind 1e-4、cls・ctx・concept 2e-5、people・world・埋め込み 5e-6）。**教師は重みなしの Δu のまま**（a は読み出しだけに使う）。
+- カルマン更新（**v3.2: 欲求ごとの共分散 Σ_k と観測雑音 R_k = R / a_k**、R = 0.01）: `K_k = Σ_k z / (zᵀΣ_k z + R/a_k)`、`W_k += K_k (Δu_k − zᵀW_k)`、`Σ_k ← Σ_k − K_k zᵀΣ_k`、続いて関与した特徴の対角に過程雑音 q（ind 1e-4、cls・ctx・concept 2e-5、people・world・埋め込み 5e-6）。
+  **教師は重みなしの Δu のまま**（a は教師には入らず、精度 1/R_k と読み出しに使う）。a の下限は 1e-3。予測分散は `(1/5) Σ_k a_k² zᵀΣ_k z`（a = 1 かつ Σ が共通なら v3.1 の zᵀΣz と一致）。
+  **注意**: 新しい個体の事前分散（0.25）が R（0.01）よりずっと大きいので、W の変化に対する a の効果は小さい（W1 の a だけの入れ替えで 4%）。確信（事後分散）には 2 倍ほど効く。
 - 教師の分け方: 参加者 e には `Σ_{o: actor=e} φ_person(o) · contrib(o)`、状況には `Σ_{o: actor∈{self, world}} contrib(o) + Σ_{o: actor=参加者} φ_ctx(o) · contrib(o)`。人と状況の教師の和は事象の Δu に等しい。
 - **新しい個体は類の価値を継承する**（加法の階層。個体の偏差の事前平均は 0）。
-- **関心の重み a（v3.1）**: `a ← normalize( a + η_a (|Δu| / mean(|Δu|_run) − a) )`、η_a = 0.02、和は 5。`|Δu|` は生得の効用の変化の大きさ（外生）で、a の目標に価値ネットの出力は入らない。
-  人生で大きく揺さぶられた欲求ほど重くなる（正負を問わない感作。**この方向は設計上の仮説**）。`mean(|Δu|_run)` は全欲求の `|Δu|` の平均の移動平均（速さ 0.05。SPEC に値の指定がなく、実装時に決めた）。
+- **関心の重み a（v3.1。方向は v3.2 で実験条件）**: `a ← normalize( a + η_a (目標 − a) )`、η_a = 0.02、和は 5。`|Δu|` は生得の効用の変化の大きさ（外生）で、a の目標に価値ネットの出力は入らない。
+  `sensitize`（既定）: 目標 = `clip(|Δu_k| / run, 0, 5)`。人生で大きく揺さぶられた欲求ほど重くなる（正負を問わない感作）。`habituate`: 目標 = `clip(run / max(|Δu_k|, run/5), 0, 5)`。揺さぶられた欲求ほど軽くなる。**どちらが人に近いかは主張しない**（実験条件。主張は「a が経験から形成され、受け止め方と学習を変える」まで）。`mean(|Δu|_run)` は全欲求の `|Δu|` の平均の移動平均（速さ 0.05。SPEC に値の指定がなく、実装時に決めた）。
 - **条件づけられた価値 C（v3.1）**: 手がかり z = 事象の概念・参加者の個体と類・結果型（0/1）への線形の重み。事象 t+1 を見たとき、事象 t の手がかりを
   `y_t = r_{t+1} + γ C_frozen(z_{t+1})`、`C += α_C (y_t − C·z_t) z_t / (z_tᵀ z_t)` で更新（α_C = 0.1、γ = 0.6、`r = Σ_k a_k Δu_k`）。目標の r は C に依存せず、γ < 1 のブートストラップは縮小。
 - **MB 価値**: 信念の予測確率で結果の集合を 64 回サンプル（乱数は経験 id と設定の種から作る）。各サンプルで `Σ_k a_k (u_k(h + Δh) − u_k(h))` を平均。
   分散 `σ²_MB = Var_サンプル / 64 + Σ_{e,k} g_k² Var_k(e) + Σ_k g_k² Var_k(文脈)`。`Var` は個体・類・一般・文脈・世界の Beta 事後分散 `m(1−m)/(κ + n_eff + 1)` の和、`g_k` は型 k の結果が平均の大きさで 1 回起きたときの（a で重み付けた）効用変化（デルタ法で確率の不確実性を価値の尺度に直す）。
-- **調停**: `ω = σ²_MB / (σ²_MB + σ²_MF)`、`Q = U_val = ω V_MF + (1 − ω) V_MB`。`σ²_MF` は `zᵀΣz` の和。確信の高い方に重みが寄る。
+- **調停**: `ω = σ²_MB / (σ²_MB + σ²_MF)`、`U_val = ω V_MF + (1 − ω) V_MB`。`σ²_MF` は上の予測分散の和。確信の高い方に重みが寄る。
+- **予期 Q（v3.2）**: `Q = U_val + λ_CQ Σ_{x∈手がかり(s)} C(x)`、λ_CQ = 1。手がかり = 概念・参加者の個体と類・`announced` の型（選択の前に分かるものだけ）。接近確率は `σ(4 (Q + 0.05))`。
+  ループ: C → Q → 選択 → 経験 → C。標本の偏りによる有界な正帰還（熱いストーブ: 避けると C を訂正する経験が来ない）。申し出を受けて何も起きなければ C は 0 へ戻る（消去）。U5・U6・W6 で有界を検査している。
+  Q に人に帰属する部分 `Q_person = ω V_MF,person + (1 − ω) V_MB,person`（V_MB,person は同じサンプルで「全体の価値 − 自分・世界が起こす分だけの価値」）を読み出せる（U8′）。
 - **感じた価値（読み出し。目標にはしない）**: `f = tanh( ((Σ_k a_k Δu_k) + λ_C ΣC + η_ref (Σ_k a_k Δu_k − Q)) / 0.5 + 0.3 m )`、λ_C = 1、η_ref = 0.5。
   予期との差の項は、主観的な幸福が報酬だけでなく期待と予測誤差に依存することに基づく（Rutledge et al. 2014, PNAS 111(33), 12252–12257。文献の照合は未了）。
   驚き `δ = f − tanh(Q / 0.5)`、気分 `m ← 0.8 m + 0.2 δ`。
@@ -230,7 +255,7 @@ npn.save("state_dir")                              # state.json + arrays.npz（�
 npn = NPN.load("state_dir")                        # 改ざん・版違いは例外。lexicon=... で供給源を替えられる
 ```
 
-確率的な経験史（SPEC-v3.1 1.8）:
+確率的な経験史（SPEC-v3.1 1.8、v3.2 1.5）:
 
 ```python
 import sys; sys.path.insert(0, "data")
@@ -238,12 +263,16 @@ import make_histories as mh
 history = mh.generate_history("K", seed=7, n=36)          # 型 R / K / X の世界から、種ごとに別の履歴
 offers = mh.generate_offers("K", seed=7, n=40)            # optional な申し出
 h1 = mh.generate_praise_history("H1", seed=7)              # 褒められた後に害（H2: 支え）
+po = mh.generate_praise_offers(seed=7, n=40)               # 褒め言葉を伴う申し出（announced = ["praise"]）
+w = mh.random_world(7)                                     # ランダムな世界（確率は Beta(1, 3)）
+rh = mh.generate_random_history(7, n=60)
 ```
 
 アブレーション（テスト用、既定はすべて OFF）: `flat_value`、`fixed_teacher`、`no_head`（= `head_kind="none"`）、`no_scope`、
 **`no_concern`**（a = 1 固定）、**`no_conditioning`**（C を使わない）、**`no_reference`**（η_ref = 0）、**`no_interpretation`**（曖昧な結果を LLM の確率のまま混合）、**`no_reattribution`**（想起・再帰属を行わない。`reattribute_every=0` でも同じ）。
-そのほか `head_kind="mlp"|"linear"|"knn1"|"none"`、`estimate_kappa=False`、`interpretation_counts=True`（実験条件）、`record_ledger=False`（長い履歴の検査用）。
-`appraise` / `experience` の戻り値の主なキー: `Q, V_MB, V_MF, omega, sigma2_MB, sigma2_MF, f, f_parts, delta, mood, du, du_weighted, a, dh, contributions, phi, interpretations, teachers, emotions, cues, warnings`（`experience` のみ `value_change`, `mood_after`）。
+**v3.2**: `no_precision_weighting`（R_k = R に戻す）、`no_cq`（C を Q に入れない）、`concern_direction="habituate"`（実験条件）、`lambda_cq`。
+そのほか `head_kind="mixture"（既定）|"mlp"|"linear"|"knn1"|"none"`、`estimate_kappa=False`、`interpretation_counts=True`（実験条件）、`record_ledger=False`（長い履歴の検査用）。
+`appraise` / `experience` の戻り値の主なキー: `Q, Q_val, C_Q, Q_person, cues_Q, V_MB, V_MF, omega, sigma2_MB, sigma2_MF, f, f_parts, delta, mood, du, du_weighted, a, dh, contributions, phi, interpretations, teachers, emotions, cues, warnings`（`experience` のみ `value_change`, `mood_after`）。
 
 ### CLI
 
@@ -261,25 +290,30 @@ python3 examples/demo.py
 ```
 
 3 人格（R 協働に救われた、K 手柄を取られた、X 探索者）が同じ新しい経験を、評価の内訳（Q, V_MB, V_MF, ω, f, δ, Δu, 帰属 φ, 感情）とともにどう評価し、何を学ぶかを表示します。
-さらに、**h と m を揃えても受け止め方が人格で違うこと**、**`praise` の価値が随伴で形成されること**、**曖昧な出来事の解釈が人格で違うこと**、保存→復元→継続を見せます。
+さらに、**h と m を揃えても受け止め方が人格で違うこと**、**`praise` の価値が随伴で形成されること**、**褒められた後に害を受けた人格が、褒め言葉を伴う申し出を避けること**（4b。C を切ると差が消える）、
+**関心の重み a が違うと同じ経験から学ぶ量と確信が変わること**（4c。sensitize / habituate の比較つき）、事前ヘッドの重み（4d）、**曖昧な出来事の解釈が人格で違うこと**、保存→復元→継続を見せます。
 
 ## テストの実行
 
 ```
-python3 -m unittest discover -s tests -v          # 全体で約 4.2 分（numpy のみ。pytest は使わない。種ごとの計算は 4 プロセスで並列）
+python3 -m unittest discover -s tests -v          # 全体で約 5.5 分（146 件。numpy のみ。pytest は使わない。種ごとの計算は 4 プロセスで並列）
 python3 -m unittest discover -s tests -p "test_u04*.py" -v
 python3 tests/diagnostics_m_scale.py              # 診断（T2(c) の原因の切り分け。テストではない）
 python3 tests/diagnostics_u8.py                   # 診断（U8 の持続が不合格になった原因の切り分け）
 python3 tests/diagnostics_u8_scope.py             # 診断（U8: 信念の人の部分と文脈の部分に分ける）
 python3 tests/diagnostics_u8_types.py             # 診断（U8: 結果の型ごとの信念と価値への寄与）
 python3 tests/diagnostics_head.py                 # 診断（R/K/X でヘッドが評価と帰属を動かしているか）
+python3 tests/diagnostics_v32_ablations.py        # 診断（v3.2 の切り替えを外すと v3.1 に戻るか、1 つずつ外す、habituate）
 python3 data/make_histories.py                    # 経験史を再生成（決定的）
 ```
 
 - **v3.0 の判定基準 T1〜T10**: `tests/test_t01_*.py` 〜 `test_t10_*.py`（固定の履歴。閾値は SPEC 第8節のまま）。T2(a) は記録用（状態を測っていた）、T2(c) は expectedFailure。
 - **v3.1 の判定基準 U1〜U9**: `tests/test_u01_*.py` 〜 `test_u09_*.py`。種 0〜19 でそれぞれ別の経験史を生成する。測り方の細部は各ファイルの冒頭に実装前に書いた。
-- 機構の単体検査: `test_v31_mechanisms.py`（a・C・参照点・解釈・埋め込み・κ_e・生成器・ヘッドの種類）、`test_recall.py`（想起の不変量・機構・自己増幅）、`test_innate.py`、`test_schema.py`、`test_ledger_and_purity.py`、`test_structure.py`、`test_cli.py`。
-- 測った数値は `tests/results/*.json` に書かれます。`expectedFailure` の 3 件は「既知の制約」の記録です（REPORT 参照）。
+- **v3.2 の判定基準 W1〜W7**: `test_w01_*.py`〜`test_w04_*.py`、`test_w07_*.py`。W5 は `test_u03_*.py`、W6 は `test_u06_*.py`（U6 と同じ実行を共有）。
+  **U8′**（事後に定義した基準。オーケストレーターが定義、U8 の不合格を見た後）: `test_u08b_*.py`。U8 は不合格のまま残している。
+- 機構の単体検査: `test_v32_mechanisms.py`（欲求ごとの Σ・C → Q・announced・方向・ヘッドの混合・v3.1 への復帰）、`test_v31_mechanisms.py`（a・C・参照点・解釈・埋め込み・κ_e・生成器・ヘッドの種類）、`test_recall.py`（想起の不変量・機構・自己増幅）、`test_innate.py`、`test_schema.py`、`test_ledger_and_purity.py`、`test_structure.py`、`test_cli.py`。
+- 測った数値は `tests/results/*.json` に書かれます。`expectedFailure` の 3 件（T1 の状態の結合、T2(c)、T9 の元の版）は「既知の制約」の記録です。
+  **不合格のまま残してある 4 件**: U8、U8′（可塑性 m = 8）、W2、W4(a)。原因は CHANGELOG の B 節。
 
 ## 実装時の解釈（SPEC に明記がない点）
 
@@ -308,4 +342,6 @@ docs/04 の全体フレームのうち、この最小実装は次を**含みま�
 - **LLM 抽出の接続**（入力は構造化 JSON を直接与える）、凍結した文埋め込み（手作りの 8 次元で代用）
 - 個体の類を途中で変えること（関係の発達）、状態サイズ・計算量の最適化（新しい個体ごとに特徴が増え、Σ は密行列）、保存の原子性と真正性（ハッシュは完全性だけ）
 - 感情は固定の 6 語の読み出しで、学習や選択に因果的な役割を持たない（気分 m は f にだけ入る）
-- 感じた価値 f、驚き δ、感情は、どの学習の目標にも入らない（設計）。評価が更新に戻る経路は、接近・回避（Q）、解釈（信念 → 効果の混合）、関心の重み a（|Δu|）、条件づけ C（r = a·Δu）に限られる
+- 感じた価値 f、驚き δ、感情は、どの学習の目標にも入らない（設計）。評価が更新に戻る経路は、接近・回避（Q。v3.2 で C を含む）、解釈（信念 → 効果の混合）、関心の重み a（|Δu|。v3.2 で学習の精度 R/a_k にも）、条件づけ C（r = a·Δu）に限られる
+- **v3.2 の限界**: a → 精度の経路の効果は小さい（R が新しい個体の事前分散よりずっと小さい）。C の消去が速く（申し出を受けると 40 回で半減）、W2 が不合格。knn1 は自分の類を含むので、データのある類では縮約のない類の率になる（leave-class-out は未検討）。
+  ヘッドの重みは「どれが勝つか」の報告で、MLP は勝たなかった（W7）。ランダムな世界の用量反応は、曖昧な出来事の候補が両方ランダムなので、credit_taken の率だけでは相関が上がらない（W4(a)）。a の方向（sensitize / habituate）のどちらが人に近いかは未確認

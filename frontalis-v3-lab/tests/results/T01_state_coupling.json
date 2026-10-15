@@ -1,20 +1,20 @@
 {
  "situation_Q": {
-  "related_mean": 0.33034583032237,
-  "unrelated_mean": 0.051379733992970245,
-  "ratio": 6.429496703263738,
+  "related_mean": 0.34301016634609566,
+  "unrelated_mean": 0.048199922349196865,
+  "ratio": 7.116404957275021,
   "seeds_passing": 0
  },
  "entity_Q": {
-  "related_mean": 0.18762048886728827,
-  "unrelated_mean": 0.037562232912276415,
-  "ratio": 4.994923739104139,
+  "related_mean": 0.2088509124103591,
+  "unrelated_mean": 0.03793877976811184,
+  "ratio": 5.504945432797016,
   "seeds_passing": 0
  },
  "entity_like": {
-  "related_mean": 0.16239341127303303,
-  "unrelated_mean": 0.00024229683666326802,
-  "ratio": 670.2250574518199,
+  "related_mean": 0.22626239749496618,
+  "unrelated_mean": 0.0003885181373175617,
+  "ratio": 582.3728051852232,
   "seeds_passing": 20
  }
 }

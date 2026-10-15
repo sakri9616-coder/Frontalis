@@ -1,12 +1,13 @@
 """統合: experience() / appraise() / probe() / save() / load()。
 
-experience(exp) の順序（SPEC 6、v3.1 で拡張）
+experience(exp) の順序（SPEC 6、v3.1・v3.2 で拡張）
   1. schema 検証
-  2. 予期: 信念の予測 → V_MB, V_MF, ω, Q（結果を見る前）。曖昧な結果は、信念で解釈の重みを決める（1.4）
+  2. 予期: 信念の予測 → V_MB, V_MF, ω, U_val、Q = U_val + λ_CQ ΣC(手がかり)（結果を見る前。v3.2 1.2）。
+     曖昧な結果は、信念で解釈の重みを決める（1.4）
   3. optional なら接近・回避を選ぶ。回避なら記録して終了
   4. Δh, Δu（ベクトル）, 寄与の分解, 感じた価値 f（a・C・参照点、1.3）, δ, 感情
   5. 信念の更新（責任 φ → 計数、π、型の大きさ、リプレイ緩衝 → 事前ヘッドの SGD）。曖昧な型は計数しない（既定）
-  6. 価値の更新（φ で教師を分け、人モデル・状況モデルのカルマン）。条件づけ C の TD(0)（1.2）
+  6. 価値の更新（φ で教師を分け、人モデル・状況モデルのカルマン。欲求 k の観測雑音は R/a_k、v3.2 1.1）。条件づけ C の TD(0)（1.2）
   7. 欲求の関心の重み a（1.1）、欲求の状態 h、気分 m の更新
   8. 台帳に記録
 """
@@ -29,7 +30,7 @@ from .lexicon import EmbeddingStore, Lexicon
 from .mlp import sigmoid
 from .schema import validate_experience, validate_probe
 
-SCHEMA_VERSION = 3          # v3.0 は 1、v3.1 は 2（a, C, 所有する埋め込み, 効果表）。改訂 2 で観測の記録（想起）が加わった
+SCHEMA_VERSION = 4          # v3.0 は 1、v3.1 は 2（a, C, 所有する埋め込み, 効果表）。改訂 2 で観測の記録（想起）、v3.2 で欲求ごとの Σ とヘッドの対数尤度が加わった(3 → 4)
 STATE_FILE = "state.json"
 ARRAY_FILE = "arrays.npz"
 
@@ -47,6 +48,9 @@ class StateVersionError(ValueError):
 # ----------------------------------------------------------------------
 def _py(x: Any) -> Any:
     """numpy の値を JSON 化できる Python の値に直す（再帰）。"""
+    t = type(x)
+    if t is float or t is int or t is str or t is bool or x is None:       # 速い経路（呼び出しが多い）
+        return x
     if isinstance(x, np.ndarray):
         return [_py(v) for v in x.tolist()]
     if isinstance(x, (np.floating,)):
@@ -92,7 +96,7 @@ def _dedupe(xs: List[str]) -> List[str]:
 
 # ----------------------------------------------------------------------
 class NPN:
-    """経験で人格が形成される外部ニューラルネットワーク（最小実装 v3.1）。"""
+    """経験で人格が形成される外部ニューラルネットワーク（最小実装 v3.2）。"""
 
     def __init__(self, seed: int = 0, lexicon: Optional[Lexicon] = None, config: Optional[Config] = None,
                  effect_table: Optional[np.ndarray] = None, **overrides: Any):
@@ -146,7 +150,11 @@ class NPN:
         pred = self.belief.predict(e["context"], P)
         mf = self.value.mf(P, e["context"], e["concepts"], a)
         mb = V.model_based(pred, self.h, self.belief.mag, cfg, e["id"], self.M, a)
-        omega, Q = V.arbitrate(mf["V_MF"], mf["var_MF"], mb["V_MB"], mb["var_MB"])
+        omega, Q_val = V.arbitrate(mf["V_MF"], mf["var_MF"], mb["V_MB"], mb["var_MB"])
+        cues_q = self._cues_q(e["concepts"], P, e["announced"])
+        C_Q = self._c_q(cues_q)
+        Q = Q_val + C_Q
+        Q_person = float(omega * mf["V_MF_person"] + (1.0 - omega) * mb["V_MB_person"])
         # 結果の解釈の重み（曖昧な結果は信念で決める）
         W_out = np.zeros((n_o, N_TYPES))
         ambiguous = [False] * n_o
@@ -240,7 +248,8 @@ class NPN:
                        for i, o in enumerate(outs) if ambiguous[i]]
         ap: Dict[str, Any] = {
             "kind": "experience", "id": e["id"], "context": e["context"],
-            "Q": float(Q), "V_MB": mb["V_MB"], "V_MF": mf["V_MF"], "omega": omega,
+            "Q": float(Q), "Q_val": float(Q_val), "C_Q": float(C_Q), "Q_person": Q_person, "cues_Q": cues_q,
+            "V_MB": mb["V_MB"], "V_MF": mf["V_MF"], "omega": omega,
             "sigma2_MB": mb["var_MB"], "sigma2_MF": mf["var_MF"],
             "dh": _need_dict(dh), "du": _need_dict(du), "du_total": float(du.sum()), "du_weighted": inn,
             "a": a.copy(), "contributions": contrib_list, "phi": phi_list, "interpretations": interp_list,
@@ -253,6 +262,19 @@ class NPN:
                      "sw_mask": sw_mask, "phi": phi, "dh": dh, "du": du, "contrib": contrib,
                      "person_teachers": person_teachers, "sit_teacher": sit_teacher, "cues": cues, "inn": inn}
         return ap, internals
+
+    @staticmethod
+    def _cues_q(concepts: List[str], participants: List[Dict[str, str]], announced: List[str]) -> List[str]:
+        """選択の前に分かる手がかり: 概念、参加者の個体と類、申し出に付いている結果の型（announced）。"""
+        return _dedupe([f"concept:{c}" for c in concepts]
+                       + [x for p in participants for x in (f"ind:{p['id']}", f"cls:{p['class']}")]
+                       + [f"type:{t}" for t in announced])
+
+    def _c_q(self, cues: List[str]) -> float:
+        """Q に入る条件づけられた価値 λ_CQ ΣC(手がかり)。no_conditioning / no_cq では 0。"""
+        if self.cfg.no_conditioning or self.cfg.no_cq:
+            return 0.0
+        return self.cfg.lambda_cq * self.cond.value(cues)
 
     def _p_approach(self, Q: float) -> float:
         return float(sigmoid(np.array([self.cfg.beta_choice * (Q + self.cfg.explore_bonus)]))[0])
@@ -292,7 +314,7 @@ class NPN:
             if not approached:
                 if cfg.record_ledger:
                     self.ledger.add({"kind": "avoid", "id": e["id"], "context": e["context"],
-                                     "Q": float(ap["Q"]), "p_approach": p_app})
+                                     "Q": float(ap["Q"]), "C_Q": float(ap["C_Q"]), "p_approach": p_app})
                 self.n_avoided += 1
                 for key in ("f", "f_parts", "delta", "du", "du_total", "du_weighted", "dh", "contributions", "phi",
                             "teachers", "emotions", "interpretations"):
@@ -315,7 +337,7 @@ class NPN:
         # 6. 価値の更新
         a = self.concern.a.copy()
         mf_before = it["mf"]
-        lr = self.value.learn(P, e["context"], e["concepts"], it["person_teachers"], it["sit_teacher"])
+        lr = self.value.learn(P, e["context"], e["concepts"], it["person_teachers"], it["sit_teacher"], a)
         mf_after = self.value.mf(P, e["context"], e["concepts"], a)
         # 6b. 条件づけ C の TD(0): 直前の事象の手がかりを、この事象の r + γ C_frozen で更新する
         dC: Dict[str, float] = {}
@@ -359,7 +381,7 @@ class NPN:
         if cfg.record_ledger:
             self.ledger.add({
                 "kind": "experience", "id": e["id"], "context": e["context"],
-                "Q": float(ap["Q"]), "f": ap["f"], "delta": ap["delta"],
+                "Q": float(ap["Q"]), "C_Q": float(ap["C_Q"]), "f": ap["f"], "delta": ap["delta"],
                 "du": [float(x) for x in it["du"]], "dh": [float(x) for x in it["dh"]],
                 "phi": [[x["participant"], x["type"], x["phi_person"]] for x in ap["phi"]],
                 "mood": [float(mood_before), float(self.mood)],
@@ -383,8 +405,13 @@ class NPN:
             pred = self.belief.predict(q["context"], q["participants"])
             mf = self.value.mf(q["participants"], q["context"], q["concepts"], a)
             mb = V.model_based(pred, self.h, self.belief.mag, cfg, probe_key(q), self.M, a)
-            omega, Q = V.arbitrate(mf["V_MF"], mf["var_MF"], mb["V_MB"], mb["var_MB"])
-            out = {"kind": kind, "Q": Q, "V_MB": mb["V_MB"], "V_MF": mf["V_MF"], "omega": omega,
+            omega, Q_val = V.arbitrate(mf["V_MF"], mf["var_MF"], mb["V_MB"], mb["var_MB"])
+            cues_q = self._cues_q(q["concepts"], q["participants"], q["announced"])
+            C_Q = self._c_q(cues_q)
+            out = {"kind": kind, "Q": Q_val + C_Q, "Q_val": Q_val, "C_Q": C_Q,
+                   "V_MB": mb["V_MB"], "V_MF": mf["V_MF"], "omega": omega,
+                   "V_MF_person": mf["V_MF_person"], "V_MB_person": mb["V_MB_person"],
+                   "Q_person": float(omega * mf["V_MF_person"] + (1.0 - omega) * mb["V_MB_person"]),
                    "sigma2_MB": mb["var_MB"], "sigma2_MF": mf["var_MF"],
                    "persons": [{"id": x["id"], "value": x["value"], "known": x["known"]} for x in mf["persons"]],
                    "situation_value": mf["situation"]["value"],
@@ -400,10 +427,11 @@ class NPN:
             pp = pred.p_person[0]
             V_MB = float((g * pp).sum())
             var_MB = float(((g ** 2) * (pred.var_person[0] + pp * (1 - pp) / cfg.mc_samples)).sum())
-            omega, Q = V.arbitrate(like, var_mf, V_MB, var_MB)
+            omega, Q_val = V.arbitrate(like, var_mf, V_MB, var_MB)
+            C_Q = self._c_q([f"ind:{q['entity']}", f"cls:{q['class']}"])
             out = {"kind": kind, "entity": q["entity"], "class": q["class"], "context": q["context"],
                    "like": like, "like_by_need": _need_dict(pred5), "known": known,
-                   "V_MF": like, "V_MB": V_MB, "omega": omega, "Q": Q,
+                   "V_MF": like, "V_MB": V_MB, "omega": omega, "Q": Q_val + C_Q, "Q_val": Q_val, "C_Q": C_Q,
                    "sigma2_MF": var_mf, "sigma2_MB": var_MB,
                    "conditioned": self.cond.value([f"ind:{q['entity']}", f"cls:{q['class']}"]),
                    "p_person": {t: float(pp[k]) for k, t in enumerate(OUTCOME_TYPES)},

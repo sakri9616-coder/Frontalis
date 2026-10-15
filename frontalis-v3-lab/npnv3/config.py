@@ -53,6 +53,13 @@ class Config:
     eta_a: float = 0.02
     a_run_rate: float = 0.05      # |Δu| の移動平均の速さ（SPEC に値の指定なし）
 
+    # --- v3.2: 関心の重みの方向（1.3）と、評価基準が学習・行動を変える経路（1.1, 1.2）---
+    concern_direction: str = "sensitize"   # "sensitize": 大きく揺さぶられた欲求ほど重みが上がる / "habituate": 下がる（実験条件）
+    habituate_floor: float = 5.0           # habituate の目標 = run / max(|Δu_k|, run / 床)。床 = N_NEEDS で感作の上限と対称
+    lambda_cq: float = 1.0                 # Q = U_val + λ_CQ ΣC(手がかり)（1.2）
+    no_precision_weighting: bool = False   # アブレーション: 観測雑音を R_k = R / a_k にしない（v3.1 の R に戻す）
+    no_cq: bool = False                    # アブレーション: C を Q に入れない（v3.1 の Q）
+
     # --- v3.1: 条件づけられた価値 C（1.2）---
     alpha_c: float = 0.1
     gamma_c: float = 0.6
@@ -62,8 +69,10 @@ class Config:
     eta_ref: float = 0.5
 
     # --- v3.1: ニューラル事前ヘッド（1.5）---
-    head_kind: str = "mlp"        # "mlp" | "linear" | "knn1" | "none"
-    rho_scale: float = 30.0       # ρ_h = n_head / (n_head + 30)
+    head_kind: str = "mixture"    # v3.2 の既定は "mixture"。単一ヘッドは "mlp" | "linear" | "knn1" | "none"
+    rho_scale: float = 30.0       # 単一ヘッドの ρ_h = n_head / (n_head + 30)（mixture では使わない）
+    head_ll_rate: float = 0.05    # v3.2 1.4: 前向きの対数尤度の移動平均の速さ（max(1/(n+1), 率)）
+    head_temperature: float = 1.0 # softmax の温度（SPEC-v3.2: 1）
 
     # --- v3.1: 類の集中度 κ_e の推定（1.7）---
     kappa_grid_lo: float = 0.3
@@ -109,8 +118,10 @@ class Config:
     def __post_init__(self) -> None:
         if self.no_head:
             self.head_kind = "none"
-        if self.head_kind not in ("mlp", "linear", "knn1", "none"):
+        if self.head_kind not in ("mixture", "mlp", "linear", "knn1", "none"):
             raise ValueError(f"head_kind が不正です: {self.head_kind!r}")
+        if self.concern_direction not in ("sensitize", "habituate"):
+            raise ValueError(f"concern_direction が不正です: {self.concern_direction!r}")
 
     def to_dict(self) -> Dict[str, Any]:
         return dataclasses.asdict(self)

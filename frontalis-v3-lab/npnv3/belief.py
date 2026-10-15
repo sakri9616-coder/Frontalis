@@ -20,6 +20,12 @@ v3.1 の変更
       データの少ない型は、類全体の κ（全型をまとめた周辺尤度）へ縮約する: 型ごとの log κ の事後 ∝ 型の周辺尤度 × N(log κ_類, σ²)。
   1.4 曖昧な結果の型は観測なし（マスク）: 解釈が信念を自己訓練するループを作らない。
 
+v3.2 の変更（SPEC-v3.2 1.4）: 事前ヘッドの重みは予測性能で決める
+  head_kind = "mixture"（既定）: ヘッド h ∈ {mlp, linear, knn1, none（= 一般の率 m_gen）} ごとに、新しい観測を見る前の予測の対数尤度
+  （参加者の観測 1 件 = 観測されたセルの対数尤度の和）を移動平均で記録する（前向き評価）。類の事前は、各ヘッドの予測を
+  softmax(移動平均した対数尤度 / 温度 1) で重み付けて混ぜる。ベイズのモデル平均の簡約。NN は、実際に予測が良いときにだけ寄与する。
+  観測がまだ 0 件のとき（どのヘッドにも実績がない）は m_gen。単一ヘッド（mlp / linear / knn1 / none）は v3.1 の ρ_h の混合のまま（基線）。
+
 設計の改訂 2（オーケストレーター承認）: 想起・再帰属（docs/04 第5節 手順 7）
   参加者が行為者の観測（個体, 文脈, 型ごとの y・マスク・割り当てた φ）を記録として保持する。K_r = 10 経験ごとに、全記録を 1 回掃引する:
   各観測の現在の寄与を計数から引き（retract）、今の信念（π と単位の率）で φ を計算し直し、足し直す（reassign）。オンライン EM の 1 ステップ。
@@ -39,6 +45,7 @@ from .mlp import MLP, LogReg
 
 _P_MIN = 1e-4
 _P_MAX = 1.0 - 1e-4
+HEAD_NAMES = ("mlp", "linear", "knn1", "none")     # v3.2 mixture のヘッド（none = 一般の率）
 
 
 def _logit(p: float) -> float:
@@ -140,7 +147,10 @@ class BeliefNet:
         self.mag_n = np.zeros(K)
         self.n_obs = 0                # ヘッドの学習標本数 n_head（参加者の観測の総数）
         self.prior_mean = cfg.prior_a / (cfg.prior_a + cfg.prior_b)
-        self.head: Optional[Union[MLP, LogReg]] = None
+        self.head: Optional[Union[MLP, LogReg]] = None       # 主たる学習ヘッド（単一ヘッドの種類ならそれ、mixture なら MLP）
+        self.heads: Dict[str, Union[MLP, LogReg]] = {}       # 学習するヘッド（名前 → 実体）
+        self.ll_ema = np.zeros(len(HEAD_NAMES))              # v3.2: ヘッドごとの前向き対数尤度の移動平均
+        self.ll_cnt = 0                                      # 移動平均に入れた経験の数（参加者のいる経験）
         self.rb_x = np.zeros((cfg.replay_size, 2 * EMB_DIM))
         self.rb_y = np.zeros((cfg.replay_size, K))
         self.rb_m = np.ones((cfg.replay_size, K))
@@ -154,14 +164,16 @@ class BeliefNet:
         self.rec_m = np.zeros((0, K))
         self.rec_phi = np.zeros((0, K))
         self._kcache: Dict[str, Any] = {}          # κ_e の記憶（純粋な関数の記憶。状態ではない）
+        self._agg_cache: Optional[Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]] = None   # 類の集計の記憶（同上。計数が変わるたびに捨てる）
         self._grid = np.exp(np.linspace(np.log(cfg.kappa_grid_lo), np.log(cfg.kappa_grid_hi), cfg.kappa_grid_n))
         bias = np.full(K, _logit(self.prior_mean))
-        if cfg.head_kind == "mlp":
+        if cfg.head_kind in ("mixture", "mlp"):
             if rng is None:
                 raise ValueError("ヘッドの初期化には乱数が必要です")
-            self.head = MLP(2 * EMB_DIM, cfg.head_hidden, K, rng, out_bias=bias)
-        elif cfg.head_kind == "linear":
-            self.head = LogReg(2 * EMB_DIM, K, out_bias=bias)
+            self.heads["mlp"] = MLP(2 * EMB_DIM, cfg.head_hidden, K, rng, out_bias=bias)
+        if cfg.head_kind in ("mixture", "linear"):
+            self.heads["linear"] = LogReg(2 * EMB_DIM, K, out_bias=bias)
+        self.head = self.heads.get("mlp", self.heads.get("linear"))
 
     # ------------------------------------------------------------------ 登録
     def _add_individual(self, pid: str, cls: str) -> int:
@@ -189,10 +201,29 @@ class BeliefNet:
             raise ValueError(f"個体 {pid!r} の類が以前（{self.ind_cls[i]!r}）と異なります: {cls!r}")
 
     # ------------------------------------------------------------------ ヘッド
+    def head_weights(self) -> np.ndarray:
+        """mixture のヘッドの重み（HEAD_NAMES の順）= softmax(前向き対数尤度の移動平均 / 温度)。観測が 0 件なら none に全部。
+        単一ヘッドの種類では、そのヘッドへの one-hot（none は none へ。ρ_h による一般の率との混合は rho() 側）。"""
+        names = HEAD_NAMES
+        if self.cfg.head_kind != "mixture":
+            return np.array([1.0 if nm == self.cfg.head_kind else 0.0 for nm in names])
+        if self.n_obs == 0:
+            return np.array([1.0 if nm == "none" else 0.0 for nm in names])
+        z = self.ll_ema / self.cfg.head_temperature
+        e = np.exp(z - z.max())
+        return e / e.sum()
+
+    def head_weights_dict(self) -> Dict[str, float]:
+        return {nm: float(w) for nm, w in zip(HEAD_NAMES, self.head_weights())}
+
     def rho(self) -> float:
-        """ヘッドの混合の重み ρ_h = n_head / (n_head + 30)。head_kind = none なら 0。"""
-        if self.cfg.head_kind == "none":
+        """事前に対するヘッドの寄与。単一ヘッド: ρ_h = n_head / (n_head + 30)（none なら 0）。
+        mixture: 学習するヘッド・近傍ヘッドの重みの和（none の重みを除く）。観測が 0 件なら 0。"""
+        kind = self.cfg.head_kind
+        if kind == "none" or self.n_obs == 0:
             return 0.0
+        if kind == "mixture":
+            return float(1.0 - self.head_weights()[HEAD_NAMES.index("none")])
         return self.n_obs / (self.n_obs + self.cfg.rho_scale)
 
     def head_trained(self) -> bool:
@@ -227,7 +258,12 @@ class BeliefNet:
         return self._kappas(cls, [i for i, c in enumerate(self.ind_cls) if c == cls])[1]
 
     def _class_agg(self) -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
-        """類ごとの (W = Σ w_i, WR = Σ w_i r_i, その類の型ごとの κ_e)。"""
+        """類ごとの (W = Σ w_i, WR = Σ w_i r_i, その類の型ごとの κ_e)。計数が変わるまで同じ値なので記憶する（純粋な関数の記憶。状態ではない）。"""
+        if self._agg_cache is None:
+            self._agg_cache = self._class_agg_compute()
+        return self._agg_cache
+
+    def _class_agg_compute(self) -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
         out: Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
         groups: Dict[str, List[int]] = {}
         for i, c in enumerate(self.ind_cls):
@@ -263,30 +299,51 @@ class BeliefNet:
         den = cfg.kappa_g + w.sum(axis=0)
         return num / den, w.sum(axis=0)
 
-    def _priors(self, classes: List[str], ctx: Optional[str], m_gen: np.ndarray,
-                agg: Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]) -> Tuple[np.ndarray, bool]:
-        """類の事前平均 prior_cls = ρ_h · head + (1 − ρ_h) · m_gen（行 = 参加者）。"""
-        kind, rho = self.cfg.head_kind, self.rho()
+    def _head_priors(self, classes: List[str], ctx: Optional[str], m_gen: np.ndarray,
+                     agg: Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]) -> Dict[str, np.ndarray]:
+        """各ヘッドが出す類の事前平均（行 = 参加者）。mixture のヘッド: mlp、linear、knn1、none（= m_gen）。"""
         n = len(classes)
-        if kind == "none" or rho <= 0.0 or n == 0:
-            return np.tile(m_gen, (n, 1)), False
-        if kind in ("mlp", "linear"):
+        out: Dict[str, np.ndarray] = {}
+        if self.heads:
             ce = self.emb.ctx(ctx)
             X = np.array([np.concatenate([self.emb.cls(c), ce]) for c in classes])
-            head = np.clip(self.head.predict_proba(X), _P_MIN, _P_MAX)
-        else:   # knn1: 既知の類のうち、埋め込みが最も近い類の率
-            known = [c for c in sorted(agg) if np.any(agg[c][0] > 1e-12)]
-            head = np.tile(m_gen, (n, 1))
-            for j, c in enumerate(classes):
-                if not known:
-                    continue
-                d = [float(np.sum((self.emb.cls(c) - self.emb.cls(k)) ** 2)) for k in known]
-                W, WR, _ = agg[known[int(np.argmin(d))]]
-                head[j] = np.where(W > 1e-12, WR / np.maximum(W, 1e-12), m_gen)
+            for nm, hd in self.heads.items():
+                out[nm] = np.clip(hd.predict_proba(X), _P_MIN, _P_MAX)
+        known = [c for c in sorted(agg) if np.any(agg[c][0] > 1e-12)]      # knn1: 埋め込みが最も近い既知の類の率
+        head = np.tile(m_gen, (n, 1))
+        for j, c in enumerate(classes):
+            if not known:
+                continue
+            d = [float(np.sum((self.emb.cls(c) - self.emb.cls(k)) ** 2)) for k in known]
+            W, WR, _ = agg[known[int(np.argmin(d))]]
+            head[j] = np.where(W > 1e-12, WR / np.maximum(W, 1e-12), m_gen)
+        out["knn1"] = head
+        out["none"] = np.tile(m_gen, (n, 1))
+        return out
+
+    def _priors(self, classes: List[str], ctx: Optional[str], m_gen: np.ndarray,
+                agg: Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]) -> Tuple[np.ndarray, bool]:
+        """類の事前平均 prior_cls（行 = 参加者）。
+        mixture: Σ_h w_h prior_h（w は前向き対数尤度の softmax）。観測が 0 件なら m_gen。
+        単一ヘッド: ρ_h · head + (1 − ρ_h) · m_gen。"""
+        kind = self.cfg.head_kind
+        n = len(classes)
+        if kind == "none" or n == 0 or self.n_obs == 0:
+            return np.tile(m_gen, (n, 1)), False
+        if kind == "mixture":
+            hp = self._head_priors(classes, ctx, m_gen, agg)
+            w = self.head_weights()
+            return sum(float(w[i]) * hp[nm] for i, nm in enumerate(HEAD_NAMES)), True
+        rho = self.rho()
+        if rho <= 0.0:
+            return np.tile(m_gen, (n, 1)), False
+        head = self._head_priors(classes, ctx, m_gen, agg)[kind]
         return rho * head + (1.0 - rho) * m_gen[None, :], True
 
     # ------------------------------------------------------------------ 予測
-    def predict(self, ctx: Optional[str], participants: List[Dict[str, str]]) -> Prediction:
+    def predict(self, ctx: Optional[str], participants: List[Dict[str, str]],
+                prior_override: Optional[np.ndarray] = None) -> Prediction:
+        """prior_override: 類の事前平均（行 = 参加者）を差し替える（ヘッドごとの前向き評価用）。"""
         cfg = self.cfg
         K = N_TYPES
         ke0, kc, kg = cfg.kappa_e, cfg.kappa_c, cfg.kappa_g
@@ -321,7 +378,10 @@ class BeliefNet:
         p_person = np.zeros((nP, K)); p_ind = np.zeros((nP, K)); p_ctxp_all = np.zeros((nP, K))
         var_person = np.zeros((nP, K)); n_ind_all = np.zeros((nP, K)); m_cls_all = np.zeros((nP, K))
         known = []
-        priors, head_used = self._priors([p["class"] for p in participants], ctx, m_gen, agg)
+        if prior_override is not None:
+            priors, head_used = prior_override, True
+        else:
+            priors, head_used = self._priors([p["class"] for p in participants], ctx, m_gen, agg)
         for j, p in enumerate(participants):
             c = p["class"]
             W, WR, ke = agg.get(c, (np.zeros(K), np.zeros(K), np.full(K, ke0)))
@@ -361,6 +421,26 @@ class BeliefNet:
         b = pred.pi_c[None, :] * bc
         return a / (a + b)
 
+    # ------------------------------------------------------------------ 前向きの対数尤度（v3.2 1.4）
+    def _update_head_ll(self, ctx: str, participants: List[Dict[str, str]], y: np.ndarray, mask: np.ndarray) -> None:
+        """新しい観測を見る前の予測（現在の計数・ヘッド）で、各ヘッドの対数尤度を求めて移動平均に入れる。
+        ヘッド h の予測 = h を類の事前に使ったときの P(参加者が型 k を起こす)。観測 1 件の対数尤度 = 観測されたセル（mask = 1）の
+        y log p + (1 − y) log(1 − p) の和。参加者が複数いる経験では参加者で平均する。この関数は計数にもヘッドにも触れない。"""
+        if self.cfg.head_kind != "mixture" or not participants:
+            return
+        classes = [p["class"] for p in participants]
+        agg = self._class_agg()
+        m_gen, _ = self._gen_mean(agg)
+        hp = self._head_priors(classes, ctx, m_gen, agg)
+        ll = np.zeros(len(HEAD_NAMES))
+        for i, nm in enumerate(HEAD_NAMES):
+            pr = self.predict(ctx, participants, prior_override=hp[nm]).p_person
+            cell = y * np.log(pr) + (1.0 - y) * np.log(1.0 - pr)
+            ll[i] = float((mask * cell).sum(axis=1).mean())
+        rate = max(1.0 / (self.ll_cnt + 1.0), self.cfg.head_ll_rate)
+        self.ll_ema = self.ll_ema + rate * (ll - self.ll_ema)
+        self.ll_cnt += 1
+
     # ------------------------------------------------------------------ 更新
     def update(self, ctx: str, participants: List[Dict[str, str]], y_person: np.ndarray, y_mask: np.ndarray,
                y_sw: np.ndarray, sw_mask: np.ndarray, phi: np.ndarray, outcomes: List[Dict[str, Any]],
@@ -368,6 +448,8 @@ class BeliefNet:
         """計数 → π → 型の大きさ → リプレイ緩衝 → 事前ヘッドの SGD（観測そのものへの交差エントロピー）。
         y_mask = 0 のセル（曖昧な結果の型）は観測なしとして、計数にも π にもヘッドの損失にも入れない。"""
         cfg = self.cfg
+        self._update_head_ll(ctx, participants, y_person, y_mask)      # 前向き評価: 更新の前の状態で
+        self._agg_cache = None
         ci = self.ctx_idx.get(ctx)
         if ci is None:
             ci = self._add_context(ctx)
@@ -404,10 +486,13 @@ class BeliefNet:
             self.rb_len = min(self.rb_len + 1, cfg.replay_size)
             self.n_obs += 1
         loss = None
-        if self.head is not None and self.rb_len > 0:
+        if self.heads and self.rb_len > 0:
             for _ in range(cfg.head_batches):
                 idx = rng.integers(0, self.rb_len, size=cfg.head_batch_size)
-                loss = self.head.sgd_step(self.rb_x[idx], self.rb_y[idx], cfg.head_lr, mask=self.rb_m[idx])
+                for nm, hd in self.heads.items():            # 全ヘッドに同じミニバッチ（乱数の消費は単一ヘッドと同じ）
+                    l_ = hd.sgd_step(self.rb_x[idx], self.rb_y[idx], cfg.head_lr, mask=self.rb_m[idx])
+                    if hd is self.head:
+                        loss = l_
         # 想起: K_r 経験ごとに、全記録を 1 回掃引する
         self.exp_count += 1
         recall = None
@@ -444,6 +529,7 @@ class BeliefNet:
         self.pi[:, 0] = 1.0 + wp.sum(axis=0)
         self.pi[:, 1] = 1.0 + wc.sum(axis=0)
         self._kcache = {}
+        self._agg_cache = None
 
     def reattribute(self) -> Optional[Dict[str, float]]:
         """想起: 全記録について 1 回の掃引（retract → reassign）。オンライン EM の 1 ステップ（leave-one-out）。
@@ -505,7 +591,7 @@ class BeliefNet:
         m_gen, _ = self._gen_mean(agg)
         out: Dict[str, Any] = {"n_individuals": len(self.ind_ids), "n_contexts": len(self.ctx_names),
                                "n_obs": self.n_obs, "head_kind": self.cfg.head_kind, "rho_h": self.rho(),
-                               "head_trained": self.head_trained(),
+                               "head_trained": self.head_trained(), "head_weights": self.head_weights_dict(),
                                "pi_person": {t: float(self.pi[k, 0] / self.pi[k].sum()) for k, t in enumerate(OUTCOME_TYPES)},
                                "m_gen": {t: float(m_gen[k]) for k, t in enumerate(OUTCOME_TYPES)},
                                "class_rate": {}, "kappa_e": {}}
@@ -521,15 +607,16 @@ class BeliefNet:
     def get_state(self) -> Tuple[Dict[str, Any], Dict[str, np.ndarray]]:
         meta = {"ind_ids": list(self.ind_ids), "ind_cls": list(self.ind_cls), "ctx_names": list(self.ctx_names),
                 "n_obs": int(self.n_obs), "rb_len": int(self.rb_len), "rb_ptr": int(self.rb_ptr),
-                "head_kind": self.cfg.head_kind, "exp_count": int(self.exp_count), "rec_n": int(self.rec_n)}
+                "head_kind": self.cfg.head_kind, "exp_count": int(self.exp_count), "rec_n": int(self.rec_n),
+                "ll_cnt": int(self.ll_cnt)}
         arrays = {"b_N1": self.N1, "b_N0": self.N0, "b_CP1": self.CP1, "b_CP0": self.CP0, "b_CS1": self.CS1,
                   "b_CS0": self.CS0, "b_pi": self.pi, "b_mag": self.mag, "b_mag_n": self.mag_n,
                   "b_rb_x": self.rb_x, "b_rb_y": self.rb_y, "b_rb_m": self.rb_m,
                   "b_rec_ind": self.rec_ind[: self.rec_n], "b_rec_ctx": self.rec_ctx[: self.rec_n],
                   "b_rec_y": self.rec_y[: self.rec_n], "b_rec_m": self.rec_m[: self.rec_n],
-                  "b_rec_phi": self.rec_phi[: self.rec_n]}
-        if self.head is not None:
-            arrays.update(self.head.get_arrays("b_head_"))
+                  "b_rec_phi": self.rec_phi[: self.rec_n], "b_ll_ema": self.ll_ema}
+        for nm, hd in self.heads.items():
+            arrays.update(hd.get_arrays(f"b_head_{nm}_"))
         return meta, arrays
 
     def set_state(self, meta: Dict[str, Any], arrays: Dict[str, np.ndarray]) -> None:
@@ -545,6 +632,8 @@ class BeliefNet:
         self.exp_count = int(meta["exp_count"]); self.rec_n = int(meta["rec_n"])
         self.rec_ind = np.array(arrays["b_rec_ind"], dtype=np.int64); self.rec_ctx = np.array(arrays["b_rec_ctx"], dtype=np.int64)
         self.rec_y, self.rec_m, self.rec_phi = g("b_rec_y"), g("b_rec_m"), g("b_rec_phi")
-        if self.head is not None:
-            self.head.set_arrays(arrays, "b_head_")
+        for nm, hd in self.heads.items():
+            hd.set_arrays(arrays, f"b_head_{nm}_")
+        self.ll_ema = g("b_ll_ema"); self.ll_cnt = int(meta["ll_cnt"])
         self._kcache = {}
+        self._agg_cache = None

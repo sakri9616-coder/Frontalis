@@ -12,7 +12,7 @@ import unittest
 
 import numpy as np
 
-from helpers import SEEDS, dump, feed, load_jsonl, make
+from helpers import SEEDS, dump, feed, load_jsonl, make, pmap
 from npnv3 import innate
 
 NPRIME = {"entity": "T4_Nprime", "class": "collaborator"}
@@ -48,16 +48,24 @@ def run(seed, m, **kw):
             "N_before": n0, "N_after": n_after, "truth": truth}
 
 
+def job(args):
+    """pmap 用（v3.2 で、全テストの時間を抑えるために種を並列化した。計算は同じ）。"""
+    seed, m, flat = args
+    return run(seed, m, **({"flat_value": True} if flat else {}))
+
+
 class T4Continual(unittest.TestCase):
     def test_persistence_and_plasticity(self):
+        jobs = [(s, m, f) for f in (False, True) for m in (8, 32) for s in SEEDS]
+        res = dict(zip(jobs, pmap(job, jobs)))
         out = {}
         for m in (8, 32):
-            rows = [run(s, m) for s in SEEDS]
+            rows = [res[(s, m, False)] for s in SEEDS]
             out[f"m{m}"] = {k: float(np.mean([r[k] for r in rows])) for k in
                             ("d0", "dm", "persistence", "plasticity", "persistence_Q", "N_before", "N_after", "truth")}
         flat = {}
         for m in (8, 32):
-            rows = [run(s, m, flat_value=True) for s in SEEDS]
+            rows = [res[(s, m, True)] for s in SEEDS]
             flat[f"m{m}"] = {k: float(np.mean([r[k] for r in rows])) for k in ("d0", "dm", "persistence", "plasticity")}
         dump("T04", {"hierarchical": out, "flat_value": flat})
         for m in (8, 32):

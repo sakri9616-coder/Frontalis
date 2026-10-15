@@ -312,17 +312,23 @@ class KappaTests(unittest.TestCase):
         self.assertTrue(np.all(np.abs(np.log(few) - np.log(kc2)) < 1.2))
 
     def test_belief_uses_per_type_kappa(self):
-        n = make(0)
-        for i in range(6):                       # 手柄を取る人と取らない人が混ざる類。connection は全員
-            outs = [{"type": "connection", "actor": f"q{i}", "magnitude": 0.6}]
-            if i % 2 == 0:
-                outs += [{"type": "credit_taken", "actor": f"q{i}", "magnitude": 0.7}] * 1
-            for r in range(4):
-                n.experience(exp(f"e{i}-{r}", outs, ctx="project_meeting", concepts=("collaboration",),
-                                 participants=[person(f"q{i}", "collaborator")]))
-        kv = n.belief.kappa_by_type("collaborator")
+        """（類 × 型）ごとの κ_e。**ヘッドの影響を分けるため、機構の検査は head_kind = "none" で行う**
+        （v3.2 の既定の mixture では、ヘッドが類の事前を通じて φ と計数を変え、κ の水準が下がる。順序の検査は既定でも行う）。"""
+        def grow(**kw):
+            n = make(0, **kw)
+            for i in range(6):                       # 手柄を取る人と取らない人が混ざる類。connection は全員
+                outs = [{"type": "connection", "actor": f"q{i}", "magnitude": 0.6}]
+                if i % 2 == 0:
+                    outs += [{"type": "credit_taken", "actor": f"q{i}", "magnitude": 0.7}] * 1
+                for r in range(4):
+                    n.experience(exp(f"e{i}-{r}", outs, ctx="project_meeting", concepts=("collaboration",),
+                                     participants=[person(f"q{i}", "collaborator")]))
+            return n
+        kv = grow(head_kind="none").belief.kappa_by_type("collaborator")
         self.assertLess(kv[innate.TYPE_INDEX["credit_taken"]], kv[innate.TYPE_INDEX["connection"]])
         self.assertGreater(float(np.ptp(kv)), 0.5)                          # 型で違う
+        kd = grow().belief.kappa_by_type("collaborator")                    # 既定（mixture）でも、順序は保たれる
+        self.assertLess(kd[innate.TYPE_INDEX["credit_taken"]], kd[innate.TYPE_INDEX["connection"]])
         # 改訂前の挙動（類ごとに 1 つ）は kappa_per_type=False で再現できる
         m = make(0, kappa_per_type=False)
         for i in range(6):

@@ -8,7 +8,7 @@ import unittest
 
 import numpy as np
 
-from helpers import SEEDS, dump, feed, load_jsonl, make
+from helpers import SEEDS, dump, feed, load_jsonl, make, pmap
 
 COLLAB = {"entity": "t8_new_collab", "class": "collaborator", "context": "music_session"}
 BAND = {"entity": "t8_new_band", "class": "band_mate", "context": "music_session"}
@@ -19,19 +19,21 @@ def gap(npn):
     return abs(pc["p_person"]["credit_taken"] - pb["p_person"]["credit_taken"]), pc, pb
 
 
+def worker(seed):
+    train = load_jsonl("T8_train.jsonl")
+    h, nh = make(seed), make(seed, no_head=True)
+    feed(h, train); feed(nh, train)
+    gh, pc_h, pb_h = gap(h)
+    gn, pc_n, pb_n = gap(nh)
+    return {"seed": seed, "gap_head": gh, "gap_nohead": gn,
+            "collab_head": pc_h["p_person"]["credit_taken"], "band_head": pb_h["p_person"]["credit_taken"],
+            "collab_nohead": pc_n["p_person"]["credit_taken"], "band_nohead": pb_n["p_person"]["credit_taken"],
+            "head_trained": h.belief.head_trained(), "rho_h": h.belief.rho(), "head_weights": h.belief.head_weights_dict()}
+
+
 class T8Transfer(unittest.TestCase):
     def test_head_transfers_to_unseen_class(self):
-        train = load_jsonl("T8_train.jsonl")
-        rows = []
-        for seed in SEEDS:
-            h, nh = make(seed), make(seed, no_head=True)
-            feed(h, train); feed(nh, train)
-            gh, pc_h, pb_h = gap(h)
-            gn, pc_n, pb_n = gap(nh)
-            rows.append({"seed": seed, "gap_head": gh, "gap_nohead": gn,
-                         "collab_head": pc_h["p_person"]["credit_taken"], "band_head": pb_h["p_person"]["credit_taken"],
-                         "collab_nohead": pc_n["p_person"]["credit_taken"], "band_nohead": pb_n["p_person"]["credit_taken"],
-                         "head_trained": h.belief.head_trained(), "rho_h": h.belief.rho()})
+        rows = pmap(worker, SEEDS)       # v3.2: 種を並列化（計算は同じ）
         gh = float(np.mean([r["gap_head"] for r in rows])); gn = float(np.mean([r["gap_nohead"] for r in rows]))
         reduction = 1.0 - gh / gn
         dump("T08", {"gap_with_head": gh, "gap_no_head": gn, "reduction": reduction,

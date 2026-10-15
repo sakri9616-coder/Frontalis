@@ -8,6 +8,11 @@ v3.1 の変更:
   - 結果は単一の型の代わりに解釈の候補を持てる（1.4）:
       {"interpretations": {"credit_taken": 0.5, "credit_shared": 0.5}, "actor": "friendA", "magnitude": 0.8}
   - 経験に任意の `session`（文脈の連続。条件づけの TD をつなぐ範囲、1.2）。
+
+v3.2 の変更:
+  - 経験と状況プローブに任意の `announced`（申し出に前もって付いている結果の型のリスト。例: 褒め言葉を伴う申し出なら ["praise"]）。
+    予期 Q の手がかり（Q = U_val + λ_CQ ΣC）に `type:<型>` として入る。結果そのものではない（結果は outcomes に書く）。
+    選択の前に分かる手がかりは、概念・参加者（個体と類）・announced の型だけ。
 """
 from __future__ import annotations
 
@@ -19,8 +24,8 @@ ACTOR_SELF = "self"
 ACTOR_WORLD = "world"
 RESERVED_IDS = (ACTOR_SELF, ACTOR_WORLD)
 
-_EXP_KEYS = {"id", "context", "concepts", "participants", "outcomes", "optional", "session"}
-_SIT_KEYS = {"id", "context", "concepts", "participants"}
+_EXP_KEYS = {"id", "context", "concepts", "participants", "outcomes", "optional", "session", "announced"}
+_SIT_KEYS = {"id", "context", "concepts", "participants", "announced"}
 _ENT_KEYS = {"id", "entity", "class", "context"}
 _CON_KEYS = {"id", "concept"}
 _CUE_KEYS = {"id", "cue"}
@@ -69,6 +74,16 @@ def _concepts(raw: Any) -> List[str]:
     return out
 
 
+def _announced(raw: Any) -> List[str]:
+    _need(isinstance(raw, list), "announced はリストでなければなりません")
+    out: List[str] = []
+    for t in raw:
+        _need(t in OUTCOME_TYPES, f"未知の結果の型です（announced）: {t!r}")
+        _need(t not in out, f"announced が重複しています: {t!r}")
+        out.append(t)
+    return out
+
+
 def _outcome(o: Any, pids: set) -> Dict[str, Any]:
     _need(isinstance(o, dict), f"outcomes の要素は dict です: {o!r}")
     keys = set(o)
@@ -112,8 +127,9 @@ def validate_experience(exp: Any) -> Dict[str, Any]:
     _need(isinstance(optional, bool), "optional は真偽値です")
     session: Optional[str] = exp.get("session")
     _need(session is None or (isinstance(session, str) and session != ""), "session は空でない文字列です")
+    announced = _announced(exp.get("announced", []))
     return {"id": exp["id"], "context": context, "concepts": concepts, "participants": participants,
-            "outcomes": outcomes, "optional": optional, "session": session}
+            "outcomes": outcomes, "optional": optional, "session": session, "announced": announced}
 
 
 def validate_situation(p: Dict[str, Any]) -> Dict[str, Any]:
@@ -125,6 +141,7 @@ def validate_situation(p: Dict[str, Any]) -> Dict[str, Any]:
         "context": _word(p["context"], "context"),
         "concepts": _concepts(p.get("concepts", [])),
         "participants": _participants(p.get("participants", [])),
+        "announced": _announced(p.get("announced", [])),
     }
 
 

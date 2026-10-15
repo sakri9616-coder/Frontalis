@@ -6,6 +6,12 @@
   教師は帰属 φ で分ける。更新 K = Σz/(zᵀΣz+R)、W += K(Δu - zᵀW)、Σ ← Σ - K zᵀΣ、続いて関与した対角に q。
 価値ネット自身の出力は、どの更新の目標にも入らない（docs/04 補題1）。教師は Δu（欲求の効用変化）だけ。
 
+v3.2 の変更（SPEC-v3.2）
+  1.1 欲求ごとの観測雑音 R_k = R / a_k。関心の重み a が大きい欲求ほど精度高く・速く学ぶ。利得が欲求ごとに変わるので、Σ は欲求ごとに持つ
+      （形 (5, n, n)）。a の目標は |Δu|（外生）で W に依存しない。a → W の一方向だけで、W → a はない。
+  1.3 Concern の方向 concern_direction ∈ {sensitize, habituate}。
+  1.2 の C → Q は npn.py（Q = U_val + λ_CQ ΣC(手がかり)）。
+
 v3.1 の追加（SPEC-v3.1）
   Concern     欲求の関心の重み a（1.1）: 目標は |Δu|（外生）。感じた価値・MB・好悪の読み出しで欲求を重み付ける。
   Conditioning 条件づけられた価値 C（1.2）: 手がかり（概念・参加者・結果型）への線形の重み。TD(0)、目標は r + γ C_frozen。
@@ -27,9 +33,18 @@ Feat = Tuple[str, str, float]   # (特徴名, 層, 値)
 
 
 # ======================================================================
-# カルマン回帰（欲求 5 次元で共分散を共有）
+# カルマン回帰（欲求ごとに共分散 Σ_k を持つ。v3.2）
 # ======================================================================
+A_FLOOR = 1e-3        # R_k = R / a_k の a_k の下限（a_k → 0 で観測雑音が発散しないように）
+
+
 class KalmanModel:
+    """階層カルマン回帰。W は (特徴, 5 欲求)、Σ は (5 欲求, 特徴, 特徴)。
+
+    v3.2: 欲求 k の観測雑音を R_k = R / a_k にする（a の和は 5 のまま）ので、利得が欲求ごとに違う。
+    a = None（または全部 1）なら、全欲求で同じ Σ になり v3.1 と同じ更新になる。
+    """
+
     def __init__(self, var: Dict[str, float], q: Dict[str, float], obs_noise: float):
         self.var = dict(var)
         self.q = dict(q)
@@ -38,7 +53,7 @@ class KalmanModel:
         self.layers: List[str] = []
         self.idx: Dict[str, int] = {}
         self.W = np.zeros((0, N_NEEDS))
-        self.S = np.zeros((0, 0))
+        self.S = np.zeros((N_NEEDS, 0, 0))
 
     def _add(self, name: str, layer: str) -> int:
         i = len(self.names)
@@ -46,15 +61,19 @@ class KalmanModel:
         self.layers.append(layer)
         self.idx[name] = i
         self.W = np.vstack([self.W, np.zeros((1, N_NEEDS))])
-        S2 = np.zeros((i + 1, i + 1))
-        S2[:i, :i] = self.S
-        S2[i, i] = self.var[layer]     # 新しい特徴: 事前平均 0、事前分散は層ごと
+        S2 = np.zeros((N_NEEDS, i + 1, i + 1))
+        S2[:, :i, :i] = self.S
+        S2[:, i, i] = self.var[layer]     # 新しい特徴: 事前平均 0、事前分散は層ごと
         self.S = S2
         return i
 
-    def predict(self, feats: Sequence[Feat]) -> Tuple[np.ndarray, float, bool]:
-        """予測 zᵀW（5 欲求）、予測分散 zᵀΣz、すべての特徴が既知か。状態は変えない。
-        未登録の特徴は、事前平均 0・事前分散（他の特徴とは無相関）として扱う。"""
+    def predict(self, feats: Sequence[Feat], a: Optional[np.ndarray] = None) -> Tuple[np.ndarray, float, bool]:
+        """予測 zᵀW（5 欲求）、予測分散、すべての特徴が既知か。状態は変えない。
+        未登録の特徴は、事前平均 0・事前分散（他の特徴とは無相関）として扱う。
+        予測分散は、a で重み付けた予測 Σ_k a_k (zᵀW_k) の分散を欲求の数で割った (1/5) Σ_k a_k² zᵀΣ_k z
+        （欲求の誤差は独立と見る。a = 1 かつ Σ が共通なら v3.1 の zᵀΣz と一致する）。a = None は a = 1。"""
+        w2 = np.ones(N_NEEDS) if a is None else np.asarray(a, dtype=np.float64) ** 2
+        scale = float(w2.mean())
         pred = np.zeros(N_NEEDS)
         var = 0.0
         ii: List[int] = []
@@ -65,7 +84,7 @@ class KalmanModel:
                 continue
             i = self.idx.get(name)
             if i is None:
-                var += self.var[layer] * v * v
+                var += scale * self.var[layer] * v * v
                 all_known = False
             else:
                 ii.append(i)
@@ -74,7 +93,8 @@ class KalmanModel:
             ia = np.array(ii)
             z = np.array(zz)
             pred = z @ self.W[ia]
-            var += float(z @ self.S[np.ix_(ia, ia)] @ z)
+            quad = np.einsum("i,kij,j->k", z, self.S[:, ia][:, :, ia], z)      # 欲求ごとの zᵀΣ_k z
+            var += float(w2 @ quad) / N_NEEDS
         return pred, var, all_known
 
     def _prepare(self, feats: Sequence[Feat]) -> Tuple[np.ndarray, np.ndarray]:
@@ -85,22 +105,25 @@ class KalmanModel:
         z = np.array([v for _, _, v in feats if v != 0.0])
         return ii, z
 
-    def update(self, feats: Sequence[Feat], teacher: np.ndarray) -> Dict[str, Any]:
-        """1 観測のカルマン更新。K は全特徴に対して密（共分散を通じて関与しない特徴も動く）。"""
+    def update(self, feats: Sequence[Feat], teacher: np.ndarray, a: Optional[np.ndarray] = None) -> Dict[str, Any]:
+        """1 観測のカルマン更新（欲求ごと）。K_k = Σ_k z / (zᵀΣ_k z + R/a_k)、W_k += K_k (Δu_k − zᵀW_k)、
+        Σ_k ← Σ_k − K_k zᵀΣ_k、続いて関与した対角に q。K は全特徴に対して密（共分散を通じて関与しない特徴も動く）。"""
         ii, z = self._prepare(feats)
-        Sz = self.S[:, ii] @ z                      # Σ z（全特徴）
-        den = float(z @ Sz[ii]) + self.R
-        K = Sz / den
+        prec = np.ones(N_NEEDS) if a is None else np.maximum(np.asarray(a, dtype=np.float64), A_FLOOR)
+        Sz = np.einsum("kij,j->ki", self.S[:, :, ii], z)       # Σ_k z（欲求 k、全特徴）
+        zSz = Sz[:, ii] @ z                                     # (5,)
+        den = zSz + self.R / prec
+        K = Sz / den[:, None]                                    # (5, n)
         pred = z @ self.W[ii]
         err = np.asarray(teacher, dtype=np.float64) - pred
-        dW = np.outer(K, err)
+        dW = (K * err[:, None]).T                                # (n, 5)
         self.W = self.W + dW
-        S2 = self.S - np.outer(K, Sz)               # Σ - K zᵀ Σ
-        S2 = 0.5 * (S2 + S2.T)
+        S2 = self.S - K[:, :, None] * Sz[:, None, :]            # Σ_k − K_k zᵀ Σ_k
+        S2 = 0.5 * (S2 + S2.transpose(0, 2, 1))
         for i in ii:
-            S2[i, i] += self.q[self.layers[i]]      # 関与した特徴だけに過程雑音
+            S2[:, i, i] += self.q[self.layers[i]]               # 関与した特徴だけに過程雑音
         self.S = S2
-        return {"dW": dW, "err": err, "pred": pred, "var": den - self.R}
+        return {"dW": dW, "err": err, "pred": pred, "var": float(zSz.mean())}
 
     def update_fixed(self, feats: Sequence[Feat], teacher: np.ndarray, target: str, rate: float) -> Dict[str, Any]:
         """3-F 型の固定教師: W[target] += rate * Δu。予測誤差も Σ も使わない。"""
@@ -176,29 +199,35 @@ class ValueNet:
            a: Optional[np.ndarray] = None) -> Dict[str, Any]:
         """MF 価値。欲求ごとの予測を関心の重み a で合計する（a = 1 なら v3.0 と同じ）。"""
         w = np.ones(N_NEEDS) if a is None else a
+        wv = self._var_weights(a)
         persons = []
         V = 0.0
         var = 0.0
         for p in participants:
-            pred, v, known = self.person.predict(self.person_feats(p["id"], p["class"]))
+            pred, v, known = self.person.predict(self.person_feats(p["id"], p["class"]), wv)
             val = float(w @ pred)
             persons.append({"id": p["id"], "value": val, "var": float(v), "pred": pred, "known": known})
             V += val
             var += float(v)
-        pred_s, v_s, known_s = self.sit.predict(self.situation_feats(ctx, concepts))
+        pred_s, v_s, known_s = self.sit.predict(self.situation_feats(ctx, concepts), wv)
         vs = float(w @ pred_s)
         V += vs
         var += float(v_s)
         return {"V_MF": V, "var_MF": var, "persons": persons,
+                "V_MF_person": float(sum(x["value"] for x in persons)),
                 "situation": {"value": vs, "var": float(v_s), "pred": pred_s, "known": known_s}}
 
+    def _var_weights(self, a: Optional[np.ndarray]) -> Optional[np.ndarray]:
+        """予測分散の a 重み。no_precision_weighting（アブレーション）では v3.1 と同じく重みなし。"""
+        return None if (a is None or self.cfg.no_precision_weighting) else a
+
     def like_entity(self, pid: str, cls: str, a: Optional[np.ndarray] = None) -> Tuple[float, float, np.ndarray, bool]:
-        pred, v, known = self.person.predict(self.person_feats(pid, cls))
+        pred, v, known = self.person.predict(self.person_feats(pid, cls), self._var_weights(a))
         return float((np.ones(N_NEEDS) if a is None else a) @ pred), float(v), pred, known
 
     def like_concept(self, name: str, a: Optional[np.ndarray] = None) -> Tuple[float, float, np.ndarray, bool]:
         """概念の好悪 Like(x) = 一般 + 概念 + 埋め込みの寄与（文脈は含めない）。測定用のプローブ。"""
-        pred, v, known = self.sit.predict(self.situation_feats(None, [name], with_ctx=False))
+        pred, v, known = self.sit.predict(self.situation_feats(None, [name], with_ctx=False), self._var_weights(a))
         return float((np.ones(N_NEEDS) if a is None else a) @ pred), float(v), pred, known
 
     def prepare(self, participants: Sequence[Dict[str, str]], ctx: str, concepts: Sequence[str]) -> None:
@@ -209,9 +238,12 @@ class ValueNet:
 
     # --- 学習 ---
     def learn(self, participants: Sequence[Dict[str, str]], ctx: str, concepts: Sequence[str],
-              person_teachers: Sequence[np.ndarray], sit_teacher: np.ndarray) -> Dict[str, Any]:
-        """人モデルを参加者ごとに、状況モデルを 1 回、帰属で分けた教師で更新する。"""
+              person_teachers: Sequence[np.ndarray], sit_teacher: np.ndarray,
+              a: Optional[np.ndarray] = None) -> Dict[str, Any]:
+        """人モデルを参加者ごとに、状況モデルを 1 回、帰属で分けた教師で更新する。
+        a: この経験を受け止める直前の関心の重み。欲求 k の観測雑音が R/a_k になる（v3.2 1.1）。None なら全欲求で R。"""
         cfg = self.cfg
+        a_eff = None if cfg.no_precision_weighting else a
         dW_person: Dict[str, np.ndarray] = {}
         err_person = []
         for p, t in zip(participants, person_teachers):
@@ -219,7 +251,7 @@ class ValueNet:
             if cfg.fixed_teacher:
                 r = self.person.update_fixed(feats, t, f"ind:{p['id']}", cfg.fixed_teacher_rate)
             else:
-                r = self.person.update(feats, t)
+                r = self.person.update(feats, t, a_eff)
             for name, row in self.person.dW_dict(r["dW"]).items():      # 参加者ごとの変化量を特徴名で足し合わせる
                 dW_person[name] = dW_person[name] + row if name in dW_person else row
             err_person.append(r["err"])
@@ -227,7 +259,7 @@ class ValueNet:
         if cfg.fixed_teacher:
             rs = self.sit.update_fixed(feats_s, sit_teacher, f"ctx:{ctx}", cfg.fixed_teacher_rate)
         else:
-            rs = self.sit.update(feats_s, sit_teacher)
+            rs = self.sit.update(feats_s, sit_teacher, a_eff)
         return {"dW_person": dW_person, "dW_situation": self.sit.dW_dict(rs["dW"]),
                 "err_person": err_person, "err_situation": rs["err"]}
 
@@ -281,10 +313,16 @@ def model_based(pred: Any, h: np.ndarray, mag: np.ndarray, cfg: Config, key: str
     dh = (cnt * mag[None, :]) @ tab                              # (M, 5)
     tot = innate.delta_u(h[None, :], dh) @ w
     V_MB = float(tot.mean())
+    if nP > 0:      # 人が起こす結果型の寄与 = 全体 − 自分・世界が起こす分だけの価値（同じサンプルで差をとる）
+        dh_sw = (Y[:, nP, :] * mag[None, :]) @ tab
+        V_MB_person = float((tot - innate.delta_u(h[None, :], dh_sw) @ w).mean())
+    else:
+        V_MB_person = 0.0
     var_s = float(tot.var(ddof=1) / M_mc) if M_mc > 1 else 0.0
     g = type_effect(h, mag, tab, w)
     var_b = float(((g[None, :] ** 2) * pred.var_person).sum() + ((g ** 2) * pred.var_sw).sum())
-    return {"V_MB": V_MB, "var_MB": var_s + var_b, "var_samples": var_s, "var_belief": var_b}
+    return {"V_MB": V_MB, "var_MB": var_s + var_b, "var_samples": var_s, "var_belief": var_b,
+            "V_MB_person": V_MB_person}
 
 
 def arbitrate(V_MF: float, var_MF: float, V_MB: float, var_MB: float) -> Tuple[float, float]:
@@ -300,9 +338,13 @@ def arbitrate(V_MF: float, var_MF: float, V_MB: float, var_MB: float) -> Tuple[f
 class Concern:
     """人格ごとの欲求の重み a ∈ R⁵（初期値 1、和は常に 5）。
 
-    更新: a ← normalize( a + η_a ( |Δu| / mean(|Δu|_run) − a ) )。|Δu| は生得の効用の変化の大きさ（外生）。
-    **a の目標に価値ネットの出力は入らない**（補題1）。意味: 人生で大きく揺さぶられた欲求ほど、その人格にとって重要になる
-    （感作。正負は問わない。この方向は設計上の仮説）。
+    更新: a ← normalize( a + η_a ( 目標 − a ) )。|Δu| は生得の効用の変化の大きさ（外生）。run = mean_k|Δu_k| の移動平均。
+    **a の目標に価値ネットの出力は入らない**（補題1）。
+      sensitize（既定）: 目標 = clip(|Δu_k| / run, 0, 5)。人生で大きく揺さぶられた欲求ほど重みが上がる（感作。正負は問わない）。
+      habituate        : 目標 = clip(run / max(|Δu_k|, run / 5), 0, 5) = clip(1 / max(|Δu_k|/run, 0.2), 0, 5)。
+                         大きく揺さぶられた欲求ほど重みが下がり（慣れ）、揺さぶられない欲求は最大 5。感作の逆数で、床 run/5 は感作の
+                         上限 5 と対称（|Δu_k| = 0 でも 5 を超えない）。
+    どちらの方向が人に近いかは主張しない（実験条件。SPEC-v3.2 1.3）。主張は「a が経験から形成され、受け止め方と学習を変える」まで。
     """
 
     def __init__(self, cfg: Config):
@@ -323,7 +365,11 @@ class Concern:
         rate = max(1.0 / (self.n + 1.0), cfg.a_run_rate)
         self.run = self.run + rate * (float(mag.mean()) - self.run)
         self.n += 1
-        target = np.clip(mag / max(self.run, 1e-12), 0.0, float(N_NEEDS))
+        run = max(self.run, 1e-12)
+        if cfg.concern_direction == "habituate":
+            target = np.clip(run / np.maximum(mag, run / cfg.habituate_floor), 0.0, float(N_NEEDS))
+        else:
+            target = np.clip(mag / run, 0.0, float(N_NEEDS))
         a = self.a + cfg.eta_a * (target - self.a)
         self.a = N_NEEDS * a / a.sum()
         return before

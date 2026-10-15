@@ -63,8 +63,9 @@ class HeadTests(unittest.TestCase):
         self.assertLessEqual(n.belief.rb_len, 500)
 
     def test_head_mixture_weight_follows_sample_count(self):
-        """v3.1（SPEC-v3.1 1.5）: 50 件の解禁は廃止。prior_cls = ρ_h head + (1 − ρ_h) m_gen、ρ_h = n/(n+30)。"""
-        n = make(0)
+        """v3.1（SPEC-v3.1 1.5）: 50 件の解禁は廃止。単一ヘッド（head_kind = mlp）では prior_cls = ρ_h head + (1 − ρ_h) m_gen、
+        ρ_h = n/(n+30)。（v3.2 の既定の mixture は別: 重みは予測性能で決まる。test_v32_mechanisms.py）"""
+        n = make(0, head_kind="mlp")
         self.assertEqual(n.belief.rho(), 0.0)
         feed(n, load_jsonl("T8_train.jsonl")[:10])
         self.assertAlmostEqual(n.belief.rho(), 10 / 40)
@@ -98,7 +99,7 @@ class AblationTests(unittest.TestCase):
         feed(n, load_jsonl("K.jsonl"))
         self.assertTrue(all(nm.startswith("ind:") for nm in n.value.person.names))
         self.assertTrue(all(nm.startswith(("ctx:", "concept:")) for nm in n.value.sit.names))
-        self.assertTrue(all(abs(n.value.person.S[i, i]) <= 0.25 + 1e-12 for i in range(len(n.value.person.names))))
+        self.assertTrue(all(abs(n.value.person.S[:, i, i]).max() <= 0.25 + 1e-12 for i in range(len(n.value.person.names))))
         like = n.probe({"entity": "never_seen", "class": "collaborator"})
         self.assertEqual(like["like"], 0.0)               # 類の価値を継承しない
 
@@ -107,7 +108,7 @@ class AblationTests(unittest.TestCase):
         feed(n, load_jsonl("K.jsonl")[:8])
         S0 = n.value.person.S.copy()
         n.experience(load_json("new_event.json"))
-        self.assertTrue(np.array_equal(S0, n.value.person.S[: S0.shape[0], : S0.shape[0]]))
+        self.assertTrue(np.array_equal(S0, n.value.person.S[:, : S0.shape[1], : S0.shape[1]]))
         d = n.ledger.entries[-1]["dW"]["person"]
         self.assertEqual(list(d), ["ind:friendA"])                       # 更新は個体の特徴だけ
         du = n.ledger.entries[-1]["teachers"]["person"]["friendA"]

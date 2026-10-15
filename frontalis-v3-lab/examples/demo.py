@@ -1,4 +1,4 @@
-"""デモ（v3.1）: 3 人格が異なる経験史を経て、同じ新しい経験をどう評価し、何を学ぶか。保存→復元→継続も見せる。
+"""デモ（v3.2）: 3 人格が異なる経験史を経て、同じ新しい経験をどう評価し、何を学ぶか。保存→復元→継続も見せる。
 
 実行: python3 examples/demo.py [--seed 0]
 
@@ -8,6 +8,10 @@ v3.1 で見せること:
   - 欲求の状態 h と気分 m を揃えても、受け止め方 f が人格で違う（関心の重み a、条件づけられた価値 C、予期との差）
   - 生得の効果を持たない praise の価値が、随伴関係（後に何が来たか）で形成される
   - 曖昧な出来事の解釈が、人格の信念で違い、その解釈のまま学ぶ
+v3.2 で見せること（評価基準が、学習と行動を変える）:
+  - 褒められた後に害を受けた人格は、褒め言葉を伴う申し出を避ける（条件づけられた価値 C が予期 Q に入る）
+  - 関心の重み a が違うと、同じ経験から学ぶ量が変わる（欲求ごとの観測雑音 R/a_k）。a の方向（sensitize / habituate）は実験条件
+  - 事前ヘッドの重みは予測性能で決まる（前向きの対数尤度）
 """
 from __future__ import annotations
 
@@ -22,6 +26,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "data"))
 
+import numpy as np  # noqa: E402
 import make_histories as mh  # noqa: E402
 from npnv3 import NPN  # noqa: E402
 from npnv3.innate import NEED_LABELS, NEEDS, TYPE_INDEX, M  # noqa: E402
@@ -166,6 +171,67 @@ def main() -> None:
             if e["kind"] == "experience" and "type:praise" in e["td"]["dC"]][:4]
     for eid, d in hist:
         print(f"    {eid:<18} ΔC = {d:+.4f}")
+
+
+    # --- 4b. C が選択を変える ---
+    hr("4b. 褒められた後に害を受けた人格は、褒め言葉を伴う申し出を避ける（C → Q → 接近・回避、v3.2）")
+    offers = mh.generate_praise_offers(args.seed, 40)
+    print("申し出（optional、announced = ['praise']）: 参加者なし、履歴に現れない文脈 studio、結果は褒め言葉だけ（生得の効果なし）。")
+    print("Q = U_val + λ_CQ · ΣC(手がかり)。手がかりに type:praise が入る。H1 と H2 に同じ 40 件を与える（接近は p = σ(4(Q + 0.05)) で確率的）。")
+    print(f"  {'人格':<26}{'C(praise)':>10}{'最初の申し出の Q':>16}{'  = U_val':>10}{' + C_Q':>9}{'p(接近)':>9}{'  接近率(40件)':>14}")
+    for var, text in (("H1", "H1 褒められた後に害"), ("H2", "H2 褒められた後に支え")):
+        for label, kw in (("", {}), (" [C を切る]", {"no_conditioning": True})):
+            n = NPN(seed=args.seed, **kw)
+            for e in mh.generate_praise_history(var, args.seed):
+                n.experience(e)
+            a0 = n.appraise(offers[0])
+            c = n.probe({"cue": "type:praise"})["C"]
+            rate = sum(bool(n.experience(e)["approached"]) for e in offers) / len(offers)
+            print(f"  {text + label:<26}{c:>+10.3f}{a0['Q']:>+16.3f}{a0['Q_val']:>+10.3f}{a0['C_Q']:>+9.3f}{a0['p_approach']:>9.2f}{rate:>14.2f}")
+    print("  H1 は褒め言葉を伴う申し出を避け、H2 は受ける。C を切ると差はほとんど消える（欲求の状態 h・関心の重み a を通る分だけ残る）。")
+    print("  申し出を受けて何も起きないと C は 0 に戻る（消去）。避けると消去が止まる = 標本の偏りによる有界な正帰還（W6 で有界を検査）。")
+
+    # --- 4c. a が学習の量を変える ---
+    hr("4c. 関心の重み a が違うと、同じ経験から学ぶ量と確信が変わる（欲求ごとの観測雑音 R_k = R / a_k、v3.2）")
+    base = npns["K"]
+    probe_exp = json.loads(json.dumps(new).replace("friendA", "friendC"))       # 新しい個体（友人 C）とのもの。経験の中身は new と同じ
+    probe_exp["id"] = "same-experience-for-learning"
+    print("K の学習した状態のまま、a だけを入れ替えて（実験: a を固定）、同じ経験（初めて会う友人 C とのもの。中身は新しい経験と同じ）を与える。")
+    print("友人 C の価値 W[ind:friendC]（欲求ごと）の変化と、その事後の標準偏差（確信。小さいほど確信が高い）:")
+    print(f"  {'a の与え方':<22}{'a (R C A S Sa)':<28}{'ΔW[ind:friendC] (R C A S Sa)':<42}{'事後の標準偏差 (R C A S Sa)':<34}")
+    cases = (("K 自身の a", None), ("R の a に替える", npns["R"].concern.a),
+             ("R を重視 (3,1,.5,.25,.25)", [3.0, 1.0, 0.5, 0.25, 0.25]), ("R を軽視 (.25,.25,.5,1,3)", [0.25, 0.25, 0.5, 1.0, 3.0]))
+    for name, a_ in cases:
+        c = copy.deepcopy(base)
+        if a_ is not None:
+            c.cfg.no_concern = True                       # a を固定する（実験条件）
+            c.concern.a = np.array(a_, dtype=float)
+        c.experience(probe_exp)
+        dW = c.ledger.entries[-1]["dW"]["person"]["ind:friendC"]
+        kal = c.value.person
+        sd = kal.S[:, kal.idx["ind:friendC"], kal.idx["ind:friendC"]] ** 0.5
+        print(f"  {name:<22}{' '.join(f'{x:5.2f}' for x in c.a):<28}{' '.join(f'{x:+7.3f}' for x in dW):<42}{' '.join(f'{x:6.3f}' for x in sd):<34}")
+    print("  a の大きい欲求は観測雑音が小さく（R/a_k）、同じ予測誤差からより大きく学び、確信も高くなる（標準偏差が小さい）。")
+    print("  ただし、新しい個体の事前分散（0.25）が観測雑音 R（0.01）よりずっと大きいので、W の変化は極端な a でも 1 割ほどしか変わらない（確信は分散で 2 倍ほど変わる）。")
+    print("  a の目標は |Δu|（外生）で W に依存しない（a → W の一方向）。")
+    print("\n  関心の重みの方向は実験条件（concern_direction）: 同じ K の履歴を、sensitize / habituate で育てる")
+    for direction in ("sensitize", "habituate"):
+        n = NPN(seed=args.seed, concern_direction=direction)
+        for e in load_jsonl("K.jsonl"):
+            n.experience(e)
+        c = copy.deepcopy(n)
+        c.experience(probe_exp)
+        dW = c.ledger.entries[-1]["dW"]["person"]["ind:friendC"]
+        print(f"    {direction:<10} a = {' '.join(f'{x:5.2f}' for x in n.a)}   ΔW[ind:friendC] = {' '.join(f'{x:+7.3f}' for x in dW)}")
+    print("  主張は『a が経験から形成され、受け止め方と学習を変える』まで。どちらの方向が人に近いかは主張しない。")
+
+    # --- 4d. 事前ヘッドの重み ---
+    hr("4d. 事前ヘッドの重みは予測性能で決まる（前向きの対数尤度の softmax、v3.2）")
+    print(f"  {'人格':<14}" + "".join(f"{h:>9}" for h in ("mlp", "linear", "knn1", "none")) + "   （none = 一般の率。観測前の予測の対数尤度で重み付け）")
+    for k, n in npns.items():
+        w = n.belief.head_weights_dict()
+        print(f"  {LABEL[k]:<14}" + "".join(f"{w[h]:>9.2f}" for h in ("mlp", "linear", "knn1", "none")))
+    print("  短い履歴では、最も近い既知の類の率を使う knn1 が最も予測が良く、重みが大きい。MLP が必ず勝つわけではない（W7 の数値を参照）。")
 
     # --- 5. 曖昧な出来事の解釈 ---
     hr("5. 曖昧な出来事の解釈は人格の信念で違い、その解釈のまま学ぶ（v3.1）")

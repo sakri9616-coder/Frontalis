@@ -27,7 +27,8 @@ def _top_emotions(emo: Dict[str, float], k: int = 3) -> str:
 
 
 def _summarize(ap: Dict[str, Any]) -> str:
-    head = (f"[{ap['id']}] 予期 Q={ap['Q']:+.3f} (V_MB={ap['V_MB']:+.3f}, V_MF={ap['V_MF']:+.3f}, ω={ap['omega']:.2f})")
+    head = (f"[{ap['id']}] 予期 Q={ap['Q']:+.3f} (U_val={ap['Q_val']:+.3f} + 条件づけ C_Q={ap['C_Q']:+.3f}; "
+            f"V_MB={ap['V_MB']:+.3f}, V_MF={ap['V_MF']:+.3f}, ω={ap['omega']:.2f})")
     if ap.get("optional"):
         head += f"  接近確率 {ap['p_approach']:.2f} → " + ("接近" if ap["approached"] else "回避（学習しない）")
     if ap["f"] is None:
@@ -124,7 +125,9 @@ def cmd_show(args: argparse.Namespace) -> int:
     for r in s["conditioned_top"]:
         print(f"  {r['cue']:<28s} {r['C']:+.3f}")
     b = s["belief"]
-    print(f"\n信念: 個体 {b['n_individuals']}、文脈 {b['n_contexts']}、観測 {b['n_obs']}、事前ヘッド {b['head_kind']}（重み ρ_h={b['rho_h']:.2f}）")
+    print(f"\n信念: 個体 {b['n_individuals']}、文脈 {b['n_contexts']}、観測 {b['n_obs']}、事前ヘッド {b['head_kind']}（ヘッドの寄与 ρ_h={b['rho_h']:.2f}）")
+    if b["head_kind"] == "mixture":
+        print("  ヘッドの重み（前向きの対数尤度の softmax）: " + ", ".join(f"{h} {w:.2f}" for h, w in b["head_weights"].items()))
     for c, rates in sorted(b["class_rate"].items()):
         top = sorted(rates.items(), key=lambda kv: -kv[1])[:4]
         print(f"  類 {c}（κ_e={b['kappa_e'][c]:.2f}）: " + ", ".join(f"{t} {v:.2f}" for t, v in top))
