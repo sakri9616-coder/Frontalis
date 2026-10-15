@@ -1,0 +1,78 @@
+{
+  "world": "linear",
+  "origin": "nn",
+  "task": "plain",
+  "trainCount": 48,
+  "validationCount": 64,
+  "testCount": 256,
+  "kind": "quadratic",
+  "width": 16,
+  "sourceSnapshot": "reference/source-models/linear/nn.json",
+  "sourceSnapshotSha256": "e8ce548d6fcb270fe1fe8f3d6117337e5f4b3f647f40d80d673959a8f8c79fc3",
+  "trainingLabelsHash": "875e1fbebd58a11284d76c1f49be1dec072fa11cff8dc18e2e7b3a914c379ec4",
+  "validationLabelsHash": "7870670ff491d7ddeff8a005e8560273e7aa9d5b6bed7fce4f89e951150f02d3",
+  "trials": [
+    {
+      "hyperparameter": 0.0001,
+      "validationMSE": 0.007004553705486761,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.001,
+      "validationMSE": 0.00691759689818663,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.01,
+      "validationMSE": 0.006325328196891943,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.1,
+      "validationMSE": 0.00562746859442039,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 1.0,
+      "validationMSE": 0.007881275350917153,
+      "status": "complete"
+    }
+  ],
+  "selectionCriterion": "validation-signal-MSE-only",
+  "elapsedSeconds": 0.02328490000218153,
+  "status": "complete",
+  "validationMSE": 0.00562746859442039,
+  "selectedHyperparameter": 0.1,
+  "parameterCount": 630,
+  "snapshot": "models/diagnostic/linear/nn/plain/n48/quadratic-h16",
+  "diagnostics": {
+    "parameterCount": 630,
+    "fixedBaseParameters": 56,
+    "parameterNorm": 1.7375542843871972,
+    "emergencyNorm": 54.7201660994077,
+    "layerStats": {
+      "relational": {
+        "coefficients": {
+          "norm": 1.2289845600865643,
+          "rms": 0.06924543533018762,
+          "count": 315
+        }
+      },
+      "acoustic": {
+        "coefficients": {
+          "norm": 0.7364659649408867,
+          "rms": 0.04149515624883552,
+          "count": 315
+        }
+      }
+    },
+    "readoutScale": 1.0,
+    "device": "cpu",
+    "dtype": "float64",
+    "generation": 0,
+    "memoryRows": {
+      "relational": 0,
+      "acoustic": 0
+    }
+  }
+}

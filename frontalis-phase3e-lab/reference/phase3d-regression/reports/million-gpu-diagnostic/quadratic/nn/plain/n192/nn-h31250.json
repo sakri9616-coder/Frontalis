@@ -1,0 +1,125 @@
+{
+  "world": "quadratic",
+  "origin": "nn",
+  "task": "plain",
+  "trainCount": 192,
+  "validationCount": 64,
+  "testCount": 256,
+  "kind": "nn",
+  "width": 31250,
+  "sourceSnapshot": "reference/source-models/quadratic/nn.json",
+  "sourceSnapshotSha256": "c2b6c211708b5e598886d8ee650209bee3dc7241be85e7981ce8e62c030a007c",
+  "trainingLabelsHash": "732032dcf8c902af0d8daa810f7eab6f632da43d4bc0f3184209079d1f11f8e4",
+  "validationLabelsHash": "f9d5b85adc4c1894bf8dbf2e496237184035752077f4b1f068f39edfb1f32a53",
+  "selectionCriterion": "validation-signal-MSE-only",
+  "device": "cuda",
+  "dtype": "float64",
+  "labelFileSha256": "de4ee3d6094652c71c0450937c9adc0f57cc62c2637c468b1716646bdeae9f46",
+  "protocolSha256": "1760543914bd6f7191b1a26653a06208616bb2522d202d9ce78ffa25345c09a2",
+  "trials": [
+    {
+      "hyperparameter": 0.0005,
+      "status": "complete",
+      "validationMSE": 0.022397471912976065,
+      "elapsedSeconds": 3.3505077000008896
+    },
+    {
+      "hyperparameter": 0.0025,
+      "status": "complete",
+      "validationMSE": 0.000651570835700324,
+      "elapsedSeconds": 3.3194701000029454
+    },
+    {
+      "hyperparameter": 0.005,
+      "status": "complete",
+      "validationMSE": 0.0005634342825955906,
+      "elapsedSeconds": 3.3065851999999722
+    },
+    {
+      "hyperparameter": 0.0125,
+      "status": "complete",
+      "validationMSE": 0.00033391632172593535,
+      "elapsedSeconds": 3.251057400004356
+    },
+    {
+      "hyperparameter": 0.025,
+      "status": "complete",
+      "validationMSE": 0.00020455202184985237,
+      "elapsedSeconds": 3.305341400002362
+    }
+  ],
+  "elapsedSeconds": 16.53342189999239,
+  "runtime": {
+    "torch": "2.7.0+cu128",
+    "numpy": "2.5.4",
+    "gpu": "NVIDIA GeForce RTX 3050"
+  },
+  "maxMemoryAllocatedBytes": 159647744,
+  "maxMemoryReservedBytes": 199229440,
+  "status": "complete",
+  "validationMSE": 0.00020455202184985237,
+  "selectedHyperparameter": 0.025,
+  "parameterCount": 1000014,
+  "parameterHash": "3b33e22b8c36f6b83c20528e00f92e853387e88c839294b1f2e4b4565c2bc2be",
+  "snapshot": "models/million-gpu-diagnostic/quadratic/nn/plain/n192/nn-h31250",
+  "diagnostics": {
+    "parameterCount": 1000014,
+    "fixedBaseParameters": 56,
+    "parameterNorm": 252.01691418078818,
+    "emergencyNorm": 2180.1188616565314,
+    "layerStats": {
+      "relational": {
+        "w1": {
+          "norm": 173.47811407738914,
+          "rms": 0.3469562281547783,
+          "count": 250000
+        },
+        "b1": {
+          "norm": 20.587105358008955,
+          "rms": 0.1164582544292003,
+          "count": 31250
+        },
+        "w2": {
+          "norm": 60.15412798706779,
+          "rms": 0.1286149356158613,
+          "count": 218750
+        },
+        "b2": {
+          "norm": 0.5231165900377859,
+          "rms": 0.1977194862760157,
+          "count": 7
+        }
+      },
+      "acoustic": {
+        "w1": {
+          "norm": 160.9837455079588,
+          "rms": 0.32196749101591754,
+          "count": 250000
+        },
+        "b1": {
+          "norm": 16.124481468914595,
+          "rms": 0.09121384151829065,
+          "count": 31250
+        },
+        "w2": {
+          "norm": 56.554279299492336,
+          "rms": 0.12091813536835548,
+          "count": 218750
+        },
+        "b2": {
+          "norm": 0.3595278344106679,
+          "rms": 0.1358887484651768,
+          "count": 7
+        }
+      }
+    },
+    "readoutScale": 0.000512,
+    "device": "cuda",
+    "dtype": "float64",
+    "generation": 0,
+    "memoryRows": {
+      "relational": 0,
+      "acoustic": 0
+    }
+  }
+}

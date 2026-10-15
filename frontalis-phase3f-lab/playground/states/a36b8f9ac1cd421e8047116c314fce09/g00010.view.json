@@ -1,0 +1,9 @@
+{
+  "metadata": {
+    "schema": "frontalis-temporal-dual50-v1",
+    "personalityHash": "9016ec14af98625be7ce74fb400bd682d9179c5cb8f8644d791087ceb09ff7cb",
+    "weightsHash": "eb09cd115bf569fb2e2fc123420da820029b9540b6c314f371ba88da3c7b138d",
+    "coreJsonSha256": "06c0c5c783d655e84a9331d2d5d132505e808d9846f6c44ad8e79f3f55023a7c"
+  },
+  "metadataSha256": "c44f18daf96cb91c8b62f67b26f9d2357759428f9b8cff8b49bbe96004b94cce"
+}

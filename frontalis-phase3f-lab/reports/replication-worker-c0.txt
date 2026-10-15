@@ -1,0 +1,8 @@
+long-s7902-c0-p0-uniform 13.905
+long-s7902-c0-p0-consolidation 16.183
+long-s7902-c0-p2-uniform 15.948
+long-s7902-c0-p2-consolidation 14.942
+long-s7903-c0-p0-uniform 13.419
+long-s7903-c0-p0-consolidation 12.571
+long-s7903-c0-p2-uniform 13.502
+long-s7903-c0-p2-consolidation 12.528

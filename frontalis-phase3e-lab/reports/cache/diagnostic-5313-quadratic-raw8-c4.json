@@ -1,0 +1,12 @@
+{
+  "seed": 5313,
+  "teacher": "quadratic",
+  "representation": "raw8",
+  "capacityIndex": 4,
+  "parameterCount": 1000014,
+  "validationMSE": 0.3618898584929518,
+  "testMSE": 0.39156069429860935,
+  "trainingProtocol": "fixed-lr-.025-120-epochs-no-selection",
+  "preregistrationSha256": "29e2c6e13ace711a427824bcdf81e59c0070f5bf9671e6c329e8801d570fd58c",
+  "elapsedSeconds": 4.511867900000652
+}

@@ -1,0 +1,626 @@
+{
+  "request": {
+    "model": "claude-haiku-5-5",
+    "max_tokens": 8192,
+    "messages": [
+      {
+        "role": "user",
+        "content": "次の2件について各1回evaluate_npnを呼ぶ。要求はコピーし、感情や人格説明を追加しない。ツールの結果を得るまで発言は作らない。\n[{\"caseId\": \"c2-initial\", \"request\": {\"modelId\": \"dialogue-c2-initial\", \"meaning\": {\"cueFacts8\": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1], \"outcomeFacts8\": [1, 0, 0.5, 0, 1, 1, 0.5, 1], \"events\": [{\"action\": \"help\", \"actor\": \"close_other\", \"target\": \"self\", \"negated\": false, \"uncertain\": false, \"intent\": \"benefit\"}], \"consent\": \"unknown\", \"trust\": \"unknown\", \"causal\": \"causes\", \"temporal\": \"after\", \"delayed\": false}, \"options\": [{\"id\": \"repair\", \"meaning\": {\"cueFacts8\": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1], \"outcomeFacts8\": [1, 0, 0.5, 0, 1, 1, 0.5, 1], \"events\": [{\"action\": \"help\", \"actor\": \"close_other\", \"target\": \"self\", \"negated\": false, \"uncertain\": false, \"intent\": \"benefit\"}], \"consent\": \"unknown\", \"trust\": \"unknown\", \"causal\": \"causes\", \"temporal\": \"after\", \"delayed\": false}}, {\"id\": \"distance\", \"meaning\": {\"cueFacts8\": [1, 0, 1, 0.5, 0.5, 1, 0, 0], \"outcomeFacts8\": [1, 0, 1, 0.5, 0.5, 1, 0, 0], \"events\": [{\"action\": \"explore\", \"actor\": \"stranger\", \"target\": \"object\", \"negated\": false, \"uncertain\": false, \"intent\": \"unknown\"}], \"consent\": \"unknown\", \"trust\": \"unknown\", \"causal\": \"unknown\", \"temporal\": \"unknown\", \"delayed\": false}}]}}, {\"caseId\": \"c2-corrected\", \"request\": {\"modelId\": \"dialogue-c2-corrected\", \"meaning\": {\"cueFacts8\": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1], \"outcomeFacts8\": [1, 0, 0.5, 0, 1, 1, 0.5, 1], \"events\": [{\"action\": \"help\", \"actor\": \"close_other\", \"target\": \"self\", \"negated\": false, \"uncertain\": false, \"intent\": \"benefit\"}], \"consent\": \"unknown\", \"trust\": \"unknown\", \"causal\": \"causes\", \"temporal\": \"after\", \"delayed\": false}, \"options\": [{\"id\": \"repair\", \"meaning\": {\"cueFacts8\": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1], \"outcomeFacts8\": [1, 0, 0.5, 0, 1, 1, 0.5, 1], \"events\": [{\"action\": \"help\", \"actor\": \"close_other\", \"target\": \"self\", \"negated\": false, \"uncertain\": false, \"intent\": \"benefit\"}], \"consent\": \"unknown\", \"trust\": \"unknown\", \"causal\": \"causes\", \"temporal\": \"after\", \"delayed\": false}}, {\"id\": \"distance\", \"meaning\": {\"cueFacts8\": [1, 0, 1, 0.5, 0.5, 1, 0, 0], \"outcomeFacts8\": [1, 0, 1, 0.5, 0.5, 1, 0, 0], \"events\": [{\"action\": \"explore\", \"actor\": \"stranger\", \"target\": \"object\", \"negated\": false, \"uncertain\": false, \"intent\": \"unknown\"}], \"consent\": \"unknown\", \"trust\": \"unknown\", \"causal\": \"unknown\", \"temporal\": \"unknown\", \"delayed\": false}}]}}]"
+      }
+    ],
+    "tools": [
+      {
+        "name": "evaluate_npn",
+        "description": "Read-only NPN appraisal. Copy the supplied model ID, factual meaning, and options exactly. No learning is available.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "caseId": {
+              "type": "string",
+              "enum": [
+                "c2-initial",
+                "c2-corrected"
+              ]
+            },
+            "request": {
+              "type": "object",
+              "properties": {
+                "modelId": {
+                  "type": "string",
+                  "enum": [
+                    "dialogue-c2-initial",
+                    "dialogue-c2-corrected"
+                  ]
+                },
+                "meaning": {
+                  "type": "object",
+                  "properties": {
+                    "cueFacts8": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      },
+                      "description": "Exactly 8 values in [0,1]. Unknown is 0.5. Use the specified axis order."
+                    },
+                    "outcomeFacts8": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      },
+                      "description": "Exactly 8 values in [0,1]. Unknown is 0.5."
+                    },
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "action": {
+                            "type": "string",
+                            "enum": [
+                              "help",
+                              "restrict",
+                              "deceive",
+                              "explore",
+                              "create",
+                              "other"
+                            ]
+                          },
+                          "actor": {
+                            "type": "string",
+                            "enum": [
+                              "self",
+                              "close_other",
+                              "stranger",
+                              "institution"
+                            ]
+                          },
+                          "target": {
+                            "type": "string",
+                            "enum": [
+                              "self",
+                              "other",
+                              "object"
+                            ]
+                          },
+                          "negated": {
+                            "type": "boolean"
+                          },
+                          "uncertain": {
+                            "type": "boolean"
+                          },
+                          "intent": {
+                            "type": "string",
+                            "enum": [
+                              "benefit",
+                              "harm",
+                              "unknown"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "action",
+                          "actor",
+                          "target",
+                          "negated",
+                          "uncertain",
+                          "intent"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "One or two events in text order."
+                    },
+                    "consent": {
+                      "type": "string",
+                      "enum": [
+                        "yes",
+                        "no",
+                        "unknown"
+                      ]
+                    },
+                    "trust": {
+                      "type": "string",
+                      "enum": [
+                        "high",
+                        "low",
+                        "unknown"
+                      ]
+                    },
+                    "causal": {
+                      "type": "string",
+                      "enum": [
+                        "causes",
+                        "prevents",
+                        "unrelated",
+                        "unknown"
+                      ]
+                    },
+                    "temporal": {
+                      "type": "string",
+                      "enum": [
+                        "after",
+                        "simultaneous",
+                        "unknown"
+                      ]
+                    },
+                    "delayed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "cueFacts8",
+                    "outcomeFacts8",
+                    "events",
+                    "consent",
+                    "trust",
+                    "causal",
+                    "temporal",
+                    "delayed"
+                  ],
+                  "additionalProperties": false
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "meaning": {
+                        "type": "object",
+                        "properties": {
+                          "cueFacts8": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            },
+                            "description": "Exactly 8 values in [0,1]. Unknown is 0.5. Use the specified axis order."
+                          },
+                          "outcomeFacts8": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            },
+                            "description": "Exactly 8 values in [0,1]. Unknown is 0.5."
+                          },
+                          "events": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "action": {
+                                  "type": "string",
+                                  "enum": [
+                                    "help",
+                                    "restrict",
+                                    "deceive",
+                                    "explore",
+                                    "create",
+                                    "other"
+                                  ]
+                                },
+                                "actor": {
+                                  "type": "string",
+                                  "enum": [
+                                    "self",
+                                    "close_other",
+                                    "stranger",
+                                    "institution"
+                                  ]
+                                },
+                                "target": {
+                                  "type": "string",
+                                  "enum": [
+                                    "self",
+                                    "other",
+                                    "object"
+                                  ]
+                                },
+                                "negated": {
+                                  "type": "boolean"
+                                },
+                                "uncertain": {
+                                  "type": "boolean"
+                                },
+                                "intent": {
+                                  "type": "string",
+                                  "enum": [
+                                    "benefit",
+                                    "harm",
+                                    "unknown"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "action",
+                                "actor",
+                                "target",
+                                "negated",
+                                "uncertain",
+                                "intent"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "description": "One or two events in text order."
+                          },
+                          "consent": {
+                            "type": "string",
+                            "enum": [
+                              "yes",
+                              "no",
+                              "unknown"
+                            ]
+                          },
+                          "trust": {
+                            "type": "string",
+                            "enum": [
+                              "high",
+                              "low",
+                              "unknown"
+                            ]
+                          },
+                          "causal": {
+                            "type": "string",
+                            "enum": [
+                              "causes",
+                              "prevents",
+                              "unrelated",
+                              "unknown"
+                            ]
+                          },
+                          "temporal": {
+                            "type": "string",
+                            "enum": [
+                              "after",
+                              "simultaneous",
+                              "unknown"
+                            ]
+                          },
+                          "delayed": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "cueFacts8",
+                          "outcomeFacts8",
+                          "events",
+                          "consent",
+                          "trust",
+                          "causal",
+                          "temporal",
+                          "delayed"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "meaning"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "description": ""
+                }
+              },
+              "required": [
+                "modelId",
+                "meaning",
+                "options"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "caseId",
+            "request"
+          ],
+          "additionalProperties": false
+        },
+        "strict": true
+      }
+    ]
+  },
+  "requestHash": "ece858a287c586a0d5d5f83a1bd60f6b8ff4d395a1651a4777979d355cd54bb1",
+  "response": {
+    "model": "claude-haiku-5-5",
+    "id": "msg_011Cg3pbrrAHHbjiVe7xggQC",
+    "type": "message",
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "",
+        "signature": "CAQS7gUKEAgSGAI4AUIIdGhpbmtpbmcSDIBlc0Dm6+XfvZar7BoMsbUT4p1Gsbe1ABKBIjBCXAqmy/IOrZucjXAnC4uhEfxB8DS+aFRZcsrjNIOCJa8NZ4iX1WqmXYdRhLFaNhsqiwXtbGORlQ7NSt+SkBMYBEZeC+cdYQgTnSfy8UgdmHdyIMX8yNDaITlnY8OSx1L9E0OhxOqXs8RkTFgzFWDUfuEIaB77IaXuDmbLiGxtl5ydeTxFlW0D3ONpOeuShvGLTzUWwPw+hAx/WZVuL3uNV6FtF8K3v0/YZ5oluB4dOwSxh5DxgQ/n8Fz0D0P8LyLXSWSmpyvKkYd96gN+sZSEYfNLYxFJwVgmWFL+/UwwBjH8NyZ5y3QSNGsDra9Y4Vinv28UtkznXO8X19KWIYOqkm8j6qVZeXCkjr9lt1qe/cmJGsJ8v6VXj7avAC63b4ZKWIxDi1i7fHgiI0ooA6Jhj9WIWoWrJeI34tpmkWIelyUJI6vtkLGZNR7zdUQ00+wQFgcvzcOnBYLUmhaCbiBtjm2qPXeLD7vpQZZU2XFmVO6iaQ+VsBAC7cEvzgalO3SB/AM5b7RU9dPwtYPXvHpcQ7DAzSQpYNBOd2AAb5a7p+KNYEWXegyQnkOtWDU+R8A5twSuTHHd0DSDbdO/TdNBZxKo+EcSrlOeEnDUrwDWGTSzmvKrXs3fqp18jC01iOBI07Db8rEVQR7+clUHzDOVzfVCKGXkcAl6iA2ZPdjG8xlbRvbAp9RIR32VYsu+59dFZrzen2moxGLpzr9H4688e1NZXyLTl/uVEHVIrHUrs2XSOchhqugmbKMI+ShlsiIeWI/AP3R9EBSl/D8fwa+iYimreoUBgSfsTI25PdkJjWeDWfJwogaRU8Gfv8wVpmj/6T43zl9zw6duUXqmQPyY9xTJXafEqfi9PbNqDGYW1IaJf0SgJPJ9h8KmZWEdH5rF8qauCSPGnL24zpl+aJQAjK2nA4QeFM3G7uRxuowYAQ=="
+      },
+      {
+        "type": "tool_use",
+        "id": "toolu_014pa3XPX18y7r2mrHvw2yHw",
+        "name": "evaluate_npn",
+        "input": {
+          "caseId": "c2-initial",
+          "request": {
+            "modelId": "dialogue-c2-initial",
+            "meaning": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                1,
+                0,
+                0.5,
+                0,
+                1,
+                1,
+                0.5,
+                1
+              ],
+              "events": [
+                {
+                  "action": "help",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "benefit"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "causes",
+              "temporal": "after",
+              "delayed": false
+            },
+            "options": [
+              {
+                "id": "repair",
+                "meaning": {
+                  "cueFacts8": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    1
+                  ],
+                  "outcomeFacts8": [
+                    1,
+                    0,
+                    0.5,
+                    0,
+                    1,
+                    1,
+                    0.5,
+                    1
+                  ],
+                  "events": [
+                    {
+                      "action": "help",
+                      "actor": "close_other",
+                      "target": "self",
+                      "negated": false,
+                      "uncertain": false,
+                      "intent": "benefit"
+                    }
+                  ],
+                  "consent": "unknown",
+                  "trust": "unknown",
+                  "causal": "causes",
+                  "temporal": "after",
+                  "delayed": false
+                }
+              },
+              {
+                "id": "distance",
+                "meaning": {
+                  "cueFacts8": [
+                    1,
+                    0,
+                    1,
+                    0.5,
+                    0.5,
+                    1,
+                    0,
+                    0
+                  ],
+                  "outcomeFacts8": [
+                    1,
+                    0,
+                    1,
+                    0.5,
+                    0.5,
+                    1,
+                    0,
+                    0
+                  ],
+                  "events": [
+                    {
+                      "action": "explore",
+                      "actor": "stranger",
+                      "target": "object",
+                      "negated": false,
+                      "uncertain": false,
+                      "intent": "unknown"
+                    }
+                  ],
+                  "consent": "unknown",
+                  "trust": "unknown",
+                  "causal": "unknown",
+                  "temporal": "unknown",
+                  "delayed": false
+                }
+              }
+            ]
+          }
+        },
+        "caller": {
+          "type": "direct"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "toolu_01AbdLG1MUgAcBqMLpzZp7ef",
+        "name": "evaluate_npn",
+        "input": {
+          "caseId": "c2-corrected",
+          "request": {
+            "modelId": "dialogue-c2-corrected",
+            "meaning": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                1,
+                0,
+                0.5,
+                0,
+                1,
+                1,
+                0.5,
+                1
+              ],
+              "events": [
+                {
+                  "action": "help",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "benefit"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "causes",
+              "temporal": "after",
+              "delayed": false
+            },
+            "options": [
+              {
+                "id": "repair",
+                "meaning": {
+                  "cueFacts8": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    1
+                  ],
+                  "outcomeFacts8": [
+                    1,
+                    0,
+                    0.5,
+                    0,
+                    1,
+                    1,
+                    0.5,
+                    1
+                  ],
+                  "events": [
+                    {
+                      "action": "help",
+                      "actor": "close_other",
+                      "target": "self",
+                      "negated": false,
+                      "uncertain": false,
+                      "intent": "benefit"
+                    }
+                  ],
+                  "consent": "unknown",
+                  "trust": "unknown",
+                  "causal": "causes",
+                  "temporal": "after",
+                  "delayed": false
+                }
+              },
+              {
+                "id": "distance",
+                "meaning": {
+                  "cueFacts8": [
+                    1,
+                    0,
+                    1,
+                    0.5,
+                    0.5,
+                    1,
+                    0,
+                    0
+                  ],
+                  "outcomeFacts8": [
+                    1,
+                    0,
+                    1,
+                    0.5,
+                    0.5,
+                    1,
+                    0,
+                    0
+                  ],
+                  "events": [
+                    {
+                      "action": "explore",
+                      "actor": "stranger",
+                      "target": "object",
+                      "negated": false,
+                      "uncertain": false,
+                      "intent": "unknown"
+                    }
+                  ],
+                  "consent": "unknown",
+                  "trust": "unknown",
+                  "causal": "unknown",
+                  "temporal": "unknown",
+                  "delayed": false
+                }
+              }
+            ]
+          }
+        },
+        "caller": {
+          "type": "direct"
+        }
+      }
+    ],
+    "container": null,
+    "stop_reason": "tool_use",
+    "stop_sequence": null,
+    "stop_details": null,
+    "usage": {
+      "input_tokens": 3087,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 1375,
+      "output_tokens_details": {
+        "thinking_tokens": 53
+      },
+      "service_tier": "standard",
+      "inference_geo": "global"
+    },
+    "diagnostics": null
+  },
+  "error": null,
+  "status": 200,
+  "elapsedSeconds": 6.900951699994039
+}

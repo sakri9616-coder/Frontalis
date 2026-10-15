@@ -1,0 +1,245 @@
+{
+  "sourceHash": "c699c0acd04bc1c514d346a3f397cad9f3c07df0f50db04ef5310702dcbe6d80",
+  "rows": [
+    {
+      "seed": 6311,
+      "capacity": 0,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 2.6938504549906632,
+      "emotionNormAfterIdle": 0.04896415878834499
+    },
+    {
+      "seed": 6311,
+      "capacity": 0,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6311,
+      "capacity": 1,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 2.6938504549906632,
+      "emotionNormAfterIdle": 0.04896415878834499
+    },
+    {
+      "seed": 6311,
+      "capacity": 1,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6311,
+      "capacity": 2,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 2.6938504549906632,
+      "emotionNormAfterIdle": 0.04896415878834499
+    },
+    {
+      "seed": 6311,
+      "capacity": 2,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6311,
+      "capacity": 3,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 2.6938504549906632,
+      "emotionNormAfterIdle": 0.04896415878834499
+    },
+    {
+      "seed": 6311,
+      "capacity": 3,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6311,
+      "capacity": 4,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 2.6938504549906632,
+      "emotionNormAfterIdle": 0.04896415878834499
+    },
+    {
+      "seed": 6311,
+      "capacity": 4,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6312,
+      "capacity": 0,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 2.2492218613740045,
+      "emotionNormAfterIdle": 0.040882468500247654
+    },
+    {
+      "seed": 6312,
+      "capacity": 0,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6312,
+      "capacity": 1,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 2.2492218613740045,
+      "emotionNormAfterIdle": 0.040882468500247654
+    },
+    {
+      "seed": 6312,
+      "capacity": 1,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6312,
+      "capacity": 2,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 2.2492218613740045,
+      "emotionNormAfterIdle": 0.040882468500247654
+    },
+    {
+      "seed": 6312,
+      "capacity": 2,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6312,
+      "capacity": 3,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 2.2492218613740045,
+      "emotionNormAfterIdle": 0.040882468500247654
+    },
+    {
+      "seed": 6312,
+      "capacity": 3,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6312,
+      "capacity": 4,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 2.2492218613740045,
+      "emotionNormAfterIdle": 0.040882468500247654
+    },
+    {
+      "seed": 6312,
+      "capacity": 4,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6313,
+      "capacity": 0,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 1.6976551727359275,
+      "emotionNormAfterIdle": 0.03085704230229265
+    },
+    {
+      "seed": 6313,
+      "capacity": 0,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6313,
+      "capacity": 1,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 1.6976551727359275,
+      "emotionNormAfterIdle": 0.03085704230229265
+    },
+    {
+      "seed": 6313,
+      "capacity": 1,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6313,
+      "capacity": 2,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 1.6976551727359275,
+      "emotionNormAfterIdle": 0.03085704230229265
+    },
+    {
+      "seed": 6313,
+      "capacity": 2,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6313,
+      "capacity": 3,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 1.6976551727359275,
+      "emotionNormAfterIdle": 0.03085704230229265
+    },
+    {
+      "seed": 6313,
+      "capacity": 3,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    },
+    {
+      "seed": 6313,
+      "capacity": 4,
+      "mode": "learning-off",
+      "weightsUnchanged": true,
+      "emotionNormBeforeIdle": 1.6976551727359275,
+      "emotionNormAfterIdle": 0.03085704230229265
+    },
+    {
+      "seed": 6313,
+      "capacity": 4,
+      "mode": "affect-off",
+      "weightsUnchanged": false,
+      "emotionNormBeforeIdle": 0.0,
+      "emotionNormAfterIdle": 0.0
+    }
+  ]
+}

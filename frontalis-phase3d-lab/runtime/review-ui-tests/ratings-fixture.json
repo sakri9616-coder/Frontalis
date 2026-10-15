@@ -1,0 +1,14 @@
+{
+  "formatVersion": 1,
+  "selectionId": "frontalis-phase3d-review-v1",
+  "datasetId": "ad5de1f6dcf6d702db7eb5aa8744afa7dca5bb821c570fc483d0d6765a9b8183",
+  "reviewedAt": "2026-10-15T02:06:38.437Z",
+  "scores": {
+    "P001": {
+      "経験・条件と発言の対応の納得感": "4",
+      "内的信号への忠実さ": "3",
+      "会話の自然さ": "5",
+      "memo": "試験用メモ。正式な人間評価ではありません。"
+    }
+  }
+}

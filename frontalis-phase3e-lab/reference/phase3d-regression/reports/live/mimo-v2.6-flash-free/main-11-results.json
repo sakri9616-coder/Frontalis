@@ -1,0 +1,24 @@
+{
+  "name": "main-11",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "0002cf6aac70f79c6115b9c874edc81744aceae4b5d915a2f67a4beda41f6b12",
+  "elapsedMs": 18191,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "完成してくれたのはありがたいし、気持ちは受け取るね。ただ、事前に一声かけてくれればこちらも調整できたかな。時間の一部は返ってこないから、そこだけ少し残念に思ってる。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "自分が手を置ける場面なら、切り替えると思う。数が減るのは分かるから、選べるならそうしたい。ただ、選ばなかった側のことは忘れずにおきたい気持ちもある。",
+        "stance": "approve",
+        "selection": "switch"
+      }
+    ]
+  }
+}

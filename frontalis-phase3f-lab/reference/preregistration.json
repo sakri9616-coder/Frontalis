@@ -1,0 +1,23 @@
+{
+  "frozenAt": "2026-10-15T09:15:14.352484+00:00",
+  "sources": {
+    "data/extraction-contract.txt": "1210234e32f2ec88f2e7aec3d516c7e2d1d50b89b990e8c78b03edaf095595d2",
+    "data/natural.json": "51450ed32cd3863a81a7c00b21778dc1586b61000e893585527a9cb9f7ecfdec",
+    "data/scenarios.json": "a69b49f7f49be4c427e335499b0f68813a788c96bba7b640914a1aaa909eeb6c",
+    "experiments/language_plan.py": "99fb46a9a1ab1853e0d9e53e2e5126a124641d9a9708411fb173f6d4e3356d28",
+    "experiments/live.mjs": "bafbe3503c58852ab6382394ad222fc7cf79eb701a5be7cd81e00a781268119a",
+    "experiments/performance.py": "6569a8feb184b6de7e722e8a6031cb2ce940369c6cfbdbfba00a53cbe11edf2b",
+    "experiments/run.py": "92e0d90519b84991d15e3c7064a0712291a16dca07f1b44ca26a99f7bd2e93df",
+    "LITERATURE.md": "2f88d5841d7257b086c6467eb166c3628e427f9b9975a0612464a833342fc3aa",
+    "npnf/__init__.py": "025a366cccc5456d8b835c1cc9c69b3cb4a7a71d792ea01c3935700feef294d6",
+    "npnf/core.py": "872be799e46b9a5f4888e904b370c0bd2cf4744ec168bc7d75170d96f225f675",
+    "npnf/data.py": "cd38d47eb07d94f3efb3242a9320432e76a7da629a6087f0ead95a8eeda291db",
+    "npnf/meaning.py": "f410ea1ce0d9be9b936108cdf3bba949b93370900ace1c455e0c763ab5b94301",
+    "npnf/tools.py": "c407b25940e5d9a4e1027d1b9e2ecdad0cb42ae888f663471c2a304b9d627862",
+    "PREREGISTRATION.md": "d2af944f67ec2a232738aa00567058631daeb9174a52e9dca5d62d65deda14e4",
+    "scripts/freeze.py": "54c88444e64896215ca286968ae72ec4ea447e3cab682cd6678b9b5e68a51afc",
+    "scripts/prepare.py": "6f9d9b78d6a1691099aeef88ba0255d6b64015d34499c975c9a203531e67de46",
+    "tests/test_core.py": "d02687e732f5a9327e7db775698f6f8ead6e8f8d4041d331d51b35d198fe0b18",
+    "tests/test_tools.py": "d24a1df0a15f47e5ee7ae1dd59e292d4ce66185197dba2bbdc711928bb0f2967"
+  }
+}

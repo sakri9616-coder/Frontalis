@@ -1,0 +1,24 @@
+{
+  "name": "main-10",
+  "engine": "opencode/nemotron-3-ultra-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "d94ce48e66dd15768f5540df2f918f468bb568e28332ab1cd727cb75ee47e35c",
+  "elapsedMs": 11856,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "うん、手伝うよ。向こうが全部決めるなら、私は言われたことだけやればいいし、気楽でいいかも。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "面白そうだから乗るよ。ルールは向こう持ちなら、文句言わずに動くだけだし。",
+        "stance": "approve",
+        "selection": "hold"
+      }
+    ]
+  }
+}

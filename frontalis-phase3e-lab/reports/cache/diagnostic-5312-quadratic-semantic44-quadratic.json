@@ -1,0 +1,10 @@
+{
+  "seed": 5312,
+  "teacher": "quadratic",
+  "representation": "semantic44",
+  "method": "quadratic",
+  "validationMSE": 0.036343551152573574,
+  "testMSE": 0.03368079074172653,
+  "preregistrationSha256": "29e2c6e13ace711a427824bcdf81e59c0070f5bf9671e6c329e8801d570fd58c",
+  "elapsedSeconds": 0.37778209999669343
+}

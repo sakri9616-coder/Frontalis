@@ -1,0 +1,1625 @@
+{
+  "scope": "CPU1M completed subset and all24 CPU100k validation calibration, no CPU completion claim.",
+  "conditions": [
+    {
+      "world": "linear",
+      "origin": "nn",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/linear/nn/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/linear/nn/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.00021475423449376484,
+      "gpuValidationMSE": 0.00021475423449376446,
+      "validationMSEAbsoluteDifference": 3.7947076036992655e-19,
+      "validationOutputMaxAbsoluteDifference": 1.6653345369377348e-15,
+      "validationOutputMeanAbsoluteDifference": 1.6402381607576575e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.024517125042607744,
+          "gpuValidationMSE": 0.024517125042607748,
+          "absoluteDifference": 3.469446951953614e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.0006226486056063036,
+          "gpuValidationMSE": 0.0006226486056063041,
+          "absoluteDifference": 5.421010862427522e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.0005531283754418331,
+          "gpuValidationMSE": 0.0005531283754418326,
+          "absoluteDifference": 4.336808689942018e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.0003865031906238572,
+          "gpuValidationMSE": 0.00038650319062385623,
+          "absoluteDifference": 9.75781955236954e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.00021475423449376484,
+          "gpuValidationMSE": 0.00021475423449376446,
+          "absoluteDifference": 3.7947076036992655e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.0001902374770686173,
+      "gpuFinalTestMSE": 0.0001902374770686172,
+      "finalTestMSEAbsoluteDifference": 1.0842021724855044e-19,
+      "finalTestOutputMaxAbsoluteDifference": 1.942890293094024e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "linear",
+      "origin": "nn",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/linear/nn/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/linear/nn/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.0002011421990766547,
+      "gpuValidationMSE": 0.00020114219907665516,
+      "validationMSEAbsoluteDifference": 4.607859233063394e-19,
+      "validationOutputMaxAbsoluteDifference": 1.6375789613221059e-15,
+      "validationOutputMeanAbsoluteDifference": 1.6455672080429544e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.0058507844949081044,
+          "gpuValidationMSE": 0.0058507844949081044,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.00038046386434444285,
+          "gpuValidationMSE": 0.00038046386434444323,
+          "absoluteDifference": 3.7947076036992655e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00035466073149099025,
+          "gpuValidationMSE": 0.0003546607314909904,
+          "absoluteDifference": 1.6263032587282567e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.0002792500689209638,
+          "gpuValidationMSE": 0.00027925006892096316,
+          "absoluteDifference": 6.505213034913027e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.0002011421990766547,
+          "gpuValidationMSE": 0.00020114219907665516,
+          "absoluteDifference": 4.607859233063394e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.00019571829970088778,
+      "gpuFinalTestMSE": 0.00019571829970088772,
+      "finalTestMSEAbsoluteDifference": 5.421010862427522e-20,
+      "finalTestOutputMaxAbsoluteDifference": 1.4155343563970746e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "linear",
+      "origin": "linear",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/linear/linear/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/linear/linear/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 3.948296928754731e-05,
+      "gpuValidationMSE": 3.948296928754713e-05,
+      "validationMSEAbsoluteDifference": 1.8295911660692887e-19,
+      "validationOutputMaxAbsoluteDifference": 1.4432899320127035e-15,
+      "validationOutputMeanAbsoluteDifference": 1.6262548568455564e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.009076656586086909,
+          "gpuValidationMSE": 0.009076656586086909,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 5.740512478031811e-05,
+          "gpuValidationMSE": 5.740512478031812e-05,
+          "absoluteDifference": 1.3552527156068805e-20
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 4.812314406934046e-05,
+          "gpuValidationMSE": 4.812314406934031e-05,
+          "absoluteDifference": 1.4907779871675686e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 4.0263689167273444e-05,
+          "gpuValidationMSE": 4.026368916727339e-05,
+          "absoluteDifference": 5.421010862427522e-20
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 3.948296928754731e-05,
+          "gpuValidationMSE": 3.948296928754713e-05,
+          "absoluteDifference": 1.8295911660692887e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 2.3065225636346836e-05,
+      "gpuFinalTestMSE": 2.3065225636346918e-05,
+      "finalTestMSEAbsoluteDifference": 8.131516293641283e-20,
+      "finalTestOutputMaxAbsoluteDifference": 1.9984014443252818e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "linear",
+      "origin": "linear",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/linear/linear/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/linear/linear/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 5.911526350117529e-05,
+      "gpuValidationMSE": 5.911526350117485e-05,
+      "validationMSEAbsoluteDifference": 4.404571325722362e-19,
+      "validationOutputMaxAbsoluteDifference": 1.582067810090848e-15,
+      "validationOutputMeanAbsoluteDifference": 1.5441168619032395e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.0030399851571111017,
+          "gpuValidationMSE": 0.003039985157111101,
+          "absoluteDifference": 8.673617379884035e-19
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.0001249234637797515,
+          "gpuValidationMSE": 0.00012492346377975148,
+          "absoluteDifference": 2.710505431213761e-20
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00011260004956802763,
+          "gpuValidationMSE": 0.00011260004956802778,
+          "absoluteDifference": 1.4907779871675686e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 8.721228287733708e-05,
+          "gpuValidationMSE": 8.721228287733705e-05,
+          "absoluteDifference": 2.710505431213761e-20
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 5.911526350117529e-05,
+          "gpuValidationMSE": 5.911526350117485e-05,
+          "absoluteDifference": 4.404571325722362e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 6.080457008793999e-05,
+      "gpuFinalTestMSE": 6.080457008794004e-05,
+      "finalTestMSEAbsoluteDifference": 4.743384504624082e-20,
+      "finalTestOutputMaxAbsoluteDifference": 1.7763568394002505e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "linear",
+      "origin": "quadratic",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/linear/quadratic/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/linear/quadratic/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.009893256635411119,
+      "gpuValidationMSE": 0.009893256635411126,
+      "validationMSEAbsoluteDifference": 6.938893903907228e-18,
+      "validationOutputMaxAbsoluteDifference": 4.9404924595819466e-15,
+      "validationOutputMeanAbsoluteDifference": 4.670781680573714e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.06731269890530119,
+          "gpuValidationMSE": 0.06731269890530119,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.022899889782122648,
+          "gpuValidationMSE": 0.02289988978212265,
+          "absoluteDifference": 3.469446951953614e-18
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.021498077044520284,
+          "gpuValidationMSE": 0.021498077044520284,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.0163818431656686,
+          "gpuValidationMSE": 0.016381843165668594,
+          "absoluteDifference": 6.938893903907228e-18
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.009893256635411119,
+          "gpuValidationMSE": 0.009893256635411126,
+          "absoluteDifference": 6.938893903907228e-18
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.013295896283463785,
+      "gpuFinalTestMSE": 0.013295896283463792,
+      "finalTestMSEAbsoluteDifference": 6.938893903907228e-18,
+      "finalTestOutputMaxAbsoluteDifference": 5.828670879282072e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "linear",
+      "origin": "quadratic",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/linear/quadratic/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/linear/quadratic/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.0024309901309386684,
+      "gpuValidationMSE": 0.0024309901309382794,
+      "validationMSEAbsoluteDifference": 3.89011739487799e-16,
+      "validationOutputMaxAbsoluteDifference": 1.1804446309326977e-13,
+      "validationOutputMeanAbsoluteDifference": 1.3492117734308283e-14,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.012752216102430878,
+          "gpuValidationMSE": 0.012752216102430877,
+          "absoluteDifference": 1.734723475976807e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.0064577831653583745,
+          "gpuValidationMSE": 0.006457783165358374,
+          "absoluteDifference": 8.673617379884035e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.006067785229212122,
+          "gpuValidationMSE": 0.006067785229212123,
+          "absoluteDifference": 8.673617379884035e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.0036747544472804767,
+          "gpuValidationMSE": 0.0036747544472804762,
+          "absoluteDifference": 4.336808689942018e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.0024309901309386684,
+          "gpuValidationMSE": 0.0024309901309382794,
+          "absoluteDifference": 3.89011739487799e-16
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.0027870843766207892,
+      "gpuFinalTestMSE": 0.0027870843766206153,
+      "finalTestMSEAbsoluteDifference": 1.739060284666749e-16,
+      "finalTestOutputMaxAbsoluteDifference": 1.1679546219056647e-13,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "linear",
+      "origin": "memory",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/linear/memory/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/linear/memory/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.00022072747378974254,
+      "gpuValidationMSE": 0.0002207274737897428,
+      "validationMSEAbsoluteDifference": 2.710505431213761e-19,
+      "validationOutputMaxAbsoluteDifference": 2.275957200481571e-15,
+      "validationOutputMeanAbsoluteDifference": 1.5397316513305972e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.07667208371001825,
+          "gpuValidationMSE": 0.07667208371001825,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.00032721759515756167,
+          "gpuValidationMSE": 0.00032721759515756243,
+          "absoluteDifference": 7.589415207398531e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00027324707381064836,
+          "gpuValidationMSE": 0.00027324707381064787,
+          "absoluteDifference": 4.87890977618477e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.0002483969623216709,
+          "gpuValidationMSE": 0.0002483969623216705,
+          "absoluteDifference": 3.7947076036992655e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.00022072747378974254,
+          "gpuValidationMSE": 0.0002207274737897428,
+          "absoluteDifference": 2.710505431213761e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.00029764872879488053,
+      "gpuFinalTestMSE": 0.0002976487287948806,
+      "finalTestMSEAbsoluteDifference": 5.421010862427522e-20,
+      "finalTestOutputMaxAbsoluteDifference": 1.27675647831893e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "linear",
+      "origin": "memory",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/linear/memory/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/linear/memory/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.0001096689595033749,
+      "gpuValidationMSE": 0.00010966895950337468,
+      "validationMSEAbsoluteDifference": 2.168404344971009e-19,
+      "validationOutputMaxAbsoluteDifference": 8.326672684688674e-16,
+      "validationOutputMeanAbsoluteDifference": 1.2067847806121468e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.01387069518077078,
+          "gpuValidationMSE": 0.013870695180770781,
+          "absoluteDifference": 1.734723475976807e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.00016392357492979218,
+          "gpuValidationMSE": 0.00016392357492979218,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00015053124068251504,
+          "gpuValidationMSE": 0.0001505312406825149,
+          "absoluteDifference": 1.3552527156068805e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.00012720376648465103,
+          "gpuValidationMSE": 0.00012720376648465116,
+          "absoluteDifference": 1.3552527156068805e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.0001096689595033749,
+          "gpuValidationMSE": 0.00010966895950337468,
+          "absoluteDifference": 2.168404344971009e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.00012902378665712483,
+      "gpuFinalTestMSE": 0.00012902378665712483,
+      "finalTestMSEAbsoluteDifference": 0.0,
+      "finalTestOutputMaxAbsoluteDifference": 1.9914625504213745e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "quadratic",
+      "origin": "nn",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/quadratic/nn/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/quadratic/nn/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.00020389290345894416,
+      "gpuValidationMSE": 0.00020389290345894446,
+      "validationMSEAbsoluteDifference": 2.981555974335137e-19,
+      "validationOutputMaxAbsoluteDifference": 1.5543122344752192e-15,
+      "validationOutputMeanAbsoluteDifference": 1.9888720816592573e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.021847659410804077,
+          "gpuValidationMSE": 0.021847659410804077,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.0006447698154500145,
+          "gpuValidationMSE": 0.0006447698154500147,
+          "absoluteDifference": 2.168404344971009e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.0005521991255766818,
+          "gpuValidationMSE": 0.0005521991255766823,
+          "absoluteDifference": 4.336808689942018e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.0003216775105434983,
+          "gpuValidationMSE": 0.00032167751054349846,
+          "absoluteDifference": 1.6263032587282567e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.00020389290345894416,
+          "gpuValidationMSE": 0.00020389290345894446,
+          "absoluteDifference": 2.981555974335137e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.0001862998098019595,
+      "gpuFinalTestMSE": 0.00018629980980195974,
+      "finalTestMSEAbsoluteDifference": 2.439454888092385e-19,
+      "finalTestOutputMaxAbsoluteDifference": 2.942091015256665e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "quadratic",
+      "origin": "nn",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/quadratic/nn/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/quadratic/nn/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.00024688411865164906,
+      "gpuValidationMSE": 0.000246884118651649,
+      "validationMSEAbsoluteDifference": 5.421010862427522e-20,
+      "validationOutputMaxAbsoluteDifference": 1.7208456881689926e-15,
+      "validationOutputMeanAbsoluteDifference": 1.5892516175212186e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.005382195447694959,
+          "gpuValidationMSE": 0.0053821954476949594,
+          "absoluteDifference": 8.673617379884035e-19
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.00038926178787679046,
+          "gpuValidationMSE": 0.0003892617878767909,
+          "absoluteDifference": 4.336808689942018e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00035892480410698363,
+          "gpuValidationMSE": 0.0003589248041069829,
+          "absoluteDifference": 7.047314121155779e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.00028101139709882036,
+          "gpuValidationMSE": 0.0002810113970988206,
+          "absoluteDifference": 2.168404344971009e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.00024688411865164906,
+          "gpuValidationMSE": 0.000246884118651649,
+          "absoluteDifference": 5.421010862427522e-20
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.00022261825309146237,
+      "gpuFinalTestMSE": 0.00022261825309146242,
+      "finalTestMSEAbsoluteDifference": 5.421010862427522e-20,
+      "finalTestOutputMaxAbsoluteDifference": 1.4988010832439613e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "quadratic",
+      "origin": "linear",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/quadratic/linear/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/quadratic/linear/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.0125,
+      "gpuSelectedHyperparameter": 0.0125,
+      "selectionSame": true,
+      "cpuValidationMSE": 4.8666339164295584e-05,
+      "gpuValidationMSE": 4.866633916429553e-05,
+      "validationMSEAbsoluteDifference": 5.421010862427522e-20,
+      "validationOutputMaxAbsoluteDifference": 1.7763568394002505e-15,
+      "validationOutputMeanAbsoluteDifference": 1.6412667007650375e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.013215059927981406,
+          "gpuValidationMSE": 0.013215059927981403,
+          "absoluteDifference": 3.469446951953614e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 6.892235451309507e-05,
+          "gpuValidationMSE": 6.89223545130951e-05,
+          "absoluteDifference": 2.710505431213761e-20
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 5.6900669975618414e-05,
+          "gpuValidationMSE": 5.6900669975618475e-05,
+          "absoluteDifference": 6.098637220230962e-20
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 4.8666339164295584e-05,
+          "gpuValidationMSE": 4.866633916429553e-05,
+          "absoluteDifference": 5.421010862427522e-20
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 4.979634206921084e-05,
+          "gpuValidationMSE": 4.9796342069210586e-05,
+          "absoluteDifference": 2.574980159653073e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 3.376921770353859e-05,
+      "gpuFinalTestMSE": 3.3769217703538676e-05,
+      "finalTestMSEAbsoluteDifference": 8.809142651444724e-20,
+      "finalTestOutputMaxAbsoluteDifference": 1.8596235662471372e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "quadratic",
+      "origin": "linear",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/quadratic/linear/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/quadratic/linear/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 7.107481846564425e-05,
+      "gpuValidationMSE": 7.107481846564392e-05,
+      "validationMSEAbsoluteDifference": 3.2526065174565133e-19,
+      "validationOutputMaxAbsoluteDifference": 1.1934897514720433e-15,
+      "validationOutputMeanAbsoluteDifference": 1.6804940065994518e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.003803492972624969,
+          "gpuValidationMSE": 0.00380349297262497,
+          "absoluteDifference": 8.673617379884035e-19
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.00015052447666729277,
+          "gpuValidationMSE": 0.0001505244766672928,
+          "absoluteDifference": 2.710505431213761e-20
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00013957738962824028,
+          "gpuValidationMSE": 0.00013957738962824023,
+          "absoluteDifference": 5.421010862427522e-20
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.00011139232805598679,
+          "gpuValidationMSE": 0.00011139232805598713,
+          "absoluteDifference": 3.3881317890172014e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 7.107481846564425e-05,
+          "gpuValidationMSE": 7.107481846564392e-05,
+          "absoluteDifference": 3.2526065174565133e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 7.039184609986915e-05,
+      "gpuFinalTestMSE": 7.039184609986924e-05,
+      "finalTestMSEAbsoluteDifference": 9.486769009248164e-20,
+      "finalTestOutputMaxAbsoluteDifference": 2.435551760271437e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "quadratic",
+      "origin": "quadratic",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/quadratic/quadratic/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/quadratic/quadratic/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.009264498944489346,
+      "gpuValidationMSE": 0.009264498944489339,
+      "validationMSEAbsoluteDifference": 6.938893903907228e-18,
+      "validationOutputMaxAbsoluteDifference": 2.1649348980190553e-15,
+      "validationOutputMeanAbsoluteDifference": 3.115261335106296e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.05906373178183209,
+          "gpuValidationMSE": 0.0590637317818321,
+          "absoluteDifference": 6.938893903907228e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.02350693057658439,
+          "gpuValidationMSE": 0.02350693057658439,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.021928403946743443,
+          "gpuValidationMSE": 0.021928403946743436,
+          "absoluteDifference": 6.938893903907228e-18
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.014729014384504663,
+          "gpuValidationMSE": 0.014729014384504672,
+          "absoluteDifference": 8.673617379884035e-18
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.009264498944489346,
+          "gpuValidationMSE": 0.009264498944489339,
+          "absoluteDifference": 6.938893903907228e-18
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.011098766178163539,
+      "gpuFinalTestMSE": 0.011098766178163544,
+      "finalTestMSEAbsoluteDifference": 5.204170427930421e-18,
+      "finalTestOutputMaxAbsoluteDifference": 2.7478019859472624e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "quadratic",
+      "origin": "quadratic",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/quadratic/quadratic/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/quadratic/quadratic/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.0020718370950066124,
+      "gpuValidationMSE": 0.0020718370950066115,
+      "validationMSEAbsoluteDifference": 8.673617379884035e-19,
+      "validationOutputMaxAbsoluteDifference": 1.3877787807814457e-15,
+      "validationOutputMeanAbsoluteDifference": 1.7145011693846444e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.01124668746892433,
+          "gpuValidationMSE": 0.011246687468924332,
+          "absoluteDifference": 1.734723475976807e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.006081449629794594,
+          "gpuValidationMSE": 0.006081449629794594,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.005575228355731844,
+          "gpuValidationMSE": 0.0055752283557318465,
+          "absoluteDifference": 2.6020852139652106e-18
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.003077755641527686,
+          "gpuValidationMSE": 0.0030777556415276875,
+          "absoluteDifference": 1.3010426069826053e-18
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.0020718370950066124,
+          "gpuValidationMSE": 0.0020718370950066115,
+          "absoluteDifference": 8.673617379884035e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.002449441179206229,
+      "gpuFinalTestMSE": 0.0024494411792062285,
+      "finalTestMSEAbsoluteDifference": 4.336808689942018e-19,
+      "finalTestOutputMaxAbsoluteDifference": 1.27675647831893e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "quadratic",
+      "origin": "memory",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/quadratic/memory/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/quadratic/memory/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.00023436995188496005,
+      "gpuValidationMSE": 0.0002343699518849592,
+      "validationMSEAbsoluteDifference": 8.402566836762659e-19,
+      "validationOutputMaxAbsoluteDifference": 7.216449660063518e-16,
+      "validationOutputMeanAbsoluteDifference": 1.696466627890533e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.07642383101469244,
+          "gpuValidationMSE": 0.07642383101469243,
+          "absoluteDifference": 1.3877787807814457e-17
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.0003574601596630441,
+          "gpuValidationMSE": 0.0003574601596630437,
+          "absoluteDifference": 4.336808689942018e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.0003023253775706082,
+          "gpuValidationMSE": 0.0003023253775706092,
+          "absoluteDifference": 1.0299920638612292e-18
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.0002682223695766305,
+          "gpuValidationMSE": 0.0002682223695766303,
+          "absoluteDifference": 2.168404344971009e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.00023436995188496005,
+          "gpuValidationMSE": 0.0002343699518849592,
+          "absoluteDifference": 8.402566836762659e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.00035889199444764496,
+      "gpuFinalTestMSE": 0.00035889199444764507,
+      "finalTestMSEAbsoluteDifference": 1.0842021724855044e-19,
+      "finalTestOutputMaxAbsoluteDifference": 1.1657341758564144e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "quadratic",
+      "origin": "memory",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/quadratic/memory/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/quadratic/memory/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.0001253830551373365,
+      "gpuValidationMSE": 0.00012538305513733634,
+      "validationMSEAbsoluteDifference": 1.6263032587282567e-19,
+      "validationOutputMaxAbsoluteDifference": 9.298117831235686e-16,
+      "validationOutputMeanAbsoluteDifference": 1.2862993935121105e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.013922898193533382,
+          "gpuValidationMSE": 0.013922898193533382,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.0001872550193216932,
+          "gpuValidationMSE": 0.00018725501932169325,
+          "absoluteDifference": 5.421010862427522e-20
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00017301596317811118,
+          "gpuValidationMSE": 0.00017301596317811137,
+          "absoluteDifference": 1.8973538018496328e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.00014621143583918556,
+          "gpuValidationMSE": 0.00014621143583918572,
+          "absoluteDifference": 1.6263032587282567e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.0001253830551373365,
+          "gpuValidationMSE": 0.00012538305513733634,
+          "absoluteDifference": 1.6263032587282567e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.00015553951393488464,
+      "gpuFinalTestMSE": 0.00015553951393488483,
+      "finalTestMSEAbsoluteDifference": 1.8973538018496328e-19,
+      "finalTestOutputMaxAbsoluteDifference": 1.1102230246251565e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "nonlinear",
+      "origin": "nn",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/nonlinear/nn/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/nonlinear/nn/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.00021142422225448333,
+      "gpuValidationMSE": 0.0002114242222544835,
+      "validationMSEAbsoluteDifference": 1.6263032587282567e-19,
+      "validationOutputMaxAbsoluteDifference": 1.887379141862766e-15,
+      "validationOutputMeanAbsoluteDifference": 1.726011137090763e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.016070031184552625,
+          "gpuValidationMSE": 0.016070031184552625,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.0005155280833212401,
+          "gpuValidationMSE": 0.0005155280833212405,
+          "absoluteDifference": 4.336808689942018e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.0004462414978966012,
+          "gpuValidationMSE": 0.0004462414978966012,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.00030224766698606724,
+          "gpuValidationMSE": 0.000302247666986067,
+          "absoluteDifference": 2.168404344971009e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.00021142422225448333,
+          "gpuValidationMSE": 0.0002114242222544835,
+          "absoluteDifference": 1.6263032587282567e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.00018937270902326096,
+      "gpuFinalTestMSE": 0.00018937270902326083,
+      "finalTestMSEAbsoluteDifference": 1.3552527156068805e-19,
+      "finalTestOutputMaxAbsoluteDifference": 1.7208456881689926e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "nonlinear",
+      "origin": "nn",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/nonlinear/nn/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/nonlinear/nn/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.00014206954805853655,
+      "gpuValidationMSE": 0.0001420695480585365,
+      "validationMSEAbsoluteDifference": 5.421010862427522e-20,
+      "validationOutputMaxAbsoluteDifference": 1.3877787807814457e-15,
+      "validationOutputMeanAbsoluteDifference": 1.4928507977942067e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.00324730053099517,
+          "gpuValidationMSE": 0.0032473005309951682,
+          "absoluteDifference": 1.734723475976807e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.00025886644296654697,
+          "gpuValidationMSE": 0.0002588664429665468,
+          "absoluteDifference": 1.6263032587282567e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00024341207254708008,
+          "gpuValidationMSE": 0.00024341207254708003,
+          "absoluteDifference": 5.421010862427522e-20
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.00020602965942907774,
+          "gpuValidationMSE": 0.00020602965942907793,
+          "absoluteDifference": 1.8973538018496328e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.00014206954805853655,
+          "gpuValidationMSE": 0.0001420695480585365,
+          "absoluteDifference": 5.421010862427522e-20
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.00017515144329545537,
+      "gpuFinalTestMSE": 0.0001751514432954554,
+      "finalTestMSEAbsoluteDifference": 2.710505431213761e-20,
+      "finalTestOutputMaxAbsoluteDifference": 1.4432899320127035e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "nonlinear",
+      "origin": "linear",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/nonlinear/linear/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/nonlinear/linear/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 2.6519200085957407e-05,
+      "gpuValidationMSE": 2.6519200085957397e-05,
+      "validationMSEAbsoluteDifference": 1.0164395367051604e-20,
+      "validationOutputMaxAbsoluteDifference": 1.790234627208065e-15,
+      "validationOutputMeanAbsoluteDifference": 1.796542360561561e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.006465048482671736,
+          "gpuValidationMSE": 0.006465048482671737,
+          "absoluteDifference": 8.673617379884035e-19
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 4.164717036997633e-05,
+          "gpuValidationMSE": 4.164717036997611e-05,
+          "absoluteDifference": 2.168404344971009e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 3.437866673854142e-05,
+          "gpuValidationMSE": 3.4378666738541264e-05,
+          "absoluteDifference": 1.5585406229479126e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 2.779288328468479e-05,
+          "gpuValidationMSE": 2.7792883284685015e-05,
+          "absoluteDifference": 2.236166980751353e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 2.6519200085957407e-05,
+          "gpuValidationMSE": 2.6519200085957397e-05,
+          "absoluteDifference": 1.0164395367051604e-20
+        }
+      ],
+      "originalCPUFinalTestMSE": 3.0458240884253654e-05,
+      "gpuFinalTestMSE": 3.0458240884253617e-05,
+      "finalTestMSEAbsoluteDifference": 3.7269449679189215e-20,
+      "finalTestOutputMaxAbsoluteDifference": 1.5751289161869408e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "nonlinear",
+      "origin": "linear",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/nonlinear/linear/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/nonlinear/linear/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 6.055074784687115e-05,
+      "gpuValidationMSE": 6.055074784687121e-05,
+      "validationMSEAbsoluteDifference": 6.098637220230962e-20,
+      "validationOutputMaxAbsoluteDifference": 1.582067810090848e-15,
+      "validationOutputMeanAbsoluteDifference": 1.5311354769630334e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.0025537189727954067,
+          "gpuValidationMSE": 0.0025537189727954063,
+          "absoluteDifference": 4.336808689942018e-19
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 9.277521139242907e-05,
+          "gpuValidationMSE": 9.277521139242897e-05,
+          "absoluteDifference": 9.486769009248164e-20
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 8.527039444266623e-05,
+          "gpuValidationMSE": 8.527039444266604e-05,
+          "absoluteDifference": 1.8973538018496328e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 7.353769586601142e-05,
+          "gpuValidationMSE": 7.353769586601148e-05,
+          "absoluteDifference": 6.776263578034403e-20
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 6.055074784687115e-05,
+          "gpuValidationMSE": 6.055074784687121e-05,
+          "absoluteDifference": 6.098637220230962e-20
+        }
+      ],
+      "originalCPUFinalTestMSE": 8.042330959519761e-05,
+      "gpuFinalTestMSE": 8.042330959519758e-05,
+      "finalTestMSEAbsoluteDifference": 2.710505431213761e-20,
+      "finalTestOutputMaxAbsoluteDifference": 2.095545958979983e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "nonlinear",
+      "origin": "quadratic",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/nonlinear/quadratic/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/nonlinear/quadratic/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.010635326518566744,
+      "gpuValidationMSE": 0.01063532651856674,
+      "validationMSEAbsoluteDifference": 3.469446951953614e-18,
+      "validationOutputMaxAbsoluteDifference": 1.8943180357666733e-15,
+      "validationOutputMeanAbsoluteDifference": 2.8481216641071e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.07292980473335765,
+          "gpuValidationMSE": 0.07292980473335764,
+          "absoluteDifference": 1.3877787807814457e-17
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.02957048950311724,
+          "gpuValidationMSE": 0.029570489503117244,
+          "absoluteDifference": 3.469446951953614e-18
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.027721566811059157,
+          "gpuValidationMSE": 0.027721566811059157,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.016622425023234414,
+          "gpuValidationMSE": 0.016622425023234414,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.010635326518566744,
+          "gpuValidationMSE": 0.01063532651856674,
+          "absoluteDifference": 3.469446951953614e-18
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.012668163429323535,
+      "gpuFinalTestMSE": 0.012668163429323531,
+      "finalTestMSEAbsoluteDifference": 3.469446951953614e-18,
+      "finalTestOutputMaxAbsoluteDifference": 1.8318679906315083e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "nonlinear",
+      "origin": "quadratic",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/nonlinear/quadratic/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/nonlinear/quadratic/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.0027706928678445856,
+      "gpuValidationMSE": 0.002770692867844587,
+      "validationMSEAbsoluteDifference": 1.3010426069826053e-18,
+      "validationOutputMaxAbsoluteDifference": 1.1657341758564144e-15,
+      "validationOutputMeanAbsoluteDifference": 1.932493568690011e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.017695837684794952,
+          "gpuValidationMSE": 0.017695837684794952,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.00838422037192231,
+          "gpuValidationMSE": 0.00838422037192231,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00785328396519256,
+          "gpuValidationMSE": 0.007853283965192559,
+          "absoluteDifference": 1.734723475976807e-18
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.004353812582947897,
+          "gpuValidationMSE": 0.004353812582947896,
+          "absoluteDifference": 8.673617379884035e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.0027706928678445856,
+          "gpuValidationMSE": 0.002770692867844587,
+          "absoluteDifference": 1.3010426069826053e-18
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.0031037593138821032,
+      "gpuFinalTestMSE": 0.0031037593138821045,
+      "finalTestMSEAbsoluteDifference": 1.3010426069826053e-18,
+      "finalTestOutputMaxAbsoluteDifference": 2.3314683517128287e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "nonlinear",
+      "origin": "memory",
+      "task": "plain",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/nonlinear/memory/plain/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/nonlinear/memory/plain/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.0003147363182539863,
+      "gpuValidationMSE": 0.0003147363182540029,
+      "validationMSEAbsoluteDifference": 1.6588293239028218e-17,
+      "validationOutputMaxAbsoluteDifference": 4.110600748674642e-14,
+      "validationOutputMeanAbsoluteDifference": 1.6097982167274728e-15,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.0729976742485549,
+          "gpuValidationMSE": 0.07299767424855493,
+          "absoluteDifference": 2.7755575615628914e-17
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.00040309775337676494,
+          "gpuValidationMSE": 0.0004030977533767647,
+          "absoluteDifference": 2.168404344971009e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00038152541649381585,
+          "gpuValidationMSE": 0.00038152541649381585,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.00034151505089812656,
+          "gpuValidationMSE": 0.0003415150508981265,
+          "absoluteDifference": 5.421010862427522e-20
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.0003147363182539863,
+          "gpuValidationMSE": 0.0003147363182540029,
+          "absoluteDifference": 1.6588293239028218e-17
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.0003693424106883539,
+      "gpuFinalTestMSE": 0.0003693424106883761,
+      "finalTestMSEAbsoluteDifference": 2.2171934427328566e-17,
+      "finalTestOutputMaxAbsoluteDifference": 5.2187421051286265e-14,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "nonlinear",
+      "origin": "memory",
+      "task": "composed",
+      "width": 3125,
+      "cpuReport": "reports/numeric-diagnostic/nonlinear/memory/composed/n192/nn-h3125.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/nonlinear/memory/composed/n192/nn-h3125",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.0001440224656444156,
+      "gpuValidationMSE": 0.00014402246564441533,
+      "validationMSEAbsoluteDifference": 2.710505431213761e-19,
+      "validationOutputMaxAbsoluteDifference": 7.771561172376096e-16,
+      "validationOutputMeanAbsoluteDifference": 1.246387201037488e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.01550978586921547,
+          "gpuValidationMSE": 0.015509785869215465,
+          "absoluteDifference": 5.204170427930421e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.000192486287716497,
+          "gpuValidationMSE": 0.000192486287716497,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00018052435912315916,
+          "gpuValidationMSE": 0.00018052435912315935,
+          "absoluteDifference": 1.8973538018496328e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.0001623199147658111,
+          "gpuValidationMSE": 0.00016231991476581108,
+          "absoluteDifference": 2.710505431213761e-20
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.0001440224656444156,
+          "gpuValidationMSE": 0.00014402246564441533,
+          "absoluteDifference": 2.710505431213761e-19
+        }
+      ],
+      "originalCPUFinalTestMSE": 0.0001538950517024208,
+      "gpuFinalTestMSE": 0.0001538950517024208,
+      "finalTestMSEAbsoluteDifference": 0.0,
+      "finalTestOutputMaxAbsoluteDifference": 1.1102230246251565e-15,
+      "finalTestCalibrationScope": "Existing complete primary CPU100k model/old-runtime testMSE versus amended GPU100k; evaluated only after all48 GPU choices fixed."
+    },
+    {
+      "world": "quadratic",
+      "origin": "nn",
+      "task": "plain",
+      "width": 31250,
+      "cpuReport": "reports/million-diagnostic/quadratic/nn/plain/n192/nn-h31250.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/quadratic/nn/plain/n192/nn-h31250",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.00020455202184985262,
+      "gpuValidationMSE": 0.00020455202184985237,
+      "validationMSEAbsoluteDifference": 2.439454888092385e-19,
+      "validationOutputMaxAbsoluteDifference": 3.858025010572419e-15,
+      "validationOutputMeanAbsoluteDifference": 5.492229392632664e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.02239747191297606,
+          "gpuValidationMSE": 0.022397471912976065,
+          "absoluteDifference": 3.469446951953614e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.0006515708357003236,
+          "gpuValidationMSE": 0.000651570835700324,
+          "absoluteDifference": 4.336808689942018e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.0005634342825955907,
+          "gpuValidationMSE": 0.0005634342825955906,
+          "absoluteDifference": 1.0842021724855044e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.0003339163217259358,
+          "gpuValidationMSE": 0.00033391632172593535,
+          "absoluteDifference": 4.336808689942018e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.00020455202184985262,
+          "gpuValidationMSE": 0.00020455202184985237,
+          "absoluteDifference": 2.439454888092385e-19
+        }
+      ]
+    },
+    {
+      "world": "quadratic",
+      "origin": "nn",
+      "task": "composed",
+      "width": 31250,
+      "cpuReport": "reports/million-diagnostic/quadratic/nn/composed/n192/nn-h31250.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/quadratic/nn/composed/n192/nn-h31250",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.00023994012563642345,
+      "gpuValidationMSE": 0.00023994012563642367,
+      "validationMSEAbsoluteDifference": 2.168404344971009e-19,
+      "validationOutputMaxAbsoluteDifference": 3.747002708109903e-15,
+      "validationOutputMeanAbsoluteDifference": 5.071704155356389e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.005685913801410318,
+          "gpuValidationMSE": 0.005685913801410318,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.0003948812465561684,
+          "gpuValidationMSE": 0.0003948812465561691,
+          "absoluteDifference": 7.047314121155779e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00036932525740468973,
+          "gpuValidationMSE": 0.00036932525740469103,
+          "absoluteDifference": 1.3010426069826053e-18
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.0002884278198286287,
+          "gpuValidationMSE": 0.00028842781982862866,
+          "absoluteDifference": 5.421010862427522e-20
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.00023994012563642345,
+          "gpuValidationMSE": 0.00023994012563642367,
+          "absoluteDifference": 2.168404344971009e-19
+        }
+      ]
+    },
+    {
+      "world": "quadratic",
+      "origin": "linear",
+      "task": "plain",
+      "width": 31250,
+      "cpuReport": "reports/million-diagnostic/quadratic/linear/plain/n192/nn-h31250.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/quadratic/linear/plain/n192/nn-h31250",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.0125,
+      "gpuSelectedHyperparameter": 0.0125,
+      "selectionSame": true,
+      "cpuValidationMSE": 4.6829493124791064e-05,
+      "gpuValidationMSE": 4.6829493124791044e-05,
+      "validationMSEAbsoluteDifference": 2.0328790734103208e-20,
+      "validationOutputMaxAbsoluteDifference": 4.551914400963142e-15,
+      "validationOutputMeanAbsoluteDifference": 5.31237283670682e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.01360014479375325,
+          "gpuValidationMSE": 0.013600144793753247,
+          "absoluteDifference": 3.469446951953614e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 6.670669861632501e-05,
+          "gpuValidationMSE": 6.670669861632516e-05,
+          "absoluteDifference": 1.4907779871675686e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 5.501146969270347e-05,
+          "gpuValidationMSE": 5.50114696927037e-05,
+          "absoluteDifference": 2.303929616531697e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 4.6829493124791064e-05,
+          "gpuValidationMSE": 4.6829493124791044e-05,
+          "absoluteDifference": 2.0328790734103208e-20
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 4.813565796950895e-05,
+          "gpuValidationMSE": 4.8135657969507436e-05,
+          "absoluteDifference": 1.5111067779016718e-18
+        }
+      ]
+    },
+    {
+      "world": "nonlinear",
+      "origin": "nn",
+      "task": "plain",
+      "width": 31250,
+      "cpuReport": "reports/million-diagnostic/nonlinear/nn/plain/n192/nn-h31250.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/nonlinear/nn/plain/n192/nn-h31250",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.0002122966715105628,
+      "gpuValidationMSE": 0.00021229667151056176,
+      "validationMSEAbsoluteDifference": 1.0299920638612292e-18,
+      "validationOutputMaxAbsoluteDifference": 5.814793091474257e-15,
+      "validationOutputMeanAbsoluteDifference": 5.122932708006329e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.01633914404676895,
+          "gpuValidationMSE": 0.01633914404676895,
+          "absoluteDifference": 0.0
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.0005228240744095187,
+          "gpuValidationMSE": 0.0005228240744095189,
+          "absoluteDifference": 2.168404344971009e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.0004623970513305504,
+          "gpuValidationMSE": 0.00046239705133055154,
+          "absoluteDifference": 1.1384122811097797e-18
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.0003182086125389058,
+          "gpuValidationMSE": 0.00031820861253890697,
+          "absoluteDifference": 1.1926223897340549e-18
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.0002122966715105628,
+          "gpuValidationMSE": 0.00021229667151056176,
+          "absoluteDifference": 1.0299920638612292e-18
+        }
+      ]
+    },
+    {
+      "world": "nonlinear",
+      "origin": "nn",
+      "task": "composed",
+      "width": 31250,
+      "cpuReport": "reports/million-diagnostic/nonlinear/nn/composed/n192/nn-h31250.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/nonlinear/nn/composed/n192/nn-h31250",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 0.00013807315428079417,
+      "gpuValidationMSE": 0.00013807315428079344,
+      "validationMSEAbsoluteDifference": 7.318364664277155e-19,
+      "validationOutputMaxAbsoluteDifference": 3.3792413312028202e-15,
+      "validationOutputMeanAbsoluteDifference": 4.629855468656521e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.003402027073355788,
+          "gpuValidationMSE": 0.0034020270733557912,
+          "absoluteDifference": 3.0357660829594124e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 0.00025817097436968975,
+          "gpuValidationMSE": 0.0002581709743696906,
+          "absoluteDifference": 8.673617379884035e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 0.00024352040223627388,
+          "gpuValidationMSE": 0.00024352040223627394,
+          "absoluteDifference": 5.421010862427522e-20
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 0.00020610383675385323,
+          "gpuValidationMSE": 0.0002061038367538538,
+          "absoluteDifference": 5.692061405548898e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 0.00013807315428079417,
+          "gpuValidationMSE": 0.00013807315428079344,
+          "absoluteDifference": 7.318364664277155e-19
+        }
+      ]
+    },
+    {
+      "world": "nonlinear",
+      "origin": "linear",
+      "task": "plain",
+      "width": 31250,
+      "cpuReport": "reports/million-diagnostic/nonlinear/linear/plain/n192/nn-h31250.json",
+      "gpuSnapshot": "models/million-gpu-diagnostic/nonlinear/linear/plain/n192/nn-h31250",
+      "sameTrainingLabels": true,
+      "sameValidationLabels": true,
+      "cpuSelectedHyperparameter": 0.025,
+      "gpuSelectedHyperparameter": 0.025,
+      "selectionSame": true,
+      "cpuValidationMSE": 2.526727311839256e-05,
+      "gpuValidationMSE": 2.5267273118392557e-05,
+      "validationMSEAbsoluteDifference": 3.3881317890172014e-21,
+      "validationOutputMaxAbsoluteDifference": 4.163336342344337e-15,
+      "validationOutputMeanAbsoluteDifference": 5.11519808715083e-16,
+      "trials": [
+        {
+          "hyperparameter": 0.0005,
+          "cpuValidationMSE": 0.006557177302573407,
+          "gpuValidationMSE": 0.0065571773025734125,
+          "absoluteDifference": 5.204170427930421e-18
+        },
+        {
+          "hyperparameter": 0.0025,
+          "cpuValidationMSE": 4.046780009683363e-05,
+          "gpuValidationMSE": 4.0467800096833775e-05,
+          "absoluteDifference": 1.4230153513872246e-19
+        },
+        {
+          "hyperparameter": 0.005,
+          "cpuValidationMSE": 3.329674978658066e-05,
+          "gpuValidationMSE": 3.3296749786581e-05,
+          "absoluteDifference": 3.3881317890172014e-19
+        },
+        {
+          "hyperparameter": 0.0125,
+          "cpuValidationMSE": 2.6683250463379066e-05,
+          "gpuValidationMSE": 2.668325046337939e-05,
+          "absoluteDifference": 3.2526065174565133e-19
+        },
+        {
+          "hyperparameter": 0.025,
+          "cpuValidationMSE": 2.526727311839256e-05,
+          "gpuValidationMSE": 2.5267273118392557e-05,
+          "absoluteDifference": 3.3881317890172014e-21
+        }
+      ]
+    }
+  ]
+}

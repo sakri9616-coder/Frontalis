@@ -1,0 +1,33 @@
+PASS objective summary uses source observations with traceable ids
+PASS intervention labels and original narratives remain accessible
+PASS source narratives retained without predictions
+PASS representatives use first middle last
+PASS history changes use only id and original text
+PASS neutral top reasons include negative contributions
+PASS prior and ties are distinct from learned predictions
+PASS NPN values and contributions are visible exactly
+PASS display does not generate new history from replies
+PASS reused before speech has honest unique counts
+PASS generation method and real model metadata stay hidden
+PASS invalid values and duplicate identities are rejected
+PASS script payload is safe and executable
+PASS three independent scores save and resume exactly
+PASS old lab and different data ratings do not mix
+PASS invalid ratings are ignored without changing good entries
+PASS appraisal and expression signals are displayed without moral targets
+PASS signal strengths do not permit non-finite or out-of-range values
+PASS shared history is rendered once for all replies and both stages
+PASS reserved object names cannot become score identities
+PASS reused speech id cannot cross engine or user context
+PASS responsive and offline controls stay in the generated artifact
+PASS new objective axes are preserved and never become resource cost
+PASS legacy objective facts remain accepted without fabricating discovery
+PASS explicit NPN choice is retained separately from candidate scores
+PASS Phase 3-D scores do not assume every comparison is experience-before-after
+PASS all factual annotations and exact original records remain inspectable
+PASS capacity metadata is separated from blinded display and scoring identity
+PASS neutral strength bands retain zero and exact boundaries
+PASS candidate ranking displays ties and signed evaluation without changing decisions
+PASS default signals show bands while precision and duplicate tables stay folded
+PASS compact presentation preserves the saved rating dataset identity
+32 tests passed. Fixtures are synthetic UI tests, not research results.

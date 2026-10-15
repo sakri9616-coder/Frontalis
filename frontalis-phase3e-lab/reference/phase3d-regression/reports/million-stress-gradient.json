@@ -1,0 +1,204 @@
+{
+  "scope": "探索的な追加観測。保存後の固定replay損失の層別勾配であり、更新当時の勾配とは異なる。学習状態・条件を変えず再学習しない。",
+  "sourceStressResultsHash": "8e2d5fd18c0ea7c533ab750c96ba75b49bd621621d5af91214fe498fece46a8f",
+  "conditions": [
+    {
+      "configuration": {
+        "width": 31250,
+        "loss": "bounded_logit",
+        "seed": 4311,
+        "repeats": 1000,
+        "contraryCheckpoints": [
+          12,
+          48,
+          96
+        ],
+        "dtype": "float64",
+        "threads": 1
+      },
+      "checkpoints": {
+        "after1000": {
+          "parameterHash": "bac72b8037f799b4e34c1c136335e09250b08bcb4f840eee53205bd744afa408",
+          "generation": 1096,
+          "loss": "bounded_logit",
+          "replayHash": "f3754af62b99154564ee8c0a0d713ab6926bc561bfcf37739f75b3ef7f05b64c",
+          "replayPoints": 64,
+          "objective": 0.00012062791081986497,
+          "layerGradients": {
+            "w1": {
+              "gradientNorm": 6.958070077871936e-05,
+              "gradientRMS": 1.3916140155743882e-07,
+              "zeroFraction": 0.0,
+              "parameters": 250000,
+              "allFinite": true
+            },
+            "b1": {
+              "gradientNorm": 4.8547321657461484e-05,
+              "gradientRMS": 2.746251228194847e-07,
+              "zeroFraction": 0.0,
+              "parameters": 31250,
+              "allFinite": true
+            },
+            "w2": {
+              "gradientNorm": 0.0003277523093575112,
+              "gradientRMS": 7.007639139084283e-07,
+              "zeroFraction": 0.0,
+              "parameters": 218750,
+              "allFinite": true
+            },
+            "b2": {
+              "gradientNorm": 0.00813480628101441,
+              "gradientRMS": 0.0030746677690357627,
+              "zeroFraction": 0.0,
+              "parameters": 7,
+              "allFinite": true
+            }
+          },
+          "outputDerivativeMean": 2.4750907823191592e-05,
+          "hiddenDerivativeMean": 0.7921237505488768,
+          "snapshot": "models/stress/raw8/bounded_logit/nn-h31250/seed4311-p0-1000"
+        },
+        "afterContrary96": {
+          "parameterHash": "b274e3f8a9eb0f987ecae41d73eb6d9fec4cea36c8e7b308865df79dc64d522a",
+          "generation": 1192,
+          "loss": "bounded_logit",
+          "replayHash": "753606aeb5733d96dc64e856c072bb989db0c6ab77d661fcd6a73e81a4cbb7e4",
+          "replayPoints": 64,
+          "objective": 0.008353781292802556,
+          "layerGradients": {
+            "w1": {
+              "gradientNorm": 0.0017454863648567573,
+              "gradientRMS": 3.490972729713502e-06,
+              "zeroFraction": 0.0,
+              "parameters": 250000,
+              "allFinite": true
+            },
+            "b1": {
+              "gradientNorm": 0.00115271600897363,
+              "gradientRMS": 6.52074645382038e-06,
+              "zeroFraction": 0.0,
+              "parameters": 31250,
+              "allFinite": true
+            },
+            "w2": {
+              "gradientNorm": 0.003459567232823338,
+              "gradientRMS": 7.39686588099117e-06,
+              "zeroFraction": 0.0,
+              "parameters": 218750,
+              "allFinite": true
+            },
+            "b2": {
+              "gradientNorm": 0.04930043885644105,
+              "gradientRMS": 0.01863381439149837,
+              "zeroFraction": 0.0,
+              "parameters": 7,
+              "allFinite": true
+            }
+          },
+          "outputDerivativeMean": 2.1748446358089385e-05,
+          "hiddenDerivativeMean": 0.3949576936264534,
+          "snapshot": "models/stress/raw8/bounded_logit/nn-h31250/seed4311-p0-contrary96"
+        }
+      }
+    },
+    {
+      "configuration": {
+        "width": 31250,
+        "loss": "bounded_signal",
+        "seed": 4311,
+        "repeats": 1000,
+        "contraryCheckpoints": [
+          12,
+          48,
+          96
+        ],
+        "dtype": "float64",
+        "threads": 1
+      },
+      "checkpoints": {
+        "after1000": {
+          "parameterHash": "9175d5ed6129e148a1198ee8dabd867c6b4dbd9ae254692b079ae9768d94df11",
+          "generation": 1096,
+          "loss": "bounded_signal",
+          "replayHash": "0ac0efe4589dd623408c841fd981c031ea50c9ab261d4aed48cf9b297bf68a0e",
+          "replayPoints": 64,
+          "objective": 4.319785332258551e-13,
+          "layerGradients": {
+            "w1": {
+              "gradientNorm": 3.414161006390194e-13,
+              "gradientRMS": 6.828322012780389e-16,
+              "zeroFraction": 0.0,
+              "parameters": 250000,
+              "allFinite": true
+            },
+            "b1": {
+              "gradientNorm": 2.0048509273959975e-13,
+              "gradientRMS": 1.1341149488238793e-15,
+              "zeroFraction": 0.0,
+              "parameters": 31250,
+              "allFinite": true
+            },
+            "w2": {
+              "gradientNorm": 2.2201787415852715e-13,
+              "gradientRMS": 4.74694182194913e-16,
+              "zeroFraction": 0.0,
+              "parameters": 218750,
+              "allFinite": true
+            },
+            "b2": {
+              "gradientNorm": 6.816546758128234e-12,
+              "gradientRMS": 2.576412503178694e-12,
+              "zeroFraction": 0.0,
+              "parameters": 7,
+              "allFinite": true
+            }
+          },
+          "outputDerivativeMean": 2.521797989601155e-05,
+          "hiddenDerivativeMean": 0.8836273263671911,
+          "snapshot": "models/stress/raw8/bounded_signal/nn-h31250/seed4311-p0-1000"
+        },
+        "afterContrary96": {
+          "parameterHash": "c8f63c19dd0f9f0752276ff849cf26e9c526b1ba8bad62b0471bb71778b16e57",
+          "generation": 1192,
+          "loss": "bounded_signal",
+          "replayHash": "5a17c05b3a5ee044ff6af60e405d9e9189f3e89ccf6c344c2a3d25fcd9b22e40",
+          "replayPoints": 64,
+          "objective": 2.5635181981019523e-10,
+          "layerGradients": {
+            "w1": {
+              "gradientNorm": 2.1716993219896624e-11,
+              "gradientRMS": 4.343398643979328e-14,
+              "zeroFraction": 0.0,
+              "parameters": 250000,
+              "allFinite": true
+            },
+            "b1": {
+              "gradientNorm": 1.4086155586557138e-11,
+              "gradientRMS": 7.968332908882664e-14,
+              "zeroFraction": 0.0,
+              "parameters": 31250,
+              "allFinite": true
+            },
+            "w2": {
+              "gradientNorm": 1.641753170571438e-11,
+              "gradientRMS": 3.5102159302446696e-14,
+              "zeroFraction": 0.0,
+              "parameters": 218750,
+              "allFinite": true
+            },
+            "b2": {
+              "gradientNorm": 4.5455241113964574e-10,
+              "gradientRMS": 1.718046625314698e-10,
+              "zeroFraction": 0.0,
+              "parameters": 7,
+              "allFinite": true
+            }
+          },
+          "outputDerivativeMean": 3.144097831259922e-05,
+          "hiddenDerivativeMean": 0.8631655207607153,
+          "snapshot": "models/stress/raw8/bounded_signal/nn-h31250/seed4311-p0-contrary96"
+        }
+      }
+    }
+  ]
+}

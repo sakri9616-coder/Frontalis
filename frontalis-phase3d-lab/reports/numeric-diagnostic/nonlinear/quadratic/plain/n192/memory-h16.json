@@ -1,0 +1,66 @@
+{
+  "world": "nonlinear",
+  "origin": "quadratic",
+  "task": "plain",
+  "trainCount": 192,
+  "validationCount": 64,
+  "testCount": 256,
+  "kind": "memory",
+  "width": 16,
+  "sourceSnapshot": "reference/source-models/nonlinear/quadratic.json",
+  "sourceSnapshotSha256": "857cb55bd2e93277f49f93c1bd3290cb132775a35063a65c2eea2859a1faabff",
+  "trainingLabelsHash": "308bb69fc622d6c9a7cf9341183a854e3048b498e1a8d5e3c21eeeb83c343538",
+  "validationLabelsHash": "2759036515be0cfc25a477b2572c527aa0896f78fdb012959887442270638462",
+  "trials": [
+    {
+      "hyperparameter": 0.2,
+      "validationMSE": 0.022003073173706113,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.35,
+      "validationMSE": 0.016125812527840712,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.65,
+      "validationMSE": 0.02677329235356566,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 1.0,
+      "validationMSE": 0.038125499359852585,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 1.5,
+      "validationMSE": 0.04342064741205355,
+      "status": "complete"
+    }
+  ],
+  "selectionCriterion": "validation-signal-MSE-only",
+  "elapsedSeconds": 0.15526210000098217,
+  "status": "complete",
+  "validationMSE": 0.016125812527840712,
+  "selectedHyperparameter": 0.35,
+  "parameterCount": 0,
+  "snapshot": "models/diagnostic/nonlinear/quadratic/plain/n192/memory-h16",
+  "diagnostics": {
+    "parameterCount": 0,
+    "fixedBaseParameters": 56,
+    "parameterNorm": 3.5025578270705764,
+    "emergencyNorm": 50.0,
+    "layerStats": {
+      "relational": {},
+      "acoustic": {}
+    },
+    "readoutScale": 1.0,
+    "device": "cpu",
+    "dtype": "float64",
+    "generation": 0,
+    "memoryRows": {
+      "relational": 144,
+      "acoustic": 48
+    }
+  }
+}

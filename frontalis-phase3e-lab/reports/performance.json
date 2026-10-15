@@ -1,0 +1,397 @@
+{
+  "conditions": [
+    {
+      "representation": "raw8",
+      "capacityIndex": 0,
+      "parameterCount": 526,
+      "device": "cpu",
+      "weightBytes": 4656,
+      "evaluateMedianMs": 0.10179999662796035,
+      "evaluateP95Ms": 0.14279500537668355,
+      "updateMedianMs": 7.077400005073287,
+      "rssBytes": 927502336,
+      "privateBytes": 1963741184,
+      "cudaAllocator": null
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 0,
+      "parameterCount": 526,
+      "device": "cuda",
+      "weightBytes": 4656,
+      "evaluateMedianMs": 0.40675000491319224,
+      "evaluateP95Ms": 0.7643950069905263,
+      "updateMedianMs": 35.80300000612624,
+      "rssBytes": 930594816,
+      "privateBytes": 1967353856,
+      "cudaAllocator": {
+        "allocatedBytes": 67115520,
+        "reservedBytes": 69206016,
+        "peakAllocatedBytes": 67143680,
+        "peakReservedBytes": 69206016
+      }
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 1,
+      "parameterCount": 2062,
+      "device": "cpu",
+      "weightBytes": 16944,
+      "evaluateMedianMs": 0.10969999129883945,
+      "evaluateP95Ms": 0.15921499871183195,
+      "updateMedianMs": 6.907700008014217,
+      "rssBytes": 942309376,
+      "privateBytes": 1983467520,
+      "cudaAllocator": null
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 1,
+      "parameterCount": 2062,
+      "device": "cuda",
+      "weightBytes": 16944,
+      "evaluateMedianMs": 0.48365000111516565,
+      "evaluateP95Ms": 0.8360350031580313,
+      "updateMedianMs": 32.9490000003716,
+      "rssBytes": 942358528,
+      "privateBytes": 1983492096,
+      "cudaAllocator": {
+        "allocatedBytes": 67126784,
+        "reservedBytes": 69206016,
+        "peakAllocatedBytes": 67195392,
+        "peakReservedBytes": 69206016
+      }
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 2,
+      "parameterCount": 9998,
+      "device": "cpu",
+      "weightBytes": 80432,
+      "evaluateMedianMs": 0.094600000011269,
+      "evaluateP95Ms": 0.09933499750331976,
+      "updateMedianMs": 6.499900002381764,
+      "rssBytes": 949194752,
+      "privateBytes": 1996079104,
+      "cudaAllocator": null
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 2,
+      "parameterCount": 9998,
+      "device": "cuda",
+      "weightBytes": 80432,
+      "evaluateMedianMs": 0.48120000428752974,
+      "evaluateP95Ms": 0.5972949904389679,
+      "updateMedianMs": 28.65179999207612,
+      "rssBytes": 949194752,
+      "privateBytes": 1996079104,
+      "cudaAllocator": {
+        "allocatedBytes": 67191296,
+        "reservedBytes": 69206016,
+        "peakAllocatedBytes": 67489792,
+        "peakReservedBytes": 69206016
+      }
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 3,
+      "parameterCount": 100014,
+      "device": "cpu",
+      "weightBytes": 800560,
+      "evaluateMedianMs": 0.16050000704126433,
+      "evaluateP95Ms": 0.1688450043729972,
+      "updateMedianMs": 16.86229999177158,
+      "rssBytes": 958877696,
+      "privateBytes": 2021928960,
+      "cudaAllocator": null
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 3,
+      "parameterCount": 100014,
+      "device": "cuda",
+      "weightBytes": 800560,
+      "evaluateMedianMs": 0.45050000335322693,
+      "evaluateP95Ms": 0.6413199989765417,
+      "updateMedianMs": 29.184200000599958,
+      "rssBytes": 958910464,
+      "privateBytes": 2021928960,
+      "cudaAllocator": {
+        "allocatedBytes": 67911168,
+        "reservedBytes": 71303168,
+        "peakAllocatedBytes": 70773760,
+        "peakReservedBytes": 71303168
+      }
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 4,
+      "parameterCount": 1000014,
+      "device": "cpu",
+      "weightBytes": 8000560,
+      "evaluateMedianMs": 0.41480000072624534,
+      "evaluateP95Ms": 0.47903500380925834,
+      "updateMedianMs": 131.96340001013596,
+      "rssBytes": 1018613760,
+      "privateBytes": 2126811136,
+      "cudaAllocator": null
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 4,
+      "parameterCount": 1000014,
+      "device": "cuda",
+      "weightBytes": 8000560,
+      "evaluateMedianMs": 0.4842500056838617,
+      "evaluateP95Ms": 1.1115700035588818,
+      "updateMedianMs": 57.216500004869886,
+      "rssBytes": 1018650624,
+      "privateBytes": 2126942208,
+      "cudaAllocator": {
+        "allocatedBytes": 75111936,
+        "reservedBytes": 115343360,
+        "peakAllocatedBytes": 104594944,
+        "peakReservedBytes": 115343360
+      }
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 0,
+      "parameterCount": 534,
+      "device": "cpu",
+      "weightBytes": 4720,
+      "evaluateMedianMs": 0.09575000149197876,
+      "evaluateP95Ms": 0.10193499037995934,
+      "updateMedianMs": 6.410399990272708,
+      "rssBytes": 1020456960,
+      "privateBytes": 2129354752,
+      "cudaAllocator": null
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 0,
+      "parameterCount": 534,
+      "device": "cuda",
+      "weightBytes": 4720,
+      "evaluateMedianMs": 0.4966000051354058,
+      "evaluateP95Ms": 0.8491949971357827,
+      "updateMedianMs": 33.392500001355074,
+      "rssBytes": 1020461056,
+      "privateBytes": 2129354752,
+      "cudaAllocator": {
+        "allocatedBytes": 67116544,
+        "reservedBytes": 90177536,
+        "peakAllocatedBytes": 67151360,
+        "peakReservedBytes": 90177536
+      }
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 1,
+      "parameterCount": 1990,
+      "device": "cpu",
+      "weightBytes": 16368,
+      "evaluateMedianMs": 0.09465000039199367,
+      "evaluateP95Ms": 0.09616500319680199,
+      "updateMedianMs": 6.110500005888753,
+      "rssBytes": 1020624896,
+      "privateBytes": 2129223680,
+      "cudaAllocator": null
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 1,
+      "parameterCount": 1990,
+      "device": "cuda",
+      "weightBytes": 16368,
+      "evaluateMedianMs": 0.4651000053854659,
+      "evaluateP95Ms": 0.6703299957734999,
+      "updateMedianMs": 30.27960000326857,
+      "rssBytes": 1020624896,
+      "privateBytes": 2129223680,
+      "cudaAllocator": {
+        "allocatedBytes": 67128832,
+        "reservedBytes": 69206016,
+        "peakAllocatedBytes": 67210240,
+        "peakReservedBytes": 69206016
+      }
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 2,
+      "parameterCount": 9998,
+      "device": "cpu",
+      "weightBytes": 80432,
+      "evaluateMedianMs": 0.09919999865815043,
+      "evaluateP95Ms": 0.13754499232163653,
+      "updateMedianMs": 7.503100001486018,
+      "rssBytes": 1020657664,
+      "privateBytes": 2129223680,
+      "cudaAllocator": null
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 2,
+      "parameterCount": 9998,
+      "device": "cuda",
+      "weightBytes": 80432,
+      "evaluateMedianMs": 0.5238000085228123,
+      "evaluateP95Ms": 0.8951899981184397,
+      "updateMedianMs": 35.421300010057166,
+      "rssBytes": 1020657664,
+      "privateBytes": 2129223680,
+      "cudaAllocator": {
+        "allocatedBytes": 67191296,
+        "reservedBytes": 69206016,
+        "peakAllocatedBytes": 67512832,
+        "peakReservedBytes": 69206016
+      }
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 3,
+      "parameterCount": 100062,
+      "device": "cpu",
+      "weightBytes": 800944,
+      "evaluateMedianMs": 0.11649999942164868,
+      "evaluateP95Ms": 0.1290050036914181,
+      "updateMedianMs": 13.626799991470762,
+      "rssBytes": 1022861312,
+      "privateBytes": 2130608128,
+      "cudaAllocator": null
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 3,
+      "parameterCount": 100062,
+      "device": "cuda",
+      "weightBytes": 800944,
+      "evaluateMedianMs": 0.45375000627245754,
+      "evaluateP95Ms": 0.6161250057630244,
+      "updateMedianMs": 33.84329999971669,
+      "rssBytes": 1023590400,
+      "privateBytes": 2131632128,
+      "cudaAllocator": {
+        "allocatedBytes": 67913216,
+        "reservedBytes": 73400320,
+        "peakAllocatedBytes": 71003648,
+        "peakReservedBytes": 73400320
+      }
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 4,
+      "parameterCount": 999974,
+      "device": "cpu",
+      "weightBytes": 8000240,
+      "evaluateMedianMs": 0.25209999876096845,
+      "evaluateP95Ms": 0.28877499862574046,
+      "updateMedianMs": 106.01020000467543,
+      "rssBytes": 1028235264,
+      "privateBytes": 2153504768,
+      "cudaAllocator": null
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 4,
+      "parameterCount": 999974,
+      "device": "cuda",
+      "weightBytes": 8000240,
+      "evaluateMedianMs": 0.4977999997208826,
+      "evaluateP95Ms": 1.0106449997692835,
+      "updateMedianMs": 50.42220000177622,
+      "rssBytes": 1027842048,
+      "privateBytes": 2152984576,
+      "cudaAllocator": {
+        "allocatedBytes": 75111936,
+        "reservedBytes": 119537664,
+        "peakAllocatedBytes": 106329600,
+        "peakReservedBytes": 119537664
+      }
+    }
+  ],
+  "calibration": [
+    {
+      "representation": "raw8",
+      "capacityIndex": 0,
+      "initialMaxError": 1.3877787807814457e-17,
+      "fourUpdateMaxError": 8.326672684688674e-17,
+      "sameWeightHash": true,
+      "sameWeightMaxError": 5.551115123125783e-17
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 1,
+      "initialMaxError": 1.3877787807814457e-17,
+      "fourUpdateMaxError": 2.498001805406602e-16,
+      "sameWeightHash": true,
+      "sameWeightMaxError": 5.551115123125783e-17
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 2,
+      "initialMaxError": 1.3877787807814457e-17,
+      "fourUpdateMaxError": 1.6653345369377348e-16,
+      "sameWeightHash": true,
+      "sameWeightMaxError": 2.7755575615628914e-16
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 3,
+      "initialMaxError": 1.3877787807814457e-17,
+      "fourUpdateMaxError": 5.551115123125783e-16,
+      "sameWeightHash": true,
+      "sameWeightMaxError": 1.3877787807814457e-15
+    },
+    {
+      "representation": "raw8",
+      "capacityIndex": 4,
+      "initialMaxError": 1.3877787807814457e-17,
+      "fourUpdateMaxError": 2.942091015256665e-15,
+      "sameWeightHash": true,
+      "sameWeightMaxError": 1.0547118733938987e-15
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 0,
+      "initialMaxError": 1.3877787807814457e-17,
+      "fourUpdateMaxError": 6.106226635438361e-16,
+      "sameWeightHash": true,
+      "sameWeightMaxError": 5.551115123125783e-17
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 1,
+      "initialMaxError": 1.3877787807814457e-17,
+      "fourUpdateMaxError": 1.2878587085651816e-14,
+      "sameWeightHash": true,
+      "sameWeightMaxError": 5.551115123125783e-17
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 2,
+      "initialMaxError": 1.3877787807814457e-17,
+      "fourUpdateMaxError": 1.2549544736728535e-11,
+      "sameWeightHash": true,
+      "sameWeightMaxError": 1.1102230246251565e-16
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 3,
+      "initialMaxError": 1.3877787807814457e-17,
+      "fourUpdateMaxError": 5.412337245047638e-15,
+      "sameWeightHash": true,
+      "sameWeightMaxError": 1.6653345369377348e-16
+    },
+    {
+      "representation": "semantic44",
+      "capacityIndex": 4,
+      "initialMaxError": 1.3877787807814457e-17,
+      "fourUpdateMaxError": 5.578870698741412e-15,
+      "sameWeightHash": true,
+      "sameWeightMaxError": 1.1657341758564144e-15
+    }
+  ],
+  "processMemoryCaveat": "Sequential process RSS/private include both devices and runtime; allocator is not whole-device VRAM."
+}

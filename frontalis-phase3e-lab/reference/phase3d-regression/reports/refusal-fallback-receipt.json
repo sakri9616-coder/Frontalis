@@ -1,0 +1,27 @@
+{
+  "formatVersion": 1,
+  "frozenAt": "2026-10-15T01:54:33.894546+00:00",
+  "beforeNemotronBodyGeneration": true,
+  "targetEngine": "opencode/nemotron-3-ultra-free",
+  "sourceEngine": "opencode/mimo-v2.6-flash-free",
+  "scope": "Refusal plan only; validated common host factual annotation after two failed Nemotron structure attempts. No third external structure call.",
+  "planFileSha256": "6cf5d9867bed761447c0cfda903c80de74ea15deadd90303e834d86abd4b7f1b",
+  "protocolBeforeAppendSha256": "74a7d26aa084ceeb573ec0ad206eca941ca3e5c95e6cd5624994193de7916d75",
+  "protocolAfterAppendSha256": "9002f60ec1bd3f0ee1d41774bca50898f8371e1219ee54a9d8ed6a8df8f5312a",
+  "sourceHashes": {
+    "reports/live/mimo-v2.6-flash-free/refusal-structure-annotated-input.json": "31d7088cb6052272d53952bb10528e0202e3f002bb4c65a82348740f964e2efe",
+    "reports/live/mimo-v2.6-flash-free/refusal-structure-annotated-raw.json": "00b3d03d82239696262f26928a280eca6f314896c9d849e51df9fe8b24687cff",
+    "reports/live/mimo-v2.6-flash-free/refusal-structure-annotated-results.json": "f4afc3f2a9216e3780ee415c60a822b34a6a14f197f5b3131d772ccf02d6b265"
+  },
+  "failedNemotronAttemptHashes": {
+    "reports/live/nemotron-3-ultra-free/refusal-structure-annotated-input.json": "0f7c4b1ebd542e556b98a154c64c58959b988cb97c57b1d6cb04d936fb32aec7",
+    "reports/live/nemotron-3-ultra-free/refusal-structure-annotated-raw.json": "240a20095bc84e84d18e7b10b24552f77d38769b11646ccb164dfee1d87147f4",
+    "reports/live/nemotron-3-ultra-free/refusal-structure-annotated-results.json": "760372d47c23794a128b1b0d38b05cfa7247965419a721260a446afc92a04df3",
+    "reports/live/nemotron-3-ultra-free/refusal-structure-annotated-retry1-input.json": "0f7c4b1ebd542e556b98a154c64c58959b988cb97c57b1d6cb04d936fb32aec7",
+    "reports/live/nemotron-3-ultra-free/refusal-structure-annotated-retry1-raw.json": "b9a82da5036fbe6f9ee5ff7f762797d2e2aad20b0c8004d4013659c3f0093d52",
+    "reports/live/nemotron-3-ultra-free/refusal-structure-annotated-retry1-results.json": "c1be144cdf2c2a74bdef3b6b45bc207d78292d5757b903c2800f251149ccc6db"
+  },
+  "nemotronOwnStructureSuccess": false,
+  "commonGenerationPromptChanged": false,
+  "questionsAndNpnStateChanged": false
+}

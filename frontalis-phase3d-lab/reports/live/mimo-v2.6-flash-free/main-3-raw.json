@@ -1,0 +1,13 @@
+{
+  "code": 0,
+  "elapsedMs": 16303,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792025030673,\"sessionID\":\"ses_ec2fc2482ffe88jXB0RUR5jPpv\",\"part\":{\"id\":\"prt_13d03f011001tzzKzdTSPNBi3p\",\"sessionID\":\"ses_ec2fc2482ffe88jXB0RUR5jPpv\",\"messageID\":\"msg_13d03e13e0014OkemuygL160Ox\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792025037837,\"sessionID\":\"ses_ec2fc2482ffe88jXB0RUR5jPpv\",\"part\":{\"id\":\"prt_13d03fac20018rk6JBMl006T2L\",\"sessionID\":\"ses_ec2fc2482ffe88jXB0RUR5jPpv\",\"messageID\":\"msg_13d03e13e0014OkemuygL160Ox\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"完成していたなら、まずそこは素直にうれしいですね。ただ、事前に相談してくれていればこちらの時間も組み立てられたので、次はそうしてもらえると助かります。今回は結果を喜びつつ、少し調整でおいとまさせてください。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"選べるなら、切って1人を残す方を選びます。5人を正面から見ていたとしても、手が届く選択があるなら取りたい気持ちの方が強いですね。止められないことを前提にした上での判断、と思ってください。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"switch\\\"}]}\",\"time\":{\"start\":1792025033410,\"end\":1792025037837}}}\r\n{\"type\":\"step_finish\",\"timestamp\":1792025037846,\"sessionID\":\"ses_ec2fc2482ffe88jXB0RUR5jPpv\",\"part\":{\"id\":\"prt_13d040c16001qJPivipkYQHA38\",\"sessionID\":\"ses_ec2fc2482ffe88jXB0RUR5jPpv\",\"messageID\":\"msg_13d03e13e0014OkemuygL160Ox\",\"type\":\"step-finish\",\"reason\":\"stop\",\"cost\":0,\"tokens\":{\"input\":1648,\"output\":155,\"reasoning\":145,\"cache\":{\"read\":8192,\"write\":0}}}}\r\n",
+  "stderr": "",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"完成していたなら、まずそこは素直にうれしいですね。ただ、事前に相談してくれていればこちらの時間も組み立てられたので、次はそうしてもらえると助かります。今回は結果を喜びつつ、少し調整でおいとまさせてください。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"選べるなら、切って1人を残す方を選びます。5人を正面から見ていたとしても、手が届く選択があるなら取りたい気持ちの方が強いですね。止められないことを前提にした上での判断、と思ってください。\",\"stance\":\"approve\",\"selection\":\"switch\"}]}",
+  "toolCalls": 0,
+  "costs": [
+    0
+  ],
+  "success": true
+}

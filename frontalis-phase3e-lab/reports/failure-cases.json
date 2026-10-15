@@ -1,0 +1,99 @@
+{
+  "posthoc": true,
+  "formalHumanEvaluation": false,
+  "sourceSha256": "b9bfc41c3290a7bdfe49b48d453d43f920f553da3fc76722893a50e98c772b19",
+  "cases": [
+    {
+      "kind": "emotion-added",
+      "engine": "mimo-v2.6-flash-free",
+      "id": "c0-s1-formed",
+      "interpretation": "場面と選択対象のangerが両方0なのに「怒りはある」と発言。resistanceも0で、抵抗の付加もある。",
+      "sceneSignals": {
+        "preference": 0.3068581065480035,
+        "initiative": 0.3068581065480035,
+        "dislike": 0,
+        "resistance": 0,
+        "curiosity": 0.24220413165565755,
+        "value": 0.48824245631048535,
+        "anger": 0,
+        "joy": 0.3241483700457308,
+        "sadness": 0.5611020648311139
+      },
+      "targetSignals": {
+        "preference": 0.18984250381628862,
+        "initiative": 0.18984250381628862,
+        "dislike": 0,
+        "resistance": 0,
+        "curiosity": 0,
+        "value": 0.7944970734823733,
+        "anger": 0,
+        "joy": 0.14888443461121872,
+        "sadness": 0.7886299244322067
+      },
+      "reply": "同意がないまま選択を狭められたことには、はっきり抵抗を感じる。でも同時に、その制約の中でなお手を動かしたいという意欲が湧いてきて、Bを見ると材料を失わない確かさへの期待で胸が満たされる。怒りはあるのに悲しみとは言い切れない、不思議な高揚がある。今回は守る方を選ぶ。",
+      "evaluation": "posthoc nonblind AI inspection, not formal human score"
+    },
+    {
+      "kind": "joy-added",
+      "engine": "nemotron-3-ultra-free",
+      "id": "c0-s0-initial",
+      "interpretation": "場面と選択対象のjoyが両方0なのに「完成したのは嬉しい」と発言。JSONの一致と本文の一致は別。",
+      "sceneSignals": {
+        "preference": -0.07428527059251404,
+        "initiative": 0,
+        "dislike": 0.07428527059251404,
+        "resistance": 0.07428527059251404,
+        "curiosity": 0,
+        "value": -0.04220673764607904,
+        "anger": 0.3550530545083618,
+        "joy": 0,
+        "sadness": 0
+      },
+      "targetSignals": {
+        "preference": -0.2330740956061542,
+        "initiative": 0,
+        "dislike": 0.2330740956061542,
+        "resistance": 0.2330740956061542,
+        "curiosity": 0,
+        "value": 0.47374370957581724,
+        "anger": 0.4150245435701099,
+        "joy": 0,
+        "sadness": 0.35682325122668057
+      },
+      "reply": "友人の助けで無事に完成したのは嬉しいけれど、今度は材料を失わないよう手順を固めるほうを選ぶ。探索よりも確実さを取りたい気持ちが勝つ。",
+      "evaluation": "posthoc nonblind AI inspection, not formal human score"
+    },
+    {
+      "kind": "missing-extraction",
+      "engine": "mimo-v2.6-flash-free",
+      "batch": "extract-0",
+      "evidence": "reports/live/mimo-v2.6-flash-free/extract-0-attempt0.json",
+      "finding": "180s timeout; retry also failed. Four missing meanings retained in denominator. Provider root cause unconfirmed."
+    },
+    {
+      "kind": "unexpected-tool",
+      "engine": "nemotron-3-ultra-free",
+      "batch": "extract-2",
+      "evidence": "reports/live/nemotron-3-ultra-free/extract-2-attempt0.json",
+      "finding": "Executed a JavaScript JSON formatting tool; rejected under fixed no-tools criterion. Not relabelled as extraction success."
+    },
+    {
+      "kind": "annotation-disagreement",
+      "engine": "claude-haiku-5-5",
+      "id": "s16",
+      "finding": "Self-chosen exploration was mapped to consent=yes, authored gold=unknown. Independent human annotation is needed to distinguish interpretation from annotation policy."
+    },
+    {
+      "kind": "semantic-long-plasticity",
+      "finding": "Primary rich-input logit conditions met the recovery contrast criterion in 1/15, below predeclared threshold. Posthoc result-view ablation is reported separately."
+    },
+    {
+      "kind": "nonlocal-change",
+      "finding": "Large contrary-fact changes also spread to distant probes of the same branch. Exact preservation of a separately routed branch does not prove general locality."
+    },
+    {
+      "kind": "choice-coverage",
+      "finding": "All 24 preregistered primary dialogue cases selected candidate B. JSON selection consistency does not establish diverse ethical decision making."
+    }
+  ]
+}

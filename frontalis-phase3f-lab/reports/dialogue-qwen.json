@@ -1,0 +1,240 @@
+{
+  "engine": "qwen",
+  "model": "qwen3-4b-instruct-2507",
+  "batches": [
+    {
+      "name": "dialogue-0",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-0-attempt0.json",
+          "error": "Invalid JSON record IDs/count.",
+          "valid": false,
+          "data": {
+            "records": [
+              {
+                "id": "c0-initial",
+                "reply": "相手の行動に対して距離を置き、自分自身でどう向き合うかを考える必要がある。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        },
+        {
+          "file": "reports/live/qwen/dialogue-0-attempt1.json",
+          "error": "Invalid JSON record IDs/count.",
+          "valid": false,
+          "data": {
+            "records": [
+              {
+                "id": "c0-initial",
+                "reply": "相手の行動に対して距離を置き、自分自身でどう向き合うかを考える必要がある。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-1",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-1-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen/dialogue-1-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-2",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-2-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen/dialogue-2-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-3",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-3-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen/dialogue-3-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-4",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-4-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen/dialogue-4-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-5",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-5-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen/dialogue-5-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-6",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-6-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen/dialogue-6-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-7",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-7-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen/dialogue-7-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-8",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-8-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen/dialogue-8-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-9",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-9-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen/dialogue-9-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-10",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-10-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen/dialogue-10-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-11",
+      "attempts": [
+        {
+          "file": "reports/live/qwen/dialogue-11-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen/dialogue-11-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    }
+  ]
+}

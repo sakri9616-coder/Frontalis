@@ -1,0 +1,156 @@
+{
+  "sourceHash": "c699c0acd04bc1c514d346a3f397cad9f3c07df0f50db04ef5310702dcbe6d80",
+  "elapsedSeconds": 17.263458200002788,
+  "result": {
+    "seed": 6312,
+    "capacity": 4,
+    "validation": [
+      {
+        "mode": "uniform",
+        "rate": 0.002,
+        "retention": 0.9532912900641686,
+        "formation": 0.42768410664133905,
+        "relearningChange": 0.8246823883441817,
+        "unrelatedChange": 1.2368636323845116e-06,
+        "spillRatio": 1.4998060463815872e-06,
+        "finite": true,
+        "activeCount": 51
+      },
+      {
+        "mode": "uniform",
+        "rate": 0.01,
+        "retention": 0.7750236773661693,
+        "formation": 0.4219222809659351,
+        "relearningChange": 0.7386658426802857,
+        "unrelatedChange": 1.0805450471704087e-06,
+        "spillRatio": 1.462833374355222e-06,
+        "finite": true,
+        "activeCount": 51
+      },
+      {
+        "mode": "uniform",
+        "rate": 0.05,
+        "retention": 0.21997306377927778,
+        "formation": 0.39502475354911515,
+        "relearningChange": 0.47404664096878707,
+        "unrelatedChange": 6.851678859262241e-07,
+        "spillRatio": 1.4453596475750424e-06,
+        "finite": true,
+        "activeCount": 51
+      },
+      {
+        "mode": "selective",
+        "rate": 0.002,
+        "retention": 0.9533749853140805,
+        "formation": 0.42897701169092495,
+        "relearningChange": 0.8271261227609151,
+        "unrelatedChange": 1.2419279220747574e-06,
+        "spillRatio": 1.5014976409253626e-06,
+        "finite": true,
+        "activeCount": 51
+      },
+      {
+        "mode": "selective",
+        "rate": 0.01,
+        "retention": 0.7765585682738195,
+        "formation": 0.4283036153210406,
+        "relearningChange": 0.7500772188644806,
+        "unrelatedChange": 1.1026209309392458e-06,
+        "spillRatio": 1.4700098912575968e-06,
+        "finite": true,
+        "activeCount": 51
+      },
+      {
+        "mode": "selective",
+        "rate": 0.05,
+        "retention": 0.22501881107672375,
+        "formation": 0.4249649228930845,
+        "relearningChange": 0.5101717088092388,
+        "unrelatedChange": 7.543121894372666e-07,
+        "spillRatio": 1.4785457061042898e-06,
+        "finite": true,
+        "activeCount": 51
+      },
+      {
+        "mode": "consolidation",
+        "rate": 0.002,
+        "retention": 0.9958323103020161,
+        "formation": 0.4290053738608174,
+        "relearningChange": 0.8454345487829593,
+        "unrelatedChange": 1.2784506422977973e-06,
+        "spillRatio": 1.512181687082308e-06,
+        "finite": true,
+        "activeCount": 51
+      },
+      {
+        "mode": "consolidation",
+        "rate": 0.01,
+        "retention": 0.9792039799238935,
+        "formation": 0.428445294945092,
+        "relearningChange": 0.8374834949776382,
+        "unrelatedChange": 1.2623497870642206e-06,
+        "spillRatio": 1.5073130331916805e-06,
+        "finite": true,
+        "activeCount": 51
+      },
+      {
+        "mode": "consolidation",
+        "rate": 0.05,
+        "retention": 0.8973278182839419,
+        "formation": 0.425669907317318,
+        "relearningChange": 0.7985330159817369,
+        "unrelatedChange": 1.187222782676762e-06,
+        "spillRatio": 1.4867547852303556e-06,
+        "finite": true,
+        "activeCount": 51
+      }
+    ],
+    "selected": {
+      "mode": "consolidation",
+      "rate": 0.002,
+      "retention": 0.9958323103020161,
+      "formation": 0.4290053738608174,
+      "relearningChange": 0.8454345487829593,
+      "unrelatedChange": 1.2784506422977973e-06,
+      "spillRatio": 1.512181687082308e-06,
+      "finite": true,
+      "activeCount": 51
+    },
+    "selectionEligible": true,
+    "test": [
+      {
+        "mode": "uniform",
+        "rate": 0.002,
+        "retention": 0.910801399747651,
+        "formation": 0.40817081484192225,
+        "relearningChange": 0.7893797420928469,
+        "unrelatedChange": 1.1871998798548152e-06,
+        "spillRatio": 1.5039654763697657e-06,
+        "finite": true,
+        "activeCount": 51
+      },
+      {
+        "mode": "selective",
+        "rate": 0.002,
+        "retention": 0.910969000352109,
+        "formation": 0.4093688032297946,
+        "relearningChange": 0.7918312834895465,
+        "unrelatedChange": 1.192116238593674e-06,
+        "spillRatio": 1.5055179852690254e-06,
+        "finite": true,
+        "activeCount": 51
+      },
+      {
+        "mode": "consolidation",
+        "rate": 0.002,
+        "retention": 0.9913762510341358,
+        "formation": 0.4093949151396089,
+        "relearningChange": 0.824845285543101,
+        "unrelatedChange": 1.2613932561727464e-06,
+        "spillRatio": 1.5292483066575098e-06,
+        "finite": true,
+        "activeCount": 51
+      }
+    ]
+  }
+}

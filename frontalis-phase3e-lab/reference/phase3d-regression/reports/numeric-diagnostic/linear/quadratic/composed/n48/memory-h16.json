@@ -1,0 +1,66 @@
+{
+  "world": "linear",
+  "origin": "quadratic",
+  "task": "composed",
+  "trainCount": 48,
+  "validationCount": 64,
+  "testCount": 256,
+  "kind": "memory",
+  "width": 16,
+  "sourceSnapshot": "reference/source-models/linear/quadratic.json",
+  "sourceSnapshotSha256": "5d7cfa024eeeb0571411cc5213dde2a18f1ceb26ea519bee8e03ab866db67ddb",
+  "trainingLabelsHash": "3786fd9844ddf3e9fec9f9fe2e8938774fb62fb437ec8b6a2e2310b8afb1e24e",
+  "validationLabelsHash": "32bad42ea2e2bdac2e677773f5dca71a63dd22ce1b828f2ca29fdd4ea11a873e",
+  "trials": [
+    {
+      "hyperparameter": 0.2,
+      "validationMSE": 0.015730107843772708,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.35,
+      "validationMSE": 0.012825394118432662,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.65,
+      "validationMSE": 0.012119075418043477,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 1.0,
+      "validationMSE": 0.014508805533389553,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 1.5,
+      "validationMSE": 0.01635925982267367,
+      "status": "complete"
+    }
+  ],
+  "selectionCriterion": "validation-signal-MSE-only",
+  "elapsedSeconds": 0.05127419999917038,
+  "status": "complete",
+  "validationMSE": 0.012119075418043477,
+  "selectedHyperparameter": 0.65,
+  "parameterCount": 0,
+  "snapshot": "models/diagnostic/linear/quadratic/composed/n48/memory-h16",
+  "diagnostics": {
+    "parameterCount": 0,
+    "fixedBaseParameters": 56,
+    "parameterNorm": 0.9830105415227383,
+    "emergencyNorm": 50.0,
+    "layerStats": {
+      "relational": {},
+      "acoustic": {}
+    },
+    "readoutScale": 1.0,
+    "device": "cpu",
+    "dtype": "float64",
+    "generation": 0,
+    "memoryRows": {
+      "relational": 36,
+      "acoustic": 12
+    }
+  }
+}

@@ -1,0 +1,13 @@
+Verified nephia-core-lab 88 files; 11710969 archive bytes
+Verified nephia-npn-lab 139 files; 10274153 archive bytes
+Verified nephia-phase3-lab 223 files; 3205224 archive bytes
+Verified nephia-phase35-lab 697 files; 10635614 archive bytes
+Verified nephia-phase3b-lab 783 files; 14962311 archive bytes
+Verified nephia-phase3b-self-lab 682 files; 35878678 archive bytes
+Verified frontalis-phase3c-lab 5404 files; 19081781 archive bytes
+Verified frontalis-phase3d-repro-final-check 67 files; 1048328 archive bytes
+Verified frontalis-phase3d-repro-smoke-1 56 files; 1009480 archive bytes
+Verified frontalis-phase3d-repro-smoke-2 72 files; 1172077 archive bytes
+Verified frontalis-phase3e-repro-smoke 47 files; 442472 archive bytes
+Verified frontalis-phase3f-repro-final 79 files; 275637 archive bytes
+Verified frontalis-phase3f-repro-smoke 67 files; 281852 archive bytes

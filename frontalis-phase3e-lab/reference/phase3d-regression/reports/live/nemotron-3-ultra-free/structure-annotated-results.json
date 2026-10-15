@@ -1,0 +1,9 @@
+{
+  "name": "structure-annotated",
+  "engine": "opencode/nemotron-3-ultra-free",
+  "valid": false,
+  "error": "CLI failure 0 tools=1",
+  "promptHash": "0b6389e0683e0c278a5564607fa71ff73b3a46f91e4fe828739d737f5438a4e6",
+  "elapsedMs": 42843,
+  "data": null
+}

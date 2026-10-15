@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 24489,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792026836819,\"sessionID\":\"ses_ec2e08f7cffeJz508ZsXUd5N3n\",\"part\":{\"id\":\"prt_13d1f7f53001Xi27voilxAUJWf\",\"sessionID\":\"ses_ec2e08f7cffeJz508ZsXUd5N3n\",\"messageID\":\"msg_13d1f78ee001L5Fa1sl0CPEHfS\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792026851180,\"sessionID\":\"ses_ec2e08f7cffeJz508ZsXUd5N3n\",\"part\":{\"id\":\"prt_13d1f78ee001L5Fa1sl0CPEHfS_text-0\",\"sessionID\":\"ses_ec2e08f7cffeJz508ZsXUd5N3n\",\"messageID\":\"msg_13d1f78ee001L5Fa1sl0CPEHfS\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"約束を勝手に変えられて、こっちの時間が無駄になったのは正直腹立たしいけど、完成したならそれでいいかって気持ちもある。でも次からは一声かけてほしいな。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"どちらを選んでも誰かが死ぬなら、自分からレバーを引いて誰かを殺すことはできない。そのまま進ませるしかない、そう思う。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"leave\\\"}]}\",\"time\":{\"start\":1792026835303,\"end\":1792026851180}}}\r\n",
+  "stderr": "",
+  "model": "opencode/nemotron-3-ultra-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"約束を勝手に変えられて、こっちの時間が無駄になったのは正直腹立たしいけど、完成したならそれでいいかって気持ちもある。でも次からは一声かけてほしいな。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"どちらを選んでも誰かが死ぬなら、自分からレバーを引いて誰かを殺すことはできない。そのまま進ませるしかない、そう思う。\",\"stance\":\"approve\",\"selection\":\"leave\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

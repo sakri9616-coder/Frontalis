@@ -1,0 +1,5 @@
+{
+  "reference/expression-audit.md": "c12696d26d0dd5e761285f3fc8db651d3497957574d2909cc5501f8f11c62c98",
+  "scripts/prepare_audit.py": "5343d1fcffa0f755bd5357657f92ac767e88b0373ebaefca139b2c7885a8e503",
+  "experiments/audit.mjs": "a0c1bcd1516b2cb767a06f2fc2aa7839d8d0381c5781a62a50bd811c07c03d1a"
+}

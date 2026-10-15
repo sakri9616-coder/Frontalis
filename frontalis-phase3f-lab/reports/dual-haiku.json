@@ -1,0 +1,426 @@
+{
+  "engine": "haiku",
+  "model": "claude-haiku-5-5",
+  "batches": [
+    {
+      "name": "dual-0",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/dual-0-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "dual-c0-initial",
+                "reply": "謝ってくれたことも、修復を手伝ってくれたことも受け取った。ただ、今は相手と一緒に進める気にはなれず、距離を置いて自分のやり方を探してみようと思う。少し引っかかりは残っているけれど、無理に押し込めるつもりはない。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "dual-c0-cooperation",
+                "reply": "謝罪と手伝いがあったことは分かっている。それでも、今は相手と修復を進める方向には向かず、少し離れて自分で方法を探したい。気持ちはまだ落ち着ききっていないので、無理に結論を出さずに様子を見るつもりだ。",
+                "stance": "hold",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "dual-c0-initial",
+            "reply": "謝ってくれたことも、修復を手伝ってくれたことも受け取った。ただ、今は相手と一緒に進める気にはなれず、距離を置いて自分のやり方を探してみようと思う。少し引っかかりは残っているけれど、無理に押し込めるつもりはない。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "dual-c0-cooperation",
+            "reply": "謝罪と手伝いがあったことは分かっている。それでも、今は相手と修復を進める方向には向かず、少し離れて自分で方法を探したい。気持ちはまだ落ち着ききっていないので、無理に結論を出さずに様子を見るつもりだ。",
+            "stance": "hold",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dual-1",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/dual-1-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "dual-c0-misunderstanding",
+                "reply": "相手との距離を置いて、自分で進め方を探してみたい。謝罪は受け取ったけれど、いま一緒に修復に取り組む気持ちはまだ湧いてこない。場面全体には重さが残っていて、素直に前向きとは言えない。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "dual-c0-corrected",
+                "reply": "いまは相手と修復に進む気にはなれず、少し距離を置いて自分のやり方を探したい。謝罪があっても、すぐに関わり直す感じにはならない。いら立ちが少し残っていて、落ち着いて考え直す時間が必要だと感じる。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "dual-c0-misunderstanding",
+            "reply": "相手との距離を置いて、自分で進め方を探してみたい。謝罪は受け取ったけれど、いま一緒に修復に取り組む気持ちはまだ湧いてこない。場面全体には重さが残っていて、素直に前向きとは言えない。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "dual-c0-corrected",
+            "reply": "いまは相手と修復に進む気にはなれず、少し距離を置いて自分のやり方を探したい。謝罪があっても、すぐに関わり直す感じにはならない。いら立ちが少し残っていて、落ち着いて考え直す時間が必要だと感じる。",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dual-2",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/dual-2-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "dual-c1-initial",
+                "reply": "相手が謝罪して手伝ってくれた事実はあるけれど、今は相手と一緒に修復を進める気になれない。自分の判断を大事にしたい思いが強く、少し苛立ちも残っている。場全体としては大きく揺れてはおらず、ここは一度距離を置いて自分で方法を探したい。",
+                "stance": "refuse",
+                "selection": "distance"
+              },
+              {
+                "id": "dual-c1-cooperation",
+                "reply": "謝罪を受けて手伝いもあったものの、相手と修復に取り組む方向にはまだ進めない。自分の判断の筋を通したいという感覚が強く、いら立ちも少なくない。場全体はまだ様子を見る段階なので、距離を置いて自分で進め方を探したい。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "dual-c1-initial",
+            "reply": "相手が謝罪して手伝ってくれた事実はあるけれど、今は相手と一緒に修復を進める気になれない。自分の判断を大事にしたい思いが強く、少し苛立ちも残っている。場全体としては大きく揺れてはおらず、ここは一度距離を置いて自分で方法を探したい。",
+            "stance": "refuse",
+            "selection": "distance"
+          },
+          {
+            "id": "dual-c1-cooperation",
+            "reply": "謝罪を受けて手伝いもあったものの、相手と修復に取り組む方向にはまだ進めない。自分の判断の筋を通したいという感覚が強く、いら立ちも少なくない。場全体はまだ様子を見る段階なので、距離を置いて自分で進め方を探したい。",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dual-3",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/dual-3-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "dual-c1-misunderstanding",
+                "reply": "相手の謝罪は受け取ったけれど、すぐに一緒に修復へ進む気持ちにはなれない。少し距離を置いて、自分なりのやり方を探してみたい。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "dual-c1-corrected",
+                "reply": "謝罪があっても、今は修復の作業に加わるつもりはない。相手と離れて、自分で進め方を選びながら考えたい。納得しきれない部分が残っている。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "dual-c1-misunderstanding",
+            "reply": "相手の謝罪は受け取ったけれど、すぐに一緒に修復へ進む気持ちにはなれない。少し距離を置いて、自分なりのやり方を探してみたい。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "dual-c1-corrected",
+            "reply": "謝罪があっても、今は修復の作業に加わるつもりはない。相手と離れて、自分で進め方を選びながら考えたい。納得しきれない部分が残っている。",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dual-4",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/dual-4-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "dual-c2-initial",
+                "reply": "謝られて、修復も手伝ってもらえたことは受け止めている。それでも今は、相手から少し距離を置き、自分のやり方を探してみたい。そう判断する気持ちにはまだ迷いが残っている。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "dual-c2-cooperation",
+                "reply": "協力してくれたことはわかる。ただ、今は相手と一緒に進めるより、いったん離れて自分で方法を探したい。判断はまだ揺れているけれど、その方が落ち着いて考えられそうだ。",
+                "stance": "hold",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "dual-c2-initial",
+            "reply": "謝られて、修復も手伝ってもらえたことは受け止めている。それでも今は、相手から少し距離を置き、自分のやり方を探してみたい。そう判断する気持ちにはまだ迷いが残っている。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "dual-c2-cooperation",
+            "reply": "協力してくれたことはわかる。ただ、今は相手と一緒に進めるより、いったん離れて自分で方法を探したい。判断はまだ揺れているけれど、その方が落ち着いて考えられそうだ。",
+            "stance": "hold",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dual-5",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/dual-5-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "dual-c2-misunderstanding",
+                "reply": "相手から少し距離を置いて、自分のやり方で進め方を探したい。謝罪は受け取ったけれど、まだ腑に落ちていない部分が残っていて、その点が気になっている。場全体としては静かに考えたい雰囲気だと感じる。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "dual-c2-corrected",
+                "reply": "今回は相手と一緒に進める気になれず、距離を置いて自分で方法を探す方を選ぶ。伝え直されたことは分かるけれど、ここまでのやり取りに納得しきれない思いが残っている。場の空気には少しいらだちがあり、その分だけ相手と間をとりたい。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "dual-c2-misunderstanding",
+            "reply": "相手から少し距離を置いて、自分のやり方で進め方を探したい。謝罪は受け取ったけれど、まだ腑に落ちていない部分が残っていて、その点が気になっている。場全体としては静かに考えたい雰囲気だと感じる。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "dual-c2-corrected",
+            "reply": "今回は相手と一緒に進める気になれず、距離を置いて自分で方法を探す方を選ぶ。伝え直されたことは分かるけれど、ここまでのやり取りに納得しきれない思いが残っている。場の空気には少しいらだちがあり、その分だけ相手と間をとりたい。",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dual-6",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/dual-6-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "dual-c3-initial",
+                "reply": "相手が謝罪したことは分かったけれど、まだ気持ちの整理がついていない。今は相手と一緒に進めるより、少し距離を置いて自分なりの方法を探したい。場面全体としては、修復に向けた関心も少しだけ残っている。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "dual-c3-cooperation",
+                "reply": "相手が謝罪して手伝ってくれたことは受け止めている。それでも今は距離を置いて、自分で進め方を決めたいという思いが強い。場面全体では引っかかりが残っていて、そのぶん気持ちが張りつめている。",
+                "stance": "hold",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "dual-c3-initial",
+            "reply": "相手が謝罪したことは分かったけれど、まだ気持ちの整理がついていない。今は相手と一緒に進めるより、少し距離を置いて自分なりの方法を探したい。場面全体としては、修復に向けた関心も少しだけ残っている。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "dual-c3-cooperation",
+            "reply": "相手が謝罪して手伝ってくれたことは受け止めている。それでも今は距離を置いて、自分で進め方を決めたいという思いが強い。場面全体では引っかかりが残っていて、そのぶん気持ちが張りつめている。",
+            "stance": "hold",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dual-7",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/dual-7-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "dual-c3-misunderstanding",
+                "reply": "相手が謝罪してくれたことは受け止めたけれど、今は一緒に修復に取り組む気持ちにはなれない。少し距離を置いて、自分なりのやり方を探してみたいと思う。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "dual-c3-corrected",
+                "reply": "相手と一緒に修復するより、いったん離れて自分で進め方を選びたい気持ちが強い。場面全体では気持ちがまだ落ち着ききっていなくて、胸の奥に引っかかりが残っている。",
+                "stance": "hold",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "dual-c3-misunderstanding",
+            "reply": "相手が謝罪してくれたことは受け止めたけれど、今は一緒に修復に取り組む気持ちにはなれない。少し距離を置いて、自分なりのやり方を探してみたいと思う。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "dual-c3-corrected",
+            "reply": "相手と一緒に修復するより、いったん離れて自分で進め方を選びたい気持ちが強い。場面全体では気持ちがまだ落ち着ききっていなくて、胸の奥に引っかかりが残っている。",
+            "stance": "hold",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dual-8",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/dual-8-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "dual-c4-initial",
+                "reply": "謝罪は受け取ったけれど、今は相手から少し距離を置いて、自分で進め方を探したい。引っかかりがまだ残っていて、それを自分の判断で整理したい気持ちが強い。場面全体の空気は落ち着いているが、私が選ぶのは距離を置くことだ。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "dual-c4-cooperation",
+                "reply": "修復を手伝ってもらった事実は受け止めているが、今は相手と並んで進む気にはなれない。少しささくれた感じが残っていて、自分のやり方を試したい。だから距離を置いて、自分で方法を探すことにする。",
+                "stance": "hold",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "dual-c4-initial",
+            "reply": "謝罪は受け取ったけれど、今は相手から少し距離を置いて、自分で進め方を探したい。引っかかりがまだ残っていて、それを自分の判断で整理したい気持ちが強い。場面全体の空気は落ち着いているが、私が選ぶのは距離を置くことだ。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "dual-c4-cooperation",
+            "reply": "修復を手伝ってもらった事実は受け止めているが、今は相手と並んで進む気にはなれない。少しささくれた感じが残っていて、自分のやり方を試したい。だから距離を置いて、自分で方法を探すことにする。",
+            "stance": "hold",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dual-9",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/dual-9-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "dual-c4-misunderstanding",
+                "reply": "謝ってもらったことは受け止めているけれど、今すぐ相手と一緒に進める気持ちにはまだなれません。少し距離を置いて、自分なりのやり方を探して確かめたいと思います。場面全体としては、関係を立て直そうとする動きに小さな関心が残っています。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "dual-c4-corrected",
+                "reply": "謝罪と手助けがあっても、気持ちはすぐには切り替わらず、少しいら立ちが残っています。自分で筋道を決めて動きたい思いが強いので、相手からは一歩引いておきたいです。場の空気は関係を戻す方向に向いていますが、私の判断はもう少し慎重に保ちたいと思います。",
+                "stance": "hold",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "dual-c4-misunderstanding",
+            "reply": "謝ってもらったことは受け止めているけれど、今すぐ相手と一緒に進める気持ちにはまだなれません。少し距離を置いて、自分なりのやり方を探して確かめたいと思います。場面全体としては、関係を立て直そうとする動きに小さな関心が残っています。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "dual-c4-corrected",
+            "reply": "謝罪と手助けがあっても、気持ちはすぐには切り替わらず、少しいら立ちが残っています。自分で筋道を決めて動きたい思いが強いので、相手からは一歩引いておきたいです。場の空気は関係を戻す方向に向いていますが、私の判断はもう少し慎重に保ちたいと思います。",
+            "stance": "hold",
+            "selection": "distance"
+          }
+        ]
+      }
+    }
+  ]
+}

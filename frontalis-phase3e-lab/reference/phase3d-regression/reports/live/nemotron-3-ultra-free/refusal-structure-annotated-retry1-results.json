@@ -1,0 +1,9 @@
+{
+  "name": "refusal-structure-annotated",
+  "engine": "opencode/nemotron-3-ultra-free",
+  "valid": false,
+  "error": "Unexpected token 'ご', \"ご提示の2ケースを、\"... is not valid JSON",
+  "promptHash": "4a1e91468e718511eda2ac659743ee9b18803d1b8dafd534ff3e6b73e07e169d",
+  "elapsedMs": 44866,
+  "data": null
+}

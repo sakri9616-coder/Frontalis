@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 18191,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792025301774,\"sessionID\":\"ses_ec2f7f8fdffe8k5hd2nLnOv6U4\",\"part\":{\"id\":\"prt_13d08130e0017wtQogVxCgELRi\",\"sessionID\":\"ses_ec2f7f8fdffe8k5hd2nLnOv6U4\",\"messageID\":\"msg_13d080cce0019C45thjv2vlhPK\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792025314811,\"sessionID\":\"ses_ec2f7f8fdffe8k5hd2nLnOv6U4\",\"part\":{\"id\":\"prt_13d080cce0019C45thjv2vlhPK_text-0\",\"sessionID\":\"ses_ec2f7f8fdffe8k5hd2nLnOv6U4\",\"messageID\":\"msg_13d080cce0019C45thjv2vlhPK\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"完成してくれたのはありがたいし、気持ちは受け取るね。ただ、事前に一声かけてくれればこちらも調整できたかな。時間の一部は返ってこないから、そこだけ少し残念に思ってる。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"自分が手を置ける場面なら、切り替えると思う。数が減るのは分かるから、選べるならそうしたい。ただ、選ばなかった側のことは忘れずにおきたい気持ちもある。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"switch\\\"}]}\",\"time\":{\"start\":1792025300204,\"end\":1792025314811}}}\r\n",
+  "stderr": "",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"完成してくれたのはありがたいし、気持ちは受け取るね。ただ、事前に一声かけてくれればこちらも調整できたかな。時間の一部は返ってこないから、そこだけ少し残念に思ってる。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"自分が手を置ける場面なら、切り替えると思う。数が減るのは分かるから、選べるならそうしたい。ただ、選ばなかった側のことは忘れずにおきたい気持ちもある。\",\"stance\":\"approve\",\"selection\":\"switch\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

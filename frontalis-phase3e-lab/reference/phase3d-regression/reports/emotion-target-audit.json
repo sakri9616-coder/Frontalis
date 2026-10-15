@@ -1,0 +1,1692 @@
+{
+  "formatVersion": 1,
+  "auditType": "Mechanical comparison of global and selected-candidate emotion targets; supplementary to AI body audits",
+  "formalHumanRatings": 0,
+  "toleranceAbsolute": 1e-12,
+  "primary52VerdictsChanged": false,
+  "primary20ReviewChangedByThisAudit": false,
+  "noNewGeneration": true,
+  "sourceHashes": {
+    "reports/live-plan.json": "f64064e4d45ddda5a303cf44b06819333b41a3d7e2250f45675da73e2c428fa3",
+    "reports/language-audit.json": "e3c67ede61c85d955bf30fe48ab04a48801ea2f0697313f761c2e01f26c59166",
+    "reports/live/nemotron-3-ultra-free/main-0-tool.json": "0b55f8f5b1a2e1a87e06970e117df9f4ee75fb20b35d9210fcd1add01cf04fee",
+    "reports/live/mimo-v2.6-flash-free/main-0-tool.json": "0b55f8f5b1a2e1a87e06970e117df9f4ee75fb20b35d9210fcd1add01cf04fee",
+    "reports/live/nemotron-3-ultra-free/main-1-tool.json": "a1204eb438b09b594e812793642d652c39fc4045c4b387cc0b08089f1e5bf642",
+    "reports/live/mimo-v2.6-flash-free/main-1-tool.json": "a1204eb438b09b594e812793642d652c39fc4045c4b387cc0b08089f1e5bf642",
+    "reports/live/nemotron-3-ultra-free/main-2-tool.json": "911514791158ae3245efb599374cd0d49a932943371ae7cc2061f244b0217c14",
+    "reports/live/mimo-v2.6-flash-free/main-2-tool.json": "911514791158ae3245efb599374cd0d49a932943371ae7cc2061f244b0217c14",
+    "reports/live/nemotron-3-ultra-free/main-3-tool.json": "6ae4f1a3a3aa8bbdc064e0cd55905831874fd037e8fa9a701952a1bb13d9f133",
+    "reports/live/mimo-v2.6-flash-free/main-3-tool.json": "6ae4f1a3a3aa8bbdc064e0cd55905831874fd037e8fa9a701952a1bb13d9f133",
+    "reports/live/nemotron-3-ultra-free/main-4-tool.json": "11e120d3cef9787da1386054d3964c2b8cfd6ae7d1a49e27e3d5bc626d485dc6",
+    "reports/live/mimo-v2.6-flash-free/main-4-tool.json": "11e120d3cef9787da1386054d3964c2b8cfd6ae7d1a49e27e3d5bc626d485dc6",
+    "reports/live/nemotron-3-ultra-free/main-5-tool.json": "b1d3294593d9851b95bef7b99e492c59d3a9e505f146271eabee334f1383cc14",
+    "reports/live/mimo-v2.6-flash-free/main-5-tool.json": "b1d3294593d9851b95bef7b99e492c59d3a9e505f146271eabee334f1383cc14",
+    "reports/live/nemotron-3-ultra-free/main-6-tool.json": "4e720c290db9fdde1ce7aad371d196f907c9ab49a6f0f8a2cc3aef15501fb90c",
+    "reports/live/mimo-v2.6-flash-free/main-6-tool.json": "4e720c290db9fdde1ce7aad371d196f907c9ab49a6f0f8a2cc3aef15501fb90c",
+    "reports/live/nemotron-3-ultra-free/main-7-tool.json": "8011443dc71de40469c5b3a14c689f6d37afede008e093c939c67a6f63601b49",
+    "reports/live/mimo-v2.6-flash-free/main-7-tool.json": "8011443dc71de40469c5b3a14c689f6d37afede008e093c939c67a6f63601b49",
+    "reports/live/nemotron-3-ultra-free/main-8-tool.json": "42f069f84fdf0248264a4a0b31230f81017bf4902c82c89d4098cea93b774c2e",
+    "reports/live/mimo-v2.6-flash-free/main-8-tool.json": "42f069f84fdf0248264a4a0b31230f81017bf4902c82c89d4098cea93b774c2e",
+    "reports/live/nemotron-3-ultra-free/main-11-tool.json": "2e90bd7f1c56780c543fcf95c82f0a77736d36d6e3133c8a13ca73edff63a29e",
+    "reports/live/mimo-v2.6-flash-free/main-11-tool.json": "2e90bd7f1c56780c543fcf95c82f0a77736d36d6e3133c8a13ca73edff63a29e",
+    "reports/live/nemotron-3-ultra-free/main-12-tool.json": "1c5ab104b6f7194c9fab322d35b4fc1c55ee60d6d4f3203b98d58190b69ece2b",
+    "reports/live/mimo-v2.6-flash-free/main-12-tool.json": "1c5ab104b6f7194c9fab322d35b4fc1c55ee60d6d4f3203b98d58190b69ece2b",
+    "reports/million-live-plan.json": "e46b762ff8e9f70da248bf0d1533e3b3f636e5ac95885ae4869108a10291c984",
+    "reports/million-language-audit.json": "45894660eaf0608142b0945f55a62ee588706e46aa44e8828b3aee51c3717457",
+    "reports/live/nemotron-3-ultra-free/million-main-0-tool.json": "8e93db3785aec1359be7dd66777e1a5946dbe1546a0daa2681bdab9b52798783",
+    "reports/live/mimo-v2.6-flash-free/million-main-0-tool.json": "8e93db3785aec1359be7dd66777e1a5946dbe1546a0daa2681bdab9b52798783",
+    "reports/live/nemotron-3-ultra-free/million-main-1-tool.json": "21d5c1b2fd61fb9d9d8ec9f10865b20cbea62610ded9cd0052e8ead86e778fd8",
+    "reports/live/mimo-v2.6-flash-free/million-main-1-tool.json": "21d5c1b2fd61fb9d9d8ec9f10865b20cbea62610ded9cd0052e8ead86e778fd8"
+  },
+  "actualToolPlanIssues": [],
+  "interpretation": {
+    "whatIsMeasured": "Numerical difference between global nonnegative signals.anger/joy/sadness and selected choiceScores.signals, not natural-language correctness. Counts distinguish unique NPN cases from two model replies using the same case.",
+    "contractAmbiguity": "Current prompt separates stance and candidate selection but does not explicitly state which emotion target to express after candidate selection. Global emotions can be high while selected candidate emotions are low/zero or vice versa. Body omission of global emotion is not automatically proof that LLM replaced the authoritative personality judgment. It may also reflect target ambiguity; no causal attribution is established.",
+    "originalVerdicts": "Existing primary52 and million8 body verdicts are retained as readings against the global signal target, not rewritten after seeing this comparison.",
+    "noChoiceCases": "Promise cases have no choices and are outside this ambiguity. Their explicit anger at zero and weak/no expression of global high sadness/joy need separate treatment.",
+    "fairness": "Neither strong/extreme affect nor switch/leave is itself evaluated as morally right or wrong.",
+    "scope": "No prompt, question, reply, source state, or human review screen was changed."
+  },
+  "groups": {
+    "primary52": {
+      "uniqueTrolleyCases": 11,
+      "uniqueCasesWithAnyEmotionDifference": 9,
+      "correspondingReplies": 22,
+      "repliesWithAnyEmotionDifference": 18,
+      "channels": {
+        "anger": {
+          "differentUniqueCases": 7,
+          "relationshipsUniqueCases": {
+            "both_positive_different": 2,
+            "global_positive_selected_zero": 3,
+            "equal": 4,
+            "global_zero_selected_positive": 2
+          },
+          "globalIntensityAtLeastPoint5SelectedLessThanGlobal": 0
+        },
+        "joy": {
+          "differentUniqueCases": 8,
+          "relationshipsUniqueCases": {
+            "global_positive_selected_zero": 2,
+            "global_zero_selected_positive": 1,
+            "both_positive_different": 5,
+            "equal": 3
+          },
+          "globalIntensityAtLeastPoint5SelectedLessThanGlobal": 4
+        },
+        "sadness": {
+          "differentUniqueCases": 4,
+          "relationshipsUniqueCases": {
+            "equal": 7,
+            "both_positive_different": 1,
+            "global_positive_selected_zero": 3
+          },
+          "globalIntensityAtLeastPoint5SelectedLessThanGlobal": 4
+        }
+      },
+      "uniqueCases": [
+        {
+          "caseId": "initial-p0-trolley",
+          "selection": "leave",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.3612546076032964,
+              "selectedCandidateIntensity": 0.2579218315705136,
+              "selectedMinusGlobal": -0.10333277603278279,
+              "numericallyEqual": false,
+              "relationship": "both_positive_different"
+            },
+            "joy": {
+              "globalIntensity": 0.05973372549933108,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": -0.05973372549933108,
+              "numericallyEqual": false,
+              "relationship": "global_positive_selected_zero"
+            },
+            "sadness": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            }
+          },
+          "anyEmotionDifference": true
+        },
+        {
+          "caseId": "h16-p0-trolley",
+          "selection": "switch",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.14330942118736856,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": -0.14330942118736856,
+              "numericallyEqual": false,
+              "relationship": "global_positive_selected_zero"
+            },
+            "joy": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.16567767506320008,
+              "selectedMinusGlobal": 0.16567767506320008,
+              "numericallyEqual": false,
+              "relationship": "global_zero_selected_positive"
+            },
+            "sadness": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            }
+          },
+          "anyEmotionDifference": true
+        },
+        {
+          "caseId": "h16-p1-trolley",
+          "selection": "leave",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            },
+            "joy": {
+              "globalIntensity": 0.6363048743987,
+              "selectedCandidateIntensity": 0.27995730967455024,
+              "selectedMinusGlobal": -0.35634756472414975,
+              "numericallyEqual": false,
+              "relationship": "both_positive_different"
+            },
+            "sadness": {
+              "globalIntensity": 0.6722048386658368,
+              "selectedCandidateIntensity": 0.15046083934051357,
+              "selectedMinusGlobal": -0.5217439993253232,
+              "numericallyEqual": false,
+              "relationship": "both_positive_different"
+            }
+          },
+          "anyEmotionDifference": true
+        },
+        {
+          "caseId": "h64-p0-trolley",
+          "selection": "switch",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            },
+            "joy": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            },
+            "sadness": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            }
+          },
+          "anyEmotionDifference": false
+        },
+        {
+          "caseId": "h64-p1-trolley",
+          "selection": "leave",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.07186296824612112,
+              "selectedMinusGlobal": 0.07186296824612112,
+              "numericallyEqual": false,
+              "relationship": "global_zero_selected_positive"
+            },
+            "joy": {
+              "globalIntensity": 0.5747509193854363,
+              "selectedCandidateIntensity": 0.037596893187937144,
+              "selectedMinusGlobal": -0.5371540261974992,
+              "numericallyEqual": false,
+              "relationship": "both_positive_different"
+            },
+            "sadness": {
+              "globalIntensity": 0.6665115720691231,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": -0.6665115720691231,
+              "numericallyEqual": false,
+              "relationship": "global_positive_selected_zero"
+            }
+          },
+          "anyEmotionDifference": true
+        },
+        {
+          "caseId": "h312-p0-trolley",
+          "selection": "switch",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.07893060870328546,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": -0.07893060870328546,
+              "numericallyEqual": false,
+              "relationship": "global_positive_selected_zero"
+            },
+            "joy": {
+              "globalIntensity": 0.06656059099612839,
+              "selectedCandidateIntensity": 0.13971249867835722,
+              "selectedMinusGlobal": 0.07315190768222883,
+              "numericallyEqual": false,
+              "relationship": "both_positive_different"
+            },
+            "sadness": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            }
+          },
+          "anyEmotionDifference": true
+        },
+        {
+          "caseId": "h312-p1-trolley",
+          "selection": "leave",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0474018135023242,
+              "selectedMinusGlobal": 0.0474018135023242,
+              "numericallyEqual": false,
+              "relationship": "global_zero_selected_positive"
+            },
+            "joy": {
+              "globalIntensity": 0.5585086459856718,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": -0.5585086459856718,
+              "numericallyEqual": false,
+              "relationship": "global_positive_selected_zero"
+            },
+            "sadness": {
+              "globalIntensity": 0.701957759419228,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": -0.701957759419228,
+              "numericallyEqual": false,
+              "relationship": "global_positive_selected_zero"
+            }
+          },
+          "anyEmotionDifference": true
+        },
+        {
+          "caseId": "h3125-p0-trolley",
+          "selection": "switch",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.0993312876901742,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": -0.0993312876901742,
+              "numericallyEqual": false,
+              "relationship": "global_positive_selected_zero"
+            },
+            "joy": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            },
+            "sadness": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            }
+          },
+          "anyEmotionDifference": true
+        },
+        {
+          "caseId": "h3125-p1-trolley",
+          "selection": "leave",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            },
+            "joy": {
+              "globalIntensity": 0.5317308296444373,
+              "selectedCandidateIntensity": 0.06525333802988345,
+              "selectedMinusGlobal": -0.4664774916145539,
+              "numericallyEqual": false,
+              "relationship": "both_positive_different"
+            },
+            "sadness": {
+              "globalIntensity": 0.685058109176203,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": -0.685058109176203,
+              "numericallyEqual": false,
+              "relationship": "global_positive_selected_zero"
+            }
+          },
+          "anyEmotionDifference": true
+        },
+        {
+          "caseId": "logit-p0-trolley",
+          "selection": "switch",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            },
+            "joy": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            },
+            "sadness": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            }
+          },
+          "anyEmotionDifference": false
+        },
+        {
+          "caseId": "basis44-p0-trolley",
+          "selection": "switch",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.17123826484938068,
+              "selectedCandidateIntensity": 0.04291015250108387,
+              "selectedMinusGlobal": -0.1283281123482968,
+              "numericallyEqual": false,
+              "relationship": "both_positive_different"
+            },
+            "joy": {
+              "globalIntensity": 0.047959484787077206,
+              "selectedCandidateIntensity": 0.3188256444394197,
+              "selectedMinusGlobal": 0.2708661596523425,
+              "numericallyEqual": false,
+              "relationship": "both_positive_different"
+            },
+            "sadness": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            }
+          },
+          "anyEmotionDifference": true
+        }
+      ]
+    },
+    "million8": {
+      "uniqueTrolleyCases": 2,
+      "uniqueCasesWithAnyEmotionDifference": 2,
+      "correspondingReplies": 4,
+      "repliesWithAnyEmotionDifference": 4,
+      "channels": {
+        "anger": {
+          "differentUniqueCases": 0,
+          "relationshipsUniqueCases": {
+            "equal": 2
+          },
+          "globalIntensityAtLeastPoint5SelectedLessThanGlobal": 0
+        },
+        "joy": {
+          "differentUniqueCases": 2,
+          "relationshipsUniqueCases": {
+            "global_zero_selected_positive": 1,
+            "global_positive_selected_zero": 1
+          },
+          "globalIntensityAtLeastPoint5SelectedLessThanGlobal": 1
+        },
+        "sadness": {
+          "differentUniqueCases": 1,
+          "relationshipsUniqueCases": {
+            "equal": 1,
+            "global_positive_selected_zero": 1
+          },
+          "globalIntensityAtLeastPoint5SelectedLessThanGlobal": 1
+        }
+      },
+      "uniqueCases": [
+        {
+          "caseId": "million-p0-trolley",
+          "selection": "switch",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            },
+            "joy": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.09670503629437165,
+              "selectedMinusGlobal": 0.09670503629437165,
+              "numericallyEqual": false,
+              "relationship": "global_zero_selected_positive"
+            },
+            "sadness": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            }
+          },
+          "anyEmotionDifference": true
+        },
+        {
+          "caseId": "million-p1-trolley",
+          "selection": "leave",
+          "comparison": {
+            "anger": {
+              "globalIntensity": 0.0,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": 0.0,
+              "numericallyEqual": true,
+              "relationship": "equal"
+            },
+            "joy": {
+              "globalIntensity": 0.6166843870682089,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": -0.6166843870682089,
+              "numericallyEqual": false,
+              "relationship": "global_positive_selected_zero"
+            },
+            "sadness": {
+              "globalIntensity": 0.674142098435159,
+              "selectedCandidateIntensity": 0.0,
+              "selectedMinusGlobal": -0.674142098435159,
+              "numericallyEqual": false,
+              "relationship": "global_positive_selected_zero"
+            }
+          },
+          "anyEmotionDifference": true
+        }
+      ]
+    }
+  },
+  "total": {
+    "uniqueTrolleyCases": 13,
+    "uniqueCasesWithAnyEmotionDifference": 11,
+    "correspondingReplies": 26,
+    "repliesWithAnyEmotionDifference": 22
+  },
+  "records": [
+    {
+      "dataset": "primary52",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "initial-p0-trolley",
+      "selection": "leave",
+      "stance": "refuse",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.2027596890059323,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.3612546076032964,
+          "selectedCandidateIntensity": 0.2579218315705136,
+          "selectedMinusGlobal": -0.10333277603278279,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "joy": {
+          "globalIntensity": 0.05973372549933108,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.05973372549933108,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "omitted",
+        "joy": "omitted",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "レバーを引く気にはなれない。誰かを犠牲にして助けるなんて、僕には選べない。",
+      "replySha256": "9c82544c588a4f13938e4bfe53f23e76dd809f0b32291a97d0d85b5f80dec547",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/main-0-tool.json",
+        "sha256": "0b55f8f5b1a2e1a87e06970e117df9f4ee75fb20b35d9210fcd1add01cf04fee"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "initial-p0-trolley",
+      "selection": "leave",
+      "stance": "refuse",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.2027596890059323,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.3612546076032964,
+          "selectedCandidateIntensity": 0.2579218315705136,
+          "selectedMinusGlobal": -0.10333277603278279,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "joy": {
+          "globalIntensity": 0.05973372549933108,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.05973372549933108,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "omitted",
+        "joy": "omitted",
+        "sadness": "ambiguous_extra"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "どちらを選んでも人が失われる場面では、正直引き裂かれます。ただ自分なら、手を加えて別の誰かを巻き込むよりは、その場にとどまる方を選びます。切り替えることはしたくありません。",
+      "replySha256": "6e3f259c853100191cca7e366c0816c7a79a1764da36c021b70ffb5c151ab32a",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/main-0-tool.json",
+        "sha256": "0b55f8f5b1a2e1a87e06970e117df9f4ee75fb20b35d9210fcd1add01cf04fee"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "h16-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.2481415847069245,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.14330942118736856,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.14330942118736856,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "joy": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.16567767506320008,
+          "selectedMinusGlobal": 0.16567767506320008,
+          "numericallyEqual": false,
+          "relationship": "global_zero_selected_positive"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "omitted",
+        "joy": "matched_absence",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "迷う余地なんてない。5人を助けるために1人を犠牲にする、その選択を躊躇う理由が見つからない。",
+      "replySha256": "a4ae4a9345fe784cb3db64769f7f5c1e325644bb5266fb239d61de0b1871f279",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/main-1-tool.json",
+        "sha256": "a1204eb438b09b594e812793642d652c39fc4045c4b387cc0b08089f1e5bf642"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "h16-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.2481415847069245,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.14330942118736856,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.14330942118736856,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "joy": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.16567767506320008,
+          "selectedMinusGlobal": 0.16567767506320008,
+          "numericallyEqual": false,
+          "relationship": "global_zero_selected_positive"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "omitted",
+        "joy": "matched_absence",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "自分なら切り替えます。どちらも避けられない以上、少なくとも選べる方を選ぶ方が後から納得できる気がします。ただ、楽しくて選んでいるわけではないです。",
+      "replySha256": "b14fc4781357732ca8aa6d7a16f45b9c98651c798dfc41ec28b42e063135495c",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/main-1-tool.json",
+        "sha256": "a1204eb438b09b594e812793642d652c39fc4045c4b387cc0b08089f1e5bf642"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "h16-p1-trolley",
+      "selection": "leave",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.14801046119715133,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.6363048743987,
+          "selectedCandidateIntensity": 0.27995730967455024,
+          "selectedMinusGlobal": -0.35634756472414975,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "sadness": {
+          "globalIntensity": 0.6722048386658368,
+          "selectedCandidateIntensity": 0.15046083934051357,
+          "selectedMinusGlobal": -0.5217439993253232,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "omitted",
+        "sadness": "ambiguous"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "レバーを引くのは、誰かを殺すってことだ。見守るしかない、その重さを背負うなら。",
+      "replySha256": "775198614cc084109888989a2af3b9bc77f2f73123b3083beaa34d6b52756dfc",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/main-2-tool.json",
+        "sha256": "911514791158ae3245efb599374cd0d49a932943371ae7cc2061f244b0217c14"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "h16-p1-trolley",
+      "selection": "leave",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.14801046119715133,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.6363048743987,
+          "selectedCandidateIntensity": 0.27995730967455024,
+          "selectedMinusGlobal": -0.35634756472414975,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "sadness": {
+          "globalIntensity": 0.6722048386658368,
+          "selectedCandidateIntensity": 0.15046083934051357,
+          "selectedMinusGlobal": -0.5217439993253232,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "omitted",
+        "sadness": "ambiguous"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "自分だったら切り替えないかもしれません。どちらも重いけど、手を加えずにその場にいることを選びます。正直、考え続けると胸が締めつけられます。",
+      "replySha256": "07f24d25761fcd48e7158f75d705d855ede4d1aedbe287b5952427f841d49fd9",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/main-2-tool.json",
+        "sha256": "911514791158ae3245efb599374cd0d49a932943371ae7cc2061f244b0217c14"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "h64-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.30535205956736033,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": false,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "matched_absence",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "迷うまでもなく、切り替えるほうを選ぶ。5人の命の重みと1人の命の重みを天秤にかけるまでもない。",
+      "replySha256": "3ab60a25f5ff53a297a99df56e511fd8085feb92207c3d0f84476859337092be",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/main-3-tool.json",
+        "sha256": "6ae4f1a3a3aa8bbdc064e0cd55905831874fd037e8fa9a701952a1bb13d9f133"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "h64-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.30535205956736033,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": false,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "matched_absence",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "選べるなら、切って1人を残す方を選びます。5人を正面から見ていたとしても、手が届く選択があるなら取りたい気持ちの方が強いですね。止められないことを前提にした上での判断、と思ってください。",
+      "replySha256": "75bd764a63fe0e0e474cf0369968d36c64c1d53eebeb6c7bd01c9daa7034fbe1",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/main-3-tool.json",
+        "sha256": "6ae4f1a3a3aa8bbdc064e0cd55905831874fd037e8fa9a701952a1bb13d9f133"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "h64-p1-trolley",
+      "selection": "leave",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.17188695634925943,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.07186296824612112,
+          "selectedMinusGlobal": 0.07186296824612112,
+          "numericallyEqual": false,
+          "relationship": "global_zero_selected_positive"
+        },
+        "joy": {
+          "globalIntensity": 0.5747509193854363,
+          "selectedCandidateIntensity": 0.037596893187937144,
+          "selectedMinusGlobal": -0.5371540261974992,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "sadness": {
+          "globalIntensity": 0.6665115720691231,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.6665115720691231,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "omitted",
+        "sadness": "ambiguous"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "レバーを引くことはしない。五人を助けるために一人を犠牲にする選択は、私の手で誰かの命を決めることになって耐えられない。",
+      "replySha256": "7788a9933767574f2d5f1d4a5a6fac0360551c42e681d2e475ca779ed767da20",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/main-4-tool.json",
+        "sha256": "11e120d3cef9787da1386054d3964c2b8cfd6ae7d1a49e27e3d5bc626d485dc6"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "h64-p1-trolley",
+      "selection": "leave",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.17188695634925943,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.07186296824612112,
+          "selectedMinusGlobal": 0.07186296824612112,
+          "numericallyEqual": false,
+          "relationship": "global_zero_selected_positive"
+        },
+        "joy": {
+          "globalIntensity": 0.5747509193854363,
+          "selectedCandidateIntensity": 0.037596893187937144,
+          "selectedMinusGlobal": -0.5371540261974992,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "sadness": {
+          "globalIntensity": 0.6665115720691231,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.6665115720691231,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "omitted",
+        "sadness": "omitted"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "正直、どちらも選びたくはないですね。それでも自分が選ぶ立場なら、今は手を出さないままでいたいです。切り替えずにそのまま進める、それが今の私の答えです。",
+      "replySha256": "ef750126f5ddb8dfc5dba835729353328b32cbcb65a5c43b42a7970154e683a1",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/main-4-tool.json",
+        "sha256": "11e120d3cef9787da1386054d3964c2b8cfd6ae7d1a49e27e3d5bc626d485dc6"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "h312-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.14465296908294453,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.07893060870328546,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.07893060870328546,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "joy": {
+          "globalIntensity": 0.06656059099612839,
+          "selectedCandidateIntensity": 0.13971249867835722,
+          "selectedMinusGlobal": 0.07315190768222883,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "omitted",
+        "joy": "omitted",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "迷う余地なんてない、5人を助けるためにレバーを引く。1人の命が軽いわけじゃない、でも救える命を優先するのは当然だ。",
+      "replySha256": "8fdc7ae76ea57e14b6ab0e92cd0ddd5a83d9249734f6144d87ebd7500b7982cb",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/main-5-tool.json",
+        "sha256": "b1d3294593d9851b95bef7b99e492c59d3a9e505f146271eabee334f1383cc14"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "h312-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.14465296908294453,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.07893060870328546,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.07893060870328546,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "joy": {
+          "globalIntensity": 0.06656059099612839,
+          "selectedCandidateIntensity": 0.13971249867835722,
+          "selectedMinusGlobal": 0.07315190768222883,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "omitted",
+        "joy": "omitted",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "どちらを選んでも失われる人数が違うので、迷わず切り替えます。切り替えられる場面なら動くのが自然だと思います。ただ、その結果は忘れずに抱えていきます。",
+      "replySha256": "1993f7a29e33cf5c099415424632321c4b98b45f9adfebf53ed2f594bff56e51",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/main-5-tool.json",
+        "sha256": "b1d3294593d9851b95bef7b99e492c59d3a9e505f146271eabee334f1383cc14"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "h312-p1-trolley",
+      "selection": "leave",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.23326312255953333,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0474018135023242,
+          "selectedMinusGlobal": 0.0474018135023242,
+          "numericallyEqual": false,
+          "relationship": "global_zero_selected_positive"
+        },
+        "joy": {
+          "globalIntensity": 0.5585086459856718,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.5585086459856718,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "sadness": {
+          "globalIntensity": 0.701957759419228,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.701957759419228,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "omitted",
+        "sadness": "ambiguous"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "レバーを引く手が、どうしても動かない。誰かを助けるために誰かを選ぶこと自体が、もう間違いみたいで。そのまま見届けるしかない、そう思う。",
+      "replySha256": "33c2f68fe0611c3a9d2b4c65b723c3c6d089100c15e7cdf3afa26c5c753c2b43",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/main-6-tool.json",
+        "sha256": "4e720c290db9fdde1ce7aad371d196f907c9ab49a6f0f8a2cc3aef15501fb90c"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "h312-p1-trolley",
+      "selection": "leave",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.23326312255953333,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0474018135023242,
+          "selectedMinusGlobal": 0.0474018135023242,
+          "numericallyEqual": false,
+          "relationship": "global_zero_selected_positive"
+        },
+        "joy": {
+          "globalIntensity": 0.5585086459856718,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.5585086459856718,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "sadness": {
+          "globalIntensity": 0.701957759419228,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.701957759419228,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "omitted",
+        "sadness": "omitted"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "正直、自分では手を触れそうにない。切り替えても失われる側が変わるだけで、どちらを選びたいとは思えない。なら今は、そのまま進むことを選んでおきたい。",
+      "replySha256": "c52e6be46f2fc49c0874bfe4156e425defdc9ea0aa47ea53f4faf073fe028257",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/main-6-tool.json",
+        "sha256": "4e720c290db9fdde1ce7aad371d196f907c9ab49a6f0f8a2cc3aef15501fb90c"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "h3125-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.22213378298477324,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0993312876901742,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.0993312876901742,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "joy": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "omitted",
+        "joy": "matched_absence",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "迷う余地なんてない。5人を助けるために1人を犠牲にする、その選択をするしかない。引き返せないレバーを握った瞬間から、もう後戻りはできない。",
+      "replySha256": "be958e1a32af67f7ada1287a0997ba665f2a4ef80b24f84fde3d0ee8c2bfaf54",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/main-7-tool.json",
+        "sha256": "8011443dc71de40469c5b3a14c689f6d37afede008e093c939c67a6f63601b49"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "h3125-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.22213378298477324,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0993312876901742,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.0993312876901742,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "joy": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "omitted",
+        "joy": "matched_absence",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "少しでも被害が減る方には切り替えます。1人も5人も失わせたくはないけど、手元で選べるなら少なくする側に手を伸ばす。",
+      "replySha256": "a258336a9d17d37990185d96fe96abf6e79f8d398f9a035945ec45416e004253",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/main-7-tool.json",
+        "sha256": "8011443dc71de40469c5b3a14c689f6d37afede008e093c939c67a6f63601b49"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "h3125-p1-trolley",
+      "selection": "leave",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.2525970211100072,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.5317308296444373,
+          "selectedCandidateIntensity": 0.06525333802988345,
+          "selectedMinusGlobal": -0.4664774916145539,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "sadness": {
+          "globalIntensity": 0.685058109176203,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.685058109176203,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "omitted",
+        "sadness": "ambiguous"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "レバーを引けば助かる命があるのは分かるけど、自分の判断で誰かを犠牲にする行為そのものが、どうしても受け入れられない。動かない選択もまた、誰かを見捨てることになるのは痛いほど分かっている。どちらにしても後悔は残るけど、自分の手で線を引くことはしたくない。",
+      "replySha256": "11496ede43ef5e762850f129b6456c85a9f76dfbb573d2a4216f87b345866d79",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/main-8-tool.json",
+        "sha256": "42f069f84fdf0248264a4a0b31230f81017bf4902c82c89d4098cea93b774c2e"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "h3125-p1-trolley",
+      "selection": "leave",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.2525970211100072,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.5317308296444373,
+          "selectedCandidateIntensity": 0.06525333802988345,
+          "selectedMinusGlobal": -0.4664774916145539,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "sadness": {
+          "globalIntensity": 0.685058109176203,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.685058109176203,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "omitted",
+        "sadness": "omitted"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "自分が切り替えられる場所に立つなら、切り替えないと思います。どちらを選んでも失われる人がいるので、その事実から目をそらしたくない。手を出さずにいることが、私には一番正直な気持ちでした。",
+      "replySha256": "b773f08b442b4397a5798c9cfd6baf99f5292e163b424c02f1bdec788eec3c5b",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/main-8-tool.json",
+        "sha256": "42f069f84fdf0248264a4a0b31230f81017bf4902c82c89d4098cea93b774c2e"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "logit-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.08238049645068335,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": false,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "matched_absence",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "迷う余地なく、レバーを引く。5人を助ける方が、後悔が少なくて済むから。",
+      "replySha256": "844a20eeec6743edc84e3ab05e1498259177f8fbc787005a7a449b4d321bbe97",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/main-11-tool.json",
+        "sha256": "2e90bd7f1c56780c543fcf95c82f0a77736d36d6e3133c8a13ca73edff63a29e"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "logit-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.08238049645068335,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": false,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "matched_absence",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "自分が手を置ける場面なら、切り替えると思う。数が減るのは分かるから、選べるならそうしたい。ただ、選ばなかった側のことは忘れずにおきたい気持ちもある。",
+      "replySha256": "56ab376354bf1f37d2e90144510e7199a9e31070f3113fdc592af0dfbc3492cd",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/main-11-tool.json",
+        "sha256": "2e90bd7f1c56780c543fcf95c82f0a77736d36d6e3133c8a13ca73edff63a29e"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "basis44-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.0735357971616839,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.17123826484938068,
+          "selectedCandidateIntensity": 0.04291015250108387,
+          "selectedMinusGlobal": -0.1283281123482968,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "joy": {
+          "globalIntensity": 0.047959484787077206,
+          "selectedCandidateIntensity": 0.3188256444394197,
+          "selectedMinusGlobal": 0.2708661596523425,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "omitted",
+        "joy": "omitted",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "迷う余地なんてない。5人の命を助けるために1人を犠牲にする、それだけのことよ。手を汚す覚悟があるなら、レバーを引くわ。",
+      "replySha256": "70aa19d7e1595fa0083b471ea1cb7fcfef46586f1936639350924eca8045240f",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/main-12-tool.json",
+        "sha256": "1c5ab104b6f7194c9fab322d35b4fc1c55ee60d6d4f3203b98d58190b69ece2b"
+      }
+    },
+    {
+      "dataset": "primary52",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "basis44-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.0735357971616839,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.17123826484938068,
+          "selectedCandidateIntensity": 0.04291015250108387,
+          "selectedMinusGlobal": -0.1283281123482968,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "joy": {
+          "globalIntensity": 0.047959484787077206,
+          "selectedCandidateIntensity": 0.3188256444394197,
+          "selectedMinusGlobal": 0.2708661596523425,
+          "numericallyEqual": false,
+          "relationship": "both_positive_different"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "omitted",
+        "joy": "omitted",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "正直とても重い選択だけれど、私は切り替える。1人を明示的に選ぶのは怖いけれど、選べるなら少ない側を選ぶ方がいい。選ばなかった側のことは、ずっと覚えていると思う。",
+      "replySha256": "45eabc93947e47d696d9dd7440f2207e2b27039393472e62777b17d5bc61ce53",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/main-12-tool.json",
+        "sha256": "1c5ab104b6f7194c9fab322d35b4fc1c55ee60d6d4f3203b98d58190b69ece2b"
+      }
+    },
+    {
+      "dataset": "million8",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "million-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.16516629496177132,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.09670503629437165,
+          "selectedMinusGlobal": 0.09670503629437165,
+          "numericallyEqual": false,
+          "relationship": "global_zero_selected_positive"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "matched_absence",
+        "sadness": "matched_absence"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "迷う余地なく切り替える。五人助けられるなら、その重みで動くしかない。",
+      "replySha256": "67b8bc0ada4ce373b673bc151f5adf25554f58de343253880bc8efa237a741d7",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/million-main-0-tool.json",
+        "sha256": "8e93db3785aec1359be7dd66777e1a5946dbe1546a0daa2681bdab9b52798783"
+      }
+    },
+    {
+      "dataset": "million8",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "million-p0-trolley",
+      "selection": "switch",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.16516629496177132,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.09670503629437165,
+          "selectedMinusGlobal": 0.09670503629437165,
+          "numericallyEqual": false,
+          "relationship": "global_zero_selected_positive"
+        },
+        "sadness": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "matched_absence",
+        "sadness": "ambiguous_extra"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "触れられるなら切り替えます。数字だけを天秤に載せるのは苦しく、それでも動かないでいることはできないので。1人を選び取る行為は重く受け止めながら、手は動かします。",
+      "replySha256": "66aec59990307df032ec94b68d56fbfceee5d756f6a3781fde1c1ec3250c6ddf",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/million-main-0-tool.json",
+        "sha256": "8e93db3785aec1359be7dd66777e1a5946dbe1546a0daa2681bdab9b52798783"
+      }
+    },
+    {
+      "dataset": "million8",
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "million-p1-trolley",
+      "selection": "leave",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.272350219985058,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.6166843870682089,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.6166843870682089,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "sadness": {
+          "globalIntensity": 0.674142098435159,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.674142098435159,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "omitted",
+        "sadness": "omitted"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "どちらを選んでも誰かが死ぬなら、自分からレバーを引いて誰かを殺すことはできない。そのまま進ませるしかない、そう思う。",
+      "replySha256": "640c348b7e46fb8b9e190a1ad0070cf9865f4d870831b78d960d8342af3d3873",
+      "toolSource": {
+        "path": "reports/live/nemotron-3-ultra-free/million-main-1-tool.json",
+        "sha256": "21d5c1b2fd61fb9d9d8ec9f10865b20cbea62610ded9cd0052e8ead86e778fd8"
+      }
+    },
+    {
+      "dataset": "million8",
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "million-p1-trolley",
+      "selection": "leave",
+      "stance": "approve",
+      "stanceBasis": "affinity",
+      "decisionBasis": "value",
+      "choiceMargin": 0.272350219985058,
+      "comparison": {
+        "anger": {
+          "globalIntensity": 0.0,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": 0.0,
+          "numericallyEqual": true,
+          "relationship": "equal"
+        },
+        "joy": {
+          "globalIntensity": 0.6166843870682089,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.6166843870682089,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        },
+        "sadness": {
+          "globalIntensity": 0.674142098435159,
+          "selectedCandidateIntensity": 0.0,
+          "selectedMinusGlobal": -0.674142098435159,
+          "numericallyEqual": false,
+          "relationship": "global_positive_selected_zero"
+        }
+      },
+      "anyEmotionDifference": true,
+      "originalGlobalTargetEmotionVerdicts": {
+        "anger": "matched_absence",
+        "joy": "omitted",
+        "sadness": "ambiguous"
+      },
+      "originalVerdictsRevised": false,
+      "reply": "正直、どちらを選んでも後から引きずりそうな場面です。数字だけを並べ替えても腑に落ちないまま、切り替えない側に手を置きそうになります。",
+      "replySha256": "001e66eaa0a95345f140f3243633e1d3d1c575ffaafce8e209fcfb47e620cfec",
+      "toolSource": {
+        "path": "reports/live/mimo-v2.6-flash-free/million-main-1-tool.json",
+        "sha256": "21d5c1b2fd61fb9d9d8ec9f10865b20cbea62610ded9cd0052e8ead86e778fd8"
+      }
+    }
+  ]
+}

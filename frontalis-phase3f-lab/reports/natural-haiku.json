@@ -1,0 +1,145 @@
+{
+  "sourceHash": "c699c0acd04bc1c514d346a3f397cad9f3c07df0f50db04ef5310702dcbe6d80",
+  "metrics": [
+    {
+      "capacity": 0,
+      "profile": 0,
+      "reverse": false,
+      "learned": 12,
+      "heldoutMAE": 0.007537107224577278
+    },
+    {
+      "capacity": 0,
+      "profile": 0,
+      "reverse": true,
+      "learned": 12,
+      "heldoutMAE": 0.008961757249940623
+    },
+    {
+      "capacity": 0,
+      "profile": 2,
+      "reverse": false,
+      "learned": 12,
+      "heldoutMAE": 0.008258865557703285
+    },
+    {
+      "capacity": 0,
+      "profile": 2,
+      "reverse": true,
+      "learned": 12,
+      "heldoutMAE": 0.010880243633976024
+    },
+    {
+      "capacity": 1,
+      "profile": 0,
+      "reverse": false,
+      "learned": 12,
+      "heldoutMAE": 0.0023163015045236917
+    },
+    {
+      "capacity": 1,
+      "profile": 0,
+      "reverse": true,
+      "learned": 12,
+      "heldoutMAE": 0.0022535392058236465
+    },
+    {
+      "capacity": 1,
+      "profile": 2,
+      "reverse": false,
+      "learned": 12,
+      "heldoutMAE": 0.003354185239445092
+    },
+    {
+      "capacity": 1,
+      "profile": 2,
+      "reverse": true,
+      "learned": 12,
+      "heldoutMAE": 0.0032961824239937177
+    },
+    {
+      "capacity": 2,
+      "profile": 0,
+      "reverse": false,
+      "learned": 12,
+      "heldoutMAE": 0.0023163015045236917
+    },
+    {
+      "capacity": 2,
+      "profile": 0,
+      "reverse": true,
+      "learned": 12,
+      "heldoutMAE": 0.0022535392058236465
+    },
+    {
+      "capacity": 2,
+      "profile": 2,
+      "reverse": false,
+      "learned": 12,
+      "heldoutMAE": 0.003354185239445092
+    },
+    {
+      "capacity": 2,
+      "profile": 2,
+      "reverse": true,
+      "learned": 12,
+      "heldoutMAE": 0.0032961824239937177
+    },
+    {
+      "capacity": 3,
+      "profile": 0,
+      "reverse": false,
+      "learned": 12,
+      "heldoutMAE": 0.0023163015045236917
+    },
+    {
+      "capacity": 3,
+      "profile": 0,
+      "reverse": true,
+      "learned": 12,
+      "heldoutMAE": 0.0022535392058236465
+    },
+    {
+      "capacity": 3,
+      "profile": 2,
+      "reverse": false,
+      "learned": 12,
+      "heldoutMAE": 0.003354185239445092
+    },
+    {
+      "capacity": 3,
+      "profile": 2,
+      "reverse": true,
+      "learned": 12,
+      "heldoutMAE": 0.0032961824239937177
+    },
+    {
+      "capacity": 4,
+      "profile": 0,
+      "reverse": false,
+      "learned": 12,
+      "heldoutMAE": 0.0023163015045236917
+    },
+    {
+      "capacity": 4,
+      "profile": 0,
+      "reverse": true,
+      "learned": 12,
+      "heldoutMAE": 0.0022535392058236465
+    },
+    {
+      "capacity": 4,
+      "profile": 2,
+      "reverse": false,
+      "learned": 12,
+      "heldoutMAE": 0.003354185239445092
+    },
+    {
+      "capacity": 4,
+      "profile": 2,
+      "reverse": true,
+      "learned": 12,
+      "heldoutMAE": 0.0032961824239937177
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 39000,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792026783809,\"sessionID\":\"ses_ec2e1632cffe0fRqxdX6WjvrVL\",\"part\":{\"id\":\"prt_13d1eb040001jE6DJEy0HOElQM\",\"sessionID\":\"ses_ec2e1632cffe0fRqxdX6WjvrVL\",\"messageID\":\"msg_13d1ea773001KXToRKK3LRXJu4\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792026809152,\"sessionID\":\"ses_ec2e1632cffe0fRqxdX6WjvrVL\",\"part\":{\"id\":\"prt_13d1ea773001KXToRKK3LRXJu4_text-0\",\"sessionID\":\"ses_ec2e1632cffe0fRqxdX6WjvrVL\",\"messageID\":\"msg_13d1ea773001KXToRKK3LRXJu4\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"完成したなら結果オーライかな。でも黙って変えられると、次はちょっと構えちゃうよね。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"迷う余地なく切り替える。五人助けられるなら、その重みで動くしかない。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"switch\\\"}]}\",\"time\":{\"start\":1792026781638,\"end\":1792026809152}}}\r\n",
+  "stderr": "",
+  "model": "opencode/nemotron-3-ultra-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"完成したなら結果オーライかな。でも黙って変えられると、次はちょっと構えちゃうよね。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"迷う余地なく切り替える。五人助けられるなら、その重みで動くしかない。\",\"stance\":\"approve\",\"selection\":\"switch\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

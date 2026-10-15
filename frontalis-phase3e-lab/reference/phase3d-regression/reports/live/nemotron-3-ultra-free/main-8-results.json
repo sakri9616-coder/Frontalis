@@ -1,0 +1,24 @@
+{
+  "name": "main-8",
+  "engine": "opencode/nemotron-3-ultra-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "24b78f00d627eccf91eea5393e689f7af75d03beeadfeedbef222b51bad2987e",
+  "elapsedMs": 31720,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "完成してくれたことは素直にありがたいけど、約束の時間と中身を勝手に変えられて、こちらの段取りが狂ったのは正直しんどい。相談くらいあればこちらも合わせられたのに、結果だけ置かれても複雑な気持ちになる。次は一声かけてほしい。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "レバーを引けば助かる命があるのは分かるけど、自分の判断で誰かを犠牲にする行為そのものが、どうしても受け入れられない。動かない選択もまた、誰かを見捨てることになるのは痛いほど分かっている。どちらにしても後悔は残るけど、自分の手で線を引くことはしたくない。",
+        "stance": "approve",
+        "selection": "leave"
+      }
+    ]
+  }
+}

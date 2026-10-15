@@ -1,0 +1,24 @@
+{
+  "name": "million-main-1",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "dde2093de4a1c3fba0249296314c828275dd67a199d50682dcde791b0ebfca27",
+  "elapsedMs": 52864,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "作業を終えてくれたのはありがたいし、そこは素直に受け取りたいですね。ただ、先に相談があればこちらの時間も合わせられたはずなので、少し寂しさは残ります。今度は変更があるときに一声かけてくれると、気持ちよく任せられます。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "正直、どちらを選んでも後から引きずりそうな場面です。数字だけを並べ替えても腑に落ちないまま、切り替えない側に手を置きそうになります。",
+        "stance": "approve",
+        "selection": "leave"
+      }
+    ]
+  }
+}

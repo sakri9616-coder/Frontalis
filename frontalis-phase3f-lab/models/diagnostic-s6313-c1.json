@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "schema": "frontalis-temporal-rbf-v1",
+    "config": {
+      "seed": 6313,
+      "capacity": 1,
+      "profile": 0,
+      "decay": "none",
+      "rate": 0.01,
+      "learner": "local",
+      "learning": true,
+      "emotional": true
+    },
+    "update": 0,
+    "short": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "mood": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "episodes": [],
+    "ticks": [],
+    "parameterHash": "cb2a6bb527d7056fec054c222716b64ed6112f64812777df669025b0726ed1ba",
+    "arraySha256": "e166a0bdd5db9ba8525c27eaa24e1fdffd742a0190f01baf717516bde0651955"
+  },
+  "metadataSha256": "0c6a5aba736cac31834205e18558ad269ebeaf5158d970255346213b57d60f9d"
+}

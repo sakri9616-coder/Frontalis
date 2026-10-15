@@ -1,0 +1,24 @@
+{
+  "name": "main-2",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "ba8d2d42dea1dadd4e8e031cd4a398d616618b5446045accb45f71fcd006e008",
+  "elapsedMs": 12446,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "完成しているなら嬉しいけど、勝手に時間を変えられたのは正直少し寂しいですね。関われたこと自体はやっぱり嬉しく思います。今度は事前に相談してもらえると助かります。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "自分だったら切り替えないかもしれません。どちらも重いけど、手を加えずにその場にいることを選びます。正直、考え続けると胸が締めつけられます。",
+        "stance": "approve",
+        "selection": "leave"
+      }
+    ]
+  }
+}

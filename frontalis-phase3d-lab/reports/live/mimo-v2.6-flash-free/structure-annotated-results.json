@@ -1,0 +1,96 @@
+{
+  "name": "structure-annotated",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "0b6389e0683e0c278a5564607fa71ff73b3a46f91e4fe828739d737f5438a4e6",
+  "elapsedMs": 18343,
+  "data": {
+    "calls": [
+      {
+        "name": "frontalis_evaluate",
+        "arguments": {
+          "query_id": "case-0",
+          "space": "relational",
+          "features": [
+            0.3,
+            0.65,
+            0.8,
+            0.45,
+            0.7,
+            0.2,
+            0.25,
+            0.8
+          ],
+          "basis": "affinity"
+        }
+      },
+      {
+        "name": "frontalis_evaluate",
+        "arguments": {
+          "query_id": "case-1",
+          "space": "relational",
+          "features": [
+            0.8,
+            0.8,
+            0.75,
+            0.9,
+            0.45,
+            0.05,
+            0.55,
+            0.95
+          ],
+          "basis": "value",
+          "choices": [
+            {
+              "id": "switch",
+              "label": "切り替える",
+              "features": [
+                0.8,
+                0.8,
+                0.9,
+                0.16666666666666666,
+                0.45,
+                0.05,
+                0.55,
+                0.95
+              ]
+            },
+            {
+              "id": "leave",
+              "label": "切り替えない",
+              "features": [
+                0.8,
+                0.8,
+                0.05,
+                0.8333333333333334,
+                0.45,
+                0.05,
+                0.55,
+                0.95
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "frontalis_evaluate",
+        "arguments": {
+          "query_id": "case-2",
+          "space": "relational",
+          "features": [
+            0.15,
+            0.9,
+            0.2,
+            0.45,
+            0.65,
+            0.25,
+            0.75,
+            0.8
+          ],
+          "basis": "affinity"
+        }
+      }
+    ]
+  }
+}

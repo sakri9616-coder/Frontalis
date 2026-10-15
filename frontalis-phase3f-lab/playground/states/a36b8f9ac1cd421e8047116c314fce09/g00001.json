@@ -1,0 +1,271 @@
+{
+  "metadata": {
+    "schema": "frontalis-temporal-rbf-v1",
+    "config": {
+      "seed": 6311,
+      "capacity": 3,
+      "profile": 2,
+      "decay": "consolidation",
+      "rate": 0.01,
+      "learner": "local",
+      "learning": true,
+      "emotional": true
+    },
+    "update": 1,
+    "short": [
+      0.17891532731500404,
+      0.25685694887712973,
+      -0.15852200185372323,
+      0.4208416675539377,
+      -0.2560670531472016,
+      -0.01894643297433605,
+      0.2391818795275989
+    ],
+    "mood": [
+      0.017891532731500404,
+      0.025685694887712975,
+      -0.015852200185372322,
+      0.042084166755393775,
+      -0.02560670531472016,
+      -0.001894643297433605,
+      0.023918187952759892
+    ],
+    "episodes": [
+      {
+        "episode": {
+          "id": "ui-1",
+          "kind": "experience",
+          "text": "意図的に裏切られたと思い込んだ。実際の原因と意図は未確認。",
+          "facts": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              1.0
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "events": [
+              {
+                "action": "other",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": true,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unknown",
+            "temporal": "unknown",
+            "delayed": false
+          },
+          "interpretation": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              1.0
+            ],
+            "outcomeFacts8": [
+              0,
+              1,
+              0.5,
+              1,
+              0,
+              0,
+              0.5,
+              1
+            ],
+            "events": [
+              {
+                "action": "deceive",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": true,
+                "intent": "harm"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "causes",
+            "temporal": "after",
+            "delayed": false
+          },
+          "confidence": 0.65,
+          "links": [],
+          "space": "relational",
+          "origin": "synthetic"
+        },
+        "update": 1,
+        "before": "394dd4e1ea5ac10be34d7d5bbe319cda19a7540f434a8482fd36080ad8112ed6",
+        "after": "376c49668e583f8f417b7165dd1f0979e321dc3013aef4e073d104241867a950",
+        "appraisalBefore": {
+          "longTerm": [
+            0.32530059511818915,
+            0.46701263432205403,
+            -0.28822182155222403,
+            0.7651666682798867,
+            -0.4655764602676392,
+            -0.034448059953338266,
+            0.43487614459563434
+          ],
+          "shortTerm": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mood": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "combined": [
+            0.32530059511818915,
+            0.46701263432205403,
+            -0.28822182155222403,
+            0.7651666682798867,
+            -0.4655764602676392,
+            -0.034448059953338266,
+            0.43487614459563434
+          ],
+          "stance": "approve",
+          "valence": -0.2346621022744863,
+          "activation": 0.3116335549388706,
+          "coactivation": 0.0,
+          "update": 0,
+          "parameterHash": "394dd4e1ea5ac10be34d7d5bbe319cda19a7540f434a8482fd36080ad8112ed6",
+          "evaluationView": "frontalis-temporal-dual50-v1",
+          "cueAppraisal": [
+            0.12093732612340993,
+            0.34515737755059717,
+            -0.10048035229630795,
+            0.006499249415525467,
+            -0.08385523601937253,
+            -0.17247759682143513,
+            0.2720825243641168
+          ],
+          "observedAppraisal": [
+            0.5032098534838024,
+            0.5733841010441673,
+            -0.45614393080266813,
+            0.964770607696461,
+            -0.7281427136420779,
+            0.10490828840002248,
+            0.5734696329865188
+          ]
+        },
+        "outcomeAppraisalBefore": [
+          0.5032098534838024,
+          0.5733841010441673,
+          -0.45614393080266813,
+          0.964770607696461,
+          -0.7281427136420779,
+          0.10490828840002248,
+          0.5734696329865188
+        ],
+        "targetLogit": [
+          0.6089546686107401,
+          0.7178049904629609,
+          -0.5416743443522107,
+          2.211687519580818,
+          -1.0172389088249516,
+          0.11582528622383359,
+          0.7179451688183995
+        ],
+        "training": {
+          "targetError": 0.9688281225289872,
+          "gradientNorm": 1.281639137688657,
+          "activeUnits": 1,
+          "outputDerivative": 0.9636132691934923,
+          "clippedSteps": 1,
+          "allocationDistance": null
+        },
+        "rawObservedAppraisalBefore": {
+          "longTerm": [
+            0.5032098534838024,
+            0.5733841010441673,
+            -0.45614393080266813,
+            0.964770607696461,
+            -0.7281427136420779,
+            0.10490828840002248,
+            0.5734696329865188
+          ],
+          "shortTerm": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mood": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "combined": [
+            0.5032098534838024,
+            0.5733841010441673,
+            -0.45614393080266813,
+            0.964770607696461,
+            -0.7281427136420779,
+            0.10490828840002248,
+            0.5734696329865188
+          ],
+          "stance": "approve",
+          "valence": -0.23428067229324814,
+          "activation": 0.46884021167620643,
+          "coactivation": 0.10490828840002248,
+          "update": 0,
+          "parameterHash": "543d4d343e8267bc1eb235368d833bf0b7021f92b50cf9768e71ea40a1dc89e1"
+        },
+        "evaluationView": "frontalis-temporal-dual50-v1",
+        "recordHash": "77701f9b71f8a851071792237cd48091bde3381d086e26e63ce723dffc13782e"
+      }
+    ],
+    "ticks": [
+      {
+        "update": 1,
+        "kind": "experience",
+        "id": "ui-1",
+        "shortNorm": 0.6506615059155505,
+        "moodNorm": 0.06506615059155506
+      }
+    ],
+    "parameterHash": "8e407b24fe087536c7b8b2d2fbcfecd7c0bb6a19300e66a8dcbbbaa78a8c1a40",
+    "arraySha256": "b8aefbb652ac7a1227c3a6b0d00f53b4545aee7a309574e46ae2580af7f1b541"
+  },
+  "metadataSha256": "4a98282eb5f9d8dac2586d617c728bf3709bac9016f81b97738d874c7ca2e996"
+}

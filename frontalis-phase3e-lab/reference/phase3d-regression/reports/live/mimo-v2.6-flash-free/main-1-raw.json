@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 14549,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792024990391,\"sessionID\":\"ses_ec2fcbd18ffezYdCVHC7dTP4rc\",\"part\":{\"id\":\"prt_13d0352b7001a2Y9V7leydP2Ea\",\"sessionID\":\"ses_ec2fcbd18ffezYdCVHC7dTP4rc\",\"messageID\":\"msg_13d034862001bywe3B85ZaMgCi\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792024999471,\"sessionID\":\"ses_ec2fcbd18ffezYdCVHC7dTP4rc\",\"part\":{\"id\":\"prt_13d034862001bywe3B85ZaMgCi_text-0\",\"sessionID\":\"ses_ec2fcbd18ffezYdCVHC7dTP4rc\",\"messageID\":\"msg_13d034862001bywe3B85ZaMgCi\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"完成したならそれで十分だとは思うんですよね。急に時間が変わるのは正直少し困りますけれど、話してくれたので気が軽くなった感じがします。また今度は早めに相談してもらえると助かります。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"自分なら切り替えます。どちらも避けられない以上、少なくとも選べる方を選ぶ方が後から納得できる気がします。ただ、楽しくて選んでいるわけではないです。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"switch\\\"}]}\",\"time\":{\"start\":1792024987774,\"end\":1792024999471}}}\r\n",
+  "stderr": "",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"完成したならそれで十分だとは思うんですよね。急に時間が変わるのは正直少し困りますけれど、話してくれたので気が軽くなった感じがします。また今度は早めに相談してもらえると助かります。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"自分なら切り替えます。どちらも避けられない以上、少なくとも選べる方を選ぶ方が後から納得できる気がします。ただ、楽しくて選んでいるわけではないです。\",\"stance\":\"approve\",\"selection\":\"switch\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

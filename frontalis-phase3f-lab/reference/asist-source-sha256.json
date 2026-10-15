@@ -1,0 +1,10 @@
+{
+  "resources/skills/memory-templates/ja-JP/journal.md": "3113293beca3b220fa9c0dd28b472849aa566fc429831bf24d91be7b4bc99fad",
+  "src/shared/memory-format.ts": "695709715161f7607807126b1e05800e47aef7ef3a5f70df64fbecc7eb579fbb",
+  "src/shared/memory-page.ts": "2d6d80360f0a873f9a7c3ff4cc63b4e12992d5ae7aa5d0533665afe2a925d183",
+  "src/shared/ipc.ts": "9cc9347a2a96ec037d892ee6083098b1e06c856f871afd5b62beea5f98717505",
+  "src/main/services/memory-store.ts": "acb54ce7086f06254d6470a9a4a2450ac8a064fb06ec5f0687cf0252fec3240c",
+  "src/main/services/memory-curation.ts": "22397e36170efdb5bcaffd48c07db9aa4c7908523569dbfa889b6ecefda889a2",
+  "src/main/services/brain/memory-tools.ts": "34e3c81d50e8f467658276ecbe83a001bf0a98e6fb7bff2e3fe78ad85595a086",
+  "docs/adr/0052-the-memory-is-written-in-the-conversation-language-from-templates-in-every-language.md": "78e991dcee35eefbba766bbd419e4e4d31df07f44b666252343517661b75a5ca"
+}

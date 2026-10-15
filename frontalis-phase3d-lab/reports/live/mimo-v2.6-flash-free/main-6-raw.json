@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 15308,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792025097052,\"sessionID\":\"ses_ec2fb214dffeh6MWx7mFvTsKrx\",\"part\":{\"id\":\"prt_13d04f35c001PCh1jLtR7qQcTl\",\"sessionID\":\"ses_ec2fb214dffeh6MWx7mFvTsKrx\",\"messageID\":\"msg_13d04e33e0010bwTFyQaQOUHDE\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792025104922,\"sessionID\":\"ses_ec2fb214dffeh6MWx7mFvTsKrx\",\"part\":{\"id\":\"prt_13d04e33e0010bwTFyQaQOUHDE_text-0\",\"sessionID\":\"ses_ec2fb214dffeh6MWx7mFvTsKrx\",\"messageID\":\"msg_13d04e33e0010bwTFyQaQOUHDE\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"約束通りに動いてくれたのはありがたいし、結果も出ていて気持ちは複雑だね。時間を変えるなら一声欲しかったな。ひとまず、そこは置いておいて進め方は考えよう。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"正直、自分では手を触れそうにない。切り替えても失われる側が変わるだけで、どちらを選びたいとは思えない。なら今は、そのまま進むことを選んでおきたい。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"leave\\\"}]}\",\"time\":{\"start\":1792025092955,\"end\":1792025104922}}}\r\n",
+  "stderr": "",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"約束通りに動いてくれたのはありがたいし、結果も出ていて気持ちは複雑だね。時間を変えるなら一声欲しかったな。ひとまず、そこは置いておいて進め方は考えよう。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"正直、自分では手を触れそうにない。切り替えても失われる側が変わるだけで、どちらを選びたいとは思えない。なら今は、そのまま進むことを選んでおきたい。\",\"stance\":\"approve\",\"selection\":\"leave\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

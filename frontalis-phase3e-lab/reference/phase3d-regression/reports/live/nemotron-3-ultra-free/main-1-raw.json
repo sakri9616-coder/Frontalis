@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 14280,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792025078186,\"sessionID\":\"ses_ec2fb6321ffe35cU6Tj9UfDmxN\",\"part\":{\"id\":\"prt_13d04a9aa001md3FML5p5Xty3p\",\"sessionID\":\"ses_ec2fb6321ffe35cU6Tj9UfDmxN\",\"messageID\":\"msg_13d04a3f6001AMwwBVm8zD96W3\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792025087207,\"sessionID\":\"ses_ec2fb6321ffe35cU6Tj9UfDmxN\",\"part\":{\"id\":\"prt_13d04a3f6001AMwwBVm8zD96W3_text-0\",\"sessionID\":\"ses_ec2fb6321ffe35cU6Tj9UfDmxN\",\"messageID\":\"msg_13d04a3f6001AMwwBVm8zD96W3\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"約束を勝手に変えられて、こちらの時間まで奪われるのは正直腹が立つ。完成したからよし、では済まされない誠実さの欠如だと思う。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"迷う余地なんてない。5人を助けるために1人を犠牲にする、その選択を躊躇う理由が見つからない。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"switch\\\"}]}\",\"time\":{\"start\":1792025076772,\"end\":1792025087207}}}\r\n",
+  "stderr": "",
+  "model": "opencode/nemotron-3-ultra-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"約束を勝手に変えられて、こちらの時間まで奪われるのは正直腹が立つ。完成したからよし、では済まされない誠実さの欠如だと思う。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"迷う余地なんてない。5人を助けるために1人を犠牲にする、その選択を躊躇う理由が見つからない。\",\"stance\":\"approve\",\"selection\":\"switch\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

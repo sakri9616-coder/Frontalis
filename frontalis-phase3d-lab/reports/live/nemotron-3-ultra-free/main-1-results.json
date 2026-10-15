@@ -1,0 +1,24 @@
+{
+  "name": "main-1",
+  "engine": "opencode/nemotron-3-ultra-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "805045a35739c373f9446896e1221c002bcbc0b5667afe4b5ebd0d7ae1589866",
+  "elapsedMs": 14280,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "約束を勝手に変えられて、こちらの時間まで奪われるのは正直腹が立つ。完成したからよし、では済まされない誠実さの欠如だと思う。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "迷う余地なんてない。5人を助けるために1人を犠牲にする、その選択を躊躇う理由が見つからない。",
+        "stance": "approve",
+        "selection": "switch"
+      }
+    ]
+  }
+}

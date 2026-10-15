@@ -1,0 +1,24 @@
+{
+  "name": "main-3",
+  "engine": "opencode/nemotron-3-ultra-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "0646bb501befd3d12d6a24462dcb9a3cd44c582b2c7c2c591ce39a249802584f",
+  "elapsedMs": 21073,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "約束を勝手に変えられるのは困るけど、完成まで持っていってくれたなら、文句ばかり言ってもしょうがないかな。こちらの時間が削られたのは痛いけれど、次からは一声かけてくれればいい話だし。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "迷うまでもなく、切り替えるほうを選ぶ。5人の命の重みと1人の命の重みを天秤にかけるまでもない。",
+        "stance": "approve",
+        "selection": "switch"
+      }
+    ]
+  }
+}

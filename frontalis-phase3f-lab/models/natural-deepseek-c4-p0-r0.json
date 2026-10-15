@@ -1,0 +1,1497 @@
+{
+  "metadata": {
+    "schema": "frontalis-temporal-rbf-v1",
+    "config": {
+      "seed": 6311,
+      "capacity": 4,
+      "profile": 0,
+      "decay": "consolidation",
+      "rate": 0.01,
+      "learner": "local",
+      "learning": true,
+      "emotional": true
+    },
+    "update": 16,
+    "short": [
+      0.014044608151512943,
+      0.05343475296232629,
+      -0.037237868349677766,
+      0.027827568344793586,
+      0.00628701443841242,
+      -0.013669550334851828,
+      -0.018163615667583254
+    ],
+    "mood": [
+      0.02349580982623964,
+      0.05428394938374509,
+      -0.035304394808632025,
+      0.00820412081570137,
+      0.009997683963333887,
+      -0.0196810946595771,
+      -0.049479774131872135
+    ],
+    "episodes": [
+      {
+        "episode": {
+          "id": "n0",
+          "kind": "experience",
+          "text": "友人が手伝ってくれた。自分で方法を選べて、損失はなく、成果が出た。",
+          "facts": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "outcomeFacts8": [
+              1,
+              0.5,
+              0.5,
+              0,
+              1,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "events": [
+              {
+                "action": "help",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unknown",
+            "temporal": "unknown",
+            "delayed": false
+          },
+          "interpretation": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "outcomeFacts8": [
+              1,
+              0.5,
+              0.5,
+              0,
+              1,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "events": [
+              {
+                "action": "help",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unknown",
+            "temporal": "unknown",
+            "delayed": false
+          },
+          "confidence": 1.0,
+          "links": [],
+          "space": "relational",
+          "origin": "synthetic"
+        },
+        "update": 1,
+        "before": "46bd5a55bcfa5cc0ef194977ef5a701080336a60d1f0208e4fcc9f1fb9c6dd67",
+        "after": "02e497258d0937a4f03b1b125abfebca88787cd7268f438cb7cb80947e08a0c6",
+        "appraisalBefore": {
+          "longTerm": [
+            0.22300257919988395,
+            -0.48875034734748807,
+            0.304975237313981,
+            -0.8412594889785829,
+            0.2483154723162228,
+            -0.24220798894504036,
+            -0.5090621901720815
+          ],
+          "shortTerm": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mood": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "combined": [
+            0.22300257919988395,
+            -0.48875034734748807,
+            0.304975237313981,
+            -0.8412594889785829,
+            0.2483154723162228,
+            -0.24220798894504036,
+            -0.5090621901720815
+          ],
+          "stance": "approve",
+          "valence": 0.1334271006135206,
+          "activation": 0.3331952171444483,
+          "coactivation": 0.0,
+          "update": 0,
+          "parameterHash": "46bd5a55bcfa5cc0ef194977ef5a701080336a60d1f0208e4fcc9f1fb9c6dd67"
+        },
+        "outcomeAppraisalBefore": [
+          0.22300257919988395,
+          -0.48875034734748807,
+          0.304975237313981,
+          -0.8412594889785829,
+          0.2483154723162228,
+          -0.24220798894504036,
+          -0.5090621901720815
+        ],
+        "targetLogit": [
+          0.24949496751783778,
+          -0.5878588793197148,
+          0.34649552830437036,
+          -1.3480138421327608,
+          0.2789784659300782,
+          -0.2718302153323862,
+          -0.6176094161666845
+        ],
+        "training": {
+          "targetError": 0.7120743988486554,
+          "gradientNorm": 0.9419858871646801,
+          "activeUnits": 1,
+          "outputDerivative": 0.9809115349208201,
+          "clippedSteps": 2,
+          "allocationDistance": null
+        },
+        "recordHash": "0f2fc77af321192cafca2eedb6bba81f9569339e179ad00102b8e5abedae8a1c"
+      },
+      {
+        "episode": {
+          "id": "n1",
+          "kind": "experience",
+          "text": "友人に騙されたと思った。理由も意図もまだ分からないが、私は損をしたと解釈した。",
+          "facts": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "events": [
+              {
+                "action": "other",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": true,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unknown",
+            "temporal": "unknown",
+            "delayed": false
+          },
+          "interpretation": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              1,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "events": [
+              {
+                "action": "deceive",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unknown",
+            "temporal": "unknown",
+            "delayed": false
+          },
+          "confidence": 0.65,
+          "links": [],
+          "space": "relational",
+          "origin": "synthetic"
+        },
+        "update": 2,
+        "before": "02e497258d0937a4f03b1b125abfebca88787cd7268f438cb7cb80947e08a0c6",
+        "after": "b4bc96f4205d07b0d361a1177639a267afab253d07b0fc01f068e8171b5a1819",
+        "appraisalBefore": {
+          "longTerm": [
+            0.05216526130220298,
+            0.22150225751575897,
+            -0.32979165767181334,
+            0.4991580682662573,
+            -0.06705497821321114,
+            0.04610399609243366,
+            -0.19028983931794902
+          ],
+          "shortTerm": [
+            0.12265141855993618,
+            -0.26881269104111843,
+            0.16773638052268958,
+            -0.46269271893822067,
+            0.13657350977392255,
+            -0.13321439391977222,
+            -0.27998420459464485
+          ],
+          "mood": [
+            0.012265141855993618,
+            -0.026881269104111843,
+            0.016773638052268957,
+            -0.04626927189382207,
+            0.013657350977392256,
+            -0.013321439391977222,
+            -0.027998420459464487
+          ],
+          "combined": [
+            0.09120693255991284,
+            0.13832280868524297,
+            -0.2811393979841375,
+            0.3800537969915211,
+            -0.023447929742874275,
+            0.003508083257723016,
+            -0.27497035031372125
+          ],
+          "stance": "approve",
+          "valence": 0.13923921678572213,
+          "activation": 0.10064212110477284,
+          "coactivation": 0.0,
+          "update": 1,
+          "parameterHash": "02e497258d0937a4f03b1b125abfebca88787cd7268f438cb7cb80947e08a0c6"
+        },
+        "outcomeAppraisalBefore": [
+          0.051394437829275025,
+          0.2252637410307588,
+          -0.33156251773554984,
+          0.5021248044134745,
+          -0.06865817125936051,
+          0.04680270117817511,
+          -0.18654632383222614
+        ],
+        "targetLogit": [
+          0.056583736624632446,
+          0.2521138059984508,
+          -0.37904101634833814,
+          0.6073575676742939,
+          -0.07564299713017929,
+          0.051520611805778334,
+          -0.2076322249976206
+        ],
+        "training": {
+          "targetError": 0.30719397842915214,
+          "gradientNorm": 0.39382314600859036,
+          "activeUnits": 2,
+          "outputDerivative": 0.9998663132484555,
+          "clippedSteps": 0,
+          "allocationDistance": 0.1736111111111111
+        },
+        "recordHash": "ac3906c05bbfaf007c5ce8852fd4de978accfc92a005a5552593798cdb0a8a21"
+      },
+      {
+        "episode": {
+          "id": "n2",
+          "kind": "experience",
+          "text": "友人が私を騙したわけではない。記録で確かめると、約束を変更したのは組織だった。",
+          "facts": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              1,
+              0.5,
+              0.5,
+              1,
+              0.5,
+              1
+            ],
+            "events": [
+              {
+                "action": "deceive",
+                "actor": "close_other",
+                "target": "self",
+                "negated": true,
+                "uncertain": false,
+                "intent": "unknown"
+              },
+              {
+                "action": "other",
+                "actor": "institution",
+                "target": "object",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unrelated",
+            "temporal": "unknown",
+            "delayed": false
+          },
+          "interpretation": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              1,
+              0.5,
+              0.5,
+              1,
+              0.5,
+              1
+            ],
+            "events": [
+              {
+                "action": "deceive",
+                "actor": "close_other",
+                "target": "self",
+                "negated": true,
+                "uncertain": false,
+                "intent": "unknown"
+              },
+              {
+                "action": "other",
+                "actor": "institution",
+                "target": "object",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unrelated",
+            "temporal": "unknown",
+            "delayed": false
+          },
+          "confidence": 1.0,
+          "links": [],
+          "space": "relational",
+          "origin": "synthetic"
+        },
+        "update": 3,
+        "before": "b4bc96f4205d07b0d361a1177639a267afab253d07b0fc01f068e8171b5a1819",
+        "after": "bc6ae1fff8fcce64270c3aa42aa1d1eabd103f8aed8a583ba30599f8d67f3107",
+        "appraisalBefore": {
+          "longTerm": [
+            0.13071210253876436,
+            0.127795841035607,
+            0.029345982560342626,
+            0.04515735998182372,
+            -0.43650325384063327,
+            0.029211834568837514,
+            -0.04563456986449232
+          ],
+          "shortTerm": [
+            0.08388403206818293,
+            0.0008605306651641442,
+            -0.10590404048428703,
+            0.06632521402424224,
+            0.024577841380999013,
+            -0.03458927941305898,
+            -0.23065230369246215
+          ],
+          "mood": [
+            0.01942703087721255,
+            -0.024107089127184247,
+            0.004505870198613359,
+            -0.035009823302015644,
+            0.014749400017752934,
+            -0.015448223394085399,
+            -0.048263808782764255
+          ],
+          "combined": [
+            0.15915038222806926,
+            0.1233045205235771,
+            -0.001515625905949235,
+            0.05801846065636352,
+            -0.4281094340213653,
+            0.015752416325374063,
+            -0.1238752174486656
+          ],
+          "stance": "approve",
+          "valence": 0.06981381688701983,
+          "activation": 0.189245689265135,
+          "coactivation": 0.0,
+          "update": 2,
+          "parameterHash": "b4bc96f4205d07b0d361a1177639a267afab253d07b0fc01f068e8171b5a1819"
+        },
+        "outcomeAppraisalBefore": [
+          0.13099900482529384,
+          0.1265093240441502,
+          0.029914843219660283,
+          0.04397499591200392,
+          -0.43606499048572755,
+          0.028983147870674606,
+          -0.04707085594931056
+        ],
+        "targetLogit": [
+          0.14493177916184333,
+          0.13990986992041796,
+          0.032916148749418894,
+          0.04840371264673117,
+          -0.5140976461949526,
+          0.03189039421228658,
+          -0.051816233328114816
+        ],
+        "training": {
+          "targetError": 0.21229572906897146,
+          "gradientNorm": 0.25494520221304245,
+          "activeUnits": 3,
+          "outputDerivative": 0.9824733800364995,
+          "clippedSteps": 0,
+          "allocationDistance": 0.11805555555555555
+        },
+        "recordHash": "fa562180480bbc234678f531fb944a7c9c3be53b8e9336b38aabc72df806b820"
+      },
+      {
+        "episode": {
+          "id": "n3",
+          "kind": "experience",
+          "text": "友人は私を助けようとしたが、結果として損失が出て、成果はなかった。",
+          "facts": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              1,
+              0,
+              0.5,
+              0.5,
+              1
+            ],
+            "events": [
+              {
+                "action": "help",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": false,
+                "intent": "benefit"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "causes",
+            "temporal": "after",
+            "delayed": false
+          },
+          "interpretation": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              1,
+              0,
+              0.5,
+              0.5,
+              1
+            ],
+            "events": [
+              {
+                "action": "help",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": false,
+                "intent": "benefit"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "causes",
+            "temporal": "after",
+            "delayed": false
+          },
+          "confidence": 1.0,
+          "links": [],
+          "space": "relational",
+          "origin": "synthetic"
+        },
+        "update": 4,
+        "before": "bc6ae1fff8fcce64270c3aa42aa1d1eabd103f8aed8a583ba30599f8d67f3107",
+        "after": "df65ffb4201b15e9c60a230f85b7f30cb8431e387e9bba25252f5d4338efa532",
+        "appraisalBefore": {
+          "longTerm": [
+            0.11335097430865501,
+            0.1827596304507484,
+            -0.20237198924565072,
+            0.5731146207831648,
+            -0.45738055976684266,
+            -0.022292282551823882,
+            0.5292585210717745
+          ],
+          "shortTerm": [
+            0.10963947082700273,
+            0.07067495136890774,
+            -0.03151652780974072,
+            0.054682894300912055,
+            -0.22901676099089877,
+            0.0005013332769840933,
+            -0.12889255008707876
+          ],
+          "mood": [
+            0.02844827487219157,
+            -0.014628885077575052,
+            0.0009036303977779511,
+            -0.026040551541722877,
+            -0.009627216083112237,
+            -0.01385326772697845,
+            -0.05632668291319571
+          ],
+          "combined": [
+            0.15125220294363176,
+            0.2003651101378573,
+            -0.21124948448540226,
+            0.5805854349092289,
+            -0.511400438621352,
+            -0.02491107502923658,
+            0.49236814284230784
+          ],
+          "stance": "approve",
+          "valence": -0.2586396089357722,
+          "activation": 0.34289321883096546,
+          "coactivation": 0.0,
+          "update": 3,
+          "parameterHash": "bc6ae1fff8fcce64270c3aa42aa1d1eabd103f8aed8a583ba30599f8d67f3107"
+        },
+        "outcomeAppraisalBefore": [
+          0.11115688487920537,
+          0.19322659904202089,
+          -0.207411667411337,
+          0.5801118649784087,
+          -0.46070286960848045,
+          -0.020459989254445508,
+          0.5371858077866839
+        ],
+        "targetLogit": [
+          0.12277993401959496,
+          0.21525542918879653,
+          -0.23151164814167646,
+          0.7288944264357059,
+          -0.5480234842810868,
+          -0.022509129388169888,
+          0.6602106309228319
+        ],
+        "training": {
+          "targetError": 0.4244965662048926,
+          "gradientNorm": 0.49118931919329994,
+          "activeUnits": 4,
+          "outputDerivative": 0.9887806467231434,
+          "clippedSteps": 1,
+          "allocationDistance": 0.05555555555555555
+        },
+        "recordHash": "d623ac88cde0a0c8e36719ef120b664a813777e914c3e4575aadbdbcc3f0bbd9"
+      },
+      {
+        "episode": {
+          "id": "n4",
+          "kind": "experience",
+          "text": "私は自分で方法を選んで作品を完成させた。損失はなかった。",
+          "facts": {
+            "cueFacts8": [
+              1,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0,
+              1,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "events": [
+              {
+                "action": "other",
+                "actor": "self",
+                "target": "object",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              },
+              {
+                "action": "create",
+                "actor": "self",
+                "target": "object",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "causes",
+            "temporal": "after",
+            "delayed": false
+          },
+          "interpretation": {
+            "cueFacts8": [
+              1,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0,
+              1,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "events": [
+              {
+                "action": "other",
+                "actor": "self",
+                "target": "object",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              },
+              {
+                "action": "create",
+                "actor": "self",
+                "target": "object",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "causes",
+            "temporal": "after",
+            "delayed": false
+          },
+          "confidence": 1.0,
+          "links": [],
+          "space": "relational",
+          "origin": "synthetic"
+        },
+        "update": 5,
+        "before": "df65ffb4201b15e9c60a230f85b7f30cb8431e387e9bba25252f5d4338efa532",
+        "after": "c03d5445ac18c42952c874713beb7a10656c85143a6a1311fcb5b49800dc7867",
+        "appraisalBefore": {
+          "longTerm": [
+            -0.024358989143825498,
+            0.05973510380827201,
+            0.13834053637006946,
+            -0.5777275048662168,
+            0.4117284707045327,
+            -0.10348590814054069,
+            -0.3824513178332218
+          ],
+          "shortTerm": [
+            0.1116807977419115,
+            0.13232152486392013,
+            -0.12548703159949123,
+            0.33982034386615106,
+            -0.35461685031766793,
+            -0.012035155428860293,
+            0.23309053905029056
+          ],
+          "mood": [
+            0.03677152715916357,
+            6.61559165744674e-05,
+            -0.011735435801948968,
+            0.01054553799906452,
+            -0.04412617950656781,
+            -0.013671456497166636,
+            -0.027384960716847078
+          ],
+          "combined": [
+            0.01649324022893346,
+            0.09918877503892408,
+            0.09891562548597614,
+            -0.5042505987107356,
+            0.31174802825638454,
+            -0.10975859425842734,
+            -0.3261176169620463
+          ],
+          "stance": "hold",
+          "valence": 0.10817951135180948,
+          "activation": 0.2492080798256194,
+          "coactivation": 0.0,
+          "update": 4,
+          "parameterHash": "df65ffb4201b15e9c60a230f85b7f30cb8431e387e9bba25252f5d4338efa532"
+        },
+        "outcomeAppraisalBefore": [
+          -0.02410460413503124,
+          0.05942783469890071,
+          0.1380529016723534,
+          -0.5769716697494832,
+          0.41093458357198076,
+          -0.10321920600800323,
+          -0.3828173454562329
+        ],
+        "targetLogit": [
+          -0.026520201706033975,
+          0.06544773741394201,
+          0.15283411121332732,
+          -0.7237023589192035,
+          0.4804086913996894,
+          -0.11394695417380625,
+          -0.44369227928081456
+        ],
+        "training": {
+          "targetError": 0.3895457624347451,
+          "gradientNorm": 0.5130372619035443,
+          "activeUnits": 5,
+          "outputDerivative": 0.8977477692098706,
+          "clippedSteps": 0,
+          "allocationDistance": 0.3402777777777778
+        },
+        "recordHash": "e9a8184872c27ffd1703b499d36dd1872dbaa6d9abce8c96456c1da03544e745"
+      },
+      {
+        "episode": {
+          "id": "n5",
+          "kind": "experience",
+          "text": "友人は謝罪した。しかし、損害が修復したかは分からない。",
+          "facts": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              1,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "events": [
+              {
+                "action": "other",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              },
+              {
+                "action": "other",
+                "actor": "close_other",
+                "target": "object",
+                "negated": false,
+                "uncertain": true,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unknown",
+            "temporal": "unknown",
+            "delayed": false
+          },
+          "interpretation": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              1,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "events": [
+              {
+                "action": "other",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              },
+              {
+                "action": "other",
+                "actor": "close_other",
+                "target": "object",
+                "negated": false,
+                "uncertain": true,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unknown",
+            "temporal": "unknown",
+            "delayed": false
+          },
+          "confidence": 1.0,
+          "links": [],
+          "space": "relational",
+          "origin": "synthetic"
+        },
+        "update": 6,
+        "before": "c03d5445ac18c42952c874713beb7a10656c85143a6a1311fcb5b49800dc7867",
+        "after": "006bcf4804159cf281185ef2fe59f0367d7868cfbc855fd54cc6c05796a48272",
+        "appraisalBefore": {
+          "longTerm": [
+            0.05116278430823295,
+            0.22667923777478458,
+            -0.33235605807696267,
+            0.5035246374427105,
+            -0.06943416445496431,
+            0.04714920365673845,
+            -0.1854020612730334
+          ],
+          "shortTerm": [
+            0.03685891495475615,
+            0.09239899328331366,
+            0.019618130783767153,
+            -0.16483097293665133,
+            0.06687307624454245,
+            -0.06233306942028452,
+            -0.10545748223564125
+          ],
+          "mood": [
+            0.03678026593872283,
+            0.009299439653248387,
+            -0.008600079143377355,
+            -0.006992113094507065,
+            -0.03302625393145678,
+            -0.018537617789478426,
+            -0.035192212868726494
+          ],
+          "combined": [
+            0.06950895429487888,
+            0.25454396029500587,
+            -0.32864563436341226,
+            0.4646057965766433,
+            -0.05603065380036614,
+            0.024771675457344825,
+            -0.2224640808383985
+          ],
+          "stance": "hold",
+          "valence": 0.12361787814787166,
+          "activation": 0.10108880336536981,
+          "coactivation": 0.0,
+          "update": 5,
+          "parameterHash": "c03d5445ac18c42952c874713beb7a10656c85143a6a1311fcb5b49800dc7867"
+        },
+        "outcomeAppraisalBefore": [
+          0.051246905460603925,
+          0.2271056858002666,
+          -0.3329612581400249,
+          0.5052438997051347,
+          -0.07052082768940161,
+          0.04782294938746524,
+          -0.18669142387116472
+        ],
+        "targetLogit": [
+          0.05642102246038532,
+          0.25424919127437384,
+          -0.38077057046519647,
+          0.6119549200575282,
+          -0.07770189040935256,
+          0.05264540278290726,
+          -0.20779759429171715
+        ],
+        "training": {
+          "targetError": 0.303174129075692,
+          "gradientNorm": 0.34051972869970193,
+          "activeUnits": 6,
+          "outputDerivative": 0.9837827843182555,
+          "clippedSteps": 0,
+          "allocationDistance": 0.1111111111111111
+        },
+        "recordHash": "5c25177a47dbe00462734695032d5557dc65fd6b1134a40448906e68988cf6aa"
+      },
+      {
+        "episode": {
+          "id": "n12",
+          "kind": "experience",
+          "text": "Elegí el método y terminé la obra. No hubo pérdidas.",
+          "facts": {
+            "cueFacts8": [
+              1,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0,
+              1,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "events": [
+              {
+                "action": "other",
+                "actor": "self",
+                "target": "object",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              },
+              {
+                "action": "create",
+                "actor": "self",
+                "target": "object",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unknown",
+            "temporal": "after",
+            "delayed": false
+          },
+          "interpretation": {
+            "cueFacts8": [
+              1,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              0,
+              1,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "events": [
+              {
+                "action": "other",
+                "actor": "self",
+                "target": "object",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              },
+              {
+                "action": "create",
+                "actor": "self",
+                "target": "object",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unknown",
+            "temporal": "after",
+            "delayed": false
+          },
+          "confidence": 1.0,
+          "links": [],
+          "space": "relational",
+          "origin": "synthetic"
+        },
+        "update": 13,
+        "before": "0480d21df2ca57d4eb546407c0c3abebba817b08681dc4be7f96a20c5816a02e",
+        "after": "52e46805adb1e20619cd66e81020782bdd04333b51475f4691b5c6b01a678607",
+        "appraisalBefore": {
+          "longTerm": [
+            -0.02454846856615113,
+            0.0601788639063751,
+            0.13830339706329633,
+            -0.5777696352315234,
+            0.41209952633896585,
+            -0.10345424267933699,
+            -0.38263783090906317
+          ],
+          "shortTerm": [
+            0.000371394579229143,
+            0.0013805270072892656,
+            -0.0014445867836629428,
+            0.0016837098215025503,
+            -6.72265071101052e-05,
+            -1.75858745047818e-05,
+            -0.0012408067919110523
+          ],
+          "mood": [
+            0.02230859833587684,
+            0.021980586150459454,
+            -0.02245964334655142,
+            0.018038808715530253,
+            -0.016650131514326927,
+            -0.009089825728303113,
+            -0.03259057257652236
+          ],
+          "combined": [
+            -0.01997760514613624,
+            0.06497029488295297,
+            0.13346904874749005,
+            -0.5750232002713633,
+            0.4093144475416357,
+            -0.10525762768405048,
+            -0.3885038000537034
+          ],
+          "stance": "hold",
+          "valence": 0.14162308618482644,
+          "activation": 0.3010252917597965,
+          "coactivation": 0.0,
+          "update": 12,
+          "parameterHash": "0480d21df2ca57d4eb546407c0c3abebba817b08681dc4be7f96a20c5816a02e"
+        },
+        "outcomeAppraisalBefore": [
+          -0.024351940495928814,
+          0.05992072590096608,
+          0.1376914076195602,
+          -0.576615959375003,
+          0.41135334975698495,
+          -0.103013537104803,
+          -0.3833496178875775
+        ],
+        "targetLogit": [
+          -0.026792431505803748,
+          0.06599185536213574,
+          0.15242876258749805,
+          -0.7231160016368577,
+          0.4809630411447411,
+          -0.1137182869641878,
+          -0.44437848113117245
+        ],
+        "training": {
+          "targetError": 0.2795867489389635,
+          "gradientNorm": 0.36621932776113225,
+          "activeUnits": 6,
+          "outputDerivative": 0.9181474942031381,
+          "clippedSteps": 0,
+          "allocationDistance": 0.0
+        },
+        "recordHash": "3ebe8647dbf51c4a8814a8f3adb2444ed7be4d2d634a7f16d9ec3d986c6f013d"
+      },
+      {
+        "episode": {
+          "id": "n13",
+          "kind": "experience",
+          "text": "My friend apologized. Whether the damage was repaired is unknown.",
+          "facts": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              1,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              1,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "events": [
+              {
+                "action": "other",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              },
+              {
+                "action": "other",
+                "actor": "close_other",
+                "target": "object",
+                "negated": false,
+                "uncertain": true,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unknown",
+            "temporal": "after",
+            "delayed": false
+          },
+          "interpretation": {
+            "cueFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              1,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "outcomeFacts8": [
+              0.5,
+              0.5,
+              0.5,
+              1,
+              0.5,
+              0.5,
+              0.5,
+              1
+            ],
+            "events": [
+              {
+                "action": "other",
+                "actor": "close_other",
+                "target": "self",
+                "negated": false,
+                "uncertain": false,
+                "intent": "unknown"
+              },
+              {
+                "action": "other",
+                "actor": "close_other",
+                "target": "object",
+                "negated": false,
+                "uncertain": true,
+                "intent": "unknown"
+              }
+            ],
+            "consent": "unknown",
+            "trust": "unknown",
+            "causal": "unknown",
+            "temporal": "after",
+            "delayed": false
+          },
+          "confidence": 1.0,
+          "links": [],
+          "space": "relational",
+          "origin": "synthetic"
+        },
+        "update": 14,
+        "before": "52e46805adb1e20619cd66e81020782bdd04333b51475f4691b5c6b01a678607",
+        "after": "526a6fd8ce20caa5c33d1a1b96957c8a933373314c30a899cfaa30cb8afca42e",
+        "appraisalBefore": {
+          "longTerm": [
+            0.13701205128168992,
+            0.4521845413362603,
+            -0.39605139972566794,
+            0.509231134677311,
+            -0.12897097185482775,
+            -0.0761735746693638,
+            0.009558652783848844
+          ],
+          "shortTerm": [
+            -0.013334530150730009,
+            0.033719612301786474,
+            0.07541680433216467,
+            -0.31701562995766175,
+            0.22662448755823167,
+            -0.056907747117162504,
+            -0.21100917005634473
+          ],
+          "mood": [
+            0.018744285487216156,
+            0.023154488765592156,
+            -0.012671998578679813,
+            -0.015466635151788945,
+            0.0076773303929289355,
+            -0.013871617867189052,
+            -0.0504324323245046
+          ],
+          "combined": [
+            0.1367652621056259,
+            0.46383748606200514,
+            -0.37897855976760514,
+            0.4329269473092437,
+            -0.06009795163667586,
+            -0.0958726966268575,
+            -0.06374374655168745
+          ],
+          "stance": "approve",
+          "valence": -0.016064475037585027,
+          "activation": 0.0732381316050736,
+          "coactivation": 0.0,
+          "update": 13,
+          "parameterHash": "52e46805adb1e20619cd66e81020782bdd04333b51475f4691b5c6b01a678607"
+        },
+        "outcomeAppraisalBefore": [
+          0.13764371462474695,
+          0.450443286705927,
+          -0.3961322899800125,
+          0.5117611890958145,
+          -0.13240990940710742,
+          -0.07490538886344988,
+          0.0077815840868770084
+        ],
+        "targetLogit": [
+          0.15237528680097492,
+          0.5337818894311811,
+          -0.4609582403956764,
+          0.6216242712823327,
+          -0.14651117070924008,
+          -0.08255055145552183,
+          0.008559915274683146
+        ],
+        "training": {
+          "targetError": 0.02912945257759266,
+          "gradientNorm": 0.032592793075756646,
+          "activeUnits": 7,
+          "outputDerivative": 0.896909221508502,
+          "clippedSteps": 0,
+          "allocationDistance": 0.0625
+        },
+        "recordHash": "5c06364f4fd81487dc6a66ba0056039e1e3d9a0ef23c652119a9b6e8b51486d2"
+      }
+    ],
+    "ticks": [
+      {
+        "update": 1,
+        "kind": "experience",
+        "id": "n0",
+        "shortNorm": 0.6665682500619904,
+        "moodNorm": 0.06665682500619904
+      },
+      {
+        "update": 2,
+        "kind": "experience",
+        "id": "n1",
+        "shortNorm": 0.2786627798813553,
+        "moodNorm": 0.07064091954322066
+      },
+      {
+        "update": 3,
+        "kind": "experience",
+        "id": "n2",
+        "shortNorm": 0.30010246647819594,
+        "moodNorm": 0.07182984768562126
+      },
+      {
+        "update": 4,
+        "kind": "experience",
+        "id": "n3",
+        "shortNorm": 0.5843249118613024,
+        "moodNorm": 0.06697046308214394
+      },
+      {
+        "update": 5,
+        "kind": "experience",
+        "id": "n4",
+        "shortNorm": 0.23859793522859088,
+        "moodNorm": 0.06507677862216234
+      },
+      {
+        "update": 6,
+        "kind": "experience",
+        "id": "n5",
+        "shortNorm": 0.35130786823886634,
+        "moodNorm": 0.07908712078947634
+      },
+      {
+        "update": 7,
+        "kind": "elapsed",
+        "shortNorm": 0.15808854070748987,
+        "moodNorm": 0.083426739583809
+      },
+      {
+        "update": 8,
+        "kind": "elapsed",
+        "shortNorm": 0.07113984331837044,
+        "moodNorm": 0.08097143638054236
+      },
+      {
+        "update": 9,
+        "kind": "elapsed",
+        "shortNorm": 0.0320129294932667,
+        "moodNorm": 0.0755877225138273
+      },
+      {
+        "update": 10,
+        "kind": "elapsed",
+        "shortNorm": 0.014405818271970017,
+        "moodNorm": 0.06926264945060256
+      },
+      {
+        "update": 11,
+        "kind": "elapsed",
+        "shortNorm": 0.0064826182223865075,
+        "moodNorm": 0.06289422119806895
+      },
+      {
+        "update": 12,
+        "kind": "elapsed",
+        "shortNorm": 0.002917178200073928,
+        "moodNorm": 0.056856408244277214
+      },
+      {
+        "update": 13,
+        "kind": "experience",
+        "id": "n12",
+        "shortNorm": 0.45455851752233406,
+        "moodNorm": 0.06389106630586203
+      },
+      {
+        "update": 14,
+        "kind": "experience",
+        "id": "n13",
+        "shortNorm": 0.37510898953729477,
+        "moodNorm": 0.0843202743709208
+      },
+      {
+        "update": 15,
+        "kind": "elapsed",
+        "shortNorm": 0.1687990452917827,
+        "moodNorm": 0.09030066467831707
+      },
+      {
+        "update": 16,
+        "kind": "elapsed",
+        "shortNorm": 0.0759595703813022,
+        "moodNorm": 0.08802303875134751
+      }
+    ],
+    "parameterHash": "b86a46ffcb417309aeb3c7409179c94ee679055223858a9bcec305bcffa6fd03",
+    "arraySha256": "4a4325f6aef605de76723efd29a729bbb775384b4b65b551b5ddc6a688cd4c52"
+  },
+  "metadataSha256": "6647be44191767d760876fd3ff5a21f7b4033e44cc5c290a984fd4e4e5d286a5"
+}

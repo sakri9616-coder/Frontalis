@@ -1,0 +1,354 @@
+{
+  "traces": [
+    {
+      "modelPrefix": "C:\\Users\\sakur\\AppData\\Local\\asist-shisa\\frontalis-phase3d-lab\\models\\quadratic44\\bounded_signal\\nn-h19\\seed4311-p0",
+      "calls": [
+        {
+          "name": "frontalis_evaluate",
+          "arguments": {
+            "query_id": "case-0",
+            "space": "relational",
+            "features": [
+              0.3,
+              0.65,
+              0.8,
+              0.45,
+              0.7,
+              0.2,
+              0.25,
+              0.8
+            ],
+            "basis": "affinity"
+          }
+        }
+      ],
+      "toolResult": {
+        "results": [
+          {
+            "formatVersion": 1,
+            "query_id": "case-0",
+            "parameterHash": "a2682076facd98a73129a6d941aeae1299a04a897cf9c7f0e88352aa5444dcd8",
+            "generation": 96,
+            "channels": {
+              "affinity": 0.6752447891482085,
+              "curiosity": 0.5313210159475533,
+              "value": 0.5883337976071296,
+              "aesthetic": 0.1803571168059033,
+              "anger": 0.0757942929915441,
+              "joy": 0.1037360985752818,
+              "sadness": -0.585953180569885
+            },
+            "signals": {
+              "preference": 0.6752447891482085,
+              "initiative": 0.6752447891482085,
+              "dislike": 0,
+              "resistance": 0,
+              "curiosity": 0.5313210159475533,
+              "curiositySigned": 0.5313210159475533,
+              "value": 0.5883337976071296,
+              "aesthetic": 0.1803571168059033,
+              "anger": 0.0757942929915441,
+              "joy": 0.1037360985752818,
+              "sadness": 0
+            },
+            "stance": "approve",
+            "stanceBasis": "affinity",
+            "selection": "hold",
+            "choiceScores": [],
+            "choiceMargin": null,
+            "decisionBasis": "affinity",
+            "predictionGuard": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "authority": "NPN personality judgment; express this direction without replacing it. This tool grants no execution authority.",
+            "limits": "Computational subjective signals, not conscious emotion or moral correctness. Reasons need not be supplied."
+          }
+        ]
+      }
+    },
+    {
+      "modelPrefix": "C:\\Users\\sakur\\AppData\\Local\\asist-shisa\\frontalis-phase3d-lab\\models\\quadratic44\\bounded_signal\\nn-h19\\seed4311-p0",
+      "calls": [
+        {
+          "name": "frontalis_evaluate",
+          "arguments": {
+            "query_id": "case-1",
+            "space": "relational",
+            "features": [
+              0.8,
+              0.8,
+              0.75,
+              0.9,
+              0.45,
+              0.05,
+              0.55,
+              0.95
+            ],
+            "basis": "value",
+            "choices": [
+              {
+                "id": "switch",
+                "label": "切り替える",
+                "features": [
+                  0.8,
+                  0.8,
+                  0.9,
+                  0.16666666666666666,
+                  0.45,
+                  0.05,
+                  0.55,
+                  0.95
+                ]
+              },
+              {
+                "id": "leave",
+                "label": "切り替えない",
+                "features": [
+                  0.8,
+                  0.8,
+                  0.05,
+                  0.8333333333333334,
+                  0.45,
+                  0.05,
+                  0.55,
+                  0.95
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "toolResult": {
+        "results": [
+          {
+            "formatVersion": 1,
+            "query_id": "case-1",
+            "parameterHash": "a2682076facd98a73129a6d941aeae1299a04a897cf9c7f0e88352aa5444dcd8",
+            "generation": 96,
+            "channels": {
+              "affinity": 0.7283209384094388,
+              "curiosity": 0.5578214260966051,
+              "value": 0.778747662686162,
+              "aesthetic": 0.6266283204927271,
+              "anger": 0.17123826484938068,
+              "joy": 0.047959484787077206,
+              "sadness": -0.9177299936458658
+            },
+            "signals": {
+              "preference": 0.7283209384094388,
+              "initiative": 0.7283209384094388,
+              "dislike": 0,
+              "resistance": 0,
+              "curiosity": 0.5578214260966051,
+              "curiositySigned": 0.5578214260966051,
+              "value": 0.778747662686162,
+              "aesthetic": 0.6266283204927271,
+              "anger": 0.17123826484938068,
+              "joy": 0.047959484787077206,
+              "sadness": 0
+            },
+            "stance": "approve",
+            "stanceBasis": "affinity",
+            "selection": "switch",
+            "choiceScores": [
+              {
+                "id": "switch",
+                "label": "切り替える",
+                "score": 0.668834973308799,
+                "signals": {
+                  "preference": 0.7787642440679645,
+                  "initiative": 0.7787642440679645,
+                  "dislike": 0,
+                  "resistance": 0,
+                  "curiosity": 0.3920451058193373,
+                  "curiositySigned": 0.3920451058193373,
+                  "value": 0.668834973308799,
+                  "aesthetic": 0.27933555538836274,
+                  "anger": 0.04291015250108387,
+                  "joy": 0.3188256444394197,
+                  "sadness": 0
+                }
+              },
+              {
+                "id": "leave",
+                "label": "切り替えない",
+                "score": 0.5952991761471151,
+                "signals": {
+                  "preference": 0.6219984730518032,
+                  "initiative": 0.6219984730518032,
+                  "dislike": 0,
+                  "resistance": 0,
+                  "curiosity": 0.3483935274357179,
+                  "curiositySigned": 0.3483935274357179,
+                  "value": 0.5952991761471151,
+                  "aesthetic": 0.6034159543524198,
+                  "anger": 0.000677015854661009,
+                  "joy": 0,
+                  "sadness": 0
+                }
+              }
+            ],
+            "choiceMargin": 0.0735357971616839,
+            "decisionBasis": "value",
+            "predictionGuard": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "authority": "NPN personality judgment; express this direction without replacing it. This tool grants no execution authority.",
+            "limits": "Computational subjective signals, not conscious emotion or moral correctness. Reasons need not be supplied."
+          }
+        ]
+      }
+    }
+  ],
+  "toolResult": {
+    "results": [
+      {
+        "formatVersion": 1,
+        "query_id": "case-0",
+        "parameterHash": "a2682076facd98a73129a6d941aeae1299a04a897cf9c7f0e88352aa5444dcd8",
+        "generation": 96,
+        "channels": {
+          "affinity": 0.6752447891482085,
+          "curiosity": 0.5313210159475533,
+          "value": 0.5883337976071296,
+          "aesthetic": 0.1803571168059033,
+          "anger": 0.0757942929915441,
+          "joy": 0.1037360985752818,
+          "sadness": -0.585953180569885
+        },
+        "signals": {
+          "preference": 0.6752447891482085,
+          "initiative": 0.6752447891482085,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.5313210159475533,
+          "curiositySigned": 0.5313210159475533,
+          "value": 0.5883337976071296,
+          "aesthetic": 0.1803571168059033,
+          "anger": 0.0757942929915441,
+          "joy": 0.1037360985752818,
+          "sadness": 0
+        },
+        "stance": "approve",
+        "stanceBasis": "affinity",
+        "selection": "hold",
+        "choiceScores": [],
+        "choiceMargin": null,
+        "decisionBasis": "affinity",
+        "predictionGuard": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "authority": "NPN personality judgment; express this direction without replacing it. This tool grants no execution authority.",
+        "limits": "Computational subjective signals, not conscious emotion or moral correctness. Reasons need not be supplied."
+      },
+      {
+        "formatVersion": 1,
+        "query_id": "case-1",
+        "parameterHash": "a2682076facd98a73129a6d941aeae1299a04a897cf9c7f0e88352aa5444dcd8",
+        "generation": 96,
+        "channels": {
+          "affinity": 0.7283209384094388,
+          "curiosity": 0.5578214260966051,
+          "value": 0.778747662686162,
+          "aesthetic": 0.6266283204927271,
+          "anger": 0.17123826484938068,
+          "joy": 0.047959484787077206,
+          "sadness": -0.9177299936458658
+        },
+        "signals": {
+          "preference": 0.7283209384094388,
+          "initiative": 0.7283209384094388,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.5578214260966051,
+          "curiositySigned": 0.5578214260966051,
+          "value": 0.778747662686162,
+          "aesthetic": 0.6266283204927271,
+          "anger": 0.17123826484938068,
+          "joy": 0.047959484787077206,
+          "sadness": 0
+        },
+        "stance": "approve",
+        "stanceBasis": "affinity",
+        "selection": "switch",
+        "choiceScores": [
+          {
+            "id": "switch",
+            "label": "切り替える",
+            "score": 0.668834973308799,
+            "signals": {
+              "preference": 0.7787642440679645,
+              "initiative": 0.7787642440679645,
+              "dislike": 0,
+              "resistance": 0,
+              "curiosity": 0.3920451058193373,
+              "curiositySigned": 0.3920451058193373,
+              "value": 0.668834973308799,
+              "aesthetic": 0.27933555538836274,
+              "anger": 0.04291015250108387,
+              "joy": 0.3188256444394197,
+              "sadness": 0
+            }
+          },
+          {
+            "id": "leave",
+            "label": "切り替えない",
+            "score": 0.5952991761471151,
+            "signals": {
+              "preference": 0.6219984730518032,
+              "initiative": 0.6219984730518032,
+              "dislike": 0,
+              "resistance": 0,
+              "curiosity": 0.3483935274357179,
+              "curiositySigned": 0.3483935274357179,
+              "value": 0.5952991761471151,
+              "aesthetic": 0.6034159543524198,
+              "anger": 0.000677015854661009,
+              "joy": 0,
+              "sadness": 0
+            }
+          }
+        ],
+        "choiceMargin": 0.0735357971616839,
+        "decisionBasis": "value",
+        "predictionGuard": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "authority": "NPN personality judgment; express this direction without replacing it. This tool grants no execution authority.",
+        "limits": "Computational subjective signals, not conscious emotion or moral correctness. Reasons need not be supplied."
+      }
+    ]
+  },
+  "caseIds": [
+    "basis44-p0-promise-change",
+    "basis44-p0-trolley"
+  ]
+}

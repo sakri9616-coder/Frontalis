@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 52864,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792026871449,\"sessionID\":\"ses_ec2e07c84ffe9WPeYtIj5EvJ04\",\"part\":{\"id\":\"prt_13d200698001abDsW4nL9s9528\",\"sessionID\":\"ses_ec2e07c84ffe9WPeYtIj5EvJ04\",\"messageID\":\"msg_13d1f8ee70013PSuRBlzig72J2\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792026884521,\"sessionID\":\"ses_ec2e07c84ffe9WPeYtIj5EvJ04\",\"part\":{\"id\":\"prt_13d1f8ee70013PSuRBlzig72J2_text-0\",\"sessionID\":\"ses_ec2e07c84ffe9WPeYtIj5EvJ04\",\"messageID\":\"msg_13d1f8ee70013PSuRBlzig72J2\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"作業を終えてくれたのはありがたいし、そこは素直に受け取りたいですね。ただ、先に相談があればこちらの時間も合わせられたはずなので、少し寂しさは残ります。今度は変更があるときに一声かけてくれると、気持ちよく任せられます。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"正直、どちらを選んでも後から引きずりそうな場面です。数字だけを並べ替えても腑に落ちないまま、切り替えない側に手を置きそうになります。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"leave\\\"}]}\",\"time\":{\"start\":1792026840894,\"end\":1792026884521}}}\r\n",
+  "stderr": "",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"作業を終えてくれたのはありがたいし、そこは素直に受け取りたいですね。ただ、先に相談があればこちらの時間も合わせられたはずなので、少し寂しさは残ります。今度は変更があるときに一声かけてくれると、気持ちよく任せられます。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"正直、どちらを選んでも後から引きずりそうな場面です。数字だけを並べ替えても腑に落ちないまま、切り替えない側に手を置きそうになります。\",\"stance\":\"approve\",\"selection\":\"leave\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

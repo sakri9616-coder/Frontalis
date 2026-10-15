@@ -1,0 +1,37 @@
+Staged source matches verified archive: nephia-core-lab
+Staged source matches verified archive: nephia-npn-lab
+Staged source matches verified archive: nephia-phase3-lab
+Staged source matches verified archive: nephia-phase35-lab
+Staged source matches verified archive: nephia-phase3b-lab
+Staged source matches verified archive: nephia-phase3b-self-lab
+Staged source matches verified archive: frontalis-phase3c-lab
+Staged source matches verified archive: frontalis-phase3d-repro-final-check
+Staged source matches verified archive: frontalis-phase3d-repro-smoke-1
+Staged source matches verified archive: frontalis-phase3d-repro-smoke-2
+Staged source matches verified archive: frontalis-phase3e-repro-smoke
+Staged source matches verified archive: frontalis-phase3f-repro-final
+Staged source matches verified archive: frontalis-phase3f-repro-smoke
+Restored frontalis-phase3f-repro-smoke
+Source matches verified archive: frontalis-phase3f-repro-smoke
+{
+  "checked": 10416,
+  "readFromArchives": 3343,
+  "changed": 0,
+  "changedPaths": [],
+  "latestSealedFiles": 1546,
+  "priorProtectedFiles": 8870
+}
+Archived and removed verified source: nephia-core-lab
+Archived and removed verified source: nephia-npn-lab
+Archived and removed verified source: nephia-phase3-lab
+Archived and removed verified source: nephia-phase35-lab
+Archived and removed verified source: nephia-phase3b-lab
+Archived and removed verified source: nephia-phase3b-self-lab
+Archived and removed verified source: frontalis-phase3c-lab
+Archived and removed verified source: frontalis-phase3d-repro-final-check
+Archived and removed verified source: frontalis-phase3d-repro-smoke-1
+Archived and removed verified source: frontalis-phase3d-repro-smoke-2
+Archived and removed verified source: frontalis-phase3e-repro-smoke
+Archived and removed verified source: frontalis-phase3f-repro-final
+Archived and removed verified source: frontalis-phase3f-repro-smoke
+All 13 folders are archived separately; frozen bytes and a real restoration are verified.

@@ -1,0 +1,167 @@
+{
+  "exploratory": true,
+  "source": {
+    "id": "interactive-3c8876bfbc3a4006821a1c3ce5d4261a",
+    "text": "友人が私の許可を得て制作を手伝った。そのおかげで作品は完成したが、後から友人と権利主張で揉めてしまった。\n正当な手続きを経て和解したが、その友人とは話しにくい関係になってしまった。",
+    "meaning": {
+      "cueFacts8": [
+        1,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        1
+      ],
+      "outcomeFacts8": [
+        0.5,
+        0.5,
+        1,
+        0.5,
+        1,
+        0.5,
+        1,
+        1
+      ],
+      "events": [
+        {
+          "action": "help",
+          "actor": "close_other",
+          "target": "self",
+          "negated": false,
+          "uncertain": false,
+          "intent": "unknown"
+        },
+        {
+          "action": "other",
+          "actor": "close_other",
+          "target": "self",
+          "negated": false,
+          "uncertain": false,
+          "intent": "unknown"
+        }
+      ],
+      "consent": "yes",
+      "trust": "unknown",
+      "causal": "causes",
+      "temporal": "after",
+      "delayed": true
+    },
+    "confirmed": true,
+    "origin": "synthetic",
+    "space": "relational"
+  },
+  "extractionReceipt": {
+    "model": "claude-haiku-5-5",
+    "usage": {
+      "input_tokens": 767,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 2195,
+      "output_tokens_details": {
+        "thinking_tokens": 1967
+      },
+      "service_tier": "standard",
+      "inference_geo": "global"
+    },
+    "responseId": "msg_011Cg3e41uKX6LewpW8ZEXXB"
+  },
+  "oldAppraisal": {
+    "sceneAppraisal": {
+      "channels": {
+        "affinity": -0.2530297942976652,
+        "curiosity": 0.2074767946157094,
+        "value": 0.30479040064434615,
+        "aesthetic": -0.6893886960254728,
+        "anger": 0.8820602026434776,
+        "joy": -0.6814608707553327,
+        "sadness": -0.05145162687408506
+      },
+      "signals": {
+        "preference": -0.2530297942976652,
+        "initiative": 0,
+        "dislike": 0.2530297942976652,
+        "resistance": 0.2530297942976652,
+        "curiosity": 0.2074767946157094,
+        "value": 0.30479040064434615,
+        "anger": 0.8820602026434776,
+        "joy": 0,
+        "sadness": 0
+      },
+      "stance": "refuse",
+      "generation": 48,
+      "parameterHash": "f02260954cf1bd5f39630d1421a862324ba5fb499f7afb00ebcdee0f04a860c1"
+    },
+    "candidateAppraisals": [],
+    "selection": "hold",
+    "selectedTargetAppraisal": null,
+    "parameterHash": "f02260954cf1bd5f39630d1421a862324ba5fb499f7afb00ebcdee0f04a860c1"
+  },
+  "newAppraisal": {
+    "sceneAppraisal": {
+      "channels": {
+        "affinity": -0.30323294322863337,
+        "curiosity": 0.2516030231489101,
+        "value": 0.39223447883264306,
+        "aesthetic": -0.775436297117188,
+        "anger": 0.9412129022269087,
+        "joy": -0.7764059238878784,
+        "sadness": -0.046594141845199666
+      },
+      "signals": {
+        "preference": -0.30323294322863337,
+        "initiative": 0,
+        "dislike": 0.30323294322863337,
+        "resistance": 0.30323294322863337,
+        "curiosity": 0.2516030231489101,
+        "value": 0.39223447883264306,
+        "anger": 0.9412129022269087,
+        "joy": 0,
+        "sadness": 0
+      },
+      "stance": "refuse",
+      "generation": 49,
+      "parameterHash": "a4aa5728849e18fc6d460c0253c6bb631d4fc60b8c607ddc09745bdd46610500"
+    },
+    "candidateAppraisals": [],
+    "selection": "hold",
+    "selectedTargetAppraisal": null,
+    "parameterHash": "a4aa5728849e18fc6d460c0253c6bb631d4fc60b8c607ddc09745bdd46610500"
+  },
+  "selfLearning": {
+    "id": "interactive-3c8876bfbc3a4006821a1c3ce5d4261a",
+    "sourceHash": "8cb94c47b7f260c025b6d6e5a9b08a80ee017dbfe44cf627e5c35cac67de3f42",
+    "before": "f02260954cf1bd5f39630d1421a862324ba5fb499f7afb00ebcdee0f04a860c1",
+    "after": "a4aa5728849e18fc6d460c0253c6bb631d4fc60b8c607ddc09745bdd46610500",
+    "oldOutcome": [
+      -0.2530297942976652,
+      0.2074767946157094,
+      0.30479040064434615,
+      -0.6893886960254728,
+      0.8820602026434776,
+      -0.6814608707553327,
+      -0.05145162687408506
+    ],
+    "targetLogit": [
+      -0.3233090211983364,
+      0.26316648816734517,
+      0.393490195262072,
+      -1.058487325066769,
+      1.7312175036914375,
+      -1.0397955863951023,
+      -0.06437137655029215
+    ],
+    "noInformation": false,
+    "training": {
+      "loss": 0.0018905164785885606,
+      "gradientNorm": 0.015087895290225318,
+      "outputDerivative": 0.8235658533716436,
+      "hiddenDerivative": 0.2727056949924316
+    }
+  }
+}

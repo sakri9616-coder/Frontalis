@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "manifest": "phase3c-artifact-sha256.json",
+      "files": 605,
+      "changed": [],
+      "missing": []
+    },
+    {
+      "manifest": "prior-sha256.json",
+      "files": 2531,
+      "changed": [],
+      "missing": []
+    }
+  ]
+}

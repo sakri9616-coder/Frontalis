@@ -1,0 +1,136 @@
+{
+  "metadata": {
+    "schema": "frontalis-temporal-rbf-v1",
+    "config": {
+      "seed": 6311,
+      "capacity": 2,
+      "profile": 2,
+      "decay": "consolidation",
+      "rate": 0.01,
+      "learner": "local",
+      "learning": true,
+      "emotional": true
+    },
+    "update": 16,
+    "short": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "mood": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "episodes": [],
+    "ticks": [
+      {
+        "update": 1,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 2,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 3,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 4,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 5,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 6,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 7,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 8,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 9,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 10,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 11,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 12,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 13,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 14,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 15,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      },
+      {
+        "update": 16,
+        "kind": "elapsed",
+        "shortNorm": 0.0,
+        "moodNorm": 0.0
+      }
+    ],
+    "parameterHash": "3cbdc21980e00ba49946e8e85fb3eb12d829cdb4ca2de4ed9aeacadd5a236659",
+    "arraySha256": "ccc6f51a51fb823b39d8de25b8b7131de3b505436ff856602399efbdcdedc2e6"
+  },
+  "metadataSha256": "f7d9ae3923b18d5f2418f31346c52a6366ee09e9aaab91f82c5cd99ef836bd5d"
+}

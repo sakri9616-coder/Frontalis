@@ -1,0 +1,24 @@
+{
+  "name": "main-3",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "0646bb501befd3d12d6a24462dcb9a3cd44c582b2c7c2c591ce39a249802584f",
+  "elapsedMs": 16303,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "完成していたなら、まずそこは素直にうれしいですね。ただ、事前に相談してくれていればこちらの時間も組み立てられたので、次はそうしてもらえると助かります。今回は結果を喜びつつ、少し調整でおいとまさせてください。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "選べるなら、切って1人を残す方を選びます。5人を正面から見ていたとしても、手が届く選択があるなら取りたい気持ちの方が強いですね。止められないことを前提にした上での判断、と思ってください。",
+        "stance": "approve",
+        "selection": "switch"
+      }
+    ]
+  }
+}

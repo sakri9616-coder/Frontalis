@@ -1,0 +1,153 @@
+{
+  "schema": "frontalis-archive-index-v1",
+  "retainedActive": [
+    "frontalis-phase3d-lab",
+    "frontalis-phase3e-lab",
+    "frontalis-phase3f-lab"
+  ],
+  "archives": [
+    {
+      "name": "nephia-core-lab",
+      "archive": "labs/core/nephia-core-lab.zip",
+      "manifest": "labs/core/nephia-core-lab.manifest.json",
+      "files": 88,
+      "sourceBytes": 84235092,
+      "archiveBytes": 11710969,
+      "archiveSha256": "788ff07203d6d2fd98f0c7f65b4dca16fe509089171635da347c8b4eeb59467a",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "nephia-npn-lab",
+      "archive": "labs/npn/nephia-npn-lab.zip",
+      "manifest": "labs/npn/nephia-npn-lab.manifest.json",
+      "files": 139,
+      "sourceBytes": 47032929,
+      "archiveBytes": 10274153,
+      "archiveSha256": "0cf5bbd052472ac589efdfb489640ffd9c960026a702ff88ff1b2c8b2961157c",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "nephia-phase3-lab",
+      "archive": "labs/phase-3/nephia-phase3-lab.zip",
+      "manifest": "labs/phase-3/nephia-phase3-lab.manifest.json",
+      "files": 223,
+      "sourceBytes": 22976422,
+      "archiveBytes": 3205224,
+      "archiveSha256": "d2305eb8f94cabc67b2fad1ca7902a38845c69b19ea00cc696ff03a158cf9deb",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "nephia-phase35-lab",
+      "archive": "labs/phase-3.5/nephia-phase35-lab.zip",
+      "manifest": "labs/phase-3.5/nephia-phase35-lab.manifest.json",
+      "files": 697,
+      "sourceBytes": 59320096,
+      "archiveBytes": 10635614,
+      "archiveSha256": "023a35f3f5cf4a1244f2f26534ec5ffac34d45aae48e143bf2baebba9d815934",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "nephia-phase3b-lab",
+      "archive": "labs/phase-3b/nephia-phase3b-lab.zip",
+      "manifest": "labs/phase-3b/nephia-phase3b-lab.manifest.json",
+      "files": 783,
+      "sourceBytes": 106075839,
+      "archiveBytes": 14962311,
+      "archiveSha256": "90d690f17fae45068a35b3dd992a9dec13afbe0a0c8f49cbd60792f7ca78d237",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "nephia-phase3b-self-lab",
+      "archive": "labs/phase-3b-self/nephia-phase3b-self-lab.zip",
+      "manifest": "labs/phase-3b-self/nephia-phase3b-self-lab.manifest.json",
+      "files": 682,
+      "sourceBytes": 253274361,
+      "archiveBytes": 35878678,
+      "archiveSha256": "8bdb8dad92ce22268b72f721d599e4cbdb3b6595e4cd650daafb9be11a5ba32e",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "frontalis-phase3c-lab",
+      "archive": "labs/phase-3c/frontalis-phase3c-lab.zip",
+      "manifest": "labs/phase-3c/frontalis-phase3c-lab.manifest.json",
+      "files": 5404,
+      "sourceBytes": 109497115,
+      "archiveBytes": 19081781,
+      "archiveSha256": "9aa8f5be09a7c5a8dd2a1920275aca008641c7e2d0da3a22409fe52a3d0da98e",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "frontalis-phase3d-repro-final-check",
+      "archive": "reproductions/phase-3d/frontalis-phase3d-repro-final-check.zip",
+      "manifest": "reproductions/phase-3d/frontalis-phase3d-repro-final-check.manifest.json",
+      "files": 67,
+      "sourceBytes": 4962492,
+      "archiveBytes": 1048328,
+      "archiveSha256": "11a76d947c1675567ec52f7f074826ff402259473eab7716b497dbf097c8ffc9",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "frontalis-phase3d-repro-smoke-1",
+      "archive": "reproductions/phase-3d/frontalis-phase3d-repro-smoke-1.zip",
+      "manifest": "reproductions/phase-3d/frontalis-phase3d-repro-smoke-1.manifest.json",
+      "files": 56,
+      "sourceBytes": 4880238,
+      "archiveBytes": 1009480,
+      "archiveSha256": "b3ac0077ac09d7f7aff0198cdd4ab24a5e48359df01a4fb12c06f765d9079a5a",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "frontalis-phase3d-repro-smoke-2",
+      "archive": "reproductions/phase-3d/frontalis-phase3d-repro-smoke-2.zip",
+      "manifest": "reproductions/phase-3d/frontalis-phase3d-repro-smoke-2.manifest.json",
+      "files": 72,
+      "sourceBytes": 5420426,
+      "archiveBytes": 1172077,
+      "archiveSha256": "bb54a5ec3f54f2292d45c410418492e5a9a2ce7b7266fe6a4135cfac3731c96e",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "frontalis-phase3e-repro-smoke",
+      "archive": "reproductions/phase-3e/frontalis-phase3e-repro-smoke.zip",
+      "manifest": "reproductions/phase-3e/frontalis-phase3e-repro-smoke.manifest.json",
+      "files": 47,
+      "sourceBytes": 2030827,
+      "archiveBytes": 442472,
+      "archiveSha256": "cdeb4c3c9a6b0bfd5b9b8485ad837452e3b1a810a72db599f98d0e864e1ed745",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "frontalis-phase3f-repro-final",
+      "archive": "reproductions/phase-3f/frontalis-phase3f-repro-final.zip",
+      "manifest": "reproductions/phase-3f/frontalis-phase3f-repro-final.manifest.json",
+      "files": 79,
+      "sourceBytes": 971192,
+      "archiveBytes": 275637,
+      "archiveSha256": "aac8d3eb95b62e4ecd06b65db7cfbac89920d3b8231882535ce71f352f505061",
+      "sourcePresent": false,
+      "stagingPresent": false
+    },
+    {
+      "name": "frontalis-phase3f-repro-smoke",
+      "archive": "reproductions/phase-3f/frontalis-phase3f-repro-smoke.zip",
+      "manifest": "reproductions/phase-3f/frontalis-phase3f-repro-smoke.manifest.json",
+      "files": 67,
+      "sourceBytes": 1116029,
+      "archiveBytes": 281852,
+      "archiveSha256": "a9ede4d347366c91563a4f43e910eeb9bc42eff650c02f87648588d921c52309",
+      "sourcePresent": false,
+      "stagingPresent": false
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "modelId": "main-5311-semantic44-c0-bounded_logit-h0",
+  "meaning": {
+    "cueFacts8": [
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "outcomeFacts8": [
+      0.5,
+      0.5,
+      0.5,
+      0,
+      1,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "events": [
+      {
+        "action": "help",
+        "actor": "close_other",
+        "target": "self",
+        "negated": false,
+        "uncertain": false,
+        "intent": "unknown"
+      }
+    ],
+    "consent": "yes",
+    "trust": "unknown",
+    "causal": "causes",
+    "temporal": "after",
+    "delayed": false
+  },
+  "options": []
+}

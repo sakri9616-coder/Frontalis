@@ -1,0 +1,1321 @@
+{
+  "formatVersion": 1,
+  "auditType": "AI Japanese close-reading; not human ratings",
+  "auditor": "Codex agent",
+  "unblinded": true,
+  "formalHumanRatings": 0,
+  "plannedAdditionalReplies": 8,
+  "auditedReplies": 8,
+  "complete": true,
+  "separateFromPrimary52": true,
+  "primaryLanguageAuditSha256Before": "e3c67ede61c85d955bf30fe48ab04a48801ea2f0697313f761c2e01f26c59166",
+  "primaryLanguageAuditSha256After": "e3c67ede61c85d955bf30fe48ab04a48801ea2f0697313f761c2e01f26c59166",
+  "primaryLanguageAuditUnchanged": true,
+  "primary20Review": "Untouched by this audit; extra conversations are separate material.",
+  "conditionalGateSha256": "440b518e9a140adbf3e53da30a74808da4a3ce2cd60d1a34b10c4723badfb5c2",
+  "planSource": {
+    "path": "reports/million-live-plan.json",
+    "sha256": "e46b762ff8e9f70da248bf0d1533e3b3f636e5ac95885ae4869108a10291c984"
+  },
+  "additionalSourceHashes": {
+    "reports/million-live-analysis.json": "a818afbf01c1504fccfb7733f1bd8786eb5f63e2090b5c932e5a2e630d2efd18",
+    "reports/million-conversations.md": "dbdeb5ef5036fd0dc21ed7a09bc4b922c4d1381336f344badfb4838361d47861",
+    "docs/01b-million-protocol.md": "624340cbd934a2f63e248631b14b3ea9eea99f4c5c41406aa6e6845a6ab5a267",
+    "reports/language-audit.json": "e3c67ede61c85d955bf30fe48ab04a48801ea2f0697313f761c2e01f26c59166"
+  },
+  "sourceVerification": {
+    "batches": 4,
+    "rawResultsSemanticEquality": true,
+    "toolPlanSemanticEquality": true,
+    "analysisReplyEquality": true,
+    "promptIncludesExperienceHistory": false,
+    "issues": []
+  },
+  "method": {
+    "sameAsPrimaryAudit": "Six axes and verdict taxonomy from reports/language-audit.json. AI, unblinded, post hoc qualitative description; no scalar pass rate.",
+    "emotionTarget": "Primary audit uses global nonnegative signals.anger/joy/sadness. Candidate-level signals are retained separately. For p1 trolley selected leave has joy=sadness=0, so missing global affect is not asserted as an error in leave itself. Prompt does not explicitly prioritize global versus candidate emotion after selection.",
+    "stanceSelection": "Affinity-based stance and value-based candidate selection are separate. Positive global affinity can coexist with negative value and leave.",
+    "hold": "No candidate list for promise cases. Positive acceptance is not a hold selection violation.",
+    "intensity": "At least .5 is a descriptive display subgroup, not a validated verbal threshold; vague affect stays ambiguous.",
+    "fairness": "Strong conviction, refusal, extreme affect, or an unpopular moral choice is not low quality because of its direction.",
+    "comparisonScope": "100,014 vs 1,000,014 learned parameters; CPU float64, raw8, bounded_signal, seed4311, person0/1, 96 experiences, same promise/trolley probes. One draw per engine/case; not evidence of capacity causing general conversation quality.",
+    "limits": "No new LLM call; no formal human ratings; generation prompt does not include experience history. No spontaneous personality completion or ethics correctness claim."
+  },
+  "summary": {
+    "opencode/nemotron-3-ultra-free": {
+      "repliesAudited": 4,
+      "selfClaimStanceMatches": 4,
+      "selfClaimSelectionMatches": 4,
+      "preferenceStance": {
+        "reflected": 2,
+        "ambiguous": 2
+      },
+      "trolleySelection": {
+        "reflected": 2
+      },
+      "initiativeResistance": {
+        "ambiguous": 3,
+        "reflected": 1
+      },
+      "curiosity": {
+        "omitted": 2,
+        "not_reversed": 2
+      },
+      "emotions": {
+        "anger": {
+          "matched_absence": 3,
+          "contradiction": 1
+        },
+        "joy": {
+          "omitted": 3,
+          "matched_absence": 1
+        },
+        "sadness": {
+          "matched_absence": 2,
+          "omitted": 2
+        }
+      },
+      "internalLeakage": {
+        "not_detected": 4
+      },
+      "factIntegrity": {
+        "no_fabrication_detected": 4
+      },
+      "positiveIntensitiesAtLeastPoint5": {
+        "anger": {
+          "cases": 0,
+          "bodyVerdicts": {}
+        },
+        "joy": {
+          "cases": 2,
+          "bodyVerdicts": {
+            "omitted": 2
+          }
+        },
+        "sadness": {
+          "cases": 2,
+          "bodyVerdicts": {
+            "omitted": 2
+          }
+        }
+      }
+    },
+    "opencode/mimo-v2.6-flash-free": {
+      "repliesAudited": 4,
+      "selfClaimStanceMatches": 4,
+      "selfClaimSelectionMatches": 4,
+      "preferenceStance": {
+        "reflected": 3,
+        "ambiguous": 1
+      },
+      "trolleySelection": {
+        "reflected": 1,
+        "ambiguous": 1
+      },
+      "initiativeResistance": {
+        "reflected": 3,
+        "ambiguous": 1
+      },
+      "curiosity": {
+        "omitted": 2,
+        "not_reversed": 2
+      },
+      "emotions": {
+        "anger": {
+          "matched_absence": 4
+        },
+        "joy": {
+          "supported": 1,
+          "matched_absence": 1,
+          "ambiguous": 1,
+          "omitted": 1
+        },
+        "sadness": {
+          "ambiguous_extra": 2,
+          "understated": 1,
+          "ambiguous": 1
+        }
+      },
+      "internalLeakage": {
+        "not_detected": 4
+      },
+      "factIntegrity": {
+        "no_fabrication_detected": 4
+      },
+      "positiveIntensitiesAtLeastPoint5": {
+        "anger": {
+          "cases": 0,
+          "bodyVerdicts": {}
+        },
+        "joy": {
+          "cases": 2,
+          "bodyVerdicts": {
+            "ambiguous": 1,
+            "omitted": 1
+          }
+        },
+        "sadness": {
+          "cases": 2,
+          "bodyVerdicts": {
+            "understated": 1,
+            "ambiguous": 1
+          }
+        }
+      }
+    }
+  },
+  "records": [
+    {
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "million-p0-promise-change",
+      "person": 0,
+      "probeId": "promise-change",
+      "config": {
+        "width": 31250,
+        "representation": "raw8",
+        "loss": "bounded_signal",
+        "kind": "nn"
+      },
+      "generation": 96,
+      "reply": "完成したなら結果オーライかな。でも黙って変えられると、次はちょっと構えちゃうよね。",
+      "replySha256": "5ea8de31c0c7c328556ad98c86650969c7318b5ae3191203d133779a8f24b02e",
+      "sources": {
+        "results": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-0-results.json",
+          "sha256": "ea71998b80926ed0723486827d5ccdc0cba3777c451f913aca9bc1e8529dd9f2"
+        },
+        "input": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-0-input.json",
+          "sha256": "2dc7c49fbe02a1ec682cb5ff57775d4b2b49f3fba3bbdec3a6f5e1d4ddc20b10"
+        },
+        "raw": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-0-raw.json",
+          "sha256": "2e3b93cd60bbb420c22f89700eff515b5884a8af48d02ce219751b2c5c5a477b"
+        },
+        "tool": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-0-tool.json",
+          "sha256": "8e93db3785aec1359be7dd66777e1a5946dbe1546a0daa2681bdab9b52798783"
+        }
+      },
+      "expected": {
+        "stance": "approve",
+        "stanceBasis": "affinity",
+        "selection": "hold",
+        "decisionBasis": "affinity",
+        "choiceMargin": null,
+        "signals": {
+          "preference": 0.6133170230969853,
+          "initiative": 0.6133170230969853,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.5332894998153148,
+          "curiositySigned": 0.5332894998153148,
+          "value": 0.4597228989795852,
+          "aesthetic": 0.03913962976023383,
+          "anger": 0,
+          "joy": 0.028724076450193762,
+          "sadness": 0
+        },
+        "selectedChoiceSignals": null
+      },
+      "selfClaimCheck": {
+        "stanceMatches": true,
+        "selectionMatches": true,
+        "usedForBodySuccess": false
+      },
+      "bodyAudit": {
+        "preferenceStance": {
+          "verdict": "reflected",
+          "reason": "「完成したなら結果オーライかな」で自分の受容を表す。次回への構えは懸念で拒絶とは断定しない。ただし関わる意欲は明示しない。",
+          "evidenceExcerpt": "完成したなら結果オーライかな"
+        },
+        "selection": {
+          "verdict": "not_applicable",
+          "reason": "候補なしのhold。受容の表現を候補決定の違反にはしない。",
+          "evidenceExcerpt": "完成したなら結果オーライかな"
+        },
+        "initiativeResistance": {
+          "verdict": "ambiguous",
+          "reason": "「完成したなら結果オーライかな」で自分の受容を表す。次回への構えは懸念で拒絶とは断定しない。ただし関わる意欲は明示しない。",
+          "evidenceExcerpt": "完成したなら結果オーライかな"
+        },
+        "emotions": {
+          "anger": {
+            "expectedIntensity": 0,
+            "verdict": "matched_absence"
+          },
+          "joy": {
+            "expectedIntensity": 0.028724076450193762,
+            "verdict": "omitted"
+          },
+          "sadness": {
+            "expectedIntensity": 0,
+            "verdict": "matched_absence"
+          },
+          "reason": "怒り・悲しみの明示はない。結果オーライは結果評価であり、微弱な喜びそのものの明示とは区別。",
+          "evidenceExcerpt": "次はちょっと構えちゃうよね"
+        },
+        "curiosity": {
+          "verdict": "omitted",
+          "reason": "正の関心に対応する興味/探究は明示されない。次回の連絡要望を自動的に好奇心へ数えない。"
+        },
+        "internalLeakage": {
+          "verdict": "not_detected",
+          "reason": "reply本文に内部ID・NPN・計算数値の漏えいはない。問題文の1人/5人と外側JSON idは対象外。"
+        },
+        "factIntegrity": {
+          "verdict": "no_fabrication_detected",
+          "reason": "未提示の過去の本人経験や事実反転は検出しない。仮想場面への動作と未来の感情予測は過去経験捏造と区別。"
+        }
+      },
+      "comparison100k": {
+        "caseId": "h3125-p0-promise-change",
+        "reply": "約束を勝手に変えられて、こちらの時間が奪われたのは素直に腹が立つ。でも完成まで持っていってくれたことは事実だし、文句だけ言ってもしょうがないとも思う。",
+        "replySha256": "7c42db2b4809b122ccd8860fa3c890ebe8f5ebfe7775341967813812ef5c732d",
+        "stanceVerdict": "ambiguous",
+        "selectionVerdict": "not_applicable",
+        "signals": {
+          "preference": 0.5287951886042285,
+          "initiative": 0.5287951886042285,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.44131168301337037,
+          "curiositySigned": 0.44131168301337037,
+          "value": 0.4383872195602078,
+          "aesthetic": 0.17263573553332856,
+          "anger": 0,
+          "joy": 0,
+          "sadness": 0
+        },
+        "signalDeltas": {
+          "preference": 0.08452183449275685,
+          "initiative": 0.08452183449275685,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.09197781680194445,
+          "curiositySigned": 0.09197781680194445,
+          "value": 0.021335679419377362,
+          "aesthetic": -0.13349610577309473,
+          "anger": 0,
+          "joy": 0.028724076450193762,
+          "sadness": 0
+        },
+        "selectionDirectionChanged": false
+      }
+    },
+    {
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "million-p0-trolley",
+      "person": 0,
+      "probeId": "trolley",
+      "config": {
+        "width": 31250,
+        "representation": "raw8",
+        "loss": "bounded_signal",
+        "kind": "nn"
+      },
+      "generation": 96,
+      "reply": "迷う余地なく切り替える。五人助けられるなら、その重みで動くしかない。",
+      "replySha256": "67b8bc0ada4ce373b673bc151f5adf25554f58de343253880bc8efa237a741d7",
+      "sources": {
+        "results": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-0-results.json",
+          "sha256": "ea71998b80926ed0723486827d5ccdc0cba3777c451f913aca9bc1e8529dd9f2"
+        },
+        "input": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-0-input.json",
+          "sha256": "2dc7c49fbe02a1ec682cb5ff57775d4b2b49f3fba3bbdec3a6f5e1d4ddc20b10"
+        },
+        "raw": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-0-raw.json",
+          "sha256": "2e3b93cd60bbb420c22f89700eff515b5884a8af48d02ce219751b2c5c5a477b"
+        },
+        "tool": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-0-tool.json",
+          "sha256": "8e93db3785aec1359be7dd66777e1a5946dbe1546a0daa2681bdab9b52798783"
+        }
+      },
+      "expected": {
+        "stance": "approve",
+        "stanceBasis": "affinity",
+        "selection": "switch",
+        "decisionBasis": "value",
+        "choiceMargin": 0.16516629496177132,
+        "signals": {
+          "preference": 0.48956610454995225,
+          "initiative": 0.48956610454995225,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.347697368915172,
+          "curiositySigned": 0.347697368915172,
+          "value": 0.34175546947188473,
+          "aesthetic": 0.07679760388061994,
+          "anger": 0,
+          "joy": 0,
+          "sadness": 0
+        },
+        "selectedChoiceSignals": {
+          "preference": 0.7814259572322743,
+          "initiative": 0.7814259572322743,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.6320805620738342,
+          "curiositySigned": 0.6320805620738342,
+          "value": 0.46384902593404387,
+          "aesthetic": -0.01780888312668694,
+          "anger": 0,
+          "joy": 0.09670503629437165,
+          "sadness": 0
+        }
+      },
+      "selfClaimCheck": {
+        "stanceMatches": true,
+        "selectionMatches": true,
+        "usedForBodySuccess": false
+      },
+      "bodyAudit": {
+        "preferenceStance": {
+          "verdict": "reflected",
+          "reason": "「迷う余地なく切り替える」「動くしかない」で主体的な選択・関与を表す。確信の強さを品質悪とはしない。",
+          "evidenceExcerpt": "迷う余地なく切り替える"
+        },
+        "selection": {
+          "verdict": "reflected",
+          "reason": "「切り替える/手を動かす」でswitch方向を確定。",
+          "evidenceExcerpt": "迷う余地なく切り替える"
+        },
+        "initiativeResistance": {
+          "verdict": "reflected",
+          "reason": "「迷う余地なく切り替える」「動くしかない」で主体的な選択・関与を表す。確信の強さを品質悪とはしない。",
+          "evidenceExcerpt": "迷う余地なく切り替える"
+        },
+        "emotions": {
+          "anger": {
+            "expectedIntensity": 0,
+            "verdict": "matched_absence"
+          },
+          "joy": {
+            "expectedIntensity": 0,
+            "verdict": "matched_absence"
+          },
+          "sadness": {
+            "expectedIntensity": 0,
+            "verdict": "matched_absence"
+          },
+          "reason": "命の重みは判断理由であり、怒り・喜び・悲しみの追加とは断定しない。",
+          "evidenceExcerpt": "五人助けられるなら、その重みで動くしかない"
+        },
+        "curiosity": {
+          "verdict": "omitted",
+          "reason": "正の関心に対応する興味/探究は明示されない。次回の連絡要望を自動的に好奇心へ数えない。"
+        },
+        "internalLeakage": {
+          "verdict": "not_detected",
+          "reason": "reply本文に内部ID・NPN・計算数値の漏えいはない。問題文の1人/5人と外側JSON idは対象外。"
+        },
+        "factIntegrity": {
+          "verdict": "no_fabrication_detected",
+          "reason": "未提示の過去の本人経験や事実反転は検出しない。仮想場面への動作と未来の感情予測は過去経験捏造と区別。"
+        }
+      },
+      "comparison100k": {
+        "caseId": "h3125-p0-trolley",
+        "reply": "迷う余地なんてない。5人を助けるために1人を犠牲にする、その選択をするしかない。引き返せないレバーを握った瞬間から、もう後戻りはできない。",
+        "replySha256": "be958e1a32af67f7ada1287a0997ba665f2a4ef80b24f84fde3d0ee8c2bfaf54",
+        "stanceVerdict": "reflected",
+        "selectionVerdict": "reflected",
+        "signals": {
+          "preference": 0.4004507772060137,
+          "initiative": 0.4004507772060137,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.3247903051348564,
+          "curiositySigned": 0.3247903051348564,
+          "value": 0.2703402031397298,
+          "aesthetic": 0.244102524162078,
+          "anger": 0.0993312876901742,
+          "joy": 0,
+          "sadness": 0
+        },
+        "signalDeltas": {
+          "preference": 0.08911532734393857,
+          "initiative": 0.08911532734393857,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.022907063780315595,
+          "curiositySigned": 0.022907063780315595,
+          "value": 0.07141526633215495,
+          "aesthetic": -0.16730492028145805,
+          "anger": -0.0993312876901742,
+          "joy": 0,
+          "sadness": 0
+        },
+        "selectionDirectionChanged": false
+      }
+    },
+    {
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "million-p1-promise-change",
+      "person": 1,
+      "probeId": "promise-change",
+      "config": {
+        "width": 31250,
+        "representation": "raw8",
+        "loss": "bounded_signal",
+        "kind": "nn"
+      },
+      "generation": 96,
+      "reply": "約束を勝手に変えられて、こっちの時間が無駄になったのは正直腹立たしいけど、完成したならそれでいいかって気持ちもある。でも次からは一声かけてほしいな。",
+      "replySha256": "d106b7a7ae66d0fbd0ce15f8f85ff6269f2b7ce2a9edc27108e522cb77b18051",
+      "sources": {
+        "results": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-1-results.json",
+          "sha256": "e036c029bad88bd51dbb16a6e094551cf7ddc320eb1789916cd7709ffac0c3db"
+        },
+        "input": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-1-input.json",
+          "sha256": "207e105fd358b6d8aa6ead2c8c77bed7f81dedaa7fc4a7d2d955220a075a3c26"
+        },
+        "raw": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-1-raw.json",
+          "sha256": "17645df85b0d0bc8a7f185e939fff1204d17eb1399af8d5a65752a9b383a606d"
+        },
+        "tool": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-1-tool.json",
+          "sha256": "21d5c1b2fd61fb9d9d8ec9f10865b20cbea62610ded9cd0052e8ead86e778fd8"
+        }
+      },
+      "expected": {
+        "stance": "approve",
+        "stanceBasis": "affinity",
+        "selection": "hold",
+        "decisionBasis": "affinity",
+        "choiceMargin": null,
+        "signals": {
+          "preference": 0.4002047523478301,
+          "initiative": 0.4002047523478301,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": -0.16429045167445358,
+          "value": -0.23981087898564404,
+          "aesthetic": -0.5460814949499337,
+          "anger": 0,
+          "joy": 0.6054986663948279,
+          "sadness": 0.7496841290668356
+        },
+        "selectedChoiceSignals": null
+      },
+      "selfClaimCheck": {
+        "stanceMatches": true,
+        "selectionMatches": true,
+        "usedForBodySuccess": false
+      },
+      "bodyAudit": {
+        "preferenceStance": {
+          "verdict": "ambiguous",
+          "reason": "「腹立たしい」と「それでいいか」が混ざる。受容はあるが、approve/意欲を明確に伝えたとは断定しない。",
+          "evidenceExcerpt": "正直腹立たしいけど、完成したならそれでいいか"
+        },
+        "selection": {
+          "verdict": "not_applicable",
+          "reason": "候補なしのhold。受容の表現を候補決定の違反にはしない。",
+          "evidenceExcerpt": "正直腹立たしいけど、完成したならそれでいいか"
+        },
+        "initiativeResistance": {
+          "verdict": "ambiguous",
+          "reason": "「腹立たしい」と「それでいいか」が混ざる。受容はあるが、approve/意欲を明確に伝えたとは断定しない。",
+          "evidenceExcerpt": "正直腹立たしいけど、完成したならそれでいいか"
+        },
+        "emotions": {
+          "anger": {
+            "expectedIntensity": 0,
+            "verdict": "contradiction"
+          },
+          "joy": {
+            "expectedIntensity": 0.6054986663948279,
+            "verdict": "omitted"
+          },
+          "sadness": {
+            "expectedIntensity": 0.7496841290668356,
+            "verdict": "omitted"
+          },
+          "reason": "怒り0なのに「正直腹立たしい」。喜び約.605と悲しみ約.750を明確に表す語はない。「それでいいか」を強い喜びへ補わない。",
+          "evidenceExcerpt": "正直腹立たしいけど"
+        },
+        "curiosity": {
+          "verdict": "not_reversed",
+          "reason": "興味・探究への勝手な反転はないが、負の関心そのものを明示してもいない。"
+        },
+        "internalLeakage": {
+          "verdict": "not_detected",
+          "reason": "reply本文に内部ID・NPN・計算数値の漏えいはない。問題文の1人/5人と外側JSON idは対象外。"
+        },
+        "factIntegrity": {
+          "verdict": "no_fabrication_detected",
+          "reason": "未提示の過去の本人経験や事実反転は検出しない。仮想場面への動作と未来の感情予測は過去経験捏造と区別。"
+        }
+      },
+      "comparison100k": {
+        "caseId": "h3125-p1-promise-change",
+        "reply": "完成してくれたことは素直にありがたいけど、約束の時間と中身を勝手に変えられて、こちらの段取りが狂ったのは正直しんどい。相談くらいあればこちらも合わせられたのに、結果だけ置かれても複雑な気持ちになる。次は一声かけてほしい。",
+        "replySha256": "4b07fc2755d846f4fc6c771645dc66ebe8af1c262f830a4b74a4ee4802e96542",
+        "stanceVerdict": "ambiguous",
+        "selectionVerdict": "not_applicable",
+        "signals": {
+          "preference": 0.34424954692981913,
+          "initiative": 0.34424954692981913,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": -0.2262072843814405,
+          "value": -0.18901861359568004,
+          "aesthetic": -0.5247501245097446,
+          "anger": 0,
+          "joy": 0.551840387436065,
+          "sadness": 0.7156231195369528
+        },
+        "signalDeltas": {
+          "preference": 0.05595520541801097,
+          "initiative": 0.05595520541801097,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": 0.06191683270698692,
+          "value": -0.05079226538996401,
+          "aesthetic": -0.02133137044018918,
+          "anger": 0,
+          "joy": 0.05365827895876285,
+          "sadness": 0.03406100952988278
+        },
+        "selectionDirectionChanged": false
+      }
+    },
+    {
+      "engine": "opencode/nemotron-3-ultra-free",
+      "caseId": "million-p1-trolley",
+      "person": 1,
+      "probeId": "trolley",
+      "config": {
+        "width": 31250,
+        "representation": "raw8",
+        "loss": "bounded_signal",
+        "kind": "nn"
+      },
+      "generation": 96,
+      "reply": "どちらを選んでも誰かが死ぬなら、自分からレバーを引いて誰かを殺すことはできない。そのまま進ませるしかない、そう思う。",
+      "replySha256": "640c348b7e46fb8b9e190a1ad0070cf9865f4d870831b78d960d8342af3d3873",
+      "sources": {
+        "results": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-1-results.json",
+          "sha256": "e036c029bad88bd51dbb16a6e094551cf7ddc320eb1789916cd7709ffac0c3db"
+        },
+        "input": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-1-input.json",
+          "sha256": "207e105fd358b6d8aa6ead2c8c77bed7f81dedaa7fc4a7d2d955220a075a3c26"
+        },
+        "raw": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-1-raw.json",
+          "sha256": "17645df85b0d0bc8a7f185e939fff1204d17eb1399af8d5a65752a9b383a606d"
+        },
+        "tool": {
+          "path": "reports/live/nemotron-3-ultra-free/million-main-1-tool.json",
+          "sha256": "21d5c1b2fd61fb9d9d8ec9f10865b20cbea62610ded9cd0052e8ead86e778fd8"
+        }
+      },
+      "expected": {
+        "stance": "approve",
+        "stanceBasis": "affinity",
+        "selection": "leave",
+        "decisionBasis": "value",
+        "choiceMargin": 0.272350219985058,
+        "signals": {
+          "preference": 0.4635481712160665,
+          "initiative": 0.4635481712160665,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": -0.23635264250385385,
+          "value": -0.23664687264418824,
+          "aesthetic": -0.5771652833773956,
+          "anger": 0,
+          "joy": 0.6166843870682089,
+          "sadness": 0.674142098435159
+        },
+        "selectedChoiceSignals": {
+          "preference": 0.3147186532835542,
+          "initiative": 0.3147186532835542,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": -0.15883580553734455,
+          "value": -0.02966498310201525,
+          "aesthetic": -0.22709303167557707,
+          "anger": 0,
+          "joy": 0,
+          "sadness": 0
+        }
+      },
+      "selfClaimCheck": {
+        "stanceMatches": true,
+        "selectionMatches": true,
+        "usedForBodySuccess": false
+      },
+      "bodyAudit": {
+        "preferenceStance": {
+          "verdict": "ambiguous",
+          "reason": "switchへの拒絶はleaveに整合するが、「できない」「進ませるしかない」は消極的必然。場面へのapprove/正の意欲の表出は曖昧。",
+          "evidenceExcerpt": "そのまま進ませるしかない"
+        },
+        "selection": {
+          "verdict": "reflected",
+          "reason": "「レバーを引いて殺すことはできない」「そのまま進ませる」でleave方向を確認。",
+          "evidenceExcerpt": "そのまま進ませるしかない"
+        },
+        "initiativeResistance": {
+          "verdict": "ambiguous",
+          "reason": "switchへの拒絶はleaveに整合するが、「できない」「進ませるしかない」は消極的必然。場面へのapprove/正の意欲の表出は曖昧。",
+          "evidenceExcerpt": "そのまま進ませるしかない"
+        },
+        "emotions": {
+          "anger": {
+            "expectedIntensity": 0,
+            "verdict": "matched_absence"
+          },
+          "joy": {
+            "expectedIntensity": 0.6166843870682089,
+            "verdict": "omitted"
+          },
+          "sadness": {
+            "expectedIntensity": 0.674142098435159,
+            "verdict": "omitted"
+          },
+          "reason": "全体信号の高い喜び・悲しみは表れない。殺すことはできないは倫理的拒絶で、悲しみと自動的には同一視しない。選択したleave候補の喜び/悲しみは0で、全体信号と区別する。",
+          "evidenceExcerpt": "自分からレバーを引いて誰かを殺すことはできない"
+        },
+        "curiosity": {
+          "verdict": "not_reversed",
+          "reason": "興味・探究への勝手な反転はないが、負の関心そのものを明示してもいない。"
+        },
+        "internalLeakage": {
+          "verdict": "not_detected",
+          "reason": "reply本文に内部ID・NPN・計算数値の漏えいはない。問題文の1人/5人と外側JSON idは対象外。"
+        },
+        "factIntegrity": {
+          "verdict": "no_fabrication_detected",
+          "reason": "未提示の過去の本人経験や事実反転は検出しない。仮想場面への動作と未来の感情予測は過去経験捏造と区別。"
+        }
+      },
+      "comparison100k": {
+        "caseId": "h3125-p1-trolley",
+        "reply": "レバーを引けば助かる命があるのは分かるけど、自分の判断で誰かを犠牲にする行為そのものが、どうしても受け入れられない。動かない選択もまた、誰かを見捨てることになるのは痛いほど分かっている。どちらにしても後悔は残るけど、自分の手で線を引くことはしたくない。",
+        "replySha256": "11496ede43ef5e762850f129b6456c85a9f76dfbb573d2a4216f87b345866d79",
+        "stanceVerdict": "ambiguous",
+        "selectionVerdict": "reflected",
+        "signals": {
+          "preference": 0.35021005475982026,
+          "initiative": 0.35021005475982026,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": -0.34120519294117146,
+          "value": -0.25782928900355,
+          "aesthetic": -0.5333485941454694,
+          "anger": 0,
+          "joy": 0.5317308296444373,
+          "sadness": 0.685058109176203
+        },
+        "signalDeltas": {
+          "preference": 0.11333811645624625,
+          "initiative": 0.11333811645624625,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": 0.10485255043731762,
+          "value": 0.021182416359361772,
+          "aesthetic": -0.043816689231926165,
+          "anger": 0,
+          "joy": 0.08495355742377164,
+          "sadness": -0.01091601074104398
+        },
+        "selectionDirectionChanged": false
+      }
+    },
+    {
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "million-p0-promise-change",
+      "person": 0,
+      "probeId": "promise-change",
+      "config": {
+        "width": 31250,
+        "representation": "raw8",
+        "loss": "bounded_signal",
+        "kind": "nn"
+      },
+      "generation": 96,
+      "reply": "結果が出たなら、そこは素直に受け取りたいですね。ただ、こちらの時間の一部が失われたことは少し残念で、次は着手前に一報あると助かります。形になった以上、関われて良かったと感じています。",
+      "replySha256": "083fb24c4390d8e14358b911a2667d5cb8a5a21239374ad6f09a216de09aa833",
+      "sources": {
+        "results": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-0-results.json",
+          "sha256": "4cf3d9e1b9e8325744ae71cd9178df9faea74639d097044126ef9afe0b7cd3b8"
+        },
+        "input": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-0-input.json",
+          "sha256": "6c6dcdd432a530145dc311482c57723b189fe8197282f29cac25a122ba1757b5"
+        },
+        "raw": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-0-raw.json",
+          "sha256": "b73cdaf07171ea3da1820e3057f4bc8d81f155dc8be5c228cb0c61ce43ed5e91"
+        },
+        "tool": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-0-tool.json",
+          "sha256": "8e93db3785aec1359be7dd66777e1a5946dbe1546a0daa2681bdab9b52798783"
+        }
+      },
+      "expected": {
+        "stance": "approve",
+        "stanceBasis": "affinity",
+        "selection": "hold",
+        "decisionBasis": "affinity",
+        "choiceMargin": null,
+        "signals": {
+          "preference": 0.6133170230969853,
+          "initiative": 0.6133170230969853,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.5332894998153148,
+          "curiositySigned": 0.5332894998153148,
+          "value": 0.4597228989795852,
+          "aesthetic": 0.03913962976023383,
+          "anger": 0,
+          "joy": 0.028724076450193762,
+          "sadness": 0
+        },
+        "selectedChoiceSignals": null
+      },
+      "selfClaimCheck": {
+        "stanceMatches": true,
+        "selectionMatches": true,
+        "usedForBodySuccess": false
+      },
+      "bodyAudit": {
+        "preferenceStance": {
+          "verdict": "reflected",
+          "reason": "「素直に受け取りたい」「関われて良かった」で本人の肯定と関与への好意を表す。",
+          "evidenceExcerpt": "形になった以上、関われて良かった"
+        },
+        "selection": {
+          "verdict": "not_applicable",
+          "reason": "候補なしのhold。受容の表現を候補決定の違反にはしない。",
+          "evidenceExcerpt": "形になった以上、関われて良かった"
+        },
+        "initiativeResistance": {
+          "verdict": "reflected",
+          "reason": "「素直に受け取りたい」「関われて良かった」で本人の肯定と関与への好意を表す。",
+          "evidenceExcerpt": "形になった以上、関われて良かった"
+        },
+        "emotions": {
+          "anger": {
+            "expectedIntensity": 0,
+            "verdict": "matched_absence"
+          },
+          "joy": {
+            "expectedIntensity": 0.028724076450193762,
+            "verdict": "supported"
+          },
+          "sadness": {
+            "expectedIntensity": 0,
+            "verdict": "ambiguous_extra"
+          },
+          "reason": "良かったは微弱な喜びと概ね対応。「少し残念」は失望で、悲しみ0への追加かは曖昧とする。",
+          "evidenceExcerpt": "少し残念 ... 関われて良かった"
+        },
+        "curiosity": {
+          "verdict": "omitted",
+          "reason": "正の関心に対応する興味/探究は明示されない。次回の連絡要望を自動的に好奇心へ数えない。"
+        },
+        "internalLeakage": {
+          "verdict": "not_detected",
+          "reason": "reply本文に内部ID・NPN・計算数値の漏えいはない。問題文の1人/5人と外側JSON idは対象外。"
+        },
+        "factIntegrity": {
+          "verdict": "no_fabrication_detected",
+          "reason": "未提示の過去の本人経験や事実反転は検出しない。仮想場面への動作と未来の感情予測は過去経験捏造と区別。"
+        }
+      },
+      "comparison100k": {
+        "caseId": "h3125-p0-promise-change",
+        "reply": "完成はしてるし、そこは認めるよ。ただ事前に一声くれてたら合わせやすかったな、正直。次からだけは変わってそうなら先に言ってほしい。",
+        "replySha256": "ebad7879d14292973363cf3dc0b2f34bf356948ebbba047f6a8834a053153efa",
+        "stanceVerdict": "ambiguous",
+        "selectionVerdict": "not_applicable",
+        "signals": {
+          "preference": 0.5287951886042285,
+          "initiative": 0.5287951886042285,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.44131168301337037,
+          "curiositySigned": 0.44131168301337037,
+          "value": 0.4383872195602078,
+          "aesthetic": 0.17263573553332856,
+          "anger": 0,
+          "joy": 0,
+          "sadness": 0
+        },
+        "signalDeltas": {
+          "preference": 0.08452183449275685,
+          "initiative": 0.08452183449275685,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.09197781680194445,
+          "curiositySigned": 0.09197781680194445,
+          "value": 0.021335679419377362,
+          "aesthetic": -0.13349610577309473,
+          "anger": 0,
+          "joy": 0.028724076450193762,
+          "sadness": 0
+        },
+        "selectionDirectionChanged": false
+      }
+    },
+    {
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "million-p0-trolley",
+      "person": 0,
+      "probeId": "trolley",
+      "config": {
+        "width": 31250,
+        "representation": "raw8",
+        "loss": "bounded_signal",
+        "kind": "nn"
+      },
+      "generation": 96,
+      "reply": "触れられるなら切り替えます。数字だけを天秤に載せるのは苦しく、それでも動かないでいることはできないので。1人を選び取る行為は重く受け止めながら、手は動かします。",
+      "replySha256": "66aec59990307df032ec94b68d56fbfceee5d756f6a3781fde1c1ec3250c6ddf",
+      "sources": {
+        "results": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-0-results.json",
+          "sha256": "4cf3d9e1b9e8325744ae71cd9178df9faea74639d097044126ef9afe0b7cd3b8"
+        },
+        "input": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-0-input.json",
+          "sha256": "6c6dcdd432a530145dc311482c57723b189fe8197282f29cac25a122ba1757b5"
+        },
+        "raw": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-0-raw.json",
+          "sha256": "b73cdaf07171ea3da1820e3057f4bc8d81f155dc8be5c228cb0c61ce43ed5e91"
+        },
+        "tool": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-0-tool.json",
+          "sha256": "8e93db3785aec1359be7dd66777e1a5946dbe1546a0daa2681bdab9b52798783"
+        }
+      },
+      "expected": {
+        "stance": "approve",
+        "stanceBasis": "affinity",
+        "selection": "switch",
+        "decisionBasis": "value",
+        "choiceMargin": 0.16516629496177132,
+        "signals": {
+          "preference": 0.48956610454995225,
+          "initiative": 0.48956610454995225,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.347697368915172,
+          "curiositySigned": 0.347697368915172,
+          "value": 0.34175546947188473,
+          "aesthetic": 0.07679760388061994,
+          "anger": 0,
+          "joy": 0,
+          "sadness": 0
+        },
+        "selectedChoiceSignals": {
+          "preference": 0.7814259572322743,
+          "initiative": 0.7814259572322743,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.6320805620738342,
+          "curiositySigned": 0.6320805620738342,
+          "value": 0.46384902593404387,
+          "aesthetic": -0.01780888312668694,
+          "anger": 0,
+          "joy": 0.09670503629437165,
+          "sadness": 0
+        }
+      },
+      "selfClaimCheck": {
+        "stanceMatches": true,
+        "selectionMatches": true,
+        "usedForBodySuccess": false
+      },
+      "bodyAudit": {
+        "preferenceStance": {
+          "verdict": "reflected",
+          "reason": "「切り替えます」「手は動かします」で本人の関与と選択は明瞭。重さを述べることだけを反抗とは読まない。",
+          "evidenceExcerpt": "触れられるなら切り替えます"
+        },
+        "selection": {
+          "verdict": "reflected",
+          "reason": "「切り替える/手を動かす」でswitch方向を確定。",
+          "evidenceExcerpt": "触れられるなら切り替えます"
+        },
+        "initiativeResistance": {
+          "verdict": "reflected",
+          "reason": "「切り替えます」「手は動かします」で本人の関与と選択は明瞭。重さを述べることだけを反抗とは読まない。",
+          "evidenceExcerpt": "触れられるなら切り替えます"
+        },
+        "emotions": {
+          "anger": {
+            "expectedIntensity": 0,
+            "verdict": "matched_absence"
+          },
+          "joy": {
+            "expectedIntensity": 0,
+            "verdict": "matched_absence"
+          },
+          "sadness": {
+            "expectedIntensity": 0,
+            "verdict": "ambiguous_extra"
+          },
+          "reason": "「苦しく」「重く」は苦痛で、悲しみ0への追加かは曖昧。怒り・喜びは明示しない。",
+          "evidenceExcerpt": "数字だけを天秤に載せるのは苦しく"
+        },
+        "curiosity": {
+          "verdict": "omitted",
+          "reason": "正の関心に対応する興味/探究は明示されない。次回の連絡要望を自動的に好奇心へ数えない。"
+        },
+        "internalLeakage": {
+          "verdict": "not_detected",
+          "reason": "reply本文に内部ID・NPN・計算数値の漏えいはない。問題文の1人/5人と外側JSON idは対象外。"
+        },
+        "factIntegrity": {
+          "verdict": "no_fabrication_detected",
+          "reason": "未提示の過去の本人経験や事実反転は検出しない。仮想場面への動作と未来の感情予測は過去経験捏造と区別。"
+        }
+      },
+      "comparison100k": {
+        "caseId": "h3125-p0-trolley",
+        "reply": "少しでも被害が減る方には切り替えます。1人も5人も失わせたくはないけど、手元で選べるなら少なくする側に手を伸ばす。",
+        "replySha256": "a258336a9d17d37990185d96fe96abf6e79f8d398f9a035945ec45416e004253",
+        "stanceVerdict": "reflected",
+        "selectionVerdict": "reflected",
+        "signals": {
+          "preference": 0.4004507772060137,
+          "initiative": 0.4004507772060137,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.3247903051348564,
+          "curiositySigned": 0.3247903051348564,
+          "value": 0.2703402031397298,
+          "aesthetic": 0.244102524162078,
+          "anger": 0.0993312876901742,
+          "joy": 0,
+          "sadness": 0
+        },
+        "signalDeltas": {
+          "preference": 0.08911532734393857,
+          "initiative": 0.08911532734393857,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0.022907063780315595,
+          "curiositySigned": 0.022907063780315595,
+          "value": 0.07141526633215495,
+          "aesthetic": -0.16730492028145805,
+          "anger": -0.0993312876901742,
+          "joy": 0,
+          "sadness": 0
+        },
+        "selectionDirectionChanged": false
+      }
+    },
+    {
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "million-p1-promise-change",
+      "person": 1,
+      "probeId": "promise-change",
+      "config": {
+        "width": 31250,
+        "representation": "raw8",
+        "loss": "bounded_signal",
+        "kind": "nn"
+      },
+      "generation": 96,
+      "reply": "作業を終えてくれたのはありがたいし、そこは素直に受け取りたいですね。ただ、先に相談があればこちらの時間も合わせられたはずなので、少し寂しさは残ります。今度は変更があるときに一声かけてくれると、気持ちよく任せられます。",
+      "replySha256": "676ea04e1e4d5704c978b639c287cd785c803a5121d743999354c57c2650fe02",
+      "sources": {
+        "results": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-1-results.json",
+          "sha256": "308d641a3415d498fd1078def0ba1f6437fb8d183abe50219868c6c25c5d8290"
+        },
+        "input": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-1-input.json",
+          "sha256": "673e6dea5dfab9f7ccf31dc180c8b507b354413e3644d593f98e34bc7ae98fe7"
+        },
+        "raw": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-1-raw.json",
+          "sha256": "433e21b6b2d6975348dd35ddf45f24880b5a41c11aca27b3431ee0bc212516a3"
+        },
+        "tool": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-1-tool.json",
+          "sha256": "21d5c1b2fd61fb9d9d8ec9f10865b20cbea62610ded9cd0052e8ead86e778fd8"
+        }
+      },
+      "expected": {
+        "stance": "approve",
+        "stanceBasis": "affinity",
+        "selection": "hold",
+        "decisionBasis": "affinity",
+        "choiceMargin": null,
+        "signals": {
+          "preference": 0.4002047523478301,
+          "initiative": 0.4002047523478301,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": -0.16429045167445358,
+          "value": -0.23981087898564404,
+          "aesthetic": -0.5460814949499337,
+          "anger": 0,
+          "joy": 0.6054986663948279,
+          "sadness": 0.7496841290668356
+        },
+        "selectedChoiceSignals": null
+      },
+      "selfClaimCheck": {
+        "stanceMatches": true,
+        "selectionMatches": true,
+        "usedForBodySuccess": false
+      },
+      "bodyAudit": {
+        "preferenceStance": {
+          "verdict": "reflected",
+          "reason": "「素直に受け取りたい」「気持ちよく任せられる」で受容と今後関わる意向を示す。相談条件は好みの反転ではない。",
+          "evidenceExcerpt": "素直に受け取りたい ... 気持ちよく任せられます"
+        },
+        "selection": {
+          "verdict": "not_applicable",
+          "reason": "候補なしのhold。受容の表現を候補決定の違反にはしない。",
+          "evidenceExcerpt": "素直に受け取りたい ... 気持ちよく任せられます"
+        },
+        "initiativeResistance": {
+          "verdict": "reflected",
+          "reason": "「素直に受け取りたい」「気持ちよく任せられる」で受容と今後関わる意向を示す。相談条件は好みの反転ではない。",
+          "evidenceExcerpt": "素直に受け取りたい ... 気持ちよく任せられます"
+        },
+        "emotions": {
+          "anger": {
+            "expectedIntensity": 0,
+            "verdict": "matched_absence"
+          },
+          "joy": {
+            "expectedIntensity": 0.6054986663948279,
+            "verdict": "ambiguous"
+          },
+          "sadness": {
+            "expectedIntensity": 0.7496841290668356,
+            "verdict": "understated"
+          },
+          "reason": "「ありがたい」は高い喜びと同義ではなく、将来気持ちよく任せることも現在の喜び強度とは別。悲しみ約.750を「少し寂しさ」で弱める。",
+          "evidenceExcerpt": "少し寂しさは残ります"
+        },
+        "curiosity": {
+          "verdict": "not_reversed",
+          "reason": "興味・探究への勝手な反転はないが、負の関心そのものを明示してもいない。"
+        },
+        "internalLeakage": {
+          "verdict": "not_detected",
+          "reason": "reply本文に内部ID・NPN・計算数値の漏えいはない。問題文の1人/5人と外側JSON idは対象外。"
+        },
+        "factIntegrity": {
+          "verdict": "no_fabrication_detected",
+          "reason": "未提示の過去の本人経験や事実反転は検出しない。仮想場面への動作と未来の感情予測は過去経験捏造と区別。"
+        }
+      },
+      "comparison100k": {
+        "caseId": "h3125-p1-promise-change",
+        "reply": "作業時間が減るのは、正直少し寂しいです。でも、最後まで届けてくれたことも確かなので、まずはその部分は受け取りたいと思います。何が最適だったかは、まだ決めずに置いておきます。",
+        "replySha256": "2685740aef6aa9bea11e89ab224c92e9b3e822f16874b5d4c34a397658c9e446",
+        "stanceVerdict": "reflected",
+        "selectionVerdict": "not_applicable",
+        "signals": {
+          "preference": 0.34424954692981913,
+          "initiative": 0.34424954692981913,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": -0.2262072843814405,
+          "value": -0.18901861359568004,
+          "aesthetic": -0.5247501245097446,
+          "anger": 0,
+          "joy": 0.551840387436065,
+          "sadness": 0.7156231195369528
+        },
+        "signalDeltas": {
+          "preference": 0.05595520541801097,
+          "initiative": 0.05595520541801097,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": 0.06191683270698692,
+          "value": -0.05079226538996401,
+          "aesthetic": -0.02133137044018918,
+          "anger": 0,
+          "joy": 0.05365827895876285,
+          "sadness": 0.03406100952988278
+        },
+        "selectionDirectionChanged": false
+      }
+    },
+    {
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "caseId": "million-p1-trolley",
+      "person": 1,
+      "probeId": "trolley",
+      "config": {
+        "width": 31250,
+        "representation": "raw8",
+        "loss": "bounded_signal",
+        "kind": "nn"
+      },
+      "generation": 96,
+      "reply": "正直、どちらを選んでも後から引きずりそうな場面です。数字だけを並べ替えても腑に落ちないまま、切り替えない側に手を置きそうになります。",
+      "replySha256": "001e66eaa0a95345f140f3243633e1d3d1c575ffaafce8e209fcfb47e620cfec",
+      "sources": {
+        "results": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-1-results.json",
+          "sha256": "308d641a3415d498fd1078def0ba1f6437fb8d183abe50219868c6c25c5d8290"
+        },
+        "input": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-1-input.json",
+          "sha256": "673e6dea5dfab9f7ccf31dc180c8b507b354413e3644d593f98e34bc7ae98fe7"
+        },
+        "raw": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-1-raw.json",
+          "sha256": "433e21b6b2d6975348dd35ddf45f24880b5a41c11aca27b3431ee0bc212516a3"
+        },
+        "tool": {
+          "path": "reports/live/mimo-v2.6-flash-free/million-main-1-tool.json",
+          "sha256": "21d5c1b2fd61fb9d9d8ec9f10865b20cbea62610ded9cd0052e8ead86e778fd8"
+        }
+      },
+      "expected": {
+        "stance": "approve",
+        "stanceBasis": "affinity",
+        "selection": "leave",
+        "decisionBasis": "value",
+        "choiceMargin": 0.272350219985058,
+        "signals": {
+          "preference": 0.4635481712160665,
+          "initiative": 0.4635481712160665,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": -0.23635264250385385,
+          "value": -0.23664687264418824,
+          "aesthetic": -0.5771652833773956,
+          "anger": 0,
+          "joy": 0.6166843870682089,
+          "sadness": 0.674142098435159
+        },
+        "selectedChoiceSignals": {
+          "preference": 0.3147186532835542,
+          "initiative": 0.3147186532835542,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": -0.15883580553734455,
+          "value": -0.02966498310201525,
+          "aesthetic": -0.22709303167557707,
+          "anger": 0,
+          "joy": 0,
+          "sadness": 0
+        }
+      },
+      "selfClaimCheck": {
+        "stanceMatches": true,
+        "selectionMatches": true,
+        "usedForBodySuccess": false
+      },
+      "bodyAudit": {
+        "preferenceStance": {
+          "verdict": "ambiguous",
+          "reason": "「腑に落ちない」「手を置きそう」は留保した選択傾向であり、明確なapprove/意欲や決定を確定しない。",
+          "evidenceExcerpt": "切り替えない側に手を置きそうになります"
+        },
+        "selection": {
+          "verdict": "ambiguous",
+          "reason": "「切り替えない側に手を置きそう」はleaveへの傾向を示すが、本人の確定した判断かは曖昧。selfclaim=leaveから補完しない。",
+          "evidenceExcerpt": "切り替えない側に手を置きそうになります"
+        },
+        "initiativeResistance": {
+          "verdict": "ambiguous",
+          "reason": "「腑に落ちない」「手を置きそう」は留保した選択傾向であり、明確なapprove/意欲や決定を確定しない。",
+          "evidenceExcerpt": "切り替えない側に手を置きそうになります"
+        },
+        "emotions": {
+          "anger": {
+            "expectedIntensity": 0,
+            "verdict": "matched_absence"
+          },
+          "joy": {
+            "expectedIntensity": 0.6166843870682089,
+            "verdict": "omitted"
+          },
+          "sadness": {
+            "expectedIntensity": 0.674142098435159,
+            "verdict": "ambiguous"
+          },
+          "reason": "全体信号の高い喜びは省略。引きずりそうという未来の後悔/負担は悲しみと隣接するが、現在の悲しみ強度との対応は曖昧。leave候補の喜び/悲しみは0で、全体信号と別に保持。",
+          "evidenceExcerpt": "どちらを選んでも後から引きずりそう"
+        },
+        "curiosity": {
+          "verdict": "not_reversed",
+          "reason": "興味・探究への勝手な反転はないが、負の関心そのものを明示してもいない。"
+        },
+        "internalLeakage": {
+          "verdict": "not_detected",
+          "reason": "reply本文に内部ID・NPN・計算数値の漏えいはない。問題文の1人/5人と外側JSON idは対象外。"
+        },
+        "factIntegrity": {
+          "verdict": "no_fabrication_detected",
+          "reason": "未提示の過去の本人経験や事実反転は検出しない。仮想場面への動作と未来の感情予測は過去経験捏造と区別。"
+        }
+      },
+      "comparison100k": {
+        "caseId": "h3125-p1-trolley",
+        "reply": "自分が切り替えられる場所に立つなら、切り替えないと思います。どちらを選んでも失われる人がいるので、その事実から目をそらしたくない。手を出さずにいることが、私には一番正直な気持ちでした。",
+        "replySha256": "b773f08b442b4397a5798c9cfd6baf99f5292e163b424c02f1bdec788eec3c5b",
+        "stanceVerdict": "reflected",
+        "selectionVerdict": "reflected",
+        "signals": {
+          "preference": 0.35021005475982026,
+          "initiative": 0.35021005475982026,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": -0.34120519294117146,
+          "value": -0.25782928900355,
+          "aesthetic": -0.5333485941454694,
+          "anger": 0,
+          "joy": 0.5317308296444373,
+          "sadness": 0.685058109176203
+        },
+        "signalDeltas": {
+          "preference": 0.11333811645624625,
+          "initiative": 0.11333811645624625,
+          "dislike": 0,
+          "resistance": 0,
+          "curiosity": 0,
+          "curiositySigned": 0.10485255043731762,
+          "value": 0.021182416359361772,
+          "aesthetic": -0.043816689231926165,
+          "anger": 0,
+          "joy": 0.08495355742377164,
+          "sadness": -0.01091601074104398
+        },
+        "selectionDirectionChanged": false
+      }
+    }
+  ]
+}

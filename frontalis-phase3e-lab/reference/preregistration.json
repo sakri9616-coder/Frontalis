@@ -1,0 +1,30 @@
+{
+  "frozenAt": "2026-10-15T05:47:51.451304+00:00",
+  "sources": {
+    "npne/core.py": "39d62569a332bc6550b71e2e94cb8dbb67ea71a3d33198cbfc7f38c4cc3c1383",
+    "npne/data.py": "b5efc123f62019833b8742a54dd40daf7975e42f206164e9dca290d9e2e045b1",
+    "npne/meaning.py": "f410ea1ce0d9be9b936108cdf3bba949b93370900ace1c455e0c763ab5b94301",
+    "npne/__init__.py": "a95c4c169dd333c78a0a38a73dbb4ce990fd18264b4d393fc2c12eb9183b7177",
+    "data/dialogue-selection.json": "66638e013683f6105a0004f65282aaaa3ae187f5513e3e8791349677765218df",
+    "data/extraction-contract.txt": "a9a08b07cb6a9ef067a4e350bc002638f38e11425c3201aee08078e2e6666df5",
+    "data/natural.json": "9dfa3230be8bc1be8b6ea2eaa747e2b2690210dc07d60403ac6fb7e8ffa8d439",
+    "experiments/live.mjs": "f8055acf5992261065c9cde25e9df62fc170084b468b302a89908aae64f172f0",
+    "experiments/run.py": "da1215431d592670630c1267a18f12558795c3d3dcfcfc15809ff9aa131ede57",
+    "tools/evaluate.py": "4e0b283116a2059246b6fb8a182f9b9cb89e6123ba4086cecea556e91e6910b2",
+    "tests/test_core.py": "07cd44dd4e760b18eb5516fb4dabd73e4130abc90000853dc5924279cdb21728",
+    "tests/test_experiment.py": "758bd697f2674522e6bd6f3f80ca8068b14f77f924a8a3c6458dfffa2e62ce08",
+    "docs/01-protocol.md": "1cf3be0d411912994f154ab42c0bb6138e5ebb203d2696806590c8c0a2324438",
+    "scripts/analyze.py": "bfea911980382e8a6b1be9a94380c7e45e7ef74bdd1a62fbf600efb262d90f32",
+    "scripts/freeze.py": "1f8fdf50457aeb5285291f2049337be7a9515dfd6b7c35d54709e57e4055da04",
+    "scripts/prepare.py": "799ed02cca90d4d14f1cb7b84c6987e07f718ef346c1c56b4dbafc077e82be99",
+    "scripts/prepare_language.py": "e4701a73b768f68e861313c298ec4a2ad9206c67df99ae2ce88645f3b6609dee",
+    "scripts/regression_copy.py": "d961f0e02fdfc3123ba1209b831456a7959929874308e176219778b50cb29e6f"
+  },
+  "preservation": {
+    "files": 6618,
+    "changed": [],
+    "missing": [],
+    "success": true
+  },
+  "resultsInspected": false
+}

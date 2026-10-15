@@ -1,0 +1,48 @@
+{
+  "name": "refusal-structure-annotated",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "4a1e91468e718511eda2ac659743ee9b18803d1b8dafd534ff3e6b73e07e169d",
+  "elapsedMs": 20037,
+  "data": {
+    "calls": [
+      {
+        "name": "frontalis_evaluate",
+        "arguments": {
+          "query_id": "case-0",
+          "space": "relational",
+          "features": [
+            0.8,
+            0.3,
+            0.75,
+            0.6,
+            0.65,
+            0.35,
+            0.25,
+            0.8
+          ],
+          "basis": "affinity"
+        }
+      },
+      {
+        "name": "frontalis_evaluate",
+        "arguments": {
+          "query_id": "case-1",
+          "space": "relational",
+          "features": [
+            0.85,
+            0.2,
+            0.55,
+            0.2,
+            0.65,
+            0.7,
+            0.45,
+            0.75
+          ],
+          "basis": "affinity"
+        }
+      }
+    ]
+  }
+}

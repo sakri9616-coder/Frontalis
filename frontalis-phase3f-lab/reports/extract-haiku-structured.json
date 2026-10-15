@@ -1,0 +1,1438 @@
+{
+  "engine": "haiku-structured",
+  "model": "claude-haiku-5-5",
+  "batches": [
+    {
+      "data": {
+        "records": [
+          {
+            "id": "n0",
+            "facts": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                1,
+                0.5,
+                0.5,
+                0,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "help",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "self",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "after",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                1,
+                0.5,
+                0.5,
+                0,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "help",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "self",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "after",
+              "delayed": false
+            }
+          },
+          {
+            "id": "n1",
+            "facts": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "other",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": true,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "deceive",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": true,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            }
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "data": {
+        "records": [
+          {
+            "id": "n2",
+            "facts": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "deceive",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": true,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "institution",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "deceive",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": true,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "institution",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            }
+          },
+          {
+            "id": "n3",
+            "facts": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0,
+                0.5,
+                0.5,
+                1
+              ],
+              "events": [
+                {
+                  "action": "help",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "benefit"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "causes",
+              "temporal": "after",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0,
+                0.5,
+                0.5,
+                1
+              ],
+              "events": [
+                {
+                  "action": "help",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "benefit"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "causes",
+              "temporal": "after",
+              "delayed": false
+            }
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "data": {
+        "records": [
+          {
+            "id": "n4",
+            "facts": {
+              "cueFacts8": [
+                1,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "create",
+                  "actor": "self",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                1,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "create",
+                  "actor": "self",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            }
+          },
+          {
+            "id": "n5",
+            "facts": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "events": [
+                {
+                  "action": "other",
+                  "actor": "close_other",
+                  "target": "other",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "events": [
+                {
+                  "action": "other",
+                  "actor": "close_other",
+                  "target": "other",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            }
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "data": {
+        "records": [
+          {
+            "id": "n6",
+            "facts": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "explore",
+                  "actor": "stranger",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "causes",
+              "temporal": "after",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "explore",
+                  "actor": "stranger",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "causes",
+              "temporal": "after",
+              "delayed": false
+            }
+          },
+          {
+            "id": "n7",
+            "facts": {
+              "cueFacts8": [
+                1,
+                1,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "restrict",
+                  "actor": "institution",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "institution",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "after",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                1,
+                1,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "restrict",
+                  "actor": "institution",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "institution",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "after",
+              "delayed": false
+            }
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "data": {
+        "records": [
+          {
+            "id": "n8",
+            "facts": {
+              "cueFacts8": [
+                1,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "help",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "self",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                1,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "help",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "self",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            }
+          },
+          {
+            "id": "n9",
+            "facts": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "other",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": true,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "deceive",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": true,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            }
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "data": {
+        "records": [
+          {
+            "id": "n10",
+            "facts": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                1
+              ],
+              "events": [
+                {
+                  "action": "deceive",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": true,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "institution",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                1
+              ],
+              "events": [
+                {
+                  "action": "deceive",
+                  "actor": "close_other",
+                  "target": "self",
+                  "negated": true,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "institution",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            }
+          },
+          {
+            "id": "n11",
+            "facts": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "help",
+                  "actor": "close_other",
+                  "target": "other",
+                  "negated": false,
+                  "uncertain": true,
+                  "intent": "benefit"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "help",
+                  "actor": "close_other",
+                  "target": "other",
+                  "negated": false,
+                  "uncertain": true,
+                  "intent": "benefit"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            }
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "data": {
+        "records": [
+          {
+            "id": "n12",
+            "facts": {
+              "cueFacts8": [
+                1,
+                0,
+                0.5,
+                0,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "other",
+                  "actor": "self",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "create",
+                  "actor": "self",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "after",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                1,
+                0,
+                0.5,
+                0,
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "other",
+                  "actor": "self",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "create",
+                  "actor": "self",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "after",
+              "delayed": false
+            }
+          },
+          {
+            "id": "n13",
+            "facts": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "events": [
+                {
+                  "action": "other",
+                  "actor": "close_other",
+                  "target": "other",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "stranger",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": true,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1
+              ],
+              "events": [
+                {
+                  "action": "other",
+                  "actor": "close_other",
+                  "target": "other",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "stranger",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": true,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            }
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "data": {
+        "records": [
+          {
+            "id": "n14",
+            "facts": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "explore",
+                  "actor": "stranger",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "stranger",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "explore",
+                  "actor": "stranger",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "other",
+                  "actor": "stranger",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            }
+          },
+          {
+            "id": "n15",
+            "facts": {
+              "cueFacts8": [
+                0,
+                1,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "restrict",
+                  "actor": "institution",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "restrict",
+                  "actor": "institution",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            },
+            "interpretation": {
+              "cueFacts8": [
+                0,
+                1,
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5
+              ],
+              "outcomeFacts8": [
+                0.5,
+                0.5,
+                0.5,
+                0.5,
+                1,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "events": [
+                {
+                  "action": "restrict",
+                  "actor": "institution",
+                  "target": "self",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                },
+                {
+                  "action": "restrict",
+                  "actor": "institution",
+                  "target": "object",
+                  "negated": false,
+                  "uncertain": false,
+                  "intent": "unknown"
+                }
+              ],
+              "consent": "unknown",
+              "trust": "unknown",
+              "causal": "unknown",
+              "temporal": "unknown",
+              "delayed": false
+            }
+          }
+        ]
+      },
+      "error": null
+    }
+  ]
+}

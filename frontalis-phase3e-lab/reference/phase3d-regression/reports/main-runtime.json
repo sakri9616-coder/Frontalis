@@ -1,0 +1,10 @@
+{
+  "python": "C:\\Users\\sakur\\AppData\\Local\\hermes\\jef\\venv\\Scripts\\python.exe",
+  "version": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+  "torch": "2.14.1+cpu",
+  "numpy": "2.5.4",
+  "device": "cpu",
+  "dtype": "float64",
+  "threads": 1,
+  "purpose": "canonical main numeric conditions"
+}

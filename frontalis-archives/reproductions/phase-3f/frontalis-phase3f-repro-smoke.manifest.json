@@ -1,0 +1,290 @@
+{
+  "originalRoot": "frontalis-phase3f-repro-smoke",
+  "archiveSha256": "a9ede4d347366c91563a4f43e910eeb9bc42eff650c02f87648588d921c52309",
+  "archiveBytes": 281852,
+  "files": {
+    "LITERATURE.md": {
+      "bytes": 5445,
+      "sha256": "2f88d5841d7257b086c6467eb166c3628e427f9b9975a0612464a833342fc3aa"
+    },
+    "PREREGISTRATION.md": {
+      "bytes": 7479,
+      "sha256": "d2af944f67ec2a232738aa00567058631daeb9174a52e9dca5d62d65deda14e4"
+    },
+    "start-workbench.ps1": {
+      "bytes": 496,
+      "sha256": "abea77fe5e1f900437fd0f5e0182d2e92e5186f24177cda18988afe4ae464949"
+    },
+    "data/extraction-contract.txt": {
+      "bytes": 1521,
+      "sha256": "1210234e32f2ec88f2e7aec3d516c7e2d1d50b89b990e8c78b03edaf095595d2"
+    },
+    "data/natural.json": {
+      "bytes": 26831,
+      "sha256": "51450ed32cd3863a81a7c00b21778dc1586b61000e893585527a9cb9f7ecfdec"
+    },
+    "data/scenarios.json": {
+      "bytes": 482,
+      "sha256": "a69b49f7f49be4c427e335499b0f68813a788c96bba7b640914a1aaa909eeb6c"
+    },
+    "examples/live_conversation.py": {
+      "bytes": 2052,
+      "sha256": "d13d01b46b11598e042d61c576dcf40d9fefd8021df12f6a3add6447b09100be"
+    },
+    "examples/offline_demo.py": {
+      "bytes": 1034,
+      "sha256": "2a317189786ceeffd698b1255c6e469cc72a0bc27d5087eb9b6f0b78bcfe27c7"
+    },
+    "examples/demo-output/c0.json": {
+      "bytes": 42439,
+      "sha256": "53380ef8f247fb40491fb1040fb57adfedcea6d8f6041e99814e095e6fbff7db"
+    },
+    "examples/demo-output/c0.npz": {
+      "bytes": 1656,
+      "sha256": "01301a8285095d50a91c543b28524b23124a9cd01b0fa06d44b6b92e206ff498"
+    },
+    "examples/demo-output/c1.json": {
+      "bytes": 42439,
+      "sha256": "72bba56cd2b64f1b97447e73ee9a73e95788a5a64247aa417f7cd694d47e3338"
+    },
+    "examples/demo-output/c1.npz": {
+      "bytes": 1701,
+      "sha256": "51b1acc5829f75fb815f491d72217b4924d94298d1ceb797a1b902cf901cca7e"
+    },
+    "examples/demo-output/c2.json": {
+      "bytes": 42439,
+      "sha256": "d3ddbee9174742c0fc628ae247eaba60a9de3c9d7f7051246ffbc36686c34e66"
+    },
+    "examples/demo-output/c2.npz": {
+      "bytes": 1814,
+      "sha256": "c37a8a4bd650c0a99576957455be3834ec51cefb7293878f50eab42c546cb7e6"
+    },
+    "examples/demo-output/c3.json": {
+      "bytes": 42439,
+      "sha256": "a29b9a1168839016937f853b77c6380c2721779a03260a19f28f438f1f2a3504"
+    },
+    "examples/demo-output/c3.npz": {
+      "bytes": 2584,
+      "sha256": "06ec160ecba3a7926ad598b45466fb2ab90a45338dc8f0213ff83797abd7f552"
+    },
+    "examples/demo-output/c4.json": {
+      "bytes": 42439,
+      "sha256": "bbdc58232f521e4f3b089b820226653ab11e422a671d5da032280ad73c201829"
+    },
+    "examples/demo-output/c4.npz": {
+      "bytes": 9743,
+      "sha256": "e7dd36bc28573894cc19885baa06a22b8d07e0758e83a0883bc584f9fcd45981"
+    },
+    "examples/demo-output/summary.json": {
+      "bytes": 7473,
+      "sha256": "10d599aaee0cb9614347a440579984be52b9f4b139dfbc5eb9daf566363fc9ef"
+    },
+    "experiments/audit.mjs": {
+      "bytes": 3805,
+      "sha256": "a0c1bcd1516b2cb767a06f2fc2aa7839d8d0381c5781a62a50bd811c07c03d1a"
+    },
+    "experiments/availability.py": {
+      "bytes": 1278,
+      "sha256": "7d217f4e4b6e8faeebeab7e19bb13f914904161adef15de58f92c94dad753700"
+    },
+    "experiments/language_plan.py": {
+      "bytes": 3636,
+      "sha256": "99fb46a9a1ab1853e0d9e53e2e5126a124641d9a9708411fb173f6d4e3356d28"
+    },
+    "experiments/live-local2048.mjs": {
+      "bytes": 6769,
+      "sha256": "aed45c8fab9c855edda16524a30b7aed37d1b96322200dd1ec3bd5b67eae2fe1"
+    },
+    "experiments/live.mjs": {
+      "bytes": 6735,
+      "sha256": "bafbe3503c58852ab6382394ad222fc7cf79eb701a5be7cd81e00a781268119a"
+    },
+    "experiments/performance.py": {
+      "bytes": 2638,
+      "sha256": "6569a8feb184b6de7e722e8a6031cb2ce940369c6cfbdbfba00a53cbe11edf2b"
+    },
+    "experiments/run.py": {
+      "bytes": 12518,
+      "sha256": "92e0d90519b84991d15e3c7064a0712291a16dca07f1b44ca26a99f7bd2e93df"
+    },
+    "experiments/structure.py": {
+      "bytes": 2158,
+      "sha256": "330b73d61ba5c4764f0f7604dc2626a2a5fa5fe38df8d135182f1bcad1ef64d3"
+    },
+    "models/device-c0.json": {
+      "bytes": 41172,
+      "sha256": "d35d2b23cb7f3710023d9f59a3f00e8d99b989f4ba5fa4e911b385a0818090f5"
+    },
+    "models/device-c0.npz": {
+      "bytes": 2058,
+      "sha256": "d39f6872176cb6b38de04c979c482d17a9c912cd812bbce2c934cfb6474b0c14"
+    },
+    "models/device-c1.json": {
+      "bytes": 41172,
+      "sha256": "ca987793cf4f64deb2bc8621e8fefb764c9541024028e6a9ffeb6e6069ce3cc3"
+    },
+    "models/device-c1.npz": {
+      "bytes": 2129,
+      "sha256": "c3bf65124acca12fcaf58cf241d9bc18819e676e29e6624db6a06a74698ddd88"
+    },
+    "models/device-c2.json": {
+      "bytes": 41172,
+      "sha256": "c4b1a73e36965e1cc975fc17c20e9830c9646ade62b713f050d186691fab335b"
+    },
+    "models/device-c2.npz": {
+      "bytes": 2247,
+      "sha256": "62d7d734b4076c8cbf87f7289f0d44992e04e04fa88e58ff3bddf130d99424e1"
+    },
+    "models/device-c3.json": {
+      "bytes": 41172,
+      "sha256": "699f6e79a8a138416273e7a2a1206135aa25c82be47e5b4317f42a02bf15cdfe"
+    },
+    "models/device-c3.npz": {
+      "bytes": 3029,
+      "sha256": "de9ee93819f264f546c96fa51d2fb5718ec2f9f12cc4233950e305ff8211edc7"
+    },
+    "models/device-c4.json": {
+      "bytes": 41172,
+      "sha256": "be9842be17121382c9496d3ef21f26019ca12efb902285f56f0359c5679919a5"
+    },
+    "models/device-c4.npz": {
+      "bytes": 10192,
+      "sha256": "5e549dffad90650e4ae9d98f254ff5efddcc2a5e4611349c67b318c22eb1b863"
+    },
+    "npnf/core.py": {
+      "bytes": 15546,
+      "sha256": "872be799e46b9a5f4888e904b370c0bd2cf4744ec168bc7d75170d96f225f675"
+    },
+    "npnf/data.py": {
+      "bytes": 8758,
+      "sha256": "cd38d47eb07d94f3efb3242a9320432e76a7da629a6087f0ead95a8eeda291db"
+    },
+    "npnf/meaning.py": {
+      "bytes": 5967,
+      "sha256": "f410ea1ce0d9be9b936108cdf3bba949b93370900ace1c455e0c763ab5b94301"
+    },
+    "npnf/tools.py": {
+      "bytes": 1117,
+      "sha256": "c407b25940e5d9a4e1027d1b9e2ecdad0cb42ae888f663471c2a304b9d627862"
+    },
+    "npnf/__init__.py": {
+      "bytes": 76,
+      "sha256": "025a366cccc5456d8b835c1cc9c69b3cb4a7a71d792ea01c3935700feef294d6"
+    },
+    "playground/index.html": {
+      "bytes": 13445,
+      "sha256": "6f06de18c0effdc56e9517d409bf763c4e5204bd67f1025c23361acce9f21e51"
+    },
+    "playground/server.py": {
+      "bytes": 12376,
+      "sha256": "d705297d988b81f30d03e89bb3c7d77d1a1b7601277fadbb5f3ae7e70247efa1"
+    },
+    "reference/asist-source-sha256.json": {
+      "bytes": 930,
+      "sha256": "55150a4980ac0e9f295d39cf1f972d627b96014cfa75998fd9f5cefbfea80656"
+    },
+    "reference/audit-freeze.json": {
+      "bytes": 304,
+      "sha256": "eb4f879e3985471dc8458895c4452f9a68c9850c2f6433b0e34ab07bc9d9aa74"
+    },
+    "reference/availability-control.md": {
+      "bytes": 670,
+      "sha256": "c3622e08a687ce828d70b0f6d3095195cf69653c4beb8384be38c46cd05b8e25"
+    },
+    "reference/availability-freeze.json": {
+      "bytes": 215,
+      "sha256": "69dcc99782cbbf5751d3432d5fc1e998f2fe0cd1e7f2128a7300d22d0af8484f"
+    },
+    "reference/expression-audit.md": {
+      "bytes": 987,
+      "sha256": "c12696d26d0dd5e761285f3fc8db651d3497957574d2909cc5501f8f11c62c98"
+    },
+    "reference/local-budget-amendment.md": {
+      "bytes": 773,
+      "sha256": "41d7d3281636f0c0a50c1cb6f8ee1e93f10bf9884f6da645663f3fbb22e2c8b9"
+    },
+    "reference/local-budget-freeze.json": {
+      "bytes": 220,
+      "sha256": "76e517cddaab040fb4d9329b78125eef7ae04a031204608c298de7bb2875efdf"
+    },
+    "reference/phase3e-artifact-sha256.json": {
+      "bytes": 466972,
+      "sha256": "d313243a603dae694276246371e4fdebb61ea4175caeaba8884aabdf4e33e00c"
+    },
+    "reference/preregistration.json": {
+      "bytes": 1788,
+      "sha256": "ee112fe7d919114f7970d81f2faf0dfc3c2d2635410360b6951904998f537738"
+    },
+    "reference/structure-comparison.md": {
+      "bytes": 863,
+      "sha256": "c1e4547cdb7815331b7d4dc0ed39b5c4558f2ea5ae7389664cef9afa2d79839e"
+    },
+    "reference/structure-freeze.json": {
+      "bytes": 212,
+      "sha256": "c67c6ec1bb5f763f301d02e2074aa4ee276adc238f5c7bc375b4b8bb463ecfef"
+    },
+    "reports/performance.json": {
+      "bytes": 4676,
+      "sha256": "7de6e3c8ef8661525110cae5536ba03e79409d711f3bada8182d5f9e96a54702"
+    },
+    "scripts/analyze.py": {
+      "bytes": 10565,
+      "sha256": "e955aaab36a99000074d2ab4da0bdb8d32330cfd07cce58618c38f9ce8511cb5"
+    },
+    "scripts/freeze.py": {
+      "bytes": 1084,
+      "sha256": "54c88444e64896215ca286968ae72ec4ea447e3cab682cd6678b9b5e68a51afc"
+    },
+    "scripts/http_check.py": {
+      "bytes": 2307,
+      "sha256": "adfe8e0a91ec79f9f685004e6978fe6a5ec0ba0cd491be0d56a175c0a06bdca5"
+    },
+    "scripts/prepare.py": {
+      "bytes": 1308,
+      "sha256": "6f9d9b78d6a1691099aeef88ba0255d6b64015d34499c975c9a203531e67de46"
+    },
+    "scripts/prepare_audit.py": {
+      "bytes": 805,
+      "sha256": "5343d1fcffa0f755bd5357657f92ac767e88b0373ebaefca139b2c7885a8e503"
+    },
+    "scripts/reproduction_copy.py": {
+      "bytes": 999,
+      "sha256": "6c74083ed2a5436b036ee998b91df8d24f5e35d4bfde236e6d328845fc43a614"
+    },
+    "scripts/review-template.html": {
+      "bytes": 5108,
+      "sha256": "a6b782c041c4dffb62247e732add02c3ba4ee06634f7b79d894632403d5c1bc5"
+    },
+    "tests/test_core.py": {
+      "bytes": 5179,
+      "sha256": "d02687e732f5a9327e7db775698f6f8ead6e8f8d4041d331d51b35d198fe0b18"
+    },
+    "tests/test_tools.py": {
+      "bytes": 1719,
+      "sha256": "d24a1df0a15f47e5ee7ae1dd59e292d4ce66185197dba2bbdc711928bb0f2967"
+    },
+    "tests/test_workbench.py": {
+      "bytes": 2877,
+      "sha256": "ecfa0407fba46f5935b0231cc8a641212c1421dd236477c61ad17699a6539334"
+    },
+    "tools/evaluate.py": {
+      "bytes": 625,
+      "sha256": "4a8029287c52207d974b7b4cd2405a61b47046d311f72788a98bcecd030cbe92"
+    }
+  },
+  "directories": [
+    "",
+    "data",
+    "examples",
+    "examples/demo-output",
+    "experiments",
+    "models",
+    "npnf",
+    "playground",
+    "reference",
+    "reports",
+    "scripts",
+    "tests",
+    "tools"
+  ]
+}

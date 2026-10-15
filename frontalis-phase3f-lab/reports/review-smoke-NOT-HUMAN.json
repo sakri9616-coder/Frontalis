@@ -1,0 +1,11 @@
+{
+  "schema": "frontalis3f-human-ratings-v1",
+  "datasetHash": "fcdafe92eae892922ef6a6702287e597de143a2703edba44d428134fc1e92996",
+  "ratings": {
+    "bd0fe0bd27fef4e8": {
+      "A": {
+        "fidelity": 0
+      }
+    }
+  }
+}

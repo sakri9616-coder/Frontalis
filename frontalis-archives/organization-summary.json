@@ -1,0 +1,26 @@
+{
+  "archives": 13,
+  "archivedFiles": 8404,
+  "archiveBytes": 109978576,
+  "originalFoldersRemoved": 13,
+  "removalExplicitlyApprovedByUser": true,
+  "restorationTest": "frontalis-phase3f-repro-smoke extracted, verified and test copy removed",
+  "frozenHashChecks": 10416,
+  "changedFiles": 0,
+  "retainedActive": [
+    "frontalis-phase3d-lab",
+    "frontalis-phase3e-lab",
+    "frontalis-phase3f-lab"
+  ],
+  "liveWorkbenches": [
+    {
+      "url": "http://127.0.0.1:8903/api/bootstrap",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:8905/api/state",
+      "status": 200
+    }
+  ],
+  "freeBytesAfterArchiving": 156222984192
+}

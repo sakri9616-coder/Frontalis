@@ -1,0 +1,337 @@
+{
+  "request": {
+    "model": "claude-haiku-5-5",
+    "max_tokens": 8192,
+    "messages": [
+      {
+        "role": "user",
+        "content": "架空経験を意味構造へ変換する。感情・好悪・価値の正解は付けない。人物の意図は推測で補わない。\nfactsは文章で確認されたことだけ、interpretationは当人が当時そう受け取ったこと。誤解や思い込みはinterpretationへ残す。\n各meaningのキーは cueFacts8,outcomeFacts8,events,consent,trust,causal,temporal,delayed のみ。\n8軸の順はautonomy,constraint,change,loss,achievement,discovery,regularity,others。明示あり1、明示なし0、不明0.5。\ncueは行為・手掛かり時点、outcomeは結果の時点。本文が明示しない程度は必ず0.5。\neventsは文章順1〜2件。各eventのキーaction,actor,target,negated,uncertain,intent。\naction=help/restrict/deceive/explore/create/other。actor=self/close_other/stranger/institution。target=self/other/object。\n友人はclose_other、自分はself。否定はnegated=true、未確認の推測はuncertain=true。\nintent=benefit/harm/unknown（明示された意図だけ）。consent=yes/no/unknown。trust=high/low/unknown（明示された事前信頼）。\ncausal=causes/prevents/unrelated/unknown。temporal=after/simultaneous/unknown。delayedは明示された遅延のbool。\n当人の解釈が別に明示されなければfactsとinterpretationは同一。確認できない出来事はfactsのeventをother,uncertain=trueとする。\nJSONのみ {\"records\":[{\"id\":\"入力id\",\"facts\":{meaning},\"interpretation\":{meaning}}]}。外部ツール不要。\n[{\"id\": \"n10\", \"text\": \"Mon ami ne m’a pas trompé. Les documents montrent que l’organisation a changé la promesse.\"}, {\"id\": \"n11\", \"text\": \"友人は助けるつもりだった。それでも損失があり、成果はなかった。\"}]"
+      }
+    ],
+    "output_config": {
+      "format": {
+        "type": "json_schema",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "records": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "facts": {
+                    "type": "object",
+                    "properties": {
+                      "cueFacts8": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "description": "Exactly 8 values in [0,1]. Unknown is 0.5. Use the specified axis order."
+                      },
+                      "outcomeFacts8": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "description": "Exactly 8 values in [0,1]. Unknown is 0.5."
+                      },
+                      "events": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "action": {
+                              "type": "string",
+                              "enum": [
+                                "help",
+                                "restrict",
+                                "deceive",
+                                "explore",
+                                "create",
+                                "other"
+                              ]
+                            },
+                            "actor": {
+                              "type": "string",
+                              "enum": [
+                                "self",
+                                "close_other",
+                                "stranger",
+                                "institution"
+                              ]
+                            },
+                            "target": {
+                              "type": "string",
+                              "enum": [
+                                "self",
+                                "other",
+                                "object"
+                              ]
+                            },
+                            "negated": {
+                              "type": "boolean"
+                            },
+                            "uncertain": {
+                              "type": "boolean"
+                            },
+                            "intent": {
+                              "type": "string",
+                              "enum": [
+                                "benefit",
+                                "harm",
+                                "unknown"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "action",
+                            "actor",
+                            "target",
+                            "negated",
+                            "uncertain",
+                            "intent"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "description": "One or two events in text order."
+                      },
+                      "consent": {
+                        "type": "string",
+                        "enum": [
+                          "yes",
+                          "no",
+                          "unknown"
+                        ]
+                      },
+                      "trust": {
+                        "type": "string",
+                        "enum": [
+                          "high",
+                          "low",
+                          "unknown"
+                        ]
+                      },
+                      "causal": {
+                        "type": "string",
+                        "enum": [
+                          "causes",
+                          "prevents",
+                          "unrelated",
+                          "unknown"
+                        ]
+                      },
+                      "temporal": {
+                        "type": "string",
+                        "enum": [
+                          "after",
+                          "simultaneous",
+                          "unknown"
+                        ]
+                      },
+                      "delayed": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "cueFacts8",
+                      "outcomeFacts8",
+                      "events",
+                      "consent",
+                      "trust",
+                      "causal",
+                      "temporal",
+                      "delayed"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "interpretation": {
+                    "type": "object",
+                    "properties": {
+                      "cueFacts8": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "description": "Exactly 8 values in [0,1]. Unknown is 0.5. Use the specified axis order."
+                      },
+                      "outcomeFacts8": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "description": "Exactly 8 values in [0,1]. Unknown is 0.5."
+                      },
+                      "events": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "action": {
+                              "type": "string",
+                              "enum": [
+                                "help",
+                                "restrict",
+                                "deceive",
+                                "explore",
+                                "create",
+                                "other"
+                              ]
+                            },
+                            "actor": {
+                              "type": "string",
+                              "enum": [
+                                "self",
+                                "close_other",
+                                "stranger",
+                                "institution"
+                              ]
+                            },
+                            "target": {
+                              "type": "string",
+                              "enum": [
+                                "self",
+                                "other",
+                                "object"
+                              ]
+                            },
+                            "negated": {
+                              "type": "boolean"
+                            },
+                            "uncertain": {
+                              "type": "boolean"
+                            },
+                            "intent": {
+                              "type": "string",
+                              "enum": [
+                                "benefit",
+                                "harm",
+                                "unknown"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "action",
+                            "actor",
+                            "target",
+                            "negated",
+                            "uncertain",
+                            "intent"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "description": "One or two events in text order."
+                      },
+                      "consent": {
+                        "type": "string",
+                        "enum": [
+                          "yes",
+                          "no",
+                          "unknown"
+                        ]
+                      },
+                      "trust": {
+                        "type": "string",
+                        "enum": [
+                          "high",
+                          "low",
+                          "unknown"
+                        ]
+                      },
+                      "causal": {
+                        "type": "string",
+                        "enum": [
+                          "causes",
+                          "prevents",
+                          "unrelated",
+                          "unknown"
+                        ]
+                      },
+                      "temporal": {
+                        "type": "string",
+                        "enum": [
+                          "after",
+                          "simultaneous",
+                          "unknown"
+                        ]
+                      },
+                      "delayed": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "cueFacts8",
+                      "outcomeFacts8",
+                      "events",
+                      "consent",
+                      "trust",
+                      "causal",
+                      "temporal",
+                      "delayed"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "facts",
+                  "interpretation"
+                ],
+                "additionalProperties": false
+              },
+              "description": ""
+            }
+          },
+          "required": [
+            "records"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "requestHash": "b6657b369ef63b5c3c4295213916a3b744333cd4dc2847868c56e76328fb38d1",
+  "response": {
+    "model": "claude-haiku-5-5",
+    "id": "msg_011Cg3pWAyR4Am6rAJYfETYW",
+    "type": "message",
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "",
+        "signature": "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"
+      },
+      {
+        "type": "text",
+        "text": "{\"records\":[{\"id\":\"n10\",\"facts\":{\"cueFacts8\":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,1],\"outcomeFacts8\":[0.5,0.5,1,0.5,0.5,1,0.5,1],\"events\":[{\"action\":\"deceive\",\"actor\":\"close_other\",\"target\":\"self\",\"negated\":true,\"uncertain\":false,\"intent\":\"unknown\"},{\"action\":\"other\",\"actor\":\"institution\",\"target\":\"object\",\"negated\":false,\"uncertain\":false,\"intent\":\"unknown\"}],\"consent\":\"unknown\",\"trust\":\"unknown\",\"causal\":\"unknown\",\"temporal\":\"unknown\",\"delayed\":false},\"interpretation\":{\"cueFacts8\":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,1],\"outcomeFacts8\":[0.5,0.5,1,0.5,0.5,1,0.5,1],\"events\":[{\"action\":\"deceive\",\"actor\":\"close_other\",\"target\":\"self\",\"negated\":true,\"uncertain\":false,\"intent\":\"unknown\"},{\"action\":\"other\",\"actor\":\"institution\",\"target\":\"object\",\"negated\":false,\"uncertain\":false,\"intent\":\"unknown\"}],\"consent\":\"unknown\",\"trust\":\"unknown\",\"causal\":\"unknown\",\"temporal\":\"unknown\",\"delayed\":false}},{\"id\":\"n11\",\"facts\":{\"cueFacts8\":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,1],\"outcomeFacts8\":[0.5,0.5,0.5,1,0,0.5,0.5,0.5],\"events\":[{\"action\":\"help\",\"actor\":\"close_other\",\"target\":\"other\",\"negated\":false,\"uncertain\":true,\"intent\":\"benefit\"}],\"consent\":\"unknown\",\"trust\":\"unknown\",\"causal\":\"unknown\",\"temporal\":\"unknown\",\"delayed\":false},\"interpretation\":{\"cueFacts8\":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,1],\"outcomeFacts8\":[0.5,0.5,0.5,1,0,0.5,0.5,0.5],\"events\":[{\"action\":\"help\",\"actor\":\"close_other\",\"target\":\"other\",\"negated\":false,\"uncertain\":true,\"intent\":\"benefit\"}],\"consent\":\"unknown\",\"trust\":\"unknown\",\"causal\":\"unknown\",\"temporal\":\"unknown\",\"delayed\":false}}]}"
+      }
+    ],
+    "container": null,
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "stop_details": null,
+    "usage": {
+      "input_tokens": 2790,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 2697,
+      "output_tokens_details": {
+        "thinking_tokens": 1900
+      },
+      "service_tier": "standard",
+      "inference_geo": "global"
+    },
+    "diagnostics": null
+  },
+  "error": null,
+  "status": 200,
+  "elapsedSeconds": 12.741821899995557
+}

@@ -1,0 +1,4 @@
+{
+  "gpuAfterBenchmarkProcessExited": "NVIDIA GeForce RTX 3050, 4002, 8192, 23",
+  "scope": "whole device including other applications; read after measurement process terminated; context attribution is not guaranteed"
+}

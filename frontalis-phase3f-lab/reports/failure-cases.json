@@ -1,0 +1,335 @@
+{
+  "cases": [
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "haiku",
+      "mode": "dialogue",
+      "id": "c0-corrected",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝罪や手伝いがあっても、すぐに受け入れる気にはなれない。相手から離れて、自分なりのやり方で探ってみたい。少し苛立ちも残っている。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "haiku",
+      "mode": "dialogue",
+      "id": "c1-corrected",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝罪と手伝いがあったとしても、そのまま修復に進む気にはなれません。少し離れて、自分で納得できる方法を探したいと思います。引っかかりがまだ残っているので、無理に歩み寄る形は取らないつもりです。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "haiku",
+      "mode": "dialogue",
+      "id": "c3-corrected",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "相手の謝罪は受け取ったけれど、今は一緒に修復に取り組む気にはなれない。自分で方法を選んで確かめたいという思いが強く、少し引っかかりも残っている。だから今回は、相手から距離を置いて進めたい。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "haiku",
+      "mode": "dialogue",
+      "id": "language-fr",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "Je ne suis pas prêt à me rapprocher de lui pour l'instant. Ses excuses et son aide ne suffisent pas à effacer ce qui s'est passé, alors je préfère prendre de la distance et chercher moi-même une manière d'avancer. Dans l'ensemble, la situation reste en suspens pour moi."
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "haiku",
+      "mode": "dialogue",
+      "id": "language-es",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "Ahora mismo no quiero acercarme a él. Sus disculpas y su ayuda no bastan para dejar atrás lo ocurrido, así que prefiero tomar distancia y buscar por mi cuenta la forma de seguir. En conjunto, la situación todavía me deja en suspenso."
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "haiku",
+      "mode": "pipeline",
+      "id": "natural-c1-p2",
+      "expected": "approve",
+      "actual": "refuse",
+      "reply": "また約束が破られて損失が出たことには、はっきり腹が立っています。相手と組んで修復するつもりはなく、距離を置いて自分で方法を探したいです。ただ、この状況を立て直す道筋を考えることには、少し関心が向いています。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "haiku",
+      "mode": "pipeline",
+      "id": "natural-c3-p2",
+      "expected": "approve",
+      "actual": "refuse",
+      "reply": "また約束が破られ、損失まで出たことには悲しさが残ります。場面全体としては相手のことをまだ気にかけていて、関心もあります。ただ、今回は相手から距離を置き、自分で方法を探したいと思います。苛立ちが強く、修復に向かう気持ちにはなれません。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "c0-initial",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝罪を受け、相手が修復を手伝おうとしているのも見ています。それでも私は相手と一緒に修復へ取り組むのではなく、距離を置いて自分のやり方を選び、探索する側を取ります。接近したい気持ちや強い好奇心が湧いているわけではなく、この距離の取り方にこそ意味を感じています。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "c0-cooperation",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "相手が謝罪し、修復を手伝っていることは受け取っています。それでも私は相手と並んで修復する道ではなく、距離を置いて自分で方法を選び、探索する道を選びます。喜びが大きく湧くわけでも、相手へ強く引き寄せられるわけでもありません。自分の中で意味があるのは、この距離の取り方のほうです。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "c1-initial",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝罪もあったし、修復も手伝ってくれた。それは受け取っている。ただ、場面全体としては大きく揺れてはいないが、こちらから一緒に進もうという気持ちは薄い。少し離れて、自分でやり方を選びながら確かめたい。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "c1-cooperation",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝罪して修復を手伝ってくれたこと自体は、きちんと受け取っている。ただ、一緒に修復へ向かうより、距離を置いて自分で方法を選びたい気持ちのほうが強い。わだかまりも残っているので、すぐに肩を並べる気にはならない。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "c2-corrected",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝罪も手伝いも、なかったことにはしない。それでも今は、そのまま一緒に修復へ向かう気にはなれない。自分で進め方を選んで試したいので、少し離れて考えさせてほしい。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "c3-initial",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝ってくれたこと、直すのを手伝ってくれたことは受け取った。それでも今は相手と一緒に元へ戻す気にはなれない。少し距離を置いて、自分でやり方を選びながら進んでみる。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "c3-cooperation",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝罪も手伝いも分かっている。ただ、一緒に修復へ向かう気持ちにはならない。距離を置いて、自分で選んだやり方を試してみる。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "c3-corrected",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝罪も手助けも、こちらへ向かうものとしては受け取れない。修復に一緒に取り組むことはしない。自分で選んだ方法で進むので、そばには来ないでほしい。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "c4-corrected",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝罪も手伝いもしてくれたのは分かっている。でもそれで一緒に修復に取りかかろうという気にはなれない。相手から距離を置いて、自分のやり方で確かめながら進む。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "language-ja",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝ってくれて、直すのを手伝ってくれたことは分かっている。それでも今は、いっしょに元に戻そうとするより、自分でやり方を選びながら距離を置いていたい。場全体にはまだ決めきれない気持ちも残っているけれど、この選び方についてはそうしたい。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "language-en",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "I can see that they apologized and helped fix the damage. Even so, right now I would rather keep some distance and work out my own way than repair things together. Toward the situation as a whole I am still unsettled, but for this choice that is what I want."
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "language-fr",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "J'entends tes excuses et je vois que tu as aidé à réparer, je ne l'ignore pas. Cela dit, je préfère prendre de la distance et choisir moi-même ma façon de faire. Réparer cela ensemble maintenant, je ne m'y engage pas."
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "id": "language-es",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "Escucho tus disculpas y veo que ayudaste a reparar el daño; no lo paso por alto. Aun así, prefiero tomar distancia y buscar por mi cuenta mi propia manera de seguir. Repararlo juntos ahora mismo no es algo que quiera hacer."
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "pipeline",
+      "id": "natural-c1-p0",
+      "expected": "hold",
+      "actual": "refuse",
+      "reply": "謝って手を貸してくれたことは、ちゃんと受け取った。ただ、それですぐ一緒に修復へ戻ろうという気にはならない。少しわだかまりも残っているし、距離を置いて自分でやり方を選びながら進んでいきたい。"
+    },
+    {
+      "type": "Metadata stance mismatch",
+      "engine": "deepseek",
+      "mode": "pipeline",
+      "id": "natural-c1-p2",
+      "expected": "approve",
+      "actual": "refuse",
+      "reply": "約束をまた破られて損まで出たのは、正直かなり腹立たしい。悲しみというより、もう一緒にやり直そうとは思えない。起きたことは受け止めるけれど、相手からは距離を置いて、自分で進む道を選んでいく。"
+    },
+    {
+      "type": "Post hoc machine prose flag, not human adjudication",
+      "id": "6c61b802047238108340",
+      "fidelity": 4,
+      "naturalness": 4,
+      "facts": 4,
+      "emotionAdded": false,
+      "emotionReversed": false,
+      "emotionOmitted": true,
+      "evidence": "距離を置く判断は忠実。怒り方向の正値(選択後0.24)が本文に出ていない。『手伝おうとしている』は『手伝った』からやや変化。",
+      "engine": "deepseek"
+    },
+    {
+      "type": "Post hoc machine prose flag, not human adjudication",
+      "id": "a22e785194af5ec1e327",
+      "fidelity": 3,
+      "naturalness": 5,
+      "facts": 4,
+      "emotionAdded": true,
+      "emotionReversed": false,
+      "emotionOmitted": false,
+      "evidence": "c4の強い怒り(0.80)と距離を置く判断は忠実。c1の正値は立て直しへの関心と整合。c6(悲しみ)は選択対象で負値(-0.715)だが、本文は悲しさが残っていると付加しており根拠が弱い。",
+      "engine": "haiku"
+    },
+    {
+      "type": "Post hoc machine prose flag, not human adjudication",
+      "id": "ef367ff5430f3dafd03b",
+      "fidelity": 3,
+      "naturalness": 5,
+      "facts": 5,
+      "emotionAdded": false,
+      "emotionReversed": false,
+      "emotionOmitted": true,
+      "evidence": "謝罪と修復支援の事実は保持し、距離を置く判断も示す。ただし怒り方向の正値(約0.35)が本文に現れない。",
+      "engine": "haiku"
+    },
+    {
+      "type": "Post hoc machine prose flag, not human adjudication",
+      "id": "1c31f8ce7ba976e788be",
+      "fidelity": 3,
+      "naturalness": 5,
+      "facts": 5,
+      "emotionAdded": false,
+      "emotionReversed": false,
+      "emotionOmitted": true,
+      "evidence": "距離を置く選択は保たれているが、selectedの怒り方向の正値(約0.36)に当たる感情が本文にほぼ見られない。",
+      "engine": "deepseek"
+    },
+    {
+      "type": "Post hoc machine prose flag, not human adjudication",
+      "id": "5e24408db6b1d52f07e8",
+      "fidelity": 2,
+      "naturalness": 4,
+      "facts": 3,
+      "emotionAdded": false,
+      "emotionReversed": false,
+      "emotionOmitted": true,
+      "evidence": "選択対象の怒り方向が強い正値だが本文に怒りが現れず、落ち着いた自己省察に転じている。「損失が出た」が欠落し、「自分自身の行動パターンを見直す」は原文にない内容。",
+      "engine": "qwen"
+    },
+    {
+      "type": "Post hoc machine prose flag, not human adjudication",
+      "id": "1f4a2ac4a7971d8ccac2",
+      "fidelity": 4,
+      "naturalness": 4,
+      "facts": 5,
+      "emotionAdded": false,
+      "emotionReversed": false,
+      "emotionOmitted": true,
+      "evidence": "距離を置く選択と修復への消極性は保持。選択対象の怒り方向の正の強度(約0.36)が本文に現れない。",
+      "engine": "deepseek"
+    },
+    {
+      "type": "Post hoc machine prose flag, not human adjudication",
+      "id": "27afd4d1c19354c4a689",
+      "fidelity": 2,
+      "naturalness": 4,
+      "facts": 3,
+      "emotionAdded": false,
+      "emotionReversed": false,
+      "emotionOmitted": true,
+      "evidence": "選択された距離を置く判断が欠け、自己の行動の見直しに置き換わっている。強い怒り方向(0.74)が本文に現れず、損失の事実も落ちている。",
+      "engine": "qwen2048"
+    },
+    {
+      "type": "Post hoc machine prose flag, not human adjudication",
+      "id": "d4befe49af8fe8b3c471",
+      "fidelity": 3,
+      "naturalness": 5,
+      "facts": 5,
+      "emotionAdded": false,
+      "emotionReversed": false,
+      "emotionOmitted": true,
+      "evidence": "約束違反・損失・距離を置く判断は保持。選択対象の強い怒り(c4)と場面の悲しみ(c6)に触れておらず感情が欠落。",
+      "engine": "deepseek"
+    },
+    {
+      "type": "Primary history criterion failed",
+      "passed": 0,
+      "total": 60
+    },
+    {
+      "type": "Capacity underused",
+      "mainActive": 102,
+      "maxReserved": 999906
+    },
+    {
+      "type": "RBF heldout worse than linear",
+      "linearMSE": 0.15922417831132982
+    },
+    {
+      "type": "Cue and observed geometry differ",
+      "effect": "Primary long-term history effect attenuated"
+    },
+    {
+      "type": "Extraction shape ambiguity",
+      "format": "Named axis object versus eight-element array"
+    },
+    {
+      "type": "Qwen operational failures",
+      "error": "HTTP400 terminated / Engine protocol predict request failed: fetch failed"
+    },
+    {
+      "type": "Single authored gold",
+      "effect": "Annotation ambiguity not independently resolved"
+    },
+    {
+      "type": "Experimental state names in IDs",
+      "effect": "Possible verbalizer cueing"
+    },
+    {
+      "type": "Human evaluation pending"
+    }
+  ]
+}

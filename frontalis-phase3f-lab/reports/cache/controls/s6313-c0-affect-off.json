@@ -1,0 +1,12 @@
+{
+  "sourceHash": "c699c0acd04bc1c514d346a3f397cad9f3c07df0f50db04ef5310702dcbe6d80",
+  "elapsedSeconds": 0.15378569999302272,
+  "result": {
+    "seed": 6313,
+    "capacity": 0,
+    "mode": "affect-off",
+    "weightsUnchanged": false,
+    "emotionNormBeforeIdle": 0.0,
+    "emotionNormAfterIdle": 0.0
+  }
+}

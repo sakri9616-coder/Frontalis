@@ -1,0 +1,78 @@
+{
+  "world": "nonlinear",
+  "origin": "nn",
+  "task": "composed",
+  "trainCount": 48,
+  "validationCount": 64,
+  "testCount": 256,
+  "kind": "quadratic",
+  "width": 16,
+  "sourceSnapshot": "reference/source-models/nonlinear/nn.json",
+  "sourceSnapshotSha256": "055d610b87d5994aac847afc78935a9aa6121a590d93367ec56cacc2daf2b1f3",
+  "trainingLabelsHash": "4fb78294100498eb6257b499a78258dc6cb91d4d8ea61cf4008cabc9b6dfd044",
+  "validationLabelsHash": "6681b3ea37896ae2b241ed167b2ad807f477e531d0f3fe30a889bd9856c6fbf6",
+  "trials": [
+    {
+      "hyperparameter": 0.0001,
+      "validationMSE": 0.004002480537143071,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.001,
+      "validationMSE": 0.003972526574250081,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.01,
+      "validationMSE": 0.0037680917213672254,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.1,
+      "validationMSE": 0.003494387359952285,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 1.0,
+      "validationMSE": 0.004725100124020948,
+      "status": "complete"
+    }
+  ],
+  "selectionCriterion": "validation-signal-MSE-only",
+  "elapsedSeconds": 0.029049000004306436,
+  "status": "complete",
+  "validationMSE": 0.003494387359952285,
+  "selectedHyperparameter": 0.1,
+  "parameterCount": 630,
+  "snapshot": "models/diagnostic/nonlinear/nn/composed/n48/quadratic-h16",
+  "diagnostics": {
+    "parameterCount": 630,
+    "fixedBaseParameters": 56,
+    "parameterNorm": 1.4611813242951532,
+    "emergencyNorm": 54.7201660994077,
+    "layerStats": {
+      "relational": {
+        "coefficients": {
+          "norm": 0.8865226922139471,
+          "rms": 0.049949895015866434,
+          "count": 315
+        }
+      },
+      "acoustic": {
+        "coefficients": {
+          "norm": 0.6187234066316271,
+          "rms": 0.03486111464098945,
+          "count": 315
+        }
+      }
+    },
+    "readoutScale": 1.0,
+    "device": "cpu",
+    "dtype": "float64",
+    "generation": 0,
+    "memoryRows": {
+      "relational": 0,
+      "acoustic": 0
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "pythonExecutable": "C:\\Users\\sakur\\AppData\\Local\\asist-shisa\\frontalis-phase3d-lab\\.venv\\Scripts\\python.exe",
+  "pythonVersion": "3.12.13",
+  "torchVersion": "2.7.0+cu128",
+  "numpyVersion": "2.5.4",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "cpuThreads": 1,
+  "torchCudaVersion": "12.8",
+  "cudaAvailable": true,
+  "gpu": "NVIDIA GeForce RTX 3050",
+  "coreSha256": "d8ae58f1217392dc1c799494e9ad1d5d1d7b18975408d7189afc1c879affd912",
+  "nvidiaBefore": {
+    "available": true,
+    "columns": [
+      "name",
+      "memoryUsedMiB",
+      "memoryTotalMiB",
+      "gpuUtilizationPercent"
+    ],
+    "rows": [
+      "NVIDIA GeForce RTX 3050, 3448, 8192, 41"
+    ],
+    "scope": "whole device including other applications; not attributable to this experiment alone"
+  },
+  "authorization": {
+    "gate": {
+      "phase": "validation-before-final-test",
+      "validationResultsHash": "c18ed5e50f65ef1648bb9d0541f4e8bccd0efaf7d714176e672afd7364652b7a",
+      "rule": "192 labels; plain/composed and four origins weighted equally; 100k improves pooled validation MSE by >=10% over 526, improves in >=2/3 source worlds, and all 100k primary fits finite with exact unrelated-branch preservation.",
+      "smallValidationMSE": 0.0022256639511230272,
+      "largeValidationMSE": 0.001655878624200684,
+      "improvementFraction": 0.2560068992602592,
+      "sourceWorlds": [
+        {
+          "world": "linear",
+          "validCellCountSmall": 8,
+          "validCellCountLarge": 8,
+          "smallValidationMSE": 0.0024048367065402716,
+          "largeValidationMSE": 0.0016461422332502559,
+          "improvementFraction": 0.3154868982274953,
+          "improved": true
+        },
+        {
+          "world": "quadratic",
+          "validCellCountSmall": 8,
+          "validCellCountLarge": 8,
+          "smallValidationMSE": 0.0020842323031955417,
+          "largeValidationMSE": 0.0015333259032823485,
+          "improvementFraction": 0.264321015977223,
+          "improved": true
+        },
+        {
+          "world": "nonlinear",
+          "validCellCountSmall": 8,
+          "validCellCountLarge": 8,
+          "smallValidationMSE": 0.0021879228436332693,
+          "largeValidationMSE": 0.0017881677360694474,
+          "improvementFraction": 0.18270987422023882,
+          "improved": true
+        }
+      ],
+      "finiteAndUnrelatedBranchPreserved": true,
+      "millionParameterGatePassed": true,
+      "finalTestInspectedAtGate": false,
+      "note": "Gate通過は自律的人格の良さやNNの一般的優位の証明ではない。追加試験は調整者が別途固定する。"
+    },
+    "gateSha256": "440b518e9a140adbf3e53da30a74808da4a3ce2cd60d1a34b10c4723badfb5c2",
+    "protocolSha256": "624340cbd934a2f63e248631b14b3ea9eea99f4c5c41406aa6e6845a6ab5a267"
+  },
+  "concurrentLoad": "Four numeric CPU workers may run concurrently. No other work or applications were stopped for this benchmark; small timing differences are uncertain.",
+  "scope": "conditional million-parameter extension; original performance/runtime artifacts remain unchanged",
+  "firstCudaTensorAllocationAfterDeviceQueryMs": 212.55399999790825
+}

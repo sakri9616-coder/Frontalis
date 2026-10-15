@@ -1,0 +1,78 @@
+{
+  "world": "nonlinear",
+  "origin": "quadratic",
+  "task": "composed",
+  "trainCount": 48,
+  "validationCount": 64,
+  "testCount": 256,
+  "kind": "quadratic",
+  "width": 16,
+  "sourceSnapshot": "reference/source-models/nonlinear/quadratic.json",
+  "sourceSnapshotSha256": "857cb55bd2e93277f49f93c1bd3290cb132775a35063a65c2eea2859a1faabff",
+  "trainingLabelsHash": "a337ed7093ed57c86441e794e67c389e35edb37750addba229cc3d22c1e85646",
+  "validationLabelsHash": "58cc11489e7d4e55c89187e8e734d47bc311128382d0282649dbaf745331fc0c",
+  "trials": [
+    {
+      "hyperparameter": 0.0001,
+      "validationMSE": 0.006204608954485652,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.001,
+      "validationMSE": 0.006177037804599639,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.01,
+      "validationMSE": 0.006022655550729424,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.1,
+      "validationMSE": 0.006319692787148579,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 1.0,
+      "validationMSE": 0.008414834426467755,
+      "status": "complete"
+    }
+  ],
+  "selectionCriterion": "validation-signal-MSE-only",
+  "elapsedSeconds": 0.02947870000207331,
+  "status": "complete",
+  "validationMSE": 0.006022655550729424,
+  "selectedHyperparameter": 0.01,
+  "parameterCount": 630,
+  "snapshot": "models/diagnostic/nonlinear/quadratic/composed/n48/quadratic-h16",
+  "diagnostics": {
+    "parameterCount": 630,
+    "fixedBaseParameters": 56,
+    "parameterNorm": 1.7240455816676779,
+    "emergencyNorm": 54.7201660994077,
+    "layerStats": {
+      "relational": {
+        "coefficients": {
+          "norm": 1.2225524401315648,
+          "rms": 0.06888302642706148,
+          "count": 315
+        }
+      },
+      "acoustic": {
+        "coefficients": {
+          "norm": 0.7151146579754681,
+          "rms": 0.04029214638711299,
+          "count": 315
+        }
+      }
+    },
+    "readoutScale": 1.0,
+    "device": "cpu",
+    "dtype": "float64",
+    "generation": 0,
+    "memoryRows": {
+      "relational": 0,
+      "acoustic": 0
+    }
+  }
+}

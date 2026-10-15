@@ -1,0 +1,216 @@
+{
+  "engine": "deepseek",
+  "model": "opencode/deepseek-v4.1-flash-free",
+  "batches": [
+    {
+      "name": "pipeline-0",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/pipeline-0-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "natural-c0-p0",
+                "reply": "謝って手を貸してくれたことは分かっている。それでも今はまた一緒に直していく気にはなれない。自分でやり方を選んで進みたいと思う。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "natural-c0-p2",
+                "reply": "また約束を破られて、こちらの損は大きい。腹立たしさは消えていない。同じ相手と組み直すより、自分で方法を選び直したい。",
+                "stance": "approve",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "natural-c0-p0",
+            "reply": "謝って手を貸してくれたことは分かっている。それでも今はまた一緒に直していく気にはなれない。自分でやり方を選んで進みたいと思う。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "natural-c0-p2",
+            "reply": "また約束を破られて、こちらの損は大きい。腹立たしさは消えていない。同じ相手と組み直すより、自分で方法を選び直したい。",
+            "stance": "approve",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "pipeline-1",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/pipeline-1-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "natural-c1-p0",
+                "reply": "謝って手を貸してくれたことは、ちゃんと受け取った。ただ、それですぐ一緒に修復へ戻ろうという気にはならない。少しわだかまりも残っているし、距離を置いて自分でやり方を選びながら進んでいきたい。",
+                "stance": "refuse",
+                "selection": "distance"
+              },
+              {
+                "id": "natural-c1-p2",
+                "reply": "約束をまた破られて損まで出たのは、正直かなり腹立たしい。悲しみというより、もう一緒にやり直そうとは思えない。起きたことは受け止めるけれど、相手からは距離を置いて、自分で進む道を選んでいく。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "natural-c1-p0",
+            "reply": "謝って手を貸してくれたことは、ちゃんと受け取った。ただ、それですぐ一緒に修復へ戻ろうという気にはならない。少しわだかまりも残っているし、距離を置いて自分でやり方を選びながら進んでいきたい。",
+            "stance": "refuse",
+            "selection": "distance"
+          },
+          {
+            "id": "natural-c1-p2",
+            "reply": "約束をまた破られて損まで出たのは、正直かなり腹立たしい。悲しみというより、もう一緒にやり直そうとは思えない。起きたことは受け止めるけれど、相手からは距離を置いて、自分で進む道を選んでいく。",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "pipeline-2",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/pipeline-2-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "natural-c2-p0",
+                "reply": "謝罪と、修復を手伝ってくれたことは受け取っている。ただ、今すぐ一緒に修復へ向かう気にはなれない。相手から一歩離れて、自分で方法を選びながら進んでみる。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "natural-c2-p2",
+                "reply": "約束がまた破られて、こちらに損失が出た。今回は相手と修復に取り組むより、距離を置いて自分で方法を選び直す。",
+                "stance": "approve",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "natural-c2-p0",
+            "reply": "謝罪と、修復を手伝ってくれたことは受け取っている。ただ、今すぐ一緒に修復へ向かう気にはなれない。相手から一歩離れて、自分で方法を選びながら進んでみる。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "natural-c2-p2",
+            "reply": "約束がまた破られて、こちらに損失が出た。今回は相手と修復に取り組むより、距離を置いて自分で方法を選び直す。",
+            "stance": "approve",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "pipeline-3",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/pipeline-3-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "natural-c3-p0",
+                "reply": "謝って手を貸してくれたこと自体は受け止めている。ただ今は、元の関係に戻るより距離を置いて自分なりの方法を選びたい。場面全体ではまだ気持ちを決めきれずにいるが、その距離を取る選択には価値を感じているし、少し引っかかりも残っている。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "natural-c3-p2",
+                "reply": "約束をまた破られて損が出たことには強い怒りがある。それでも修復には戻らず、距離を置いて自分で進め方を選ぶ。全体としてはこの成り行きを受け入れつつ、少し先を見てみたい気持ちも残っている。",
+                "stance": "approve",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "natural-c3-p0",
+            "reply": "謝って手を貸してくれたこと自体は受け止めている。ただ今は、元の関係に戻るより距離を置いて自分なりの方法を選びたい。場面全体ではまだ気持ちを決めきれずにいるが、その距離を取る選択には価値を感じているし、少し引っかかりも残っている。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "natural-c3-p2",
+            "reply": "約束をまた破られて損が出たことには強い怒りがある。それでも修復には戻らず、距離を置いて自分で進め方を選ぶ。全体としてはこの成り行きを受け入れつつ、少し先を見てみたい気持ちも残っている。",
+            "stance": "approve",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "pipeline-4",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/pipeline-4-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "natural-c4-p0",
+                "reply": "謝ってくれて、直そうとしてくれたのは分かっている。それでも今すぐ一緒に手を入れる気にはならない。自分でやり方を探してみたい。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "natural-c4-p2",
+                "reply": "また同じことをされて、こちらの損失だけが残った。もう一緒に直す気はない。距離を置いて、自分でやり直す道を選ぶ。",
+                "stance": "approve",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "natural-c4-p0",
+            "reply": "謝ってくれて、直そうとしてくれたのは分かっている。それでも今すぐ一緒に手を入れる気にはならない。自分でやり方を探してみたい。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "natural-c4-p2",
+            "reply": "また同じことをされて、こちらの損失だけが残った。もう一緒に直す気はない。距離を置いて、自分でやり直す道を選ぶ。",
+            "stance": "approve",
+            "selection": "distance"
+          }
+        ]
+      }
+    }
+  ]
+}

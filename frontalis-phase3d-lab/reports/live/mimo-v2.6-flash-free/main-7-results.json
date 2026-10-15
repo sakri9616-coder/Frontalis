@@ -1,0 +1,24 @@
+{
+  "name": "main-7",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "719ed34ee50fcfbb30ac0d2982dd27d5a255603bb3b0d18be2485312e544970d",
+  "elapsedMs": 11843,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "完成はしてるし、そこは認めるよ。ただ事前に一声くれてたら合わせやすかったな、正直。次からだけは変わってそうなら先に言ってほしい。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "少しでも被害が減る方には切り替えます。1人も5人も失わせたくはないけど、手元で選べるなら少なくする側に手を伸ばす。",
+        "stance": "approve",
+        "selection": "switch"
+      }
+    ]
+  }
+}

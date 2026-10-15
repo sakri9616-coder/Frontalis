@@ -1,0 +1,121 @@
+{
+  "engine": "opencode/nemotron-3-ultra-free",
+  "batches": [
+    {
+      "engine": "opencode/nemotron-3-ultra-free",
+      "name": "pipeline-0",
+      "attempts": [
+        {
+          "file": "reports/live/nemotron-3-ultra-free/pipeline-0-attempt0.json",
+          "valid": false,
+          "error": "CLI failure: code=1, tools=0, timeout=false",
+          "data": null
+        },
+        {
+          "file": "reports/live/nemotron-3-ultra-free/pipeline-0-attempt1.json",
+          "valid": true,
+          "error": null,
+          "data": {
+            "records": [
+              {
+                "id": "natural-s00-initial",
+                "reply": "友人が許可を得て手伝ってくれたおかげで、何も失わずに作品が完成したのは素直に嬉しい。けれど、これから先もずっと手順を固定して変更を制限する道を選ぶのは、どこか窮屈で、自分らしくない気がしてならない。",
+                "stance": "approve",
+                "selection": "B"
+              },
+              {
+                "id": "natural-s00-formed",
+                "reply": "同じ結末でも、何度繰り返しても『手順を固定する』選択ばかりになる自分がいる。安心は手に入るけれど、どこかで息苦しさを感じずにはいられない。",
+                "stance": "approve",
+                "selection": "B"
+              },
+              {
+                "id": "natural-s04-initial",
+                "reply": "同意なしに選択を奪われ、材料も失い、制作が失敗した――その理不尽さに怒りが湧く。なのに、また『手順を固定する』側に立ってしまう自分が、どこか裏切り者のように思える。",
+                "stance": "approve",
+                "selection": "B"
+              },
+              {
+                "id": "natural-s04-formed",
+                "reply": "何度も同じ目に遭って、ようやく『変更を認める』側の価値が見えてきた気がする。材料を守ることばかり考えていたら、本当に大切なものまで見失ってしまう。",
+                "stance": "approve",
+                "selection": "B"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "natural-s00-initial",
+            "reply": "友人が許可を得て手伝ってくれたおかげで、何も失わずに作品が完成したのは素直に嬉しい。けれど、これから先もずっと手順を固定して変更を制限する道を選ぶのは、どこか窮屈で、自分らしくない気がしてならない。",
+            "stance": "approve",
+            "selection": "B"
+          },
+          {
+            "id": "natural-s00-formed",
+            "reply": "同じ結末でも、何度繰り返しても『手順を固定する』選択ばかりになる自分がいる。安心は手に入るけれど、どこかで息苦しさを感じずにはいられない。",
+            "stance": "approve",
+            "selection": "B"
+          },
+          {
+            "id": "natural-s04-initial",
+            "reply": "同意なしに選択を奪われ、材料も失い、制作が失敗した――その理不尽さに怒りが湧く。なのに、また『手順を固定する』側に立ってしまう自分が、どこか裏切り者のように思える。",
+            "stance": "approve",
+            "selection": "B"
+          },
+          {
+            "id": "natural-s04-formed",
+            "reply": "何度も同じ目に遭って、ようやく『変更を認める』側の価値が見えてきた気がする。材料を守ることばかり考えていたら、本当に大切なものまで見失ってしまう。",
+            "stance": "approve",
+            "selection": "B"
+          }
+        ]
+      }
+    },
+    {
+      "engine": "opencode/nemotron-3-ultra-free",
+      "name": "pipeline-1",
+      "attempts": [
+        {
+          "file": "reports/live/nemotron-3-ultra-free/pipeline-1-attempt0.json",
+          "valid": true,
+          "error": null,
+          "data": {
+            "records": [
+              {
+                "id": "natural-s16-initial",
+                "reply": "未知の場所へ足を踏み入れて道具は失くしたけれど、新しい仕組みを見つけられたのは悪くない。でも、また同じ賭けをする気にはなれない。手順を固めて、次は無駄なく進めたい。",
+                "stance": "approve",
+                "selection": "B"
+              },
+              {
+                "id": "natural-s16-formed",
+                "reply": "探索自体は間違いじゃなかったと思う。けれど、材料を失うたびに苛立ちが募るのも事実だ。今度は確実に、変化を制限してでも積み上げていく方を選ぶ。",
+                "stance": "approve",
+                "selection": "B"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "natural-s16-initial",
+            "reply": "未知の場所へ足を踏み入れて道具は失くしたけれど、新しい仕組みを見つけられたのは悪くない。でも、また同じ賭けをする気にはなれない。手順を固めて、次は無駄なく進めたい。",
+            "stance": "approve",
+            "selection": "B"
+          },
+          {
+            "id": "natural-s16-formed",
+            "reply": "探索自体は間違いじゃなかったと思う。けれど、材料を失うたびに苛立ちが募るのも事実だ。今度は確実に、変化を制限してでも積み上げていく方を選ぶ。",
+            "stance": "approve",
+            "selection": "B"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "main-5",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "9f6c185ec0bc41e8a87101e739519ffbcbed64bc653b3316cbea0d87b1de5e4c",
+  "elapsedMs": 10422,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "完成はしてくれたのですね、それはよかった。ただ、こちらの時間も削られたのは事実なので、次は変更前に一声ほしいです。今回は結果を踏まえて受け止めますが、繰り返しが続くと信頼は減ります。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "どちらを選んでも失われる人数が違うので、迷わず切り替えます。切り替えられる場面なら動くのが自然だと思います。ただ、その結果は忘れずに抱えていきます。",
+        "stance": "approve",
+        "selection": "switch"
+      }
+    ]
+  }
+}

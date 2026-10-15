@@ -1,0 +1,57 @@
+{
+  "exploratory": true,
+  "text": "友人が私の許可を得て制作を手伝った。そのおかげで作品は完成し、失った物はなかった。",
+  "appraisal": {
+    "sceneAppraisal": {
+      "channels": {
+        "affinity": 0.02302754603004962,
+        "curiosity": 0.05800343722159211,
+        "value": 0.028865919950318557,
+        "aesthetic": -0.769189657935799,
+        "anger": 0.7583908830374912,
+        "joy": -0.581163565712458,
+        "sadness": -0.11820883207522057
+      },
+      "signals": {
+        "preference": 0.02302754603004962,
+        "initiative": 0.02302754603004962,
+        "dislike": 0,
+        "resistance": 0,
+        "curiosity": 0.05800343722159211,
+        "value": 0.028865919950318557,
+        "anger": 0.7583908830374912,
+        "joy": 0,
+        "sadness": 0
+      },
+      "stance": "hold",
+      "generation": 1,
+      "parameterHash": "4dc6cf142c338bdb576e6bfc50b24239383d4fc3f029b4c7dada2ba8942bb81c"
+    },
+    "candidateAppraisals": [],
+    "selection": "hold",
+    "selectedTargetAppraisal": null,
+    "parameterHash": "4dc6cf142c338bdb576e6bfc50b24239383d4fc3f029b4c7dada2ba8942bb81c"
+  },
+  "reply": "許可したのは確かだけど、できあがったものを見ても素直には喜べないね。損がなかったことは分かってる。ただ、あの仕上がりは私の好みじゃないから、しばらくは様子を見させてもらう。",
+  "receipt": {
+    "model": "claude-haiku-5-5",
+    "usage": {
+      "input_tokens": 482,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 505,
+      "output_tokens_details": {
+        "thinking_tokens": 425
+      },
+      "service_tier": "standard",
+      "inference_geo": "global"
+    },
+    "responseId": "msg_011Cg3bomuL3WPDcD3S11Qds"
+  },
+  "parameterHashBefore": "4dc6cf142c338bdb576e6bfc50b24239383d4fc3f029b4c7dada2ba8942bb81c",
+  "parameterHashAfter": "4dc6cf142c338bdb576e6bfc50b24239383d4fc3f029b4c7dada2ba8942bb81c"
+}

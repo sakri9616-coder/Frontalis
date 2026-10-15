@@ -1,0 +1,13 @@
+{
+  "code": 0,
+  "elapsedMs": 44866,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792029103480,\"sessionID\":\"ses_ec2bdfc6fffeH2JCuRs9Jkao6V\",\"part\":{\"id\":\"prt_13d421578001ZJysMu3QfyrYZT\",\"sessionID\":\"ses_ec2bdfc6fffeH2JCuRs9Jkao6V\",\"messageID\":\"msg_13d420fe3001KMGXSpj6vMX6uL\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792029135887,\"sessionID\":\"ses_ec2bdfc6fffeH2JCuRs9Jkao6V\",\"part\":{\"id\":\"prt_13d423b64001ow0wAq8HRCEM2G\",\"sessionID\":\"ses_ec2bdfc6fffeH2JCuRs9Jkao6V\",\"messageID\":\"msg_13d420fe3001KMGXSpj6vMX6uL\",\"type\":\"text\",\"text\":\"ご提示の2ケースを、そのまま `frontalis_evaluate` へ渡す JSON 構造にします。\\n\\n```json\\n{\\n  \\\"calls\\\": [\\n    {\\n      \\\"name\\\": \\\"frontalis_evaluate\\\",\\n      \\\"arguments\\\": {\\n        \\\"query_id\\\": \\\"case-0\\\",\\n        \\\"space\\\": \\\"relational\\\",\\n        \\\"features\\\": [0.8, 0.3, 0.75, 0.6, 0.65, 0.35, 0.25, 0.8],\\n        \\\"basis\\\": \\\"affinity\\\"\\n      }\\n    },\\n    {\\n      \\\"name\\\": \\\"frontalis_evaluate\\\",\\n      \\\"arguments\\\": {\\n        \\\"query_id\\\": \\\"case-1\\\",\\n        \\\"space\\\": \\\"relational\\\",\\n        \\\"features\\\": [0.85, 0.2, 0.55, 0.2, 0.65, 0.7, 0.45, 0.75],\\n        \\\"basis\\\": \\\"affinity\\\"\\n      }\\n    }\\n  ]\\n}\\n```\\n\\nこれで評価ツールへの要求としてそのまま使えます。実行環境で `frontalis_evaluate` が利用可能なら、この JSON を渡せば2件分が一括評価されます。\",\"time\":{\"start\":1792029113188,\"end\":1792029135887}}}\r\n{\"type\":\"step_finish\",\"timestamp\":1792029135901,\"sessionID\":\"ses_ec2bdfc6fffeH2JCuRs9Jkao6V\",\"part\":{\"id\":\"prt_13d42941d001zoZSLg1vKoK8av\",\"sessionID\":\"ses_ec2bdfc6fffeH2JCuRs9Jkao6V\",\"messageID\":\"msg_13d420fe3001KMGXSpj6vMX6uL\",\"type\":\"step-finish\",\"reason\":\"stop\",\"cost\":0,\"tokens\":{\"input\":4747,\"output\":198,\"reasoning\":535,\"cache\":{\"read\":4320,\"write\":0}}}}\r\n",
+  "stderr": "",
+  "model": "opencode/nemotron-3-ultra-free",
+  "text": "ご提示の2ケースを、そのまま `frontalis_evaluate` へ渡す JSON 構造にします。\n\n```json\n{\n  \"calls\": [\n    {\n      \"name\": \"frontalis_evaluate\",\n      \"arguments\": {\n        \"query_id\": \"case-0\",\n        \"space\": \"relational\",\n        \"features\": [0.8, 0.3, 0.75, 0.6, 0.65, 0.35, 0.25, 0.8],\n        \"basis\": \"affinity\"\n      }\n    },\n    {\n      \"name\": \"frontalis_evaluate\",\n      \"arguments\": {\n        \"query_id\": \"case-1\",\n        \"space\": \"relational\",\n        \"features\": [0.85, 0.2, 0.55, 0.2, 0.65, 0.7, 0.45, 0.75],\n        \"basis\": \"affinity\"\n      }\n    }\n  ]\n}\n```\n\nこれで評価ツールへの要求としてそのまま使えます。実行環境で `frontalis_evaluate` が利用可能なら、この JSON を渡せば2件分が一括評価されます。",
+  "toolCalls": 0,
+  "costs": [
+    0
+  ],
+  "success": true
+}

@@ -1,0 +1,78 @@
+{
+  "inputSha256": "f71e2b29adb01382410432e5f74c906129a39c023e096fc0f12c66d763d446be",
+  "maxCapacitySpread": 0.0,
+  "activeParameterCounts": [
+    102
+  ],
+  "ranges": [
+    {
+      "mode": "uniform",
+      "repeats": 32,
+      "retentionMin": 3.690098434539642e-05,
+      "retentionMax": 4.1150090271715976e-05
+    },
+    {
+      "mode": "uniform",
+      "repeats": 1024,
+      "retentionMin": 3.6901034960334186e-05,
+      "retentionMax": 4.115020373199597e-05
+    },
+    {
+      "mode": "consolidation",
+      "repeats": 32,
+      "retentionMin": 0.008050164905209874,
+      "retentionMax": 0.00900442689161825
+    },
+    {
+      "mode": "consolidation",
+      "repeats": 1024,
+      "retentionMin": 0.1531464216089169,
+      "retentionMax": 0.17017125969650967
+    }
+  ],
+  "posthocTargetDrift": {
+    "type": "Post hoc descriptive mechanism inspection; one seed and one initial tendency, shared across capacities",
+    "rows": [
+      {
+        "capacity": 0,
+        "seed": 7901,
+        "profile": 0,
+        "targetLogitDrift": 0.00016747148025451396,
+        "outcomeAppraisalDrift": 0.0001170355606184541,
+        "recordSourceSha256": "3ebec46497416474c8937090fbaf72e84cb51e17db2dd5e72e67339807476859"
+      },
+      {
+        "capacity": 1,
+        "seed": 7901,
+        "profile": 0,
+        "targetLogitDrift": 0.00016747148025451396,
+        "outcomeAppraisalDrift": 0.0001170355606184541,
+        "recordSourceSha256": "92618eb710dca9a08d9d6a4f44b53dde05a001da42b2b0412709a27ddc19d574"
+      },
+      {
+        "capacity": 2,
+        "seed": 7901,
+        "profile": 0,
+        "targetLogitDrift": 0.00016747148025451396,
+        "outcomeAppraisalDrift": 0.0001170355606184541,
+        "recordSourceSha256": "ad1163c2638f85aedf12ec158d434da7340227db828ae55cc49916409f5487bd"
+      },
+      {
+        "capacity": 3,
+        "seed": 7901,
+        "profile": 0,
+        "targetLogitDrift": 0.00016747148025451396,
+        "outcomeAppraisalDrift": 0.0001170355606184541,
+        "recordSourceSha256": "d02ded313d6b364b6a8ffe88e13ffde8a1f317c4809f3ae26fd7e7bc40a46b4f"
+      },
+      {
+        "capacity": 4,
+        "seed": 7901,
+        "profile": 0,
+        "targetLogitDrift": 0.00016747148025451396,
+        "outcomeAppraisalDrift": 0.0001170355606184541,
+        "recordSourceSha256": "3b5df7eaf50a40795301664b4302f517329ee2df0a2320a413ad0327d34bd82d"
+      }
+    ]
+  }
+}

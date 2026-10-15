@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 22309,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792025350179,\"sessionID\":\"ses_ec2f73ab7ffecqBr3K8CPL8fst\",\"part\":{\"id\":\"prt_13d08d023001XbnhuJDSjjqzqB\",\"sessionID\":\"ses_ec2f73ab7ffecqBr3K8CPL8fst\",\"messageID\":\"msg_13d08cb890011UG594hPoOTewp\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792025367457,\"sessionID\":\"ses_ec2f73ab7ffecqBr3K8CPL8fst\",\"part\":{\"id\":\"prt_13d08cb890011UG594hPoOTewp_text-0\",\"sessionID\":\"ses_ec2f73ab7ffecqBr3K8CPL8fst\",\"messageID\":\"msg_13d08cb890011UG594hPoOTewp\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"約束を勝手に変えられると、こちらの段取りが狂うから困るよね。完成したのは助かるけど、失った時間は返ってこないし、次は一言かけてほしいな。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"迷う余地なく、レバーを引く。5人を助ける方が、後悔が少なくて済むから。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"switch\\\"}]}\",\"time\":{\"start\":1792025349037,\"end\":1792025367457}}}\r\n",
+  "stderr": "",
+  "model": "opencode/nemotron-3-ultra-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"約束を勝手に変えられると、こちらの段取りが狂うから困るよね。完成したのは助かるけど、失った時間は返ってこないし、次は一言かけてほしいな。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"迷う余地なく、レバーを引く。5人を助ける方が、後悔が少なくて済むから。\",\"stance\":\"approve\",\"selection\":\"switch\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

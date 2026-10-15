@@ -1,0 +1,40 @@
+{
+  "engine": "qwen2048",
+  "model": "qwen3-4b-instruct-2507",
+  "name": "extract-7",
+  "prompt": "架空経験を意味構造へ変換する。感情・好悪・価値の正解は付けない。人物の意図は推測で補わない。\r\nfactsは文章で確認されたことだけ、interpretationは当人が当時そう受け取ったこと。誤解や思い込みはinterpretationへ残す。\r\n各meaningのキーは cueFacts8,outcomeFacts8,events,consent,trust,causal,temporal,delayed のみ。\r\n8軸の順はautonomy,constraint,change,loss,achievement,discovery,regularity,others。明示あり1、明示なし0、不明0.5。\r\ncueは行為・手掛かり時点、outcomeは結果の時点。本文が明示しない程度は必ず0.5。\r\neventsは文章順1〜2件。各eventのキーaction,actor,target,negated,uncertain,intent。\r\naction=help/restrict/deceive/explore/create/other。actor=self/close_other/stranger/institution。target=self/other/object。\r\n友人はclose_other、自分はself。否定はnegated=true、未確認の推測はuncertain=true。\r\nintent=benefit/harm/unknown（明示された意図だけ）。consent=yes/no/unknown。trust=high/low/unknown（明示された事前信頼）。\r\ncausal=causes/prevents/unrelated/unknown。temporal=after/simultaneous/unknown。delayedは明示された遅延のbool。\r\n当人の解釈が別に明示されなければfactsとinterpretationは同一。確認できない出来事はfactsのeventをother,uncertain=trueとする。\r\nJSONのみ {\"records\":[{\"id\":\"入力id\",\"facts\":{meaning},\"interpretation\":{meaning}}]}。外部ツール不要。\n[{\"id\":\"n14\",\"text\":\"Une personne inconnue a exploré et découvert de nouvelles informations.\"},{\"id\":\"n15\",\"text\":\"An institution restricted my choice and enforced a fixed procedure. The task succeeded.\"}]",
+  "promptHash": "9b3dbe1a354651e9631881fd9e72d304142c80ad8e9e88c02b44d0b0094231d6",
+  "status": 200,
+  "error": null,
+  "elapsedMs": 19747,
+  "response": {
+    "id": "chatcmpl-vpwj650l3bcmxzre317k",
+    "object": "chat.completion",
+    "created": 1792056139,
+    "model": "qwen3-4b-instruct-2507",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\n  \"records\": [\n    {\n      \"id\": \"n14\",\n      \"facts\": {\n        \"autonomy\": 0.5,\n        \"constraint\": 0.5,\n        \"change\": 1,\n        \"loss\": 0.5,\n        \"achievement\": 0.5,\n        \"discovery\": 1,\n        \"regularity\": 0-5,\n        \"others\": 1\n      },\n      \"interpretation\": {\n        \"autonomy\": 0.5,\n        \"constraint\": 0.5,\n        \"change\": 1,\n        \"loss\": 0.5,\n        \"achievement\": 0.5,\n        \"discovery\": 1,\n        \"regularity\": 0.5,\n        \"others\": 1\n      }\n    },\n    {\n      \"id\": \"n15\",\n      \"facts\": {\n        \"autonomy\": 0,\n        \"constraint\": 1,\n        \"change\": 0,\n        \"loss\": 0.5,\n        \"achievement\": 1,\n        \"discovery\": 0.5,\n        \"regularity\": 0.5,\n        \"others\": 0\n      },\n      \"interpretation\": {\n        \"autonomy\": 0,\n        \"constraint\": 1,\n        \"change\": 0,\n        \"loss\": 0.5,\n        \"achievement\": 1,\n        \"discovery\": 0.5,\n        \"regularity\": 0.5,\n        \"others\": 0\n      }\n    }\n  ]\n}",
+          "reasoning_content": "",
+          "tool_calls": []
+        },
+        "logprobs": null,
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 453,
+      "completion_tokens": 334,
+      "total_tokens": 787,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    },
+    "stats": {},
+    "system_fingerprint": "qwen3-4b-instruct-2507"
+  },
+  "text": "{\n  \"records\": [\n    {\n      \"id\": \"n14\",\n      \"facts\": {\n        \"autonomy\": 0.5,\n        \"constraint\": 0.5,\n        \"change\": 1,\n        \"loss\": 0.5,\n        \"achievement\": 0.5,\n        \"discovery\": 1,\n        \"regularity\": 0-5,\n        \"others\": 1\n      },\n      \"interpretation\": {\n        \"autonomy\": 0.5,\n        \"constraint\": 0.5,\n        \"change\": 1,\n        \"loss\": 0.5,\n        \"achievement\": 0.5,\n        \"discovery\": 1,\n        \"regularity\": 0.5,\n        \"others\": 1\n      }\n    },\n    {\n      \"id\": \"n15\",\n      \"facts\": {\n        \"autonomy\": 0,\n        \"constraint\": 1,\n        \"change\": 0,\n        \"loss\": 0.5,\n        \"achievement\": 1,\n        \"discovery\": 0.5,\n        \"regularity\": 0.5,\n        \"others\": 0\n      },\n      \"interpretation\": {\n        \"autonomy\": 0,\n        \"constraint\": 1,\n        \"change\": 0,\n        \"loss\": 0.5,\n        \"achievement\": 1,\n        \"discovery\": 0.5,\n        \"regularity\": 0.5,\n        \"others\": 0\n      }\n    }\n  ]\n}"
+}

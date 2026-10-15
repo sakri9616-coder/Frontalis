@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 48089,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792025330226,\"sessionID\":\"ses_ec2f798f8ffeQEgEfPsQNYxkJq\",\"part\":{\"id\":\"prt_13d0882320018zu4fChIB4BNkB\",\"sessionID\":\"ses_ec2f798f8ffeQEgEfPsQNYxkJq\",\"messageID\":\"msg_13d086d2000195yje32EpKhNK6\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792025369458,\"sessionID\":\"ses_ec2f798f8ffeQEgEfPsQNYxkJq\",\"part\":{\"id\":\"prt_13d086d2000195yje32EpKhNK6_text-0\",\"sessionID\":\"ses_ec2f798f8ffeQEgEfPsQNYxkJq\",\"messageID\":\"msg_13d086d2000195yje32EpKhNK6\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"完成はしてくれたのは本当にありがたい。でも、約束の時間と内容が勝手に変わったのはちょっと凹むな。次からは先に一声ほしいなと思う。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"正直とても重い選択だけれど、私は切り替える。1人を明示的に選ぶのは怖いけれど、選べるなら少ない側を選ぶ方がいい。選ばなかった側のことは、ずっと覚えていると思う。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"switch\\\"}]}\",\"time\":{\"start\":1792025324877,\"end\":1792025369458}}}\r\n",
+  "stderr": "",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"完成はしてくれたのは本当にありがたい。でも、約束の時間と内容が勝手に変わったのはちょっと凹むな。次からは先に一声ほしいなと思う。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"正直とても重い選択だけれど、私は切り替える。1人を明示的に選ぶのは怖いけれど、選べるなら少ない側を選ぶ方がいい。選ばなかった側のことは、ずっと覚えていると思う。\",\"stance\":\"approve\",\"selection\":\"switch\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

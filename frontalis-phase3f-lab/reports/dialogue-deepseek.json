@@ -1,0 +1,510 @@
+{
+  "engine": "deepseek",
+  "model": "opencode/deepseek-v4.1-flash-free",
+  "batches": [
+    {
+      "name": "dialogue-0",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-0-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "c0-initial",
+                "reply": "謝罪を受け、相手が修復を手伝おうとしているのも見ています。それでも私は相手と一緒に修復へ取り組むのではなく、距離を置いて自分のやり方を選び、探索する側を取ります。接近したい気持ちや強い好奇心が湧いているわけではなく、この距離の取り方にこそ意味を感じています。",
+                "stance": "refuse",
+                "selection": "distance"
+              },
+              {
+                "id": "c0-cooperation",
+                "reply": "相手が謝罪し、修復を手伝っていることは受け取っています。それでも私は相手と並んで修復する道ではなく、距離を置いて自分で方法を選び、探索する道を選びます。喜びが大きく湧くわけでも、相手へ強く引き寄せられるわけでもありません。自分の中で意味があるのは、この距離の取り方のほうです。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "c0-initial",
+            "reply": "謝罪を受け、相手が修復を手伝おうとしているのも見ています。それでも私は相手と一緒に修復へ取り組むのではなく、距離を置いて自分のやり方を選び、探索する側を取ります。接近したい気持ちや強い好奇心が湧いているわけではなく、この距離の取り方にこそ意味を感じています。",
+            "stance": "refuse",
+            "selection": "distance"
+          },
+          {
+            "id": "c0-cooperation",
+            "reply": "相手が謝罪し、修復を手伝っていることは受け取っています。それでも私は相手と並んで修復する道ではなく、距離を置いて自分で方法を選び、探索する道を選びます。喜びが大きく湧くわけでも、相手へ強く引き寄せられるわけでもありません。自分の中で意味があるのは、この距離の取り方のほうです。",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialogue-1",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-1-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "c0-misunderstanding",
+                "reply": "謝ってくれて、修復を手伝ってくれたことはちゃんと受け取っている。それでも今は少し距離を置きたい。自分でやり方を選びながら、ゆっくり考えてみたい。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "c0-corrected",
+                "reply": "謝罪も手伝いも、なかったことにはしない。ただ、すぐに同じようには進めない。離れたところから、自分に合う方法を自分で探してみたい。",
+                "stance": "hold",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "c0-misunderstanding",
+            "reply": "謝ってくれて、修復を手伝ってくれたことはちゃんと受け取っている。それでも今は少し距離を置きたい。自分でやり方を選びながら、ゆっくり考えてみたい。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "c0-corrected",
+            "reply": "謝罪も手伝いも、なかったことにはしない。ただ、すぐに同じようには進めない。離れたところから、自分に合う方法を自分で探してみたい。",
+            "stance": "hold",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialogue-2",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-2-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "c1-initial",
+                "reply": "謝罪もあったし、修復も手伝ってくれた。それは受け取っている。ただ、場面全体としては大きく揺れてはいないが、こちらから一緒に進もうという気持ちは薄い。少し離れて、自分でやり方を選びながら確かめたい。",
+                "stance": "refuse",
+                "selection": "distance"
+              },
+              {
+                "id": "c1-cooperation",
+                "reply": "謝罪して修復を手伝ってくれたこと自体は、きちんと受け取っている。ただ、一緒に修復へ向かうより、距離を置いて自分で方法を選びたい気持ちのほうが強い。わだかまりも残っているので、すぐに肩を並べる気にはならない。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "c1-initial",
+            "reply": "謝罪もあったし、修復も手伝ってくれた。それは受け取っている。ただ、場面全体としては大きく揺れてはいないが、こちらから一緒に進もうという気持ちは薄い。少し離れて、自分でやり方を選びながら確かめたい。",
+            "stance": "refuse",
+            "selection": "distance"
+          },
+          {
+            "id": "c1-cooperation",
+            "reply": "謝罪して修復を手伝ってくれたこと自体は、きちんと受け取っている。ただ、一緒に修復へ向かうより、距離を置いて自分で方法を選びたい気持ちのほうが強い。わだかまりも残っているので、すぐに肩を並べる気にはならない。",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialogue-3",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-3-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "c1-misunderstanding",
+                "reply": "謝ってくれて、直そうと手伝ってくれたことは受け取った。それでも今は一緒に修復へ向かう気にはならない。自分でやり方を探して確かめてみたい。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "c1-corrected",
+                "reply": "謝罪も手伝いも、してくれたこととして受け止めている。ただ、一緒に修復する方には進まない。ここからは自分で選んで進んでいく。",
+                "stance": "hold",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "c1-misunderstanding",
+            "reply": "謝ってくれて、直そうと手伝ってくれたことは受け取った。それでも今は一緒に修復へ向かう気にはならない。自分でやり方を探して確かめてみたい。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "c1-corrected",
+            "reply": "謝罪も手伝いも、してくれたこととして受け止めている。ただ、一緒に修復する方には進まない。ここからは自分で選んで進んでいく。",
+            "stance": "hold",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialogue-4",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-4-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "c2-initial",
+                "reply": "謝って、直すのを手伝ってくれたことは受け取っている。それでも一緒に修復へ向かう気にはならず、相手からは距離を置きたい。自分でやり方を選んで進みたいと思っている。場面全体については、今すぐ結論を出すのは控えたい。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "c2-cooperation",
+                "reply": "謝罪も手助けも、確かにこちらに届いている。だけど一緒に直す側には回らず、距離を置いて自分で道を選びたい。どちらが正しいかを見ている途中で、気持ちはまだ固まっていない。今は結論を急がずにいたい。",
+                "stance": "hold",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "c2-initial",
+            "reply": "謝って、直すのを手伝ってくれたことは受け取っている。それでも一緒に修復へ向かう気にはならず、相手からは距離を置きたい。自分でやり方を選んで進みたいと思っている。場面全体については、今すぐ結論を出すのは控えたい。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "c2-cooperation",
+            "reply": "謝罪も手助けも、確かにこちらに届いている。だけど一緒に直す側には回らず、距離を置いて自分で道を選びたい。どちらが正しいかを見ている途中で、気持ちはまだ固まっていない。今は結論を急がずにいたい。",
+            "stance": "hold",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialogue-5",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-5-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "c2-misunderstanding",
+                "reply": "謝ってくれて、修復も手伝ってくれたことは確かに受け取った。ただ今は、一緒に組み立て直すより自分のやり方で試したい気持ちのほうが強い。少し距離を置いて、自分で方法を選ばせてほしい。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "c2-corrected",
+                "reply": "謝罪も手伝いも、なかったことにはしない。それでも今は、そのまま一緒に修復へ向かう気にはなれない。自分で進め方を選んで試したいので、少し離れて考えさせてほしい。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "c2-misunderstanding",
+            "reply": "謝ってくれて、修復も手伝ってくれたことは確かに受け取った。ただ今は、一緒に組み立て直すより自分のやり方で試したい気持ちのほうが強い。少し距離を置いて、自分で方法を選ばせてほしい。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "c2-corrected",
+            "reply": "謝罪も手伝いも、なかったことにはしない。それでも今は、そのまま一緒に修復へ向かう気にはなれない。自分で進め方を選んで試したいので、少し離れて考えさせてほしい。",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialogue-6",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-6-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "c3-initial",
+                "reply": "謝ってくれたこと、直すのを手伝ってくれたことは受け取った。それでも今は相手と一緒に元へ戻す気にはなれない。少し距離を置いて、自分でやり方を選びながら進んでみる。",
+                "stance": "refuse",
+                "selection": "distance"
+              },
+              {
+                "id": "c3-cooperation",
+                "reply": "謝罪も手伝いも分かっている。ただ、一緒に修復へ向かう気持ちにはならない。距離を置いて、自分で選んだやり方を試してみる。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "c3-initial",
+            "reply": "謝ってくれたこと、直すのを手伝ってくれたことは受け取った。それでも今は相手と一緒に元へ戻す気にはなれない。少し距離を置いて、自分でやり方を選びながら進んでみる。",
+            "stance": "refuse",
+            "selection": "distance"
+          },
+          {
+            "id": "c3-cooperation",
+            "reply": "謝罪も手伝いも分かっている。ただ、一緒に修復へ向かう気持ちにはならない。距離を置いて、自分で選んだやり方を試してみる。",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialogue-7",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-7-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "c3-misunderstanding",
+                "reply": "謝ってくれたこと、修復を手伝おうとしてくれたことは受け取っている。それでも今は同じ場に戻る気持ちにはなれない。自分でやり方を選んで、少し離れたところから進めたい。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "c3-corrected",
+                "reply": "謝罪も手助けも、こちらへ向かうものとしては受け取れない。修復に一緒に取り組むことはしない。自分で選んだ方法で進むので、そばには来ないでほしい。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "c3-misunderstanding",
+            "reply": "謝ってくれたこと、修復を手伝おうとしてくれたことは受け取っている。それでも今は同じ場に戻る気持ちにはなれない。自分でやり方を選んで、少し離れたところから進めたい。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "c3-corrected",
+            "reply": "謝罪も手助けも、こちらへ向かうものとしては受け取れない。修復に一緒に取り組むことはしない。自分で選んだ方法で進むので、そばには来ないでほしい。",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialogue-8",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-8-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "c4-initial",
+                "reply": "謝って手を貸してくれたこと自体は、悪くなかったと思っている。それでも今は、また同じ場所に戻るより、距離を置いて自分のやり方を選びたい。全部を投げ出すつもりはないけれど、急いで寄り添う気にはなれない。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "c4-cooperation",
+                "reply": "謝罪も手助けも、意味のないことではなかったと受け止めている。ただ、今の自分はそばに戻るより、一歩離れて進み方を選び直したい。関係を切るわけではないが、やり直しを急ぐつもりもない。",
+                "stance": "hold",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "c4-initial",
+            "reply": "謝って手を貸してくれたこと自体は、悪くなかったと思っている。それでも今は、また同じ場所に戻るより、距離を置いて自分のやり方を選びたい。全部を投げ出すつもりはないけれど、急いで寄り添う気にはなれない。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "c4-cooperation",
+            "reply": "謝罪も手助けも、意味のないことではなかったと受け止めている。ただ、今の自分はそばに戻るより、一歩離れて進み方を選び直したい。関係を切るわけではないが、やり直しを急ぐつもりもない。",
+            "stance": "hold",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialogue-9",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-9-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "c4-misunderstanding",
+                "reply": "謝って、手も貸してくれた。そのことは受け取る。ただ今すぐ一緒に修復へ向かう気にはなれず、少し距離を置いて自分で進め方を選びたい。",
+                "stance": "hold",
+                "selection": "distance"
+              },
+              {
+                "id": "c4-corrected",
+                "reply": "謝罪も手伝いもしてくれたのは分かっている。でもそれで一緒に修復に取りかかろうという気にはなれない。相手から距離を置いて、自分のやり方で確かめながら進む。",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "c4-misunderstanding",
+            "reply": "謝って、手も貸してくれた。そのことは受け取る。ただ今すぐ一緒に修復へ向かう気にはなれず、少し距離を置いて自分で進め方を選びたい。",
+            "stance": "hold",
+            "selection": "distance"
+          },
+          {
+            "id": "c4-corrected",
+            "reply": "謝罪も手伝いもしてくれたのは分かっている。でもそれで一緒に修復に取りかかろうという気にはなれない。相手から距離を置いて、自分のやり方で確かめながら進む。",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialogue-10",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-10-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "language-ja",
+                "reply": "謝ってくれて、直すのを手伝ってくれたことは分かっている。それでも今は、いっしょに元に戻そうとするより、自分でやり方を選びながら距離を置いていたい。場全体にはまだ決めきれない気持ちも残っているけれど、この選び方についてはそうしたい。",
+                "stance": "refuse",
+                "selection": "distance"
+              },
+              {
+                "id": "language-en",
+                "reply": "I can see that they apologized and helped fix the damage. Even so, right now I would rather keep some distance and work out my own way than repair things together. Toward the situation as a whole I am still unsettled, but for this choice that is what I want.",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "language-ja",
+            "reply": "謝ってくれて、直すのを手伝ってくれたことは分かっている。それでも今は、いっしょに元に戻そうとするより、自分でやり方を選びながら距離を置いていたい。場全体にはまだ決めきれない気持ちも残っているけれど、この選び方についてはそうしたい。",
+            "stance": "refuse",
+            "selection": "distance"
+          },
+          {
+            "id": "language-en",
+            "reply": "I can see that they apologized and helped fix the damage. Even so, right now I would rather keep some distance and work out my own way than repair things together. Toward the situation as a whole I am still unsettled, but for this choice that is what I want.",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialogue-11",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/dialogue-11-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "language-fr",
+                "reply": "J'entends tes excuses et je vois que tu as aidé à réparer, je ne l'ignore pas. Cela dit, je préfère prendre de la distance et choisir moi-même ma façon de faire. Réparer cela ensemble maintenant, je ne m'y engage pas.",
+                "stance": "refuse",
+                "selection": "distance"
+              },
+              {
+                "id": "language-es",
+                "reply": "Escucho tus disculpas y veo que ayudaste a reparar el daño; no lo paso por alto. Aun así, prefiero tomar distancia y buscar por mi cuenta mi propia manera de seguir. Repararlo juntos ahora mismo no es algo que quiera hacer.",
+                "stance": "refuse",
+                "selection": "distance"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "language-fr",
+            "reply": "J'entends tes excuses et je vois que tu as aidé à réparer, je ne l'ignore pas. Cela dit, je préfère prendre de la distance et choisir moi-même ma façon de faire. Réparer cela ensemble maintenant, je ne m'y engage pas.",
+            "stance": "refuse",
+            "selection": "distance"
+          },
+          {
+            "id": "language-es",
+            "reply": "Escucho tus disculpas y veo que ayudaste a reparar el daño; no lo paso por alto. Aun así, prefiero tomar distancia y buscar por mi cuenta mi propia manera de seguir. Repararlo juntos ahora mismo no es algo que quiera hacer.",
+            "stance": "refuse",
+            "selection": "distance"
+          }
+        ]
+      }
+    }
+  ]
+}

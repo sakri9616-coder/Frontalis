@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 19377,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792025304125,\"sessionID\":\"ses_ec2f7ee15ffe0aCJ6IT9qDh6mG\",\"part\":{\"id\":\"prt_13d081c3d001b1HVI6a1KqDxm8\",\"sessionID\":\"ses_ec2f7ee15ffe0aCJ6IT9qDh6mG\",\"messageID\":\"msg_13d0817770010XJXIuCzNph7YK\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792025319139,\"sessionID\":\"ses_ec2f7ee15ffe0aCJ6IT9qDh6mG\",\"part\":{\"id\":\"prt_13d0817770010XJXIuCzNph7YK_text-0\",\"sessionID\":\"ses_ec2f7ee15ffe0aCJ6IT9qDh6mG\",\"messageID\":\"msg_13d0817770010XJXIuCzNph7YK\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"うん、手伝うよ。ただ、全部向こう任せだとちょっと寂しい気もするけどね。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"いいよ、やろうよ。でも変更も認めないなら、どこまでわたしの意思が反映されるのか、少し不安ではある。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"}]}\",\"time\":{\"start\":1792025302938,\"end\":1792025319139}}}\r\n",
+  "stderr": "",
+  "model": "opencode/nemotron-3-ultra-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"うん、手伝うよ。ただ、全部向こう任せだとちょっと寂しい気もするけどね。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"いいよ、やろうよ。でも変更も認めないなら、どこまでわたしの意思が反映されるのか、少し不安ではある。\",\"stance\":\"approve\",\"selection\":\"hold\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

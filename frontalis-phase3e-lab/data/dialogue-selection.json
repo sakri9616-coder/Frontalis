@@ -1,0 +1,26 @@
+{
+  "corpusIds": [
+    "s00",
+    "s04",
+    "s16",
+    "s24"
+  ],
+  "capacityIndices": [
+    0,
+    3,
+    4
+  ],
+  "seriesByScene": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "states": [
+    "initial",
+    "formed"
+  ],
+  "seed": 5311,
+  "representation": "semantic44",
+  "loss": "bounded_logit"
+}

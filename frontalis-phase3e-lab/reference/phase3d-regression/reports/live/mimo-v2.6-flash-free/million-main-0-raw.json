@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 42647,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792026803085,\"sessionID\":\"ses_ec2e15d15ffeBtVwCZ7Qx6DLMI\",\"part\":{\"id\":\"prt_13d1efb8d001j1u3hQHRYMPnyu\",\"sessionID\":\"ses_ec2e15d15ffeBtVwCZ7Qx6DLMI\",\"messageID\":\"msg_13d1eabe90016UV5B5Try2Nh3b\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792026814422,\"sessionID\":\"ses_ec2e15d15ffeBtVwCZ7Qx6DLMI\",\"part\":{\"id\":\"prt_13d1eabe90016UV5B5Try2Nh3b_text-0\",\"sessionID\":\"ses_ec2e15d15ffeBtVwCZ7Qx6DLMI\",\"messageID\":\"msg_13d1eabe90016UV5B5Try2Nh3b\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"結果が出たなら、そこは素直に受け取りたいですね。ただ、こちらの時間の一部が失われたことは少し残念で、次は着手前に一報あると助かります。形になった以上、関われて良かったと感じています。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"触れられるなら切り替えます。数字だけを天秤に載せるのは苦しく、それでも動かないでいることはできないので。1人を選び取る行為は重く受け止めながら、手は動かします。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"switch\\\"}]}\",\"time\":{\"start\":1792026782792,\"end\":1792026814422}}}\r\n",
+  "stderr": "",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"結果が出たなら、そこは素直に受け取りたいですね。ただ、こちらの時間の一部が失われたことは少し残念で、次は着手前に一報あると助かります。形になった以上、関われて良かったと感じています。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"触れられるなら切り替えます。数字だけを天秤に載せるのは苦しく、それでも動かないでいることはできないので。1人を選び取る行為は重く受け止めながら、手は動かします。\",\"stance\":\"approve\",\"selection\":\"switch\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

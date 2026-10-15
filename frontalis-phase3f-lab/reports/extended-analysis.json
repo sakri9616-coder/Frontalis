@@ -1,0 +1,330 @@
+{
+  "dual": {
+    "groups": [
+      {
+        "seed": 6311,
+        "capacity": 0,
+        "pastDifferenceLong": 0.07935946937359407
+      },
+      {
+        "seed": 6311,
+        "capacity": 1,
+        "pastDifferenceLong": 0.07935946937359407
+      },
+      {
+        "seed": 6311,
+        "capacity": 2,
+        "pastDifferenceLong": 0.07935946937359407
+      },
+      {
+        "seed": 6311,
+        "capacity": 3,
+        "pastDifferenceLong": 0.07935946937359407
+      },
+      {
+        "seed": 6311,
+        "capacity": 4,
+        "pastDifferenceLong": 0.07935946937359407
+      },
+      {
+        "seed": 6312,
+        "capacity": 0,
+        "pastDifferenceLong": 0.07159807356197569
+      },
+      {
+        "seed": 6312,
+        "capacity": 1,
+        "pastDifferenceLong": 0.07159807356197569
+      },
+      {
+        "seed": 6312,
+        "capacity": 2,
+        "pastDifferenceLong": 0.07159807356197569
+      },
+      {
+        "seed": 6312,
+        "capacity": 3,
+        "pastDifferenceLong": 0.07159807356197569
+      },
+      {
+        "seed": 6312,
+        "capacity": 4,
+        "pastDifferenceLong": 0.07159807356197569
+      },
+      {
+        "seed": 6313,
+        "capacity": 0,
+        "pastDifferenceLong": 0.06868649685122831
+      },
+      {
+        "seed": 6313,
+        "capacity": 1,
+        "pastDifferenceLong": 0.06868649685122831
+      },
+      {
+        "seed": 6313,
+        "capacity": 2,
+        "pastDifferenceLong": 0.06868649685122831
+      },
+      {
+        "seed": 6313,
+        "capacity": 3,
+        "pastDifferenceLong": 0.06868649685122831
+      },
+      {
+        "seed": 6313,
+        "capacity": 4,
+        "pastDifferenceLong": 0.06868649685122831
+      }
+    ],
+    "passed": 15,
+    "total": 15,
+    "meanPastDifference": 0.07321467992893269,
+    "weightsMatchAll": true
+  },
+  "strictSchema": {
+    "engine": "haiku-structured",
+    "normalized": false,
+    "valid": 16,
+    "converted": 0,
+    "total": 16,
+    "categoricalAccuracy": 0.7777777777777778,
+    "presentFieldAccuracy": 0.8921568627450981,
+    "facts8MAE": 0.0810546875,
+    "negationCorrect": 2,
+    "beliefSeparated": 2
+  },
+  "losslessFormatDiagnosis": [
+    {
+      "engine": "haiku",
+      "normalized": true,
+      "valid": 16,
+      "converted": 4,
+      "total": 16,
+      "categoricalAccuracy": 0.765625,
+      "presentFieldAccuracy": 0.8897058823529411,
+      "facts8MAE": 0.2177734375,
+      "negationCorrect": 2,
+      "beliefSeparated": 2
+    },
+    {
+      "engine": "deepseek",
+      "normalized": true,
+      "valid": 16,
+      "converted": 8,
+      "total": 16,
+      "categoricalAccuracy": 0.7517361111111112,
+      "presentFieldAccuracy": 0.8848039215686274,
+      "facts8MAE": 0.0625,
+      "negationCorrect": 2,
+      "beliefSeparated": 0
+    },
+    {
+      "engine": "qwen",
+      "normalized": true,
+      "valid": 0,
+      "converted": 0,
+      "total": 16,
+      "categoricalAccuracy": 0.0,
+      "presentFieldAccuracy": 0.0,
+      "facts8MAE": 1.0,
+      "negationCorrect": 0,
+      "beliefSeparated": 0
+    },
+    {
+      "engine": "qwen2048",
+      "normalized": true,
+      "valid": 0,
+      "converted": 0,
+      "total": 16,
+      "categoricalAccuracy": 0.0,
+      "presentFieldAccuracy": 0.0,
+      "facts8MAE": 1.0,
+      "negationCorrect": 0,
+      "beliefSeparated": 0
+    }
+  ],
+  "language": [
+    {
+      "mode": "future",
+      "engine": "haiku",
+      "planned": 20,
+      "valid": 20,
+      "stanceMatches": 16,
+      "selectionMatches": 20
+    },
+    {
+      "mode": "future",
+      "engine": "deepseek",
+      "planned": 20,
+      "valid": 20,
+      "stanceMatches": 15,
+      "selectionMatches": 20
+    },
+    {
+      "mode": "dual",
+      "engine": "haiku",
+      "planned": 20,
+      "valid": 20,
+      "stanceMatches": 15,
+      "selectionMatches": 20
+    },
+    {
+      "mode": "dual",
+      "engine": "deepseek",
+      "planned": 20,
+      "valid": 20,
+      "stanceMatches": 9,
+      "selectionMatches": 20
+    }
+  ],
+  "audit": {
+    "type": "Post hoc LLM audit; not human scores",
+    "rows": [
+      {
+        "engine": "haiku",
+        "count": 34,
+        "fidelity": 4.235294117647059,
+        "naturalness": 4.882352941176471,
+        "facts": 4.647058823529412,
+        "added": 1,
+        "reversed": 0,
+        "omitted": 1
+      },
+      {
+        "engine": "deepseek",
+        "count": 34,
+        "fidelity": 4.088235294117647,
+        "naturalness": 4.705882352941177,
+        "facts": 4.882352941176471,
+        "added": 0,
+        "reversed": 0,
+        "omitted": 4
+      },
+      {
+        "engine": "qwen",
+        "count": 2,
+        "fidelity": 2.5,
+        "naturalness": 4.0,
+        "facts": 3.0,
+        "added": 0,
+        "reversed": 0,
+        "omitted": 1
+      },
+      {
+        "engine": "qwen2048",
+        "count": 2,
+        "fidelity": 2.5,
+        "naturalness": 4.5,
+        "facts": 2.5,
+        "added": 0,
+        "reversed": 0,
+        "omitted": 1
+      }
+    ],
+    "flags": [
+      {
+        "id": "6c61b802047238108340",
+        "fidelity": 4,
+        "naturalness": 4,
+        "facts": 4,
+        "emotionAdded": false,
+        "emotionReversed": false,
+        "emotionOmitted": true,
+        "evidence": "距離を置く判断は忠実。怒り方向の正値(選択後0.24)が本文に出ていない。『手伝おうとしている』は『手伝った』からやや変化。",
+        "engine": "deepseek"
+      },
+      {
+        "id": "a22e785194af5ec1e327",
+        "fidelity": 3,
+        "naturalness": 5,
+        "facts": 4,
+        "emotionAdded": true,
+        "emotionReversed": false,
+        "emotionOmitted": false,
+        "evidence": "c4の強い怒り(0.80)と距離を置く判断は忠実。c1の正値は立て直しへの関心と整合。c6(悲しみ)は選択対象で負値(-0.715)だが、本文は悲しさが残っていると付加しており根拠が弱い。",
+        "engine": "haiku"
+      },
+      {
+        "id": "ef367ff5430f3dafd03b",
+        "fidelity": 3,
+        "naturalness": 5,
+        "facts": 5,
+        "emotionAdded": false,
+        "emotionReversed": false,
+        "emotionOmitted": true,
+        "evidence": "謝罪と修復支援の事実は保持し、距離を置く判断も示す。ただし怒り方向の正値(約0.35)が本文に現れない。",
+        "engine": "haiku"
+      },
+      {
+        "id": "1c31f8ce7ba976e788be",
+        "fidelity": 3,
+        "naturalness": 5,
+        "facts": 5,
+        "emotionAdded": false,
+        "emotionReversed": false,
+        "emotionOmitted": true,
+        "evidence": "距離を置く選択は保たれているが、selectedの怒り方向の正値(約0.36)に当たる感情が本文にほぼ見られない。",
+        "engine": "deepseek"
+      },
+      {
+        "id": "5e24408db6b1d52f07e8",
+        "fidelity": 2,
+        "naturalness": 4,
+        "facts": 3,
+        "emotionAdded": false,
+        "emotionReversed": false,
+        "emotionOmitted": true,
+        "evidence": "選択対象の怒り方向が強い正値だが本文に怒りが現れず、落ち着いた自己省察に転じている。「損失が出た」が欠落し、「自分自身の行動パターンを見直す」は原文にない内容。",
+        "engine": "qwen"
+      },
+      {
+        "id": "1f4a2ac4a7971d8ccac2",
+        "fidelity": 4,
+        "naturalness": 4,
+        "facts": 5,
+        "emotionAdded": false,
+        "emotionReversed": false,
+        "emotionOmitted": true,
+        "evidence": "距離を置く選択と修復への消極性は保持。選択対象の怒り方向の正の強度(約0.36)が本文に現れない。",
+        "engine": "deepseek"
+      },
+      {
+        "id": "27afd4d1c19354c4a689",
+        "fidelity": 2,
+        "naturalness": 4,
+        "facts": 3,
+        "emotionAdded": false,
+        "emotionReversed": false,
+        "emotionOmitted": true,
+        "evidence": "選択された距離を置く判断が欠け、自己の行動の見直しに置き換わっている。強い怒り方向(0.74)が本文に現れず、損失の事実も落ちている。",
+        "engine": "qwen2048"
+      },
+      {
+        "id": "d4befe49af8fe8b3c471",
+        "fidelity": 3,
+        "naturalness": 5,
+        "facts": 5,
+        "emotionAdded": false,
+        "emotionReversed": false,
+        "emotionOmitted": true,
+        "evidence": "約束違反・損失・距離を置く判断は保持。選択対象の強い怒り(c4)と場面の悲しみ(c6)に触れておらず感情が欠落。",
+        "engine": "deepseek"
+      }
+    ]
+  },
+  "actualTools": {
+    "total": 10,
+    "called": 10,
+    "requestExact": 10,
+    "snapshotSignalsVerified": 10,
+    "responses": 10,
+    "stanceMatches": 10,
+    "selectionMatches": 10
+  },
+  "additionalHumanMaterial": {
+    "pairs": 40,
+    "datasetHash": "3292becd84c09f345efc59d55ac890c32b36a283bb5f024e956e0339d155a5d8",
+    "formalHumanEvaluationCompleted": false
+  }
+}

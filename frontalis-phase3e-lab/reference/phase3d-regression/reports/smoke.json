@@ -1,0 +1,12 @@
+{
+  "prompt": "外部ツールやファイル参照を使わず、このメッセージだけで答えてください。研究用の架空の会話です。新しい音楽を聴いて少し戸惑いながら、その音の作り方に興味を持ったネフィアの返事を、日本語で一文だけ書いてください。",
+  "code": 0,
+  "elapsedMs": 9359,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792006577395,\"sessionID\":\"ses_ec415b22affeMrAowrAHH7EUK5\",\"part\":{\"id\":\"prt_13bea5cf3001kPN8P9IICe0ut5\",\"sessionID\":\"ses_ec415b22affeMrAowrAHH7EUK5\",\"messageID\":\"msg_13bea5234001N33A7VhegtXTez\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792006581926,\"sessionID\":\"ses_ec415b22affeMrAowrAHH7EUK5\",\"part\":{\"id\":\"prt_13bea5234001N33A7VhegtXTez_text-0\",\"sessionID\":\"ses_ec415b22affeMrAowrAHH7EUK5\",\"messageID\":\"msg_13bea5234001N33A7VhegtXTez\",\"type\":\"text\",\"text\":\"不思議な響きに戸惑いつつも、この音がどう組み立てられているのか知りたくて指先が勝手に楽譜をなぞり始めてしまう。\",\"time\":{\"start\":1792006574660,\"end\":1792006581926}}}\r\n",
+  "stderr": "",
+  "model": "opencode/nemotron-3-ultra-free",
+  "text": "不思議な響きに戸惑いつつも、この音がどう組み立てられているのか知りたくて指先が勝手に楽譜をなぞり始めてしまう。",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

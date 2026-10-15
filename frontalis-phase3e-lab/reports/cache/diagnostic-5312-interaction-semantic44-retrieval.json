@@ -1,0 +1,10 @@
+{
+  "seed": 5312,
+  "teacher": "interaction",
+  "representation": "semantic44",
+  "method": "retrieval",
+  "validationMSE": 0.22305057527370714,
+  "testMSE": 0.22076779084329698,
+  "preregistrationSha256": "29e2c6e13ace711a427824bcdf81e59c0070f5bf9671e6c329e8801d570fd58c",
+  "elapsedSeconds": 0.011621199999353848
+}

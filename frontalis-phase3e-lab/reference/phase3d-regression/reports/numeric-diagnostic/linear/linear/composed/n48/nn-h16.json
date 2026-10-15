@@ -1,0 +1,108 @@
+{
+  "world": "linear",
+  "origin": "linear",
+  "task": "composed",
+  "trainCount": 48,
+  "validationCount": 64,
+  "testCount": 256,
+  "kind": "nn",
+  "width": 16,
+  "sourceSnapshot": "reference/source-models/linear/linear.json",
+  "sourceSnapshotSha256": "470af51a1256d1c499ca89cbdc31e0a9a6e4c5ffe4b7a58e8d5e802ddda822d8",
+  "trainingLabelsHash": "fa01a1d1b6f6b1838f85e57b6d2cf41e59ed284ed6ff05f819f3dc46f8636e4f",
+  "validationLabelsHash": "41d1ab828ee6e12efa761b153797167610ffec24ce37ba6c5bd2848e8104210c",
+  "trials": [
+    {
+      "hyperparameter": 0.0005,
+      "validationMSE": 0.00882178899143367,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.0025,
+      "validationMSE": 0.0007234682677462553,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.005,
+      "validationMSE": 0.0005452843072308003,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.0125,
+      "validationMSE": 0.00047329369719714464,
+      "status": "complete"
+    },
+    {
+      "hyperparameter": 0.025,
+      "validationMSE": 0.0004601927924355562,
+      "status": "complete"
+    }
+  ],
+  "selectionCriterion": "validation-signal-MSE-only",
+  "elapsedSeconds": 1.3778287000022829,
+  "status": "complete",
+  "validationMSE": 0.0004601927924355562,
+  "selectedHyperparameter": 0.025,
+  "parameterCount": 526,
+  "snapshot": "models/diagnostic/linear/linear/composed/n48/nn-h16",
+  "diagnostics": {
+    "parameterCount": 526,
+    "fixedBaseParameters": 56,
+    "parameterNorm": 4.053581670790482,
+    "emergencyNorm": 50.0,
+    "layerStats": {
+      "relational": {
+        "w1": {
+          "norm": 2.4597307325595428,
+          "rms": 0.21741153511072583,
+          "count": 128
+        },
+        "b1": {
+          "norm": 0.18423526114590505,
+          "rms": 0.04605881528647626,
+          "count": 16
+        },
+        "w2": {
+          "norm": 1.0670792095367925,
+          "rms": 0.10082950777291914,
+          "count": 112
+        },
+        "b2": {
+          "norm": 0.27906703172628894,
+          "rms": 0.10547742358067608,
+          "count": 7
+        }
+      },
+      "acoustic": {
+        "w1": {
+          "norm": 2.6631540994605643,
+          "rms": 0.23539179038416475,
+          "count": 128
+        },
+        "b1": {
+          "norm": 0.2867213177221694,
+          "rms": 0.07168032943054235,
+          "count": 16
+        },
+        "w2": {
+          "norm": 0.9559718428997049,
+          "rms": 0.09033084845331169,
+          "count": 112
+        },
+        "b2": {
+          "norm": 0.2756433299159232,
+          "rms": 0.10418338593018046,
+          "count": 7
+        }
+      }
+    },
+    "readoutScale": 1.0,
+    "device": "cpu",
+    "dtype": "float64",
+    "generation": 0,
+    "memoryRows": {
+      "relational": 0,
+      "acoustic": 0
+    }
+  }
+}

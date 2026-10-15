@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "engine": "opencode/nemotron-3-ultra-free",
+      "plans": [
+        "live-plan.json",
+        "million-live-plan.json"
+      ],
+      "actualRepliesVerified": 30,
+      "exitCode": 0,
+      "newExternalCalls": 0,
+      "mode": "FRONTALIS_VERIFY_ONLY=1",
+      "log": "reports/final-offline-nemotron.txt"
+    },
+    {
+      "engine": "opencode/mimo-v2.6-flash-free",
+      "plans": [
+        "live-plan.json",
+        "million-live-plan.json"
+      ],
+      "actualRepliesVerified": 30,
+      "exitCode": 0,
+      "newExternalCalls": 0,
+      "mode": "FRONTALIS_VERIFY_ONLY=1",
+      "log": "reports/final-offline-mimo.txt"
+    }
+  ],
+  "scope": "Successful raw, input, exact prompt, fixed state hash and tool replay; cache miss rejects without generation."
+}

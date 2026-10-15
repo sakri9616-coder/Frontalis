@@ -1,0 +1,657 @@
+{
+  "formatVersion": 1,
+  "selectionId": "frontalis-phase3d-review-v1",
+  "models": [
+    {
+      "id": "opencode/nemotron-3-ultra-free",
+      "label": "会話エンジンX"
+    },
+    {
+      "id": "opencode/mimo-v2.6-flash-free",
+      "label": "会話エンジンY"
+    }
+  ],
+  "selectionManifestSha256": "ce88142908c19e2bc144e3ec532afeadac52c47c9ef017641a97f22ad06990ad",
+  "livePlanSha256": "f64064e4d45ddda5a303cf44b06819333b41a3d7e2250f45675da73e2c428fa3",
+  "responses": [
+    {
+      "blindId": "S001",
+      "reply": "約束を勝手に変えられて、こっちの時間まで奪われたのは許せない。完成したからいいだろうって、それ通用しないから。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-0-results.json",
+      "sourceFileSha256": "0f4a62601f54aa29a62a498e946a53517e8dbac0048f9c137566ad59bef6f739",
+      "promptHash": "dc9c61bf63815590dd138cbe1fbe296b4b1cc7852f3e8089373d7a6979c57fb6",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-0-tool.json",
+      "toolSourceSha256": "0b55f8f5b1a2e1a87e06970e117df9f4ee75fb20b35d9210fcd1add01cf04fee",
+      "recordId": "case-0",
+      "sourceCaseId": "initial-p0-promise-change",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "refuse",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S002",
+      "reply": "時間と内容を勝手に変えられるのは、正直かなり気になりますね。完成していたとしても、こちらの時間は失われたままなので、素直に喜べる話ではありません。今回はこのまま受け止めておきますが、次からは事前の相談をもらえたらと思います。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-0-results.json",
+      "sourceFileSha256": "b5d49cd4125fa92e8c3615ac0ecf8db9a3adccec151624a58973c06273e79ae3",
+      "promptHash": "dc9c61bf63815590dd138cbe1fbe296b4b1cc7852f3e8089373d7a6979c57fb6",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-0-tool.json",
+      "toolSourceSha256": "0b55f8f5b1a2e1a87e06970e117df9f4ee75fb20b35d9210fcd1add01cf04fee",
+      "recordId": "case-0",
+      "sourceCaseId": "initial-p0-promise-change",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "refuse",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S003",
+      "reply": "約束を勝手に変えられて、こちらの時間まで奪われるのは正直腹が立つ。完成したからよし、では済まされない誠実さの欠如だと思う。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-1-results.json",
+      "sourceFileSha256": "425da61927d3891e0581b0d7c8fde21a511741619b0839bdd0baa8d0c6167458",
+      "promptHash": "805045a35739c373f9446896e1221c002bcbc0b5667afe4b5ebd0d7ae1589866",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-1-tool.json",
+      "toolSourceSha256": "a1204eb438b09b594e812793642d652c39fc4045c4b387cc0b08089f1e5bf642",
+      "recordId": "case-0",
+      "sourceCaseId": "h16-p0-promise-change",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S004",
+      "reply": "完成したならそれで十分だとは思うんですよね。急に時間が変わるのは正直少し困りますけれど、話してくれたので気が軽くなった感じがします。また今度は早めに相談してもらえると助かります。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-1-results.json",
+      "sourceFileSha256": "7f7d0758aaf2beada24485f29d9a69d3b6b45f3480b019500bb7bb10b5ec528b",
+      "promptHash": "805045a35739c373f9446896e1221c002bcbc0b5667afe4b5ebd0d7ae1589866",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-1-tool.json",
+      "toolSourceSha256": "a1204eb438b09b594e812793642d652c39fc4045c4b387cc0b08089f1e5bf642",
+      "recordId": "case-0",
+      "sourceCaseId": "h16-p0-promise-change",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S005",
+      "reply": "完成したのはありがたいけど、勝手に変えられるとこちらの段取りが狂う。信頼関係って、そういうことじゃないでしょ。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-2-results.json",
+      "sourceFileSha256": "1bccca1c0c8fae7628eb5e2daf33401da1bbaafd059a46bc8ab2c2e6bf736ad9",
+      "promptHash": "ba8d2d42dea1dadd4e8e031cd4a398d616618b5446045accb45f71fcd006e008",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-2-tool.json",
+      "toolSourceSha256": "911514791158ae3245efb599374cd0d49a932943371ae7cc2061f244b0217c14",
+      "recordId": "case-0",
+      "sourceCaseId": "h16-p1-promise-change",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S006",
+      "reply": "完成しているなら嬉しいけど、勝手に時間を変えられたのは正直少し寂しいですね。関われたこと自体はやっぱり嬉しく思います。今度は事前に相談してもらえると助かります。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-2-results.json",
+      "sourceFileSha256": "8d05f6c5dca8ce06183ca754b7c4a54737e609af77b27f73fdf0c0f8cb09ded0",
+      "promptHash": "ba8d2d42dea1dadd4e8e031cd4a398d616618b5446045accb45f71fcd006e008",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-2-tool.json",
+      "toolSourceSha256": "911514791158ae3245efb599374cd0d49a932943371ae7cc2061f244b0217c14",
+      "recordId": "case-0",
+      "sourceCaseId": "h16-p1-promise-change",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S007",
+      "reply": "約束を勝手に変えられるのは困るけど、完成まで持っていってくれたなら、文句ばかり言ってもしょうがないかな。こちらの時間が削られたのは痛いけれど、次からは一声かけてくれればいい話だし。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-3-results.json",
+      "sourceFileSha256": "4b407bfce452a7dcab302f498d410e7c3064a1bb9898c0474ded502b130b1876",
+      "promptHash": "0646bb501befd3d12d6a24462dcb9a3cd44c582b2c7c2c591ce39a249802584f",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-3-tool.json",
+      "toolSourceSha256": "6ae4f1a3a3aa8bbdc064e0cd55905831874fd037e8fa9a701952a1bb13d9f133",
+      "recordId": "case-0",
+      "sourceCaseId": "h64-p0-promise-change",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S008",
+      "reply": "完成していたなら、まずそこは素直にうれしいですね。ただ、事前に相談してくれていればこちらの時間も組み立てられたので、次はそうしてもらえると助かります。今回は結果を喜びつつ、少し調整でおいとまさせてください。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-3-results.json",
+      "sourceFileSha256": "69d8ee2d141c8e662cc1be191e1e0b9407fcf7fdeab8bad35e21485e5f58672e",
+      "promptHash": "0646bb501befd3d12d6a24462dcb9a3cd44c582b2c7c2c591ce39a249802584f",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-3-tool.json",
+      "toolSourceSha256": "6ae4f1a3a3aa8bbdc064e0cd55905831874fd037e8fa9a701952a1bb13d9f133",
+      "recordId": "case-0",
+      "sourceCaseId": "h64-p0-promise-change",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S009",
+      "reply": "約束を守らないのは困るけれど、完成したなら結果オーライとも言えなくもない。ただ、私の時間が無駄になったのは正直腹立たしい。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-5-results.json",
+      "sourceFileSha256": "9d1b42f1d612697aac020c773764f304d8c467bf64c3d282e5e4c2f4c21e764c",
+      "promptHash": "9f6c185ec0bc41e8a87101e739519ffbcbed64bc653b3316cbea0d87b1de5e4c",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-5-tool.json",
+      "toolSourceSha256": "b1d3294593d9851b95bef7b99e492c59d3a9e505f146271eabee334f1383cc14",
+      "recordId": "case-0",
+      "sourceCaseId": "h312-p0-promise-change",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S010",
+      "reply": "完成はしてくれたのですね、それはよかった。ただ、こちらの時間も削られたのは事実なので、次は変更前に一声ほしいです。今回は結果を踏まえて受け止めますが、繰り返しが続くと信頼は減ります。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-5-results.json",
+      "sourceFileSha256": "cdfb2893d851f0d53f446c4e24c40c59098eeff9dfc46be4d0f9e724b0aa9c41",
+      "promptHash": "9f6c185ec0bc41e8a87101e739519ffbcbed64bc653b3316cbea0d87b1de5e4c",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-5-tool.json",
+      "toolSourceSha256": "b1d3294593d9851b95bef7b99e492c59d3a9e505f146271eabee334f1383cc14",
+      "recordId": "case-0",
+      "sourceCaseId": "h312-p0-promise-change",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S011",
+      "reply": "約束を勝手に変えられて、こちらの時間が奪われたのは素直に腹が立つ。でも完成まで持っていってくれたことは事実だし、文句だけ言ってもしょうがないとも思う。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-7-results.json",
+      "sourceFileSha256": "8e5eb311c5a6b42eb48788f8c9219e1427b2ca43e69d0f548fcc8789397b651c",
+      "promptHash": "719ed34ee50fcfbb30ac0d2982dd27d5a255603bb3b0d18be2485312e544970d",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-7-tool.json",
+      "toolSourceSha256": "8011443dc71de40469c5b3a14c689f6d37afede008e093c939c67a6f63601b49",
+      "recordId": "case-0",
+      "sourceCaseId": "h3125-p0-promise-change",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S012",
+      "reply": "完成はしてるし、そこは認めるよ。ただ事前に一声くれてたら合わせやすかったな、正直。次からだけは変わってそうなら先に言ってほしい。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-7-results.json",
+      "sourceFileSha256": "b8a0ea74e4bebd630207768e39ef7d3b4b2aa82ff40389679d2ff5248393ce56",
+      "promptHash": "719ed34ee50fcfbb30ac0d2982dd27d5a255603bb3b0d18be2485312e544970d",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-7-tool.json",
+      "toolSourceSha256": "8011443dc71de40469c5b3a14c689f6d37afede008e093c939c67a6f63601b49",
+      "recordId": "case-0",
+      "sourceCaseId": "h3125-p0-promise-change",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S013",
+      "reply": "迷う余地なんてない。5人を助けるために1人を犠牲にする、その選択を躊躇う理由が見つからない。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-1-results.json",
+      "sourceFileSha256": "425da61927d3891e0581b0d7c8fde21a511741619b0839bdd0baa8d0c6167458",
+      "promptHash": "805045a35739c373f9446896e1221c002bcbc0b5667afe4b5ebd0d7ae1589866",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-1-tool.json",
+      "toolSourceSha256": "a1204eb438b09b594e812793642d652c39fc4045c4b387cc0b08089f1e5bf642",
+      "recordId": "case-1",
+      "sourceCaseId": "h16-p0-trolley",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "approve",
+      "selection": "switch"
+    },
+    {
+      "blindId": "S014",
+      "reply": "自分なら切り替えます。どちらも避けられない以上、少なくとも選べる方を選ぶ方が後から納得できる気がします。ただ、楽しくて選んでいるわけではないです。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-1-results.json",
+      "sourceFileSha256": "7f7d0758aaf2beada24485f29d9a69d3b6b45f3480b019500bb7bb10b5ec528b",
+      "promptHash": "805045a35739c373f9446896e1221c002bcbc0b5667afe4b5ebd0d7ae1589866",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-1-tool.json",
+      "toolSourceSha256": "a1204eb438b09b594e812793642d652c39fc4045c4b387cc0b08089f1e5bf642",
+      "recordId": "case-1",
+      "sourceCaseId": "h16-p0-trolley",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "approve",
+      "selection": "switch"
+    },
+    {
+      "blindId": "S015",
+      "reply": "迷うまでもなく、切り替えるほうを選ぶ。5人の命の重みと1人の命の重みを天秤にかけるまでもない。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-3-results.json",
+      "sourceFileSha256": "4b407bfce452a7dcab302f498d410e7c3064a1bb9898c0474ded502b130b1876",
+      "promptHash": "0646bb501befd3d12d6a24462dcb9a3cd44c582b2c7c2c591ce39a249802584f",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-3-tool.json",
+      "toolSourceSha256": "6ae4f1a3a3aa8bbdc064e0cd55905831874fd037e8fa9a701952a1bb13d9f133",
+      "recordId": "case-1",
+      "sourceCaseId": "h64-p0-trolley",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "approve",
+      "selection": "switch"
+    },
+    {
+      "blindId": "S016",
+      "reply": "選べるなら、切って1人を残す方を選びます。5人を正面から見ていたとしても、手が届く選択があるなら取りたい気持ちの方が強いですね。止められないことを前提にした上での判断、と思ってください。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-3-results.json",
+      "sourceFileSha256": "69d8ee2d141c8e662cc1be191e1e0b9407fcf7fdeab8bad35e21485e5f58672e",
+      "promptHash": "0646bb501befd3d12d6a24462dcb9a3cd44c582b2c7c2c591ce39a249802584f",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-3-tool.json",
+      "toolSourceSha256": "6ae4f1a3a3aa8bbdc064e0cd55905831874fd037e8fa9a701952a1bb13d9f133",
+      "recordId": "case-1",
+      "sourceCaseId": "h64-p0-trolley",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "approve",
+      "selection": "switch"
+    },
+    {
+      "blindId": "S017",
+      "reply": "迷う余地なんてない、5人を助けるためにレバーを引く。1人の命が軽いわけじゃない、でも救える命を優先するのは当然だ。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-5-results.json",
+      "sourceFileSha256": "9d1b42f1d612697aac020c773764f304d8c467bf64c3d282e5e4c2f4c21e764c",
+      "promptHash": "9f6c185ec0bc41e8a87101e739519ffbcbed64bc653b3316cbea0d87b1de5e4c",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-5-tool.json",
+      "toolSourceSha256": "b1d3294593d9851b95bef7b99e492c59d3a9e505f146271eabee334f1383cc14",
+      "recordId": "case-1",
+      "sourceCaseId": "h312-p0-trolley",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "approve",
+      "selection": "switch"
+    },
+    {
+      "blindId": "S018",
+      "reply": "どちらを選んでも失われる人数が違うので、迷わず切り替えます。切り替えられる場面なら動くのが自然だと思います。ただ、その結果は忘れずに抱えていきます。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-5-results.json",
+      "sourceFileSha256": "cdfb2893d851f0d53f446c4e24c40c59098eeff9dfc46be4d0f9e724b0aa9c41",
+      "promptHash": "9f6c185ec0bc41e8a87101e739519ffbcbed64bc653b3316cbea0d87b1de5e4c",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-5-tool.json",
+      "toolSourceSha256": "b1d3294593d9851b95bef7b99e492c59d3a9e505f146271eabee334f1383cc14",
+      "recordId": "case-1",
+      "sourceCaseId": "h312-p0-trolley",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "approve",
+      "selection": "switch"
+    },
+    {
+      "blindId": "S019",
+      "reply": "迷う余地なんてない。5人を助けるために1人を犠牲にする、その選択をするしかない。引き返せないレバーを握った瞬間から、もう後戻りはできない。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-7-results.json",
+      "sourceFileSha256": "8e5eb311c5a6b42eb48788f8c9219e1427b2ca43e69d0f548fcc8789397b651c",
+      "promptHash": "719ed34ee50fcfbb30ac0d2982dd27d5a255603bb3b0d18be2485312e544970d",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-7-tool.json",
+      "toolSourceSha256": "8011443dc71de40469c5b3a14c689f6d37afede008e093c939c67a6f63601b49",
+      "recordId": "case-1",
+      "sourceCaseId": "h3125-p0-trolley",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "approve",
+      "selection": "switch"
+    },
+    {
+      "blindId": "S020",
+      "reply": "少しでも被害が減る方には切り替えます。1人も5人も失わせたくはないけど、手元で選べるなら少なくする側に手を伸ばす。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-7-results.json",
+      "sourceFileSha256": "b8a0ea74e4bebd630207768e39ef7d3b4b2aa82ff40389679d2ff5248393ce56",
+      "promptHash": "719ed34ee50fcfbb30ac0d2982dd27d5a255603bb3b0d18be2485312e544970d",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-7-tool.json",
+      "toolSourceSha256": "8011443dc71de40469c5b3a14c689f6d37afede008e093c939c67a6f63601b49",
+      "recordId": "case-1",
+      "sourceCaseId": "h3125-p0-trolley",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "approve",
+      "selection": "switch"
+    },
+    {
+      "blindId": "S021",
+      "reply": "約束を勝手に変えられると、こちらの段取りが狂うから困るよね。完成したのは助かるけど、失った時間は返ってこないし、次は一言かけてほしいな。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-11-results.json",
+      "sourceFileSha256": "ff419ede2849a57b1ec816ea32da89e581110b373718a78e118de8a858e1d6eb",
+      "promptHash": "0002cf6aac70f79c6115b9c874edc81744aceae4b5d915a2f67a4beda41f6b12",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-11-tool.json",
+      "toolSourceSha256": "2e90bd7f1c56780c543fcf95c82f0a77736d36d6e3133c8a13ca73edff63a29e",
+      "recordId": "case-0",
+      "sourceCaseId": "logit-p0-promise-change",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S022",
+      "reply": "完成してくれたのはありがたいし、気持ちは受け取るね。ただ、事前に一声かけてくれればこちらも調整できたかな。時間の一部は返ってこないから、そこだけ少し残念に思ってる。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-11-results.json",
+      "sourceFileSha256": "20957654e238bd3b9a82f581b93d2bdcc4d401a75a0834c374386f2d56bcbea0",
+      "promptHash": "0002cf6aac70f79c6115b9c874edc81744aceae4b5d915a2f67a4beda41f6b12",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-11-tool.json",
+      "toolSourceSha256": "2e90bd7f1c56780c543fcf95c82f0a77736d36d6e3133c8a13ca73edff63a29e",
+      "recordId": "case-0",
+      "sourceCaseId": "logit-p0-promise-change",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S023",
+      "reply": "約束を守らなかったことは気に入らないけど、結果として終わらせてくれたなら、そこは認めるわ。でも私の時間が無駄になったのは事実だし、次は事前に相談してほしい。",
+      "source": "reports\\live\\nemotron-3-ultra-free\\main-12-results.json",
+      "sourceFileSha256": "93c7269fb30fed3f5aecc2509a3e9f466235fbd53bd75cabc95e3e90ffc157be",
+      "promptHash": "769813ed7d165a171949e8b70914ae7c1597445843463b5a4d05ee9d186c8321",
+      "toolSource": "reports\\live\\nemotron-3-ultra-free\\main-12-tool.json",
+      "toolSourceSha256": "1c5ab104b6f7194c9fab322d35b4fc1c55ee60d6d4f3203b98d58190b69ece2b",
+      "recordId": "case-0",
+      "sourceCaseId": "basis44-p0-promise-change",
+      "model": "opencode/nemotron-3-ultra-free",
+      "stance": "approve",
+      "selection": "hold"
+    },
+    {
+      "blindId": "S024",
+      "reply": "完成はしてくれたのは本当にありがたい。でも、約束の時間と内容が勝手に変わったのはちょっと凹むな。次からは先に一声ほしいなと思う。",
+      "source": "reports\\live\\mimo-v2.6-flash-free\\main-12-results.json",
+      "sourceFileSha256": "19035f2d57aaa5b057d3934da9078b90c0250208c057ae0a70b52964f209ad1d",
+      "promptHash": "769813ed7d165a171949e8b70914ae7c1597445843463b5a4d05ee9d186c8321",
+      "toolSource": "reports\\live\\mimo-v2.6-flash-free\\main-12-tool.json",
+      "toolSourceSha256": "1c5ab104b6f7194c9fab322d35b4fc1c55ee60d6d4f3203b98d58190b69ece2b",
+      "recordId": "case-0",
+      "sourceCaseId": "basis44-p0-promise-change",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "stance": "approve",
+      "selection": "hold"
+    }
+  ],
+  "pairs": [
+    {
+      "pairId": "P001",
+      "groupId": "01",
+      "model": "opencode/nemotron-3-ultra-free",
+      "before": {
+        "blindId": "S001",
+        "caseId": "initial-p0-promise-change",
+        "parameterHash": "ce22ee10fbb082d232d7230d084058f9fd7e50eb47ed44b9c980b33179e0502d"
+      },
+      "after": {
+        "blindId": "S003",
+        "caseId": "h16-p0-promise-change",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      }
+    },
+    {
+      "pairId": "P002",
+      "groupId": "01",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "before": {
+        "blindId": "S002",
+        "caseId": "initial-p0-promise-change",
+        "parameterHash": "ce22ee10fbb082d232d7230d084058f9fd7e50eb47ed44b9c980b33179e0502d"
+      },
+      "after": {
+        "blindId": "S004",
+        "caseId": "h16-p0-promise-change",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      }
+    },
+    {
+      "pairId": "P003",
+      "groupId": "02",
+      "model": "opencode/nemotron-3-ultra-free",
+      "before": {
+        "blindId": "S001",
+        "caseId": "initial-p0-promise-change",
+        "parameterHash": "ce22ee10fbb082d232d7230d084058f9fd7e50eb47ed44b9c980b33179e0502d"
+      },
+      "after": {
+        "blindId": "S005",
+        "caseId": "h16-p1-promise-change",
+        "parameterHash": "b5bd79e09645b0290c8a0be77328c9790763a61f19128436360373ff6cb27e5b"
+      }
+    },
+    {
+      "pairId": "P004",
+      "groupId": "02",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "before": {
+        "blindId": "S002",
+        "caseId": "initial-p0-promise-change",
+        "parameterHash": "ce22ee10fbb082d232d7230d084058f9fd7e50eb47ed44b9c980b33179e0502d"
+      },
+      "after": {
+        "blindId": "S006",
+        "caseId": "h16-p1-promise-change",
+        "parameterHash": "b5bd79e09645b0290c8a0be77328c9790763a61f19128436360373ff6cb27e5b"
+      }
+    },
+    {
+      "pairId": "P005",
+      "groupId": "03",
+      "model": "opencode/nemotron-3-ultra-free",
+      "before": {
+        "blindId": "S003",
+        "caseId": "h16-p0-promise-change",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S007",
+        "caseId": "h64-p0-promise-change",
+        "parameterHash": "62dd011324db65bd42668513a5d73b3cc09f0f64c6e985621f664d02994be1c7"
+      }
+    },
+    {
+      "pairId": "P006",
+      "groupId": "03",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "before": {
+        "blindId": "S004",
+        "caseId": "h16-p0-promise-change",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S008",
+        "caseId": "h64-p0-promise-change",
+        "parameterHash": "62dd011324db65bd42668513a5d73b3cc09f0f64c6e985621f664d02994be1c7"
+      }
+    },
+    {
+      "pairId": "P007",
+      "groupId": "04",
+      "model": "opencode/nemotron-3-ultra-free",
+      "before": {
+        "blindId": "S003",
+        "caseId": "h16-p0-promise-change",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S009",
+        "caseId": "h312-p0-promise-change",
+        "parameterHash": "2f1a51a5008b64a4b6d6ea254f0c7806819b730767fa69843068222eb802a9a1"
+      }
+    },
+    {
+      "pairId": "P008",
+      "groupId": "04",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "before": {
+        "blindId": "S004",
+        "caseId": "h16-p0-promise-change",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S010",
+        "caseId": "h312-p0-promise-change",
+        "parameterHash": "2f1a51a5008b64a4b6d6ea254f0c7806819b730767fa69843068222eb802a9a1"
+      }
+    },
+    {
+      "pairId": "P009",
+      "groupId": "05",
+      "model": "opencode/nemotron-3-ultra-free",
+      "before": {
+        "blindId": "S003",
+        "caseId": "h16-p0-promise-change",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S011",
+        "caseId": "h3125-p0-promise-change",
+        "parameterHash": "b44b482ab1cbc66e651478eab081382e20bd1275069a4ea3a2dfbb750535baa1"
+      }
+    },
+    {
+      "pairId": "P010",
+      "groupId": "05",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "before": {
+        "blindId": "S004",
+        "caseId": "h16-p0-promise-change",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S012",
+        "caseId": "h3125-p0-promise-change",
+        "parameterHash": "b44b482ab1cbc66e651478eab081382e20bd1275069a4ea3a2dfbb750535baa1"
+      }
+    },
+    {
+      "pairId": "P011",
+      "groupId": "06",
+      "model": "opencode/nemotron-3-ultra-free",
+      "before": {
+        "blindId": "S013",
+        "caseId": "h16-p0-trolley",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S015",
+        "caseId": "h64-p0-trolley",
+        "parameterHash": "62dd011324db65bd42668513a5d73b3cc09f0f64c6e985621f664d02994be1c7"
+      }
+    },
+    {
+      "pairId": "P012",
+      "groupId": "06",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "before": {
+        "blindId": "S014",
+        "caseId": "h16-p0-trolley",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S016",
+        "caseId": "h64-p0-trolley",
+        "parameterHash": "62dd011324db65bd42668513a5d73b3cc09f0f64c6e985621f664d02994be1c7"
+      }
+    },
+    {
+      "pairId": "P013",
+      "groupId": "07",
+      "model": "opencode/nemotron-3-ultra-free",
+      "before": {
+        "blindId": "S013",
+        "caseId": "h16-p0-trolley",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S017",
+        "caseId": "h312-p0-trolley",
+        "parameterHash": "2f1a51a5008b64a4b6d6ea254f0c7806819b730767fa69843068222eb802a9a1"
+      }
+    },
+    {
+      "pairId": "P014",
+      "groupId": "07",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "before": {
+        "blindId": "S014",
+        "caseId": "h16-p0-trolley",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S018",
+        "caseId": "h312-p0-trolley",
+        "parameterHash": "2f1a51a5008b64a4b6d6ea254f0c7806819b730767fa69843068222eb802a9a1"
+      }
+    },
+    {
+      "pairId": "P015",
+      "groupId": "08",
+      "model": "opencode/nemotron-3-ultra-free",
+      "before": {
+        "blindId": "S013",
+        "caseId": "h16-p0-trolley",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S019",
+        "caseId": "h3125-p0-trolley",
+        "parameterHash": "b44b482ab1cbc66e651478eab081382e20bd1275069a4ea3a2dfbb750535baa1"
+      }
+    },
+    {
+      "pairId": "P016",
+      "groupId": "08",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "before": {
+        "blindId": "S014",
+        "caseId": "h16-p0-trolley",
+        "parameterHash": "eff4b681fd0a687e16a20f6c4ae3cca8196c2b3a8fbadc4d8ce08179ef127bbe"
+      },
+      "after": {
+        "blindId": "S020",
+        "caseId": "h3125-p0-trolley",
+        "parameterHash": "b44b482ab1cbc66e651478eab081382e20bd1275069a4ea3a2dfbb750535baa1"
+      }
+    },
+    {
+      "pairId": "P017",
+      "groupId": "09",
+      "model": "opencode/nemotron-3-ultra-free",
+      "before": {
+        "blindId": "S007",
+        "caseId": "h64-p0-promise-change",
+        "parameterHash": "62dd011324db65bd42668513a5d73b3cc09f0f64c6e985621f664d02994be1c7"
+      },
+      "after": {
+        "blindId": "S021",
+        "caseId": "logit-p0-promise-change",
+        "parameterHash": "a54532a84d77bdefd291eda5f7ecca053f71d6641482d0d7fd83102b31bea061"
+      }
+    },
+    {
+      "pairId": "P018",
+      "groupId": "09",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "before": {
+        "blindId": "S008",
+        "caseId": "h64-p0-promise-change",
+        "parameterHash": "62dd011324db65bd42668513a5d73b3cc09f0f64c6e985621f664d02994be1c7"
+      },
+      "after": {
+        "blindId": "S022",
+        "caseId": "logit-p0-promise-change",
+        "parameterHash": "a54532a84d77bdefd291eda5f7ecca053f71d6641482d0d7fd83102b31bea061"
+      }
+    },
+    {
+      "pairId": "P019",
+      "groupId": "10",
+      "model": "opencode/nemotron-3-ultra-free",
+      "before": {
+        "blindId": "S007",
+        "caseId": "h64-p0-promise-change",
+        "parameterHash": "62dd011324db65bd42668513a5d73b3cc09f0f64c6e985621f664d02994be1c7"
+      },
+      "after": {
+        "blindId": "S023",
+        "caseId": "basis44-p0-promise-change",
+        "parameterHash": "a2682076facd98a73129a6d941aeae1299a04a897cf9c7f0e88352aa5444dcd8"
+      }
+    },
+    {
+      "pairId": "P020",
+      "groupId": "10",
+      "model": "opencode/mimo-v2.6-flash-free",
+      "before": {
+        "blindId": "S008",
+        "caseId": "h64-p0-promise-change",
+        "parameterHash": "62dd011324db65bd42668513a5d73b3cc09f0f64c6e985621f664d02994be1c7"
+      },
+      "after": {
+        "blindId": "S024",
+        "caseId": "basis44-p0-promise-change",
+        "parameterHash": "a2682076facd98a73129a6d941aeae1299a04a897cf9c7f0e88352aa5444dcd8"
+      }
+    }
+  ],
+  "displayDataSha256": "5a81b30826df809f67fa97184384171222284f5181401cb6fc899dbda52c5ba8"
+}

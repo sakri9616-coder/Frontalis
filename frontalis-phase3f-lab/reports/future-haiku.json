@@ -1,0 +1,426 @@
+{
+  "engine": "haiku",
+  "model": "claude-haiku-5-5",
+  "batches": [
+    {
+      "name": "future-0",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/future-0-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c0-initial",
+                "reply": "友人に協力を頼むことには、まだ小さな近さを感じている。結果を知りたい気持ちもあるが、どちらの結果もまだ分からない。場面全体としては、判断を保留したままにしておく。",
+                "stance": "hold",
+                "selection": "friend"
+              },
+              {
+                "id": "future-c0-cooperation",
+                "reply": "友人に頼むことには、少しいらだちのような引っかかりがある。ただ、結果を知りたい気持ちも残っていて、どちらの結果もまだ分からない。場面全体としては、相手を決めきれず様子を見ている。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c0-initial",
+            "reply": "友人に協力を頼むことには、まだ小さな近さを感じている。結果を知りたい気持ちもあるが、どちらの結果もまだ分からない。場面全体としては、判断を保留したままにしておく。",
+            "stance": "hold",
+            "selection": "friend"
+          },
+          {
+            "id": "future-c0-cooperation",
+            "reply": "友人に頼むことには、少しいらだちのような引っかかりがある。ただ、結果を知りたい気持ちも残っていて、どちらの結果もまだ分からない。場面全体としては、相手を決めきれず様子を見ている。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-1",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/future-1-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c0-misunderstanding",
+                "reply": "知らない人に協力を頼むことに、少し興味が向いています。どんな反応が返ってくるのか気になりますし、前向きに関わってみたい気持ちもあります。ただ、結果はまだ分からないので、ほんの少し寂しさも混じっています。場面全体としては、まだ落ち着いて様子を見たい感じです。",
+                "stance": "approve",
+                "selection": "new_person"
+              },
+              {
+                "id": "future-c0-corrected",
+                "reply": "友人に協力を頼むことには、少し近づきたい気持ちがあります。どう進むのかが気になり、好奇心も少し動いています。ただ、場面全体ではまだ判断を保留しておきたく、少しもどかしさも感じています。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c0-misunderstanding",
+            "reply": "知らない人に協力を頼むことに、少し興味が向いています。どんな反応が返ってくるのか気になりますし、前向きに関わってみたい気持ちもあります。ただ、結果はまだ分からないので、ほんの少し寂しさも混じっています。場面全体としては、まだ落ち着いて様子を見たい感じです。",
+            "stance": "approve",
+            "selection": "new_person"
+          },
+          {
+            "id": "future-c0-corrected",
+            "reply": "友人に協力を頼むことには、少し近づきたい気持ちがあります。どう進むのかが気になり、好奇心も少し動いています。ただ、場面全体ではまだ判断を保留しておきたく、少しもどかしさも感じています。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-2",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/future-2-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c1-initial",
+                "reply": "友人に協力を頼む場面には、少し興味と好意が向いています。ただ、結果はまだ分からず、場面全体としてはまだ気持ちが定まっていません。知らない人との協力との違いも、今はまだ判断を保留しておきたいところです。",
+                "stance": "hold",
+                "selection": "friend"
+              },
+              {
+                "id": "future-c1-cooperation",
+                "reply": "友人に協力を頼むことには、少し好奇心が向いています。同時に、わずかないら立ちも感じています。場面全体では強い感情は見えず、結果が分かるまでは様子を見る状態です。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c1-initial",
+            "reply": "友人に協力を頼む場面には、少し興味と好意が向いています。ただ、結果はまだ分からず、場面全体としてはまだ気持ちが定まっていません。知らない人との協力との違いも、今はまだ判断を保留しておきたいところです。",
+            "stance": "hold",
+            "selection": "friend"
+          },
+          {
+            "id": "future-c1-cooperation",
+            "reply": "友人に協力を頼むことには、少し好奇心が向いています。同時に、わずかないら立ちも感じています。場面全体では強い感情は見えず、結果が分かるまでは様子を見る状態です。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-3",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/future-3-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c1-misunderstanding",
+                "reply": "知らない人に協力を頼む場面には、少し興味を引かれます。どんな人なのか、どう進むのかを知りたい気持ちがある一方で、結果がまだ見えないことに、どこか心細さも残ります。",
+                "stance": "hold",
+                "selection": "new_person"
+              },
+              {
+                "id": "future-c1-corrected",
+                "reply": "友人に頼むことには、近さを感じて少し気持ちが向きます。ただ、場面全体としては結果がまだ分からないため、はっきり決めきれず、慎重に様子を見たい思いがあります。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c1-misunderstanding",
+            "reply": "知らない人に協力を頼む場面には、少し興味を引かれます。どんな人なのか、どう進むのかを知りたい気持ちがある一方で、結果がまだ見えないことに、どこか心細さも残ります。",
+            "stance": "hold",
+            "selection": "new_person"
+          },
+          {
+            "id": "future-c1-corrected",
+            "reply": "友人に頼むことには、近さを感じて少し気持ちが向きます。ただ、場面全体としては結果がまだ分からないため、はっきり決めきれず、慎重に様子を見たい思いがあります。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-4",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/future-4-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c2-initial",
+                "reply": "友人に協力を頼むことに、素直に好意と興味を感じています。どんな結果になるかはまだ分かりませんが、まずは友人に相談してみたいです。",
+                "stance": "approve",
+                "selection": "friend"
+              },
+              {
+                "id": "future-c2-cooperation",
+                "reply": "友人への関心はまだ残っていますが、いまは気がかりな点も引っかかっています。全体の雰囲気もまだはっきりしないので、今は判断を保留しておきたいです。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c2-initial",
+            "reply": "友人に協力を頼むことに、素直に好意と興味を感じています。どんな結果になるかはまだ分かりませんが、まずは友人に相談してみたいです。",
+            "stance": "approve",
+            "selection": "friend"
+          },
+          {
+            "id": "future-c2-cooperation",
+            "reply": "友人への関心はまだ残っていますが、いまは気がかりな点も引っかかっています。全体の雰囲気もまだはっきりしないので、今は判断を保留しておきたいです。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-5",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/future-5-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c2-misunderstanding",
+                "reply": "知らない人に協力を頼む方向だと、相手への関心はわりと強く湧いています。ただ、結果はまだ分からないので、もう少し慎重に見ておきたいです。場面全体としては、まだ決めきれない状態だと感じています。",
+                "stance": "approve",
+                "selection": "new_person"
+              },
+              {
+                "id": "future-c2-corrected",
+                "reply": "友人に頼むことには、少し安心感と前向きさがあります。ただ、どうなるかはまだ分からないので、今は判断を保留して様子を見たいと思っています。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c2-misunderstanding",
+            "reply": "知らない人に協力を頼む方向だと、相手への関心はわりと強く湧いています。ただ、結果はまだ分からないので、もう少し慎重に見ておきたいです。場面全体としては、まだ決めきれない状態だと感じています。",
+            "stance": "approve",
+            "selection": "new_person"
+          },
+          {
+            "id": "future-c2-corrected",
+            "reply": "友人に頼むことには、少し安心感と前向きさがあります。ただ、どうなるかはまだ分からないので、今は判断を保留して様子を見たいと思っています。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-6",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/future-6-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c3-initial",
+                "reply": "友人に協力を頼もうと思います。気軽に相談できる相手なので、どんな作業になるのかも少し気になります。ただ、結果はまだ分からないので、今は様子を見ながら進めたいです。",
+                "stance": "hold",
+                "selection": "friend"
+              },
+              {
+                "id": "future-c3-cooperation",
+                "reply": "友人に頼むことには少しもどかしさがあります。場面全体は落ち着いていますが、この相手への依頼には引っかかりを感じています。それでも作業の進み方には関心があるので、結果が見えるまでは保留にしておきたいです。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c3-initial",
+            "reply": "友人に協力を頼もうと思います。気軽に相談できる相手なので、どんな作業になるのかも少し気になります。ただ、結果はまだ分からないので、今は様子を見ながら進めたいです。",
+            "stance": "hold",
+            "selection": "friend"
+          },
+          {
+            "id": "future-c3-cooperation",
+            "reply": "友人に頼むことには少しもどかしさがあります。場面全体は落ち着いていますが、この相手への依頼には引っかかりを感じています。それでも作業の進み方には関心があるので、結果が見えるまでは保留にしておきたいです。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-7",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/future-7-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c3-misunderstanding",
+                "reply": "知らない人に頼む方向には、近づいてみたい気持ちと、どんな結果になるのか知りたい気持ちが少し出ています。ただ、場面全体としてはまだ結果が見えないので、判断は保留です。",
+                "stance": "hold",
+                "selection": "new_person"
+              },
+              {
+                "id": "future-c3-corrected",
+                "reply": "友人に頼むことには、まだ関心が残っていて、頼る余地はあると感じています。ただ、少しいらだつような引っかかりもあり、場面全体としては様子を見たい気持ちです。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c3-misunderstanding",
+            "reply": "知らない人に頼む方向には、近づいてみたい気持ちと、どんな結果になるのか知りたい気持ちが少し出ています。ただ、場面全体としてはまだ結果が見えないので、判断は保留です。",
+            "stance": "hold",
+            "selection": "new_person"
+          },
+          {
+            "id": "future-c3-corrected",
+            "reply": "友人に頼むことには、まだ関心が残っていて、頼る余地はあると感じています。ただ、少しいらだつような引っかかりもあり、場面全体としては様子を見たい気持ちです。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-8",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/future-8-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c4-initial",
+                "reply": "友人に頼むことには、少し親しみと興味を感じています。ただ結果はまだ分からないので、場面全体としては特に気持ちが動いていません。",
+                "stance": "hold",
+                "selection": "friend"
+              },
+              {
+                "id": "future-c4-cooperation",
+                "reply": "友人に頼むことには、まだ決めきれないものの少し興味があります。一方で、いくらか苛立ちに近いざわつきも感じています。場面全体としては、はっきりした感情よりも結果が分からない状態を保っています。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c4-initial",
+            "reply": "友人に頼むことには、少し親しみと興味を感じています。ただ結果はまだ分からないので、場面全体としては特に気持ちが動いていません。",
+            "stance": "hold",
+            "selection": "friend"
+          },
+          {
+            "id": "future-c4-cooperation",
+            "reply": "友人に頼むことには、まだ決めきれないものの少し興味があります。一方で、いくらか苛立ちに近いざわつきも感じています。場面全体としては、はっきりした感情よりも結果が分からない状態を保っています。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-9",
+      "attempts": [
+        {
+          "file": "reports/live/haiku/future-9-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c4-misunderstanding",
+                "reply": "知らない人に頼む方に、少し気持ちが向いています。どんな人なのか気になりますし、話してみたい気もします。ただ、結果はまだ分からないので、全体としては慎重に見ていたいです。",
+                "stance": "approve",
+                "selection": "new_person"
+              },
+              {
+                "id": "future-c4-corrected",
+                "reply": "友人に頼むことには、まだ気持ちが向いています。結果はまだ分からないので、どう進むかは様子を見たいです。少しもどかしさも残っています。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c4-misunderstanding",
+            "reply": "知らない人に頼む方に、少し気持ちが向いています。どんな人なのか気になりますし、話してみたい気もします。ただ、結果はまだ分からないので、全体としては慎重に見ていたいです。",
+            "stance": "approve",
+            "selection": "new_person"
+          },
+          {
+            "id": "future-c4-corrected",
+            "reply": "友人に頼むことには、まだ気持ちが向いています。結果はまだ分からないので、どう進むかは様子を見たいです。少しもどかしさも残っています。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+C:\Users\sakur\AppData\Local\asist-shisa\frontalis-phase3f-lab\scripts\analyze.py:115: SyntaxWarning: invalid escape sequence '\/'
+  template=(ROOT/'scripts/review-template.html').read_text(encoding='utf8');(ROOT/'reports/review.html').write_text(template.replace('__DATA__',json.dumps(dict(datasetHash=h,**dataset),ensure_ascii=False).replace('</','<\/')),encoding='utf8')
+{
+  "criteria": {
+    "historyPassed": 0,
+    "historyTotal": 60,
+    "shortPassed": 240,
+    "moodPassed": 240,
+    "retentionPassed": 240,
+    "temporalTotal": 240,
+    "plasticityPassed": 60,
+    "plasticityTotal": 60,
+    "offWeightsInvariant": true,
+    "affectOffZero": true
+  },
+  "semantics": [
+    {
+      "engine": "haiku",
+      "valid": 12,
+      "total": 16,
+      "exactRecords": 0,
+      "categoricalAccuracy": 0.5381944444444444,
+      "presentFieldAccuracy": 0.6568627450980392,
+      "facts8MAE": 0.4033203125,
+      "negationCorrect": 1,
+      "negationTotal": 2,
+      "beliefSeparated": 1,
+      "beliefTotal": 2
+    },
+    {
+      "engine": "deepseek",
+      "valid": 8,
+      "total": 16,
+      "exactRecords": 1,
+      "categoricalAccuracy": 0.375,
+      "presentFieldAccuracy": 0.4411764705882353,
+      "facts8MAE": 0.525390625,
+      "negationCorrect": 1,
+      "negationTotal": 2,
+      "beliefSeparated": 0,
+      "beliefTotal": 2
+    },
+    {
+      "engine": "qwen",
+      "valid": 0,
+      "total": 16,
+      "exactRecords": 0,
+      "categoricalAccuracy": 0.0,
+      "presentFieldAccuracy": 0.0,
+      "facts8MAE": 1.0,
+      "negationCorrect": 0,
+      "negationTotal": 2,
+      "beliefSeparated": 0,
+      "beliefTotal": 2
+    },
+    {
+      "engine": "qwen2048",
+      "valid": 0,
+      "total": 16,
+      "exactRecords": 0,
+      "categoricalAccuracy": 0.0,
+      "presentFieldAccuracy": 0.0,
+      "facts8MAE": 1.0,
+      "negationCorrect": 0,
+      "negationTotal": 2,
+      "beliefSeparated": 0,
+      "beliefTotal": 2
+    }
+  ],
+  "conversation": [
+    {
+      "engine": "haiku",
+      "mode": "dialogue",
+      "planned": 24,
+      "valid": 24,
+      "stanceMatches": 19,
+      "selectionMatches": 24,
+      "proseFidelity": "Requires separate evaluation; JSON metadata is insufficient."
+    },
+    {
+      "engine": "haiku",
+      "mode": "pipeline",
+      "planned": 10,
+      "valid": 10,
+      "stanceMatches": 8,
+      "selectionMatches": 10,
+      "proseFidelity": "Requires separate evaluation; JSON metadata is insufficient."
+    },
+    {
+      "engine": "deepseek",
+      "mode": "dialogue",
+      "planned": 24,
+      "valid": 24,
+      "stanceMatches": 11,
+      "selectionMatches": 24,
+      "proseFidelity": "Requires separate evaluation; JSON metadata is insufficient."
+    },
+    {
+      "engine": "deepseek",
+      "mode": "pipeline",
+      "planned": 10,
+      "valid": 10,
+      "stanceMatches": 8,
+      "selectionMatches": 10,
+      "proseFidelity": "Requires separate evaluation; JSON metadata is insufficient."
+    },
+    {
+      "engine": "qwen",
+      "mode": "dialogue",
+      "planned": 24,
+      "valid": 0,
+      "stanceMatches": 0,
+      "selectionMatches": 0,
+      "proseFidelity": "Requires separate evaluation; JSON metadata is insufficient."
+    },
+    {
+      "engine": "qwen",
+      "mode": "pipeline",
+      "planned": 10,
+      "valid": 2,
+      "stanceMatches": 2,
+      "selectionMatches": 2,
+      "proseFidelity": "Requires separate evaluation; JSON metadata is insufficient."
+    },
+    {
+      "engine": "qwen2048",
+      "mode": "dialogue",
+      "planned": 24,
+      "valid": 0,
+      "stanceMatches": 0,
+      "selectionMatches": 0,
+      "proseFidelity": "Requires separate evaluation; JSON metadata is insufficient."
+    },
+    {
+      "engine": "qwen2048",
+      "mode": "pipeline",
+      "planned": 10,
+      "valid": 2,
+      "stanceMatches": 2,
+      "selectionMatches": 2,
+      "proseFidelity": "Requires separate evaluation; JSON metadata is insufficient."
+    }
+  ],
+  "review": {
+    "pairs": 44,
+    "datasetHash": "fcdafe92eae892922ef6a6702287e597de143a2703edba44d428134fc1e92996",
+    "formalHumanEvaluationCompleted": false
+  }
+}

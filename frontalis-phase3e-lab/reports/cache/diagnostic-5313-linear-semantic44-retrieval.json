@@ -1,0 +1,10 @@
+{
+  "seed": 5313,
+  "teacher": "linear",
+  "representation": "semantic44",
+  "method": "retrieval",
+  "validationMSE": 0.15829009474284325,
+  "testMSE": 0.16053127586147414,
+  "preregistrationSha256": "29e2c6e13ace711a427824bcdf81e59c0070f5bf9671e6c329e8801d570fd58c",
+  "elapsedSeconds": 0.012674300000071526
+}

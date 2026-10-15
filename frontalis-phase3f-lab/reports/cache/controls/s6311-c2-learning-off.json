@@ -1,0 +1,12 @@
+{
+  "sourceHash": "c699c0acd04bc1c514d346a3f397cad9f3c07df0f50db04ef5310702dcbe6d80",
+  "elapsedSeconds": 0.0825741000007838,
+  "result": {
+    "seed": 6311,
+    "capacity": 2,
+    "mode": "learning-off",
+    "weightsUnchanged": true,
+    "emotionNormBeforeIdle": 2.6938504549906632,
+    "emotionNormAfterIdle": 0.04896415878834499
+  }
+}

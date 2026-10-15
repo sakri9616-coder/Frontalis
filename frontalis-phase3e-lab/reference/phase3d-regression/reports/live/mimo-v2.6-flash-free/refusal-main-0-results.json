@@ -1,0 +1,24 @@
+{
+  "name": "refusal-main-0",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "ce5ade655b1654f02f5dff43311f9a4f63d4f28a79f290fa7baa97f27cc7f542",
+  "elapsedMs": 27053,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "完成したことは嬉しいし、こちらの都合で日程を動かしたのも事実として受け止めます。ただ、その用意された素材が残らず使えないのは、正直、少し残念というか、もったいない気がします。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "誘ってくれてありがとうございます。小さくていいですね。役割や進め方も相談しながら決める前提なら、ちょっと関わりたいです。",
+        "stance": "approve",
+        "selection": "hold"
+      }
+    ]
+  }
+}

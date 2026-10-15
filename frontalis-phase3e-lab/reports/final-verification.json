@@ -1,0 +1,108 @@
+{
+  "completed": true,
+  "mainConditions": 240,
+  "learningOffConditions": 30,
+  "stressConditions": 60,
+  "diagnosticConditions": 144,
+  "followupConditions": 6,
+  "restoredModelStates": 334,
+  "dialogueToolCasesExact": 24,
+  "languageResponses": 92,
+  "languageExpected": 96,
+  "humanComparisonPairs": 46,
+  "newTests": 34,
+  "priorRegressionTests": 94,
+  "formalHumanEvaluation": false,
+  "sourceChanges": [],
+  "additionalSourceChanges": [],
+  "preservation": {
+    "files": 6618,
+    "changed": [],
+    "missing": [],
+    "success": true
+  },
+  "keyPresentForCheck": true,
+  "secretMatches": 0,
+  "workbenchSessions": [
+    {
+      "id": "b5d0a66aa79646268f27dbd03fc323b4",
+      "generation": 2,
+      "parameterHash": "88305616622752a596f813c7ac228714eff55be097b935ceff801f73e2439ae9",
+      "origin": {
+        "seed": 5311,
+        "representation": "semantic44",
+        "capacityIndex": 0,
+        "fromFormed": false,
+        "exploratory": true
+      },
+      "expressionChecks": [
+        {
+          "path": "playground\\states\\b5d0a66aa79646268f27dbd03fc323b4\\expression-15a30be135804d66b78b00110d5c9c05.json",
+          "readOnlyExact": true
+        },
+        {
+          "path": "playground\\states\\b5d0a66aa79646268f27dbd03fc323b4\\expression-6877563d26794b0592eeafc2fca21fac.json",
+          "readOnlyExact": true
+        }
+      ],
+      "experienceFiles": 2
+    },
+    {
+      "id": "e0fb92bc19fc4e2ab84f0e14001bb5cb",
+      "generation": 0,
+      "parameterHash": "eb7a626758097c106c9ac7f2e907de1227605db0b8ff630a460ce5e63177ab5b",
+      "origin": {
+        "seed": 5311,
+        "representation": "raw8",
+        "capacityIndex": 0,
+        "fromFormed": false,
+        "outcomeView": "full",
+        "exploratory": true
+      },
+      "expressionChecks": [],
+      "experienceFiles": 0
+    },
+    {
+      "id": "e925fe9a6bd54b72b1f7ae24ac3b608e",
+      "generation": 1,
+      "parameterHash": "4dc6cf142c338bdb576e6bfc50b24239383d4fc3f029b4c7dada2ba8942bb81c",
+      "origin": {
+        "seed": 5311,
+        "representation": "semantic44",
+        "capacityIndex": 3,
+        "fromFormed": false,
+        "outcomeView": "facts8-neutral-context",
+        "exploratory": true
+      },
+      "expressionChecks": [
+        {
+          "path": "playground\\states\\e925fe9a6bd54b72b1f7ae24ac3b608e\\expression-8d59f96940fd4a60bf339c2933d1b90d.json",
+          "readOnlyExact": true
+        }
+      ],
+      "experienceFiles": 1
+    }
+  ],
+  "exportRestoredExactly": true,
+  "uiChecks": [
+    "two sequential actual Haiku interpretations and self-learning updates",
+    "old and new generation restored with original parameter hashes",
+    "read-only language output",
+    "raw8 selector creates 526 parameters",
+    "exploratory rich-input state learns via separated outcome view",
+    "human rating survives page reload",
+    "rating JSON download and import",
+    "all UI smoke ratings reset to unscored"
+  ],
+  "freshReproductionSmoke": {
+    "path": "../frontalis-phase3e-repro-smoke",
+    "sourceFiles": 37,
+    "oldModelsAndResultsCopied": false,
+    "newPersonasTrained": 4,
+    "allRestoredExactly": true,
+    "fullExperimentRepeated": false
+  },
+  "primaryCandidateSelectionCounts": {
+    "B": 24
+  }
+}

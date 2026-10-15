@@ -1,0 +1,9 @@
+{
+  "copy": "C:\\Users\\sakur\\AppData\\Local\\asist-shisa\\frontalis-phase3d-repro-final-check",
+  "demoPresent": true,
+  "onlineOnlyCLI": true,
+  "emptyModels": true,
+  "emptyReports": true,
+  "runtimeNotCopied": true,
+  "initialInspectionFailure": "Inspection used Path(\".\").parent instead of absolute workspace; copy itself succeeded. Corrected absolute path verified."
+}

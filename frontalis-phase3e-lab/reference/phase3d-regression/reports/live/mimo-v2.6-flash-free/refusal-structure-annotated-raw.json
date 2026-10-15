@@ -1,0 +1,13 @@
+{
+  "code": 0,
+  "elapsedMs": 20037,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792029069528,\"sessionID\":\"ses_ec2be8053ffenuGjaVwyyPPxaD\",\"part\":{\"id\":\"prt_13d4190d8001Wft8HDu1uDf714\",\"sessionID\":\"ses_ec2be8053ffenuGjaVwyyPPxaD\",\"messageID\":\"msg_13d418965001arZ6W4T4BwkWWi\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792029078242,\"sessionID\":\"ses_ec2be8053ffenuGjaVwyyPPxaD\",\"part\":{\"id\":\"prt_13d41a9c3001YL81P8HKK2Ac3p\",\"sessionID\":\"ses_ec2be8053ffenuGjaVwyyPPxaD\",\"messageID\":\"msg_13d418965001arZ6W4T4BwkWWi\",\"type\":\"text\",\"text\":\"{\\\"calls\\\":[{\\\"name\\\":\\\"frontalis_evaluate\\\",\\\"arguments\\\":{\\\"query_id\\\":\\\"case-0\\\",\\\"space\\\":\\\"relational\\\",\\\"features\\\":[0.8,0.3,0.75,0.6,0.65,0.35,0.25,0.8],\\\"basis\\\":\\\"affinity\\\"}},{\\\"name\\\":\\\"frontalis_evaluate\\\",\\\"arguments\\\":{\\\"query_id\\\":\\\"case-1\\\",\\\"space\\\":\\\"relational\\\",\\\"features\\\":[0.85,0.2,0.55,0.2,0.65,0.7,0.45,0.75],\\\"basis\\\":\\\"affinity\\\"}}]}\",\"time\":{\"start\":1792029075907,\"end\":1792029078242}}}\r\n{\"type\":\"step_finish\",\"timestamp\":1792029078249,\"sessionID\":\"ses_ec2be8053ffenuGjaVwyyPPxaD\",\"part\":{\"id\":\"prt_13d41b2e9001QcQE5RurRl0Ejb\",\"sessionID\":\"ses_ec2be8053ffenuGjaVwyyPPxaD\",\"messageID\":\"msg_13d418965001arZ6W4T4BwkWWi\",\"type\":\"step-finish\",\"reason\":\"stop\",\"cost\":0,\"tokens\":{\"input\":2182,\"output\":136,\"reasoning\":241,\"cache\":{\"read\":6144,\"write\":0}}}}\r\n",
+  "stderr": "",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "text": "{\"calls\":[{\"name\":\"frontalis_evaluate\",\"arguments\":{\"query_id\":\"case-0\",\"space\":\"relational\",\"features\":[0.8,0.3,0.75,0.6,0.65,0.35,0.25,0.8],\"basis\":\"affinity\"}},{\"name\":\"frontalis_evaluate\",\"arguments\":{\"query_id\":\"case-1\",\"space\":\"relational\",\"features\":[0.85,0.2,0.55,0.2,0.65,0.7,0.45,0.75],\"basis\":\"affinity\"}}]}",
+  "toolCalls": 0,
+  "costs": [
+    0
+  ],
+  "success": true
+}

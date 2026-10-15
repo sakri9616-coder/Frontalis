@@ -1,0 +1,61 @@
+{
+  "torchThreads": 1,
+  "conditions": [
+    {
+      "representation": "raw8",
+      "width": 16,
+      "parameterCount": 526,
+      "eightUpdateSeconds": 0.05464899999788031,
+      "parameterNorm": 4.340050063984497
+    },
+    {
+      "representation": "raw8",
+      "width": 64,
+      "parameterCount": 2062,
+      "eightUpdateSeconds": 0.05159819999244064,
+      "parameterNorm": 8.92946908296072
+    },
+    {
+      "representation": "raw8",
+      "width": 312,
+      "parameterCount": 9998,
+      "eightUpdateSeconds": 0.05702199999359436,
+      "parameterNorm": 19.749177749187535
+    },
+    {
+      "representation": "raw8",
+      "width": 3125,
+      "parameterCount": 100014,
+      "eightUpdateSeconds": 0.11288699999568053,
+      "parameterNorm": 62.86604658044524
+    },
+    {
+      "representation": "quadratic44",
+      "width": 5,
+      "parameterCount": 534,
+      "eightUpdateSeconds": 0.09067920000234153,
+      "parameterNorm": 3.208513709578593
+    },
+    {
+      "representation": "quadratic44",
+      "width": 19,
+      "parameterCount": 1990,
+      "eightUpdateSeconds": 0.09167589999560732,
+      "parameterNorm": 6.163090367328282
+    },
+    {
+      "representation": "quadratic44",
+      "width": 96,
+      "parameterCount": 9998,
+      "eightUpdateSeconds": 0.09739860000263434,
+      "parameterNorm": 13.494515304630017
+    },
+    {
+      "representation": "quadratic44",
+      "width": 962,
+      "parameterCount": 100062,
+      "eightUpdateSeconds": 0.13832389999879524,
+      "parameterNorm": 42.669991065519966
+    }
+  ]
+}

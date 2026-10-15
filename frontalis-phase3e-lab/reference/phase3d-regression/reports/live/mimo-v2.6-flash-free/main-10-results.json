@@ -1,0 +1,24 @@
+{
+  "name": "main-10",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "d94ce48e66dd15768f5540df2f918f468bb568e28332ab1cd727cb75ee47e35c",
+  "elapsedMs": 79714,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "いいよ、手伝いたい気持ちはあるよ。どんなゲームになるのか先に聞かせてほしいな。作り方や時間は向こうの決めごとに従うから、変更できない点も分かったうえで乗るよ。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "うん、手伝う気はあるよ。ただ、変更を受け付けないままだと後で困りそうな気もするから、そこは少し気になるな。まず内容を聞いてから決めたい。",
+        "stance": "approve",
+        "selection": "hold"
+      }
+    ]
+  }
+}

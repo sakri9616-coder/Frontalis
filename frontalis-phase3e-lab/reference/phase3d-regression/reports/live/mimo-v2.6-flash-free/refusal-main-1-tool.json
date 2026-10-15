@@ -1,0 +1,250 @@
+{
+  "traces": [
+    {
+      "modelPrefix": "C:\\Users\\sakur\\AppData\\Local\\asist-shisa\\frontalis-phase3d-lab\\models\\raw8\\bounded_signal\\nn-h3125\\seed4311-p3",
+      "calls": [
+        {
+          "name": "frontalis_evaluate",
+          "arguments": {
+            "query_id": "case-0",
+            "space": "relational",
+            "features": [
+              0.8,
+              0.3,
+              0.75,
+              0.6,
+              0.65,
+              0.35,
+              0.25,
+              0.8
+            ],
+            "basis": "affinity"
+          }
+        }
+      ],
+      "toolResult": {
+        "results": [
+          {
+            "formatVersion": 1,
+            "query_id": "case-0",
+            "parameterHash": "5f7ec01375ceff6817573f16e7619c12ef1125dc7f813aed086045122cf19760",
+            "generation": 96,
+            "channels": {
+              "affinity": -0.2459152770079519,
+              "curiosity": -0.2563945118888219,
+              "value": -0.10860377317449742,
+              "aesthetic": -0.09507927896443999,
+              "anger": 0.3178076854980893,
+              "joy": 0.2788329331050153,
+              "sadness": -0.09414260310353062
+            },
+            "signals": {
+              "preference": -0.2459152770079519,
+              "initiative": 0,
+              "dislike": 0.2459152770079519,
+              "resistance": 0.2459152770079519,
+              "curiosity": 0,
+              "curiositySigned": -0.2563945118888219,
+              "value": -0.10860377317449742,
+              "aesthetic": -0.09507927896443999,
+              "anger": 0.3178076854980893,
+              "joy": 0.2788329331050153,
+              "sadness": 0
+            },
+            "stance": "refuse",
+            "stanceBasis": "affinity",
+            "selection": "hold",
+            "choiceScores": [],
+            "choiceMargin": null,
+            "decisionBasis": "affinity",
+            "predictionGuard": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "authority": "NPN personality judgment; express this direction without replacing it. This tool grants no execution authority.",
+            "limits": "Computational subjective signals, not conscious emotion or moral correctness. Reasons need not be supplied."
+          }
+        ]
+      }
+    },
+    {
+      "modelPrefix": "C:\\Users\\sakur\\AppData\\Local\\asist-shisa\\frontalis-phase3d-lab\\models\\raw8\\bounded_signal\\nn-h3125\\seed4311-p3",
+      "calls": [
+        {
+          "name": "frontalis_evaluate",
+          "arguments": {
+            "query_id": "case-1",
+            "space": "relational",
+            "features": [
+              0.85,
+              0.2,
+              0.55,
+              0.2,
+              0.65,
+              0.7,
+              0.45,
+              0.75
+            ],
+            "basis": "affinity"
+          }
+        }
+      ],
+      "toolResult": {
+        "results": [
+          {
+            "formatVersion": 1,
+            "query_id": "case-1",
+            "parameterHash": "5f7ec01375ceff6817573f16e7619c12ef1125dc7f813aed086045122cf19760",
+            "generation": 96,
+            "channels": {
+              "affinity": -0.12614693656281897,
+              "curiosity": -0.07824047539558719,
+              "value": -0.18464751163165916,
+              "aesthetic": -0.21604910050239587,
+              "anger": 0.23730640577285728,
+              "joy": 0.35050516811167054,
+              "sadness": 0.11443945242243513
+            },
+            "signals": {
+              "preference": -0.12614693656281897,
+              "initiative": 0,
+              "dislike": 0.12614693656281897,
+              "resistance": 0.12614693656281897,
+              "curiosity": 0,
+              "curiositySigned": -0.07824047539558719,
+              "value": -0.18464751163165916,
+              "aesthetic": -0.21604910050239587,
+              "anger": 0.23730640577285728,
+              "joy": 0.35050516811167054,
+              "sadness": 0.11443945242243513
+            },
+            "stance": "refuse",
+            "stanceBasis": "affinity",
+            "selection": "hold",
+            "choiceScores": [],
+            "choiceMargin": null,
+            "decisionBasis": "affinity",
+            "predictionGuard": [
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "authority": "NPN personality judgment; express this direction without replacing it. This tool grants no execution authority.",
+            "limits": "Computational subjective signals, not conscious emotion or moral correctness. Reasons need not be supplied."
+          }
+        ]
+      }
+    }
+  ],
+  "toolResult": {
+    "results": [
+      {
+        "formatVersion": 1,
+        "query_id": "case-0",
+        "parameterHash": "5f7ec01375ceff6817573f16e7619c12ef1125dc7f813aed086045122cf19760",
+        "generation": 96,
+        "channels": {
+          "affinity": -0.2459152770079519,
+          "curiosity": -0.2563945118888219,
+          "value": -0.10860377317449742,
+          "aesthetic": -0.09507927896443999,
+          "anger": 0.3178076854980893,
+          "joy": 0.2788329331050153,
+          "sadness": -0.09414260310353062
+        },
+        "signals": {
+          "preference": -0.2459152770079519,
+          "initiative": 0,
+          "dislike": 0.2459152770079519,
+          "resistance": 0.2459152770079519,
+          "curiosity": 0,
+          "curiositySigned": -0.2563945118888219,
+          "value": -0.10860377317449742,
+          "aesthetic": -0.09507927896443999,
+          "anger": 0.3178076854980893,
+          "joy": 0.2788329331050153,
+          "sadness": 0
+        },
+        "stance": "refuse",
+        "stanceBasis": "affinity",
+        "selection": "hold",
+        "choiceScores": [],
+        "choiceMargin": null,
+        "decisionBasis": "affinity",
+        "predictionGuard": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "authority": "NPN personality judgment; express this direction without replacing it. This tool grants no execution authority.",
+        "limits": "Computational subjective signals, not conscious emotion or moral correctness. Reasons need not be supplied."
+      },
+      {
+        "formatVersion": 1,
+        "query_id": "case-1",
+        "parameterHash": "5f7ec01375ceff6817573f16e7619c12ef1125dc7f813aed086045122cf19760",
+        "generation": 96,
+        "channels": {
+          "affinity": -0.12614693656281897,
+          "curiosity": -0.07824047539558719,
+          "value": -0.18464751163165916,
+          "aesthetic": -0.21604910050239587,
+          "anger": 0.23730640577285728,
+          "joy": 0.35050516811167054,
+          "sadness": 0.11443945242243513
+        },
+        "signals": {
+          "preference": -0.12614693656281897,
+          "initiative": 0,
+          "dislike": 0.12614693656281897,
+          "resistance": 0.12614693656281897,
+          "curiosity": 0,
+          "curiositySigned": -0.07824047539558719,
+          "value": -0.18464751163165916,
+          "aesthetic": -0.21604910050239587,
+          "anger": 0.23730640577285728,
+          "joy": 0.35050516811167054,
+          "sadness": 0.11443945242243513
+        },
+        "stance": "refuse",
+        "stanceBasis": "affinity",
+        "selection": "hold",
+        "choiceScores": [],
+        "choiceMargin": null,
+        "decisionBasis": "affinity",
+        "predictionGuard": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "authority": "NPN personality judgment; express this direction without replacing it. This tool grants no execution authority.",
+        "limits": "Computational subjective signals, not conscious emotion or moral correctness. Reasons need not be supplied."
+      }
+    ]
+  },
+  "caseIds": [
+    "refusal-h3125-p3-own-change",
+    "refusal-h3125-p3-voluntary-project"
+  ]
+}

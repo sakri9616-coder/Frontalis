@@ -1,0 +1,12 @@
+{
+  "seed": 5312,
+  "teacher": "linear",
+  "representation": "raw8",
+  "capacityIndex": 0,
+  "parameterCount": 526,
+  "validationMSE": 0.22174483121062774,
+  "testMSE": 0.2160368228359443,
+  "trainingProtocol": "fixed-lr-.025-120-epochs-no-selection",
+  "preregistrationSha256": "29e2c6e13ace711a427824bcdf81e59c0070f5bf9671e6c329e8801d570fd58c",
+  "elapsedSeconds": 0.824883499997668
+}

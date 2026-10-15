@@ -1,0 +1,1443 @@
+{
+  "scope": "Implementation and research experiments complete; scientific successes and failures remain separate.",
+  "primaryFreezeHash": "c699c0acd04bc1c514d346a3f397cad9f3c07df0f50db04ef5310702dcbe6d80",
+  "additionalFreezes": {
+    "audit-freeze.json": "eb4f879e3985471dc8458895c4452f9a68c9850c2f6433b0e34ab07bc9d9aa74",
+    "availability-freeze.json": "69dcc99782cbbf5751d3432d5fc1e998f2fe0cd1e7f2128a7300d22d0af8484f",
+    "dual-language-freeze.json": "8cca0e359465bc9f2b63d6d0fafc9f47aff2237951cdbba60fab95b2a4d21d64",
+    "dual-view-freeze.json": "b95b081da0d3bca9e40373e2f9bb554c7e7da2fef2a224a37fa53e156e33b2bc",
+    "future-choice-freeze.json": "2f86d1748bae7f5516bee4d751a105aa77b8a9ae923c5c3476d0c556794712d8",
+    "local-budget-freeze.json": "76e517cddaab040fb4d9329b78125eef7ae04a031204608c298de7bb2875efdf",
+    "replication-large-scheduling-freeze.json": "cea62a28d2a27d5c8afe877de0bf7b164543b7571cef5b50867030ac5a35266e",
+    "replication-longrun-freeze.json": "0927a73816b40b2189580d25eb60001633ac150b12f359809cdf765c62239aa9",
+    "replication-scheduling-freeze.json": "2d090b656147bcc37de0f2982cccf3257e3ce1713202f6c5bd3564ad7ff6bf1e",
+    "structure-freeze.json": "c67c6ec1bb5f763f301d02e2074aa4ee276adc238f5c7bc375b4b8bb463ecfef",
+    "structured-tools-freeze.json": "ea305cd431b938b1f0609b93358a5669845906c1dc628b0486f3055eea40a329",
+    "transport-adapter-freeze.json": "3b71c29e200662de2cb014be5518ef3db7cfe45413d039c3a2eacef567ce0aa9"
+  },
+  "primary": {
+    "pastSeries": 240,
+    "forwardBranches": 960,
+    "reverseBranches": 960,
+    "decayValidation": 135,
+    "decayTest": 45,
+    "stress": 60,
+    "mechanisms": 75,
+    "controls": 30,
+    "diagnosticMethods": 24
+  },
+  "additional": {
+    "structureConditions": 30,
+    "dualPastSeries": 60,
+    "dualForwardBranches": 240,
+    "actualLLMToolCalls": 10,
+    "replicationGroups": 60,
+    "replicationPastSeries": 240,
+    "replicationCurrentBranches": 960,
+    "longrunSeries": 60,
+    "longrunCheckpoints": 120
+  },
+  "researchModels": 265,
+  "models": [
+    {
+      "id": "decay-s6311-c0",
+      "parameterHash": "0ea841c5e095a0973f7ab3a4ab84e4a559687f70a96125e0e6458de9894f0249",
+      "parameters": 510
+    },
+    {
+      "id": "decay-s6311-c1",
+      "parameterHash": "f0e063860a1a2b352b1cbc80f8bdc1814c3eb00860f85e83b8a7c9be5fe2b24b",
+      "parameters": 1938
+    },
+    {
+      "id": "decay-s6311-c2",
+      "parameterHash": "43c5e0962ce4882d4cfbd0a73a4dcdcae31d1c7b8414f468e8630b477c913940",
+      "parameters": 9996
+    },
+    {
+      "id": "decay-s6311-c3",
+      "parameterHash": "c98edc752ccd48fe154353e01c7cbe69f81f3421c8c0455771ea84526ab75d7c",
+      "parameters": 99960
+    },
+    {
+      "id": "decay-s6311-c4",
+      "parameterHash": "07c5175d782681577e62a42c50fa28a712cc4fa134121c1ac9c4cb64b5a5eb2b",
+      "parameters": 999906
+    },
+    {
+      "id": "decay-s6312-c0",
+      "parameterHash": "0a2f7f09e77429384a5c7e612884efdc3cb70dbe7ff01bdd87442399ee64d4a0",
+      "parameters": 510
+    },
+    {
+      "id": "decay-s6312-c1",
+      "parameterHash": "34904da54915bab4cf33d84364313b455c2eb3992b642569222f37d69f024d46",
+      "parameters": 1938
+    },
+    {
+      "id": "decay-s6312-c2",
+      "parameterHash": "667a7d855fd807256724bae633c26e44fdce418cfeb88dd401849294d91e6139",
+      "parameters": 9996
+    },
+    {
+      "id": "decay-s6312-c3",
+      "parameterHash": "0c7212f7f0d4b8a957deb3996ed890cd586d433459024054176a1bfd91b76669",
+      "parameters": 99960
+    },
+    {
+      "id": "decay-s6312-c4",
+      "parameterHash": "bc14dd2700fec87431b04cc1caeb328dc5c728c12be7977226c1a45d097e94b8",
+      "parameters": 999906
+    },
+    {
+      "id": "decay-s6313-c0",
+      "parameterHash": "b81bf7174a771c891b22af2a2305c8a42f6dd8fbe14985398180be7a75b7cb9a",
+      "parameters": 510
+    },
+    {
+      "id": "decay-s6313-c1",
+      "parameterHash": "68b294a936b54c9a67654e0e043e8ff015320557bf216d85977e0dabb1a57a50",
+      "parameters": 1938
+    },
+    {
+      "id": "decay-s6313-c2",
+      "parameterHash": "19644b718b135ddbc210298d344938acac104a27a62dd3caed9f2e9a7a44810c",
+      "parameters": 9996
+    },
+    {
+      "id": "decay-s6313-c3",
+      "parameterHash": "ce28a7380f1b626a9504e3c8c67da11bb56248a7f703967fbf2927d28802a3f9",
+      "parameters": 99960
+    },
+    {
+      "id": "decay-s6313-c4",
+      "parameterHash": "44956a9c3236625d0da7f199ec1ba1940b5308c7c71a4ff76c83c77b3c69a41e",
+      "parameters": 999906
+    },
+    {
+      "id": "device-c0",
+      "parameterHash": "7981066638e80ba07692ad27d2bc825733f1971a86cbfebde0af64370c922511",
+      "parameters": 510
+    },
+    {
+      "id": "device-c1",
+      "parameterHash": "948850d3728a53a1e37c0ea4d9fa24ae047d806e01ede422532a9b92dcc3dbf5",
+      "parameters": 1938
+    },
+    {
+      "id": "device-c2",
+      "parameterHash": "e3bfb2f96390c1023142459f3e33a3bcc835f5525c6c5cedf09dcef7456a562d",
+      "parameters": 9996
+    },
+    {
+      "id": "device-c3",
+      "parameterHash": "15dd0af417b8e4ea0212c27b31986ec03801fc56d372a30e561072b169617232",
+      "parameters": 99960
+    },
+    {
+      "id": "device-c4",
+      "parameterHash": "1f434b004d4779fa90b572bd2247126809f67beee2a9b4d8f91a542a74c95ea1",
+      "parameters": 999906
+    },
+    {
+      "id": "diagnostic-s6311-c0",
+      "parameterHash": "69410d7dd6da0a743518175edf2a35cf04415133e3b3820c8b80158ec3c054d8",
+      "parameters": 510
+    },
+    {
+      "id": "diagnostic-s6311-c1",
+      "parameterHash": "b362b44e2c777e8e8afad99f20fc09deaadf65434ed33b06ea0dfe109f1cf3ca",
+      "parameters": 1938
+    },
+    {
+      "id": "diagnostic-s6311-c2",
+      "parameterHash": "57449b3dd49b36c2df7b4ab6be5e1481db0abf765e52fdf8a9edbf186b6dd3b0",
+      "parameters": 9996
+    },
+    {
+      "id": "diagnostic-s6311-c3",
+      "parameterHash": "239b801267264121630eef78dce283092c3df860694a2f3014af1e2231a0c11f",
+      "parameters": 99960
+    },
+    {
+      "id": "diagnostic-s6311-c4",
+      "parameterHash": "e85f773f3b09dbd758f3a05096ab4fd47dc58e6cf0b4151d2848260f111696f7",
+      "parameters": 999906
+    },
+    {
+      "id": "diagnostic-s6312-c0",
+      "parameterHash": "56d455870badb709f223480bd7407d02fa0f2aef34091f051bbe057965c78982",
+      "parameters": 510
+    },
+    {
+      "id": "diagnostic-s6312-c1",
+      "parameterHash": "f51231bd9fa1b5d26d4339ae2bff27f7cae2f7bb0b882a5e47b98dde99713814",
+      "parameters": 1938
+    },
+    {
+      "id": "diagnostic-s6312-c2",
+      "parameterHash": "ec0336df1006bcb91fd175eaf599090aef6d4c2bed7a4537b7abc9c57d4ae8f1",
+      "parameters": 9996
+    },
+    {
+      "id": "diagnostic-s6312-c3",
+      "parameterHash": "1e24966956cea7d9529d025bc79ebf10d875c3d61e6ec3344ba84b84f7d03e41",
+      "parameters": 99960
+    },
+    {
+      "id": "diagnostic-s6312-c4",
+      "parameterHash": "3c09485b604f5db4ee944fe5489b9a6b8915f39fdd58db6852362bac6954446f",
+      "parameters": 999906
+    },
+    {
+      "id": "diagnostic-s6313-c0",
+      "parameterHash": "2b44e3be44dcd0b7ed95237a97549044c092748ad53ad5b808ee08166041598a",
+      "parameters": 510
+    },
+    {
+      "id": "diagnostic-s6313-c1",
+      "parameterHash": "cb2a6bb527d7056fec054c222716b64ed6112f64812777df669025b0726ed1ba",
+      "parameters": 1938
+    },
+    {
+      "id": "diagnostic-s6313-c2",
+      "parameterHash": "ac32fcc3c9eb9dc9e106b1ea16c4596e3094208471d4841ffddd2742ada6c343",
+      "parameters": 9996
+    },
+    {
+      "id": "diagnostic-s6313-c3",
+      "parameterHash": "860de6c3f1affa49affec81406149bff8b0fbb7ae2bebd42bfb5351f61054818",
+      "parameters": 99960
+    },
+    {
+      "id": "diagnostic-s6313-c4",
+      "parameterHash": "e07803eaccc9da47038800210d47e45fab9740d46f8d8080a640f60c29eca18f",
+      "parameters": 999906
+    },
+    {
+      "id": "dialogue-c0-cooperation",
+      "parameterHash": "2ef7a3bb4858a253dbc76b17ad5ae2939304d11d39ad5112705ab8aedc96509a",
+      "parameters": 510
+    },
+    {
+      "id": "dialogue-c0-corrected",
+      "parameterHash": "5ba5a3ae264bff3f3134bfd0ab18a2cf7ac1e3031608241de4a89ba9aa62ae98",
+      "parameters": 510
+    },
+    {
+      "id": "dialogue-c0-initial",
+      "parameterHash": "493ef99a40c1e4ae15ff3b4f847d992ee1495090793f46d62ee0d8eb10ce49ec",
+      "parameters": 510
+    },
+    {
+      "id": "dialogue-c0-misunderstanding",
+      "parameterHash": "aae9e4aa0e8d8b4f708033edd7c5b3c3b0b7554bb45dc9f5eb613312810ba4bf",
+      "parameters": 510
+    },
+    {
+      "id": "dialogue-c1-cooperation",
+      "parameterHash": "ad2136a2e577d2b83665a1439367c71578f94a1727e02fcae401a6aa332b4dc9",
+      "parameters": 1938
+    },
+    {
+      "id": "dialogue-c1-corrected",
+      "parameterHash": "64018503cba8de2af92045964be89e39881f7a921d10831975c7655c213a5004",
+      "parameters": 1938
+    },
+    {
+      "id": "dialogue-c1-initial",
+      "parameterHash": "b8b4983a9aa1862129f38b6564563b8a2835de360e7a2bb4b648cfe04e21d8e1",
+      "parameters": 1938
+    },
+    {
+      "id": "dialogue-c1-misunderstanding",
+      "parameterHash": "1c57b3107f8f39fbe129bc3d55b6de79b872e7ec7ce5364f384052343040e5cb",
+      "parameters": 1938
+    },
+    {
+      "id": "dialogue-c2-cooperation",
+      "parameterHash": "6c42ec52a583813fa72fdcfb04c9608ff914590aaefcc7fb09c56d44e2568296",
+      "parameters": 9996
+    },
+    {
+      "id": "dialogue-c2-corrected",
+      "parameterHash": "315a159c0378f1481a6c89caa61b5af3f7b227f0d8e7d72fa97375011d7bbce4",
+      "parameters": 9996
+    },
+    {
+      "id": "dialogue-c2-initial",
+      "parameterHash": "45888e3f5b102556a86148a123c49382683448bb9e590aca30537af8242956e6",
+      "parameters": 9996
+    },
+    {
+      "id": "dialogue-c2-misunderstanding",
+      "parameterHash": "f61d50f752d82dae78aaee6892998a2ca9ed36b1b3969dea18dc5d223a71b00c",
+      "parameters": 9996
+    },
+    {
+      "id": "dialogue-c3-cooperation",
+      "parameterHash": "831ff943bc3a8ffdf75d1711c6a402d94a01650caad2bac12560b3167c981786",
+      "parameters": 99960
+    },
+    {
+      "id": "dialogue-c3-corrected",
+      "parameterHash": "93952337a4992171cf141bbc8ef21fcbebf679d2fac72266d784db390fa51b5a",
+      "parameters": 99960
+    },
+    {
+      "id": "dialogue-c3-initial",
+      "parameterHash": "d110b325198cd6b980912b7f909b1ffe0c94013a296938805fdd09899e7e2aa3",
+      "parameters": 99960
+    },
+    {
+      "id": "dialogue-c3-misunderstanding",
+      "parameterHash": "564af349f7bafb499489b6877c1aa4ead2e2d36c45c2bf554614f2a6f262bb0a",
+      "parameters": 99960
+    },
+    {
+      "id": "dialogue-c4-cooperation",
+      "parameterHash": "daa063ec05a6a8f64a75e318e2868063d36ef3f0ccecbd543b2df016bfbee7ba",
+      "parameters": 999906
+    },
+    {
+      "id": "dialogue-c4-corrected",
+      "parameterHash": "cd26931e68300034e7adecdd23d00ccf4c6c3366997a5b1bd134aa25cab40101",
+      "parameters": 999906
+    },
+    {
+      "id": "dialogue-c4-initial",
+      "parameterHash": "46bd5a55bcfa5cc0ef194977ef5a701080336a60d1f0208e4fcc9f1fb9c6dd67",
+      "parameters": 999906
+    },
+    {
+      "id": "dialogue-c4-misunderstanding",
+      "parameterHash": "92f6532de31a8cf82b368a762f732c97ae59548789ca8d97d1c96de1f071d3fc",
+      "parameters": 999906
+    },
+    {
+      "id": "dual-c0-cooperation",
+      "parameterHash": "eba9d2eaeb058a16b13e700fe06cab9bbdf940146df312b8e98698232471e08a",
+      "parameters": 510
+    },
+    {
+      "id": "dual-c0-corrected",
+      "parameterHash": "0488731fdbed03c271748e88add19d78b6ab3c5a4618c4f05f593ad4d3c15537",
+      "parameters": 510
+    },
+    {
+      "id": "dual-c0-initial",
+      "parameterHash": "3b649e3098f4e12ae4fe924cbc865c80587fc037cd7e6005c72ed47ca5ff3105",
+      "parameters": 510
+    },
+    {
+      "id": "dual-c0-misunderstanding",
+      "parameterHash": "753fad4d37e2111d4a3798fcabe0f929d0995b0175790528a0528845ce5992f9",
+      "parameters": 510
+    },
+    {
+      "id": "dual-c1-cooperation",
+      "parameterHash": "ab566cb606efa2f4b70c4b48dcf6e75d023988d2bc44165a519d39692269b5e3",
+      "parameters": 1938
+    },
+    {
+      "id": "dual-c1-corrected",
+      "parameterHash": "db2f34f0a54c1109eb951a70f9aaba1fdc54c277f9f295387a494c8f6a0c7b01",
+      "parameters": 1938
+    },
+    {
+      "id": "dual-c1-initial",
+      "parameterHash": "d2f3c8f59f6ce0b07340ebed4e4264e96d56972a50218386943a5f8ae169958e",
+      "parameters": 1938
+    },
+    {
+      "id": "dual-c1-misunderstanding",
+      "parameterHash": "bacfb821a4e0d85bdbe34b0384eade9c840cf891fb8b6f9bf9107dd41145b29c",
+      "parameters": 1938
+    },
+    {
+      "id": "dual-c2-cooperation",
+      "parameterHash": "3ee4d7d65937c098282e85fcc2657e6a391685235fc33cc4c603916b4a5c5c0d",
+      "parameters": 9996
+    },
+    {
+      "id": "dual-c2-corrected",
+      "parameterHash": "aee331984a7a1fa380809926c2f3c79e5034a13bf06d89eb20cb32fd77cd817d",
+      "parameters": 9996
+    },
+    {
+      "id": "dual-c2-initial",
+      "parameterHash": "61de19e729273570ab74bf7d8ba11fc83f700082c57b44cbf50e58c724ec3482",
+      "parameters": 9996
+    },
+    {
+      "id": "dual-c2-misunderstanding",
+      "parameterHash": "c2277e2a41f2c59fff8ef9a79da393ba8fe7b5053f07dc9a47b0084e92b2c2fe",
+      "parameters": 9996
+    },
+    {
+      "id": "dual-c3-cooperation",
+      "parameterHash": "136e5d94b682cee516c6332e0b8722690ddb64e1fe7f82f2c606f74cfc411691",
+      "parameters": 99960
+    },
+    {
+      "id": "dual-c3-corrected",
+      "parameterHash": "07f0fb551b7bf3567ab94e372f7879df68ca11cfd7f339b31f1e6d6f9b8713be",
+      "parameters": 99960
+    },
+    {
+      "id": "dual-c3-initial",
+      "parameterHash": "cc1765058295a02adff7928ce46f9577284fa2c6b5816c5062102f49bc079c70",
+      "parameters": 99960
+    },
+    {
+      "id": "dual-c3-misunderstanding",
+      "parameterHash": "d0abbf22563a208e66798f4ac891c552efe2cf668e534a171997303184c917c5",
+      "parameters": 99960
+    },
+    {
+      "id": "dual-c4-cooperation",
+      "parameterHash": "48a5783f6a03ca405dcd1e2c8887bfcfd8a470f63f118d465c4e8e24b67fc7e0",
+      "parameters": 999906
+    },
+    {
+      "id": "dual-c4-corrected",
+      "parameterHash": "d9d4e585870412858de26ee846385c91a4dbf5d98c5c9afad63c20a501ac6156",
+      "parameters": 999906
+    },
+    {
+      "id": "dual-c4-initial",
+      "parameterHash": "8f08aa0a9dec3daddd539e4d782f32e98865e7ee590f53d1fad2d93002e95201",
+      "parameters": 999906
+    },
+    {
+      "id": "dual-c4-misunderstanding",
+      "parameterHash": "548622f1d73b95d39ff5a75d3d4c8faa4a352a7607ef040db96856cc767fd6a6",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-deepseek-c0-p0-r0",
+      "parameterHash": "6932ca974568148c8ae238e7c6a88cf7583dee4a84e710d690e2c7efa3aa12b0",
+      "parameters": 510
+    },
+    {
+      "id": "natural-deepseek-c0-p0-r1",
+      "parameterHash": "e2b860beeea199432256779049467b45c9a879e6314a7490a673425fed15a24a",
+      "parameters": 510
+    },
+    {
+      "id": "natural-deepseek-c0-p2-r0",
+      "parameterHash": "814472ee889612c2ae3be6b2bc76a58f6f62d825f63930d1a4ec1b81187d13f5",
+      "parameters": 510
+    },
+    {
+      "id": "natural-deepseek-c0-p2-r1",
+      "parameterHash": "5a456df58e6c8ccccf575c72689414f880694f34997a15e751cffb94b96f836e",
+      "parameters": 510
+    },
+    {
+      "id": "natural-deepseek-c1-p0-r0",
+      "parameterHash": "70015be6e0440ad1e52aa719414ce64ad136c59db030384ed345911d40f5a176",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-deepseek-c1-p0-r1",
+      "parameterHash": "302c056bc25f4b803a8abd563b4b4aa1e693aeeb4b0255a29ad4f9e0c2868b3c",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-deepseek-c1-p2-r0",
+      "parameterHash": "76618ac93de130ba66d1c85c6dcbfb66aa7016c2b61d6ebfcb58666b7907bf1e",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-deepseek-c1-p2-r1",
+      "parameterHash": "7d013d59523886449457687a647f465f0ae0bda05d6dadf9a8e15f3fd3bd02ce",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-deepseek-c2-p0-r0",
+      "parameterHash": "6c53b3c48812fa1a9284077a4bee02275e5ad5c97f607c3870252cab1c180224",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-deepseek-c2-p0-r1",
+      "parameterHash": "00d02b5719adcef1ab166d4929c28c42ef9d32e6e627eff6b1ea65c5cd811032",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-deepseek-c2-p2-r0",
+      "parameterHash": "a436ddf2229346e372a190298c771eff5cbb104cc947086772333e728e87ec9c",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-deepseek-c2-p2-r1",
+      "parameterHash": "f70eff6543397d88c539db63b468f6b2ff73922e7e853d661a2db64eab16bb51",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-deepseek-c3-p0-r0",
+      "parameterHash": "57ad0e4ba431388075e2eb29d654a145acaa87870b96571d232bb137158dd9ee",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-deepseek-c3-p0-r1",
+      "parameterHash": "a6a0def96b743e5095086855241b29d810d51de1ac675f1ac246ea50c6439bbd",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-deepseek-c3-p2-r0",
+      "parameterHash": "d6f158be6a4881f4354fa2bb7a26a6aecd49505cd6beecbcab0f52b78a52584f",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-deepseek-c3-p2-r1",
+      "parameterHash": "28a56791dd4c63fe49c1e12c219dc0aedc0e09eedae8c632dcc5fee2777066d0",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-deepseek-c4-p0-r0",
+      "parameterHash": "b86a46ffcb417309aeb3c7409179c94ee679055223858a9bcec305bcffa6fd03",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-deepseek-c4-p0-r1",
+      "parameterHash": "6f7ebdbe9ec09e89d58ba0103ddc416e877cec78f11eb7501b74135622c23d12",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-deepseek-c4-p2-r0",
+      "parameterHash": "fc9bed9b72f265c168249f21b629815a9169236d0c1b65beb3522c69425091da",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-deepseek-c4-p2-r1",
+      "parameterHash": "a8aa6c2b152a21452ce1b63777a9389c7ccecad9b9c74d2fbd81a82f7f376c02",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-haiku-c0-p0-r0",
+      "parameterHash": "4ecf6e68ee6583a51fcba5cdcd92d087e999bc6a909b2f2f427e358773ba279b",
+      "parameters": 510
+    },
+    {
+      "id": "natural-haiku-c0-p0-r1",
+      "parameterHash": "471ae47d331da29f02d13262c3769e2c97a5b21f389f53230b0807f995cc7f89",
+      "parameters": 510
+    },
+    {
+      "id": "natural-haiku-c0-p2-r0",
+      "parameterHash": "71a92ce11f4aa3c40eebfef81e29c4ddc06a6eae2c4c81aed26e58fc41714fd0",
+      "parameters": 510
+    },
+    {
+      "id": "natural-haiku-c0-p2-r1",
+      "parameterHash": "bbe8d65ab8f37e9c801bb8d052e4cbcc4c3cec3535726c8e6860663520f83834",
+      "parameters": 510
+    },
+    {
+      "id": "natural-haiku-c1-p0-r0",
+      "parameterHash": "e2e0a36d819a5927749da832c73f2ff5fb80b138af328b88daad5146bd3fe2f0",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-haiku-c1-p0-r1",
+      "parameterHash": "d64c2821ede76e95d0488da19645f44fe87b2300d97a4cc70a47240b3a002282",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-haiku-c1-p2-r0",
+      "parameterHash": "712225c3655fd766b0ed51c40d9b32bfa5302153c523a473531df2013a42de33",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-haiku-c1-p2-r1",
+      "parameterHash": "e2cb09f42bfbb2497ad4fb205fb5c0323a49d9e58136dc4303a7c64f9170dd55",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-haiku-c2-p0-r0",
+      "parameterHash": "971aa8110bc15c95b292a0a582d715212d01775091620bf879657fe0d5ffd58d",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-haiku-c2-p0-r1",
+      "parameterHash": "12fc4029d62b6c0b2b83860ec271b07988d5ca00b2c2fbfbba617e66788049a7",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-haiku-c2-p2-r0",
+      "parameterHash": "cc008ab1ff4a6618c820ef55faa6b9cf1c243fdd76fcbdc84e6370338dc2eb68",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-haiku-c2-p2-r1",
+      "parameterHash": "3dfa87c4856a4b35033f27d957ea0eb1e35a573b9c7e0c477c736de7e0832d01",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-haiku-c3-p0-r0",
+      "parameterHash": "50d02a87f5aa63c8c7b5ac967f78f5ed5d631aefc062d7010af22e0318887931",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-haiku-c3-p0-r1",
+      "parameterHash": "0948d5dfa76d1c6ccdf8472b5012269227fc34052952b65264f6043b044fb095",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-haiku-c3-p2-r0",
+      "parameterHash": "32cd0158f2149adb69507ad97914fc6bbd2af4867cf66d4706e9ad9ffbbe0d3d",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-haiku-c3-p2-r1",
+      "parameterHash": "702f1274cfa7e0f683b4e6e6180f2ee6ea174f8ab92191b4d9c87c88b8381903",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-haiku-c4-p0-r0",
+      "parameterHash": "0b8aba5dfdf2865d7825b06fbd84e4c7f4a93c5d44794c5d734efb4ebc8a0890",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-haiku-c4-p0-r1",
+      "parameterHash": "fc95f2033b962d00acd40f9fc4c5c04031111de895f6c9518e3ca57eeb2e3e85",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-haiku-c4-p2-r0",
+      "parameterHash": "81f43825651eff65dcd432066e80015c65cf27ebaadbee01e5a322b1f5ecc634",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-haiku-c4-p2-r1",
+      "parameterHash": "2ec361a5c4589318b50d282bc8e84976954a87f299b04d75d2d59240b609192d",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-haiku-structured-c0-p0-r0",
+      "parameterHash": "406f43fc5ab12d230a99320700552e39baeff27d5af5ad34f1f4a3286cf86891",
+      "parameters": 510
+    },
+    {
+      "id": "natural-haiku-structured-c0-p0-r1",
+      "parameterHash": "bfd84be99969b4b2be3f98abbce3f2914be0a8c3f5b60be6d473d96f850723b3",
+      "parameters": 510
+    },
+    {
+      "id": "natural-haiku-structured-c0-p2-r0",
+      "parameterHash": "edbcdf71368332adbb617c38f6b7948f148ce523449a3be6cfb4f4e66f72981a",
+      "parameters": 510
+    },
+    {
+      "id": "natural-haiku-structured-c0-p2-r1",
+      "parameterHash": "9e7a41c32211222c8c9a9ddcf1c6992ea8a85e8b329a0676a240e4ef775c3a04",
+      "parameters": 510
+    },
+    {
+      "id": "natural-haiku-structured-c1-p0-r0",
+      "parameterHash": "97135e48ffe4c0b04e56af3b97ceaa36b39ab5ed044ba18c1061aa10c81a771e",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-haiku-structured-c1-p0-r1",
+      "parameterHash": "8f20af52705bca5b9081a73cf69d0e7b1b85a65175a4460226038881b014fe52",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-haiku-structured-c1-p2-r0",
+      "parameterHash": "b705462ab2301ffd0174746f9115715a45cac1089bc3f266fbba3e0632e9a49f",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-haiku-structured-c1-p2-r1",
+      "parameterHash": "66b77cf7453791aa67b02c23e26916b5449ab8e5134307b9b3b9bccddebe36e0",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-haiku-structured-c2-p0-r0",
+      "parameterHash": "4cd33684e91f6a268de90cf82c241edded8bd238476dadeaec4de64775c0081a",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-haiku-structured-c2-p0-r1",
+      "parameterHash": "f53dc6cb3660ba870967ab8b9f0e95a219d22643a95961edfb1156d608bb4d91",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-haiku-structured-c2-p2-r0",
+      "parameterHash": "aa5bc1072d14eaaf01c5c261698e22d5b678bc976f3536936260dc58e117a4d0",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-haiku-structured-c2-p2-r1",
+      "parameterHash": "0796a010a5dfd3b3553f9e7a8f6d17ad79ea74be4d58efd55441517e441c411e",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-haiku-structured-c3-p0-r0",
+      "parameterHash": "be27d66428bfc405f5f2c848594f20b715ce3867b8d581179b80e01bebbcdd4c",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-haiku-structured-c3-p0-r1",
+      "parameterHash": "af0607a825b86f31f52a11caffe23d7cdd2a7e6e18012c47a5ca4bc63f9b8dc4",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-haiku-structured-c3-p2-r0",
+      "parameterHash": "23dca30da560d3405dd39ca727e2501ca81b21dc81589f7a4357a26533f4d0ce",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-haiku-structured-c3-p2-r1",
+      "parameterHash": "42051dae79c6b03db66d006bed504cb3e409b27770c8d877a69682662ce1167c",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-haiku-structured-c4-p0-r0",
+      "parameterHash": "d203a8cb7d53cc35bdb489fc64c5dbeef9bd30e5d35b7137b48f7360103e5a88",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-haiku-structured-c4-p0-r1",
+      "parameterHash": "8af043861a37d6ead9fbbb5ab518fb61d5d01687a683797d4b7b86957f2a6e0f",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-haiku-structured-c4-p2-r0",
+      "parameterHash": "77b6940a1c879a907a21dc811f0222ba8aa1796b1429061fe61b1e3fecda14f1",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-haiku-structured-c4-p2-r1",
+      "parameterHash": "0dcbb08b30b91c54bdf21740d6c24f5b012bb33b5285436b750e1efac49cf17a",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-qwen-c0-p0-r0",
+      "parameterHash": "493ef99a40c1e4ae15ff3b4f847d992ee1495090793f46d62ee0d8eb10ce49ec",
+      "parameters": 510
+    },
+    {
+      "id": "natural-qwen-c0-p0-r1",
+      "parameterHash": "493ef99a40c1e4ae15ff3b4f847d992ee1495090793f46d62ee0d8eb10ce49ec",
+      "parameters": 510
+    },
+    {
+      "id": "natural-qwen-c0-p2-r0",
+      "parameterHash": "703bc64ec90cedc24cf84cce16974eed74b8bd6b53cd51ec408429d1bf7e7ae5",
+      "parameters": 510
+    },
+    {
+      "id": "natural-qwen-c0-p2-r1",
+      "parameterHash": "703bc64ec90cedc24cf84cce16974eed74b8bd6b53cd51ec408429d1bf7e7ae5",
+      "parameters": 510
+    },
+    {
+      "id": "natural-qwen-c1-p0-r0",
+      "parameterHash": "b8b4983a9aa1862129f38b6564563b8a2835de360e7a2bb4b648cfe04e21d8e1",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-qwen-c1-p0-r1",
+      "parameterHash": "b8b4983a9aa1862129f38b6564563b8a2835de360e7a2bb4b648cfe04e21d8e1",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-qwen-c1-p2-r0",
+      "parameterHash": "6a4502fdaed5fa300b55d61df40a943b1ee315102b02f2d4981d212acb8b1882",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-qwen-c1-p2-r1",
+      "parameterHash": "6a4502fdaed5fa300b55d61df40a943b1ee315102b02f2d4981d212acb8b1882",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-qwen-c2-p0-r0",
+      "parameterHash": "45888e3f5b102556a86148a123c49382683448bb9e590aca30537af8242956e6",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-qwen-c2-p0-r1",
+      "parameterHash": "45888e3f5b102556a86148a123c49382683448bb9e590aca30537af8242956e6",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-qwen-c2-p2-r0",
+      "parameterHash": "3cbdc21980e00ba49946e8e85fb3eb12d829cdb4ca2de4ed9aeacadd5a236659",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-qwen-c2-p2-r1",
+      "parameterHash": "3cbdc21980e00ba49946e8e85fb3eb12d829cdb4ca2de4ed9aeacadd5a236659",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-qwen-c3-p0-r0",
+      "parameterHash": "d110b325198cd6b980912b7f909b1ffe0c94013a296938805fdd09899e7e2aa3",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-qwen-c3-p0-r1",
+      "parameterHash": "d110b325198cd6b980912b7f909b1ffe0c94013a296938805fdd09899e7e2aa3",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-qwen-c3-p2-r0",
+      "parameterHash": "543d4d343e8267bc1eb235368d833bf0b7021f92b50cf9768e71ea40a1dc89e1",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-qwen-c3-p2-r1",
+      "parameterHash": "543d4d343e8267bc1eb235368d833bf0b7021f92b50cf9768e71ea40a1dc89e1",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-qwen-c4-p0-r0",
+      "parameterHash": "46bd5a55bcfa5cc0ef194977ef5a701080336a60d1f0208e4fcc9f1fb9c6dd67",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-qwen-c4-p0-r1",
+      "parameterHash": "46bd5a55bcfa5cc0ef194977ef5a701080336a60d1f0208e4fcc9f1fb9c6dd67",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-qwen-c4-p2-r0",
+      "parameterHash": "589124d08bd15dc496b85440e52e312922010e77f3a9c9542ca48cdd6b33fdf0",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-qwen-c4-p2-r1",
+      "parameterHash": "589124d08bd15dc496b85440e52e312922010e77f3a9c9542ca48cdd6b33fdf0",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-qwen2048-c0-p0-r0",
+      "parameterHash": "493ef99a40c1e4ae15ff3b4f847d992ee1495090793f46d62ee0d8eb10ce49ec",
+      "parameters": 510
+    },
+    {
+      "id": "natural-qwen2048-c0-p0-r1",
+      "parameterHash": "493ef99a40c1e4ae15ff3b4f847d992ee1495090793f46d62ee0d8eb10ce49ec",
+      "parameters": 510
+    },
+    {
+      "id": "natural-qwen2048-c0-p2-r0",
+      "parameterHash": "703bc64ec90cedc24cf84cce16974eed74b8bd6b53cd51ec408429d1bf7e7ae5",
+      "parameters": 510
+    },
+    {
+      "id": "natural-qwen2048-c0-p2-r1",
+      "parameterHash": "703bc64ec90cedc24cf84cce16974eed74b8bd6b53cd51ec408429d1bf7e7ae5",
+      "parameters": 510
+    },
+    {
+      "id": "natural-qwen2048-c1-p0-r0",
+      "parameterHash": "b8b4983a9aa1862129f38b6564563b8a2835de360e7a2bb4b648cfe04e21d8e1",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-qwen2048-c1-p0-r1",
+      "parameterHash": "b8b4983a9aa1862129f38b6564563b8a2835de360e7a2bb4b648cfe04e21d8e1",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-qwen2048-c1-p2-r0",
+      "parameterHash": "6a4502fdaed5fa300b55d61df40a943b1ee315102b02f2d4981d212acb8b1882",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-qwen2048-c1-p2-r1",
+      "parameterHash": "6a4502fdaed5fa300b55d61df40a943b1ee315102b02f2d4981d212acb8b1882",
+      "parameters": 1938
+    },
+    {
+      "id": "natural-qwen2048-c2-p0-r0",
+      "parameterHash": "45888e3f5b102556a86148a123c49382683448bb9e590aca30537af8242956e6",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-qwen2048-c2-p0-r1",
+      "parameterHash": "45888e3f5b102556a86148a123c49382683448bb9e590aca30537af8242956e6",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-qwen2048-c2-p2-r0",
+      "parameterHash": "3cbdc21980e00ba49946e8e85fb3eb12d829cdb4ca2de4ed9aeacadd5a236659",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-qwen2048-c2-p2-r1",
+      "parameterHash": "3cbdc21980e00ba49946e8e85fb3eb12d829cdb4ca2de4ed9aeacadd5a236659",
+      "parameters": 9996
+    },
+    {
+      "id": "natural-qwen2048-c3-p0-r0",
+      "parameterHash": "d110b325198cd6b980912b7f909b1ffe0c94013a296938805fdd09899e7e2aa3",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-qwen2048-c3-p0-r1",
+      "parameterHash": "d110b325198cd6b980912b7f909b1ffe0c94013a296938805fdd09899e7e2aa3",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-qwen2048-c3-p2-r0",
+      "parameterHash": "543d4d343e8267bc1eb235368d833bf0b7021f92b50cf9768e71ea40a1dc89e1",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-qwen2048-c3-p2-r1",
+      "parameterHash": "543d4d343e8267bc1eb235368d833bf0b7021f92b50cf9768e71ea40a1dc89e1",
+      "parameters": 99960
+    },
+    {
+      "id": "natural-qwen2048-c4-p0-r0",
+      "parameterHash": "46bd5a55bcfa5cc0ef194977ef5a701080336a60d1f0208e4fcc9f1fb9c6dd67",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-qwen2048-c4-p0-r1",
+      "parameterHash": "46bd5a55bcfa5cc0ef194977ef5a701080336a60d1f0208e4fcc9f1fb9c6dd67",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-qwen2048-c4-p2-r0",
+      "parameterHash": "589124d08bd15dc496b85440e52e312922010e77f3a9c9542ca48cdd6b33fdf0",
+      "parameters": 999906
+    },
+    {
+      "id": "natural-qwen2048-c4-p2-r1",
+      "parameterHash": "589124d08bd15dc496b85440e52e312922010e77f3a9c9542ca48cdd6b33fdf0",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6311-c0-dense-32",
+      "parameterHash": "20e5dfbc714f1a8f4596167de350ca0a2d13cc115ccd198c1e69158ea509cd4e",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6311-c0-dense-512",
+      "parameterHash": "cb6d2de8de580e9497c7486dd23a9908e37fb7a5f97247f50a541b367f513de1",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6311-c0-local-32",
+      "parameterHash": "20e5dfbc714f1a8f4596167de350ca0a2d13cc115ccd198c1e69158ea509cd4e",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6311-c0-local-512",
+      "parameterHash": "cb6d2de8de580e9497c7486dd23a9908e37fb7a5f97247f50a541b367f513de1",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6311-c1-dense-32",
+      "parameterHash": "a10723b25f3b225e54d9bea5ed66097cbbefd52d94c43f5c686b90caa592a973",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6311-c1-dense-512",
+      "parameterHash": "fa3d22a2d2ab1b58fa91aa8092892eaeaa589dcb9ded1fc6a23ed57298ce3fbe",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6311-c1-local-32",
+      "parameterHash": "a10723b25f3b225e54d9bea5ed66097cbbefd52d94c43f5c686b90caa592a973",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6311-c1-local-512",
+      "parameterHash": "fa3d22a2d2ab1b58fa91aa8092892eaeaa589dcb9ded1fc6a23ed57298ce3fbe",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6311-c2-dense-32",
+      "parameterHash": "27b4dbf50337337dbe1851a07fab21a6279d853bb610ddd74acdd303ba4d2228",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6311-c2-dense-512",
+      "parameterHash": "31de804dc43dba8025855c547ff9f2194045e2d1bb8caccaa9e100ae822efd42",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6311-c2-local-32",
+      "parameterHash": "27b4dbf50337337dbe1851a07fab21a6279d853bb610ddd74acdd303ba4d2228",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6311-c2-local-512",
+      "parameterHash": "31de804dc43dba8025855c547ff9f2194045e2d1bb8caccaa9e100ae822efd42",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6311-c3-dense-32",
+      "parameterHash": "ff95083c0e2a930bea9c5e96bd37ca7fbf548f4f7eec20ac4a420077b5ec4637",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6311-c3-dense-512",
+      "parameterHash": "4fbd946408ee5bf154285dc1c903ee80f800c1876aa5c11b1ab698bc4dcfcc88",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6311-c3-local-32",
+      "parameterHash": "ff95083c0e2a930bea9c5e96bd37ca7fbf548f4f7eec20ac4a420077b5ec4637",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6311-c3-local-512",
+      "parameterHash": "4fbd946408ee5bf154285dc1c903ee80f800c1876aa5c11b1ab698bc4dcfcc88",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6311-c4-dense-32",
+      "parameterHash": "705e334fb9517f541e72b8641313b48dc263beff19418551de2d409a55a5d451",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6311-c4-dense-512",
+      "parameterHash": "dae2e27dd3d9b9b2f6416cfff333d6677f5c5ccbb16475ba590ebbbda4cc9132",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6311-c4-local-32",
+      "parameterHash": "705e334fb9517f541e72b8641313b48dc263beff19418551de2d409a55a5d451",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6311-c4-local-512",
+      "parameterHash": "dae2e27dd3d9b9b2f6416cfff333d6677f5c5ccbb16475ba590ebbbda4cc9132",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6312-c0-dense-32",
+      "parameterHash": "806445ce67bb28cfc68dc566e9693d846fa929d59c513d494f7859f2da5df897",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6312-c0-dense-512",
+      "parameterHash": "fa27a76aa13513162844d67de0a92fdbb795c2fd3d67428f3d574756056e56a3",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6312-c0-local-32",
+      "parameterHash": "806445ce67bb28cfc68dc566e9693d846fa929d59c513d494f7859f2da5df897",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6312-c0-local-512",
+      "parameterHash": "fa27a76aa13513162844d67de0a92fdbb795c2fd3d67428f3d574756056e56a3",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6312-c1-dense-32",
+      "parameterHash": "28abf85692b3e2ac787e895c7c19f7fb9e7c94db75043ce6bb0b3e5f76053780",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6312-c1-dense-512",
+      "parameterHash": "283c5e5e77436dada8690f32a26864ac0fc0237ac9c4d8e30f5372186169c651",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6312-c1-local-32",
+      "parameterHash": "28abf85692b3e2ac787e895c7c19f7fb9e7c94db75043ce6bb0b3e5f76053780",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6312-c1-local-512",
+      "parameterHash": "283c5e5e77436dada8690f32a26864ac0fc0237ac9c4d8e30f5372186169c651",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6312-c2-dense-32",
+      "parameterHash": "ad296ea3946244ac3e204b495712d143b69afb9a5d166c6ea28a0c33704ce40b",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6312-c2-dense-512",
+      "parameterHash": "aec09b8503a558f04c668098a0abf165d0906279b0ee4a82441d82db656dab5b",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6312-c2-local-32",
+      "parameterHash": "ad296ea3946244ac3e204b495712d143b69afb9a5d166c6ea28a0c33704ce40b",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6312-c2-local-512",
+      "parameterHash": "aec09b8503a558f04c668098a0abf165d0906279b0ee4a82441d82db656dab5b",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6312-c3-dense-32",
+      "parameterHash": "d6ec96a403d19962f11e8663e30c380b169737fb6540624ab88e12a5296abc44",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6312-c3-dense-512",
+      "parameterHash": "50e3e79ca116e01334d393c28d4dcd2d9044f24c29f3c3a5f9da9b96745fce63",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6312-c3-local-32",
+      "parameterHash": "d6ec96a403d19962f11e8663e30c380b169737fb6540624ab88e12a5296abc44",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6312-c3-local-512",
+      "parameterHash": "50e3e79ca116e01334d393c28d4dcd2d9044f24c29f3c3a5f9da9b96745fce63",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6312-c4-dense-32",
+      "parameterHash": "7a1e9fc3c2fd8196f8fde5f30bad23177b9af9e985d0da06fedf241af11e578c",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6312-c4-dense-512",
+      "parameterHash": "748878dcdb15693131aa8e25cc1241f8d3a6fb29b9ca3d597320656a114e3987",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6312-c4-local-32",
+      "parameterHash": "7a1e9fc3c2fd8196f8fde5f30bad23177b9af9e985d0da06fedf241af11e578c",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6312-c4-local-512",
+      "parameterHash": "748878dcdb15693131aa8e25cc1241f8d3a6fb29b9ca3d597320656a114e3987",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6313-c0-dense-32",
+      "parameterHash": "551dae85ce54e78f4a126c44b005e043d23f37f1aa99534b61c8511c392144e8",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6313-c0-dense-512",
+      "parameterHash": "1308df54ed7906fb85ce826ccac7e4fe4077627d5ae6ac29af8d976538faec43",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6313-c0-local-32",
+      "parameterHash": "551dae85ce54e78f4a126c44b005e043d23f37f1aa99534b61c8511c392144e8",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6313-c0-local-512",
+      "parameterHash": "1308df54ed7906fb85ce826ccac7e4fe4077627d5ae6ac29af8d976538faec43",
+      "parameters": 510
+    },
+    {
+      "id": "stress-s6313-c1-dense-32",
+      "parameterHash": "6f2c90b8e6c2f201c9fc7ffec19919b0d253ec445577b0241223395b33723e5f",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6313-c1-dense-512",
+      "parameterHash": "f277232e4f7e6b7a32935616489049b7340a2f7e577f068e6904c1f2fbcac381",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6313-c1-local-32",
+      "parameterHash": "6f2c90b8e6c2f201c9fc7ffec19919b0d253ec445577b0241223395b33723e5f",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6313-c1-local-512",
+      "parameterHash": "f277232e4f7e6b7a32935616489049b7340a2f7e577f068e6904c1f2fbcac381",
+      "parameters": 1938
+    },
+    {
+      "id": "stress-s6313-c2-dense-32",
+      "parameterHash": "299cc5a236651b76c0c651d1a93eaea5c3b75d7e9f244660e2df255476ba893f",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6313-c2-dense-512",
+      "parameterHash": "b434f1afc178b61f203d0649437783e39f196509ccae1a524ab1a35ebdca55f9",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6313-c2-local-32",
+      "parameterHash": "299cc5a236651b76c0c651d1a93eaea5c3b75d7e9f244660e2df255476ba893f",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6313-c2-local-512",
+      "parameterHash": "b434f1afc178b61f203d0649437783e39f196509ccae1a524ab1a35ebdca55f9",
+      "parameters": 9996
+    },
+    {
+      "id": "stress-s6313-c3-dense-32",
+      "parameterHash": "93e1e7f2a9e64882c2835d7f04a0a6f1c7ee23c2039c2ae5d0d3b5a8d1b92680",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6313-c3-dense-512",
+      "parameterHash": "de135a355adc6204a64e1ab869e379943f85f9989921d77008564af149e3f930",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6313-c3-local-32",
+      "parameterHash": "93e1e7f2a9e64882c2835d7f04a0a6f1c7ee23c2039c2ae5d0d3b5a8d1b92680",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6313-c3-local-512",
+      "parameterHash": "de135a355adc6204a64e1ab869e379943f85f9989921d77008564af149e3f930",
+      "parameters": 99960
+    },
+    {
+      "id": "stress-s6313-c4-dense-32",
+      "parameterHash": "6eaa610b58134e9a8096a4f91103b01a2316af8918cc12c22598f4188122c6d9",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6313-c4-dense-512",
+      "parameterHash": "af7cef8eecfe7a8d35192d726d4ad38136a053a53d3fbcc9a6a506387710dae5",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6313-c4-local-32",
+      "parameterHash": "6eaa610b58134e9a8096a4f91103b01a2316af8918cc12c22598f4188122c6d9",
+      "parameters": 999906
+    },
+    {
+      "id": "stress-s6313-c4-local-512",
+      "parameterHash": "af7cef8eecfe7a8d35192d726d4ad38136a053a53d3fbcc9a6a506387710dae5",
+      "parameters": 999906
+    },
+    {
+      "id": "structure-s6311-c0-facts8-neutral-context",
+      "parameterHash": "98eac62ad3be2e40a964e3ec50ab0d49761a6e9effa2547c24ac688492af4a9d",
+      "parameters": 534
+    },
+    {
+      "id": "structure-s6311-c0-full",
+      "parameterHash": "3803727c7ba1676198d6f37f8934b97505a39a9634416a377516890bacff9d97",
+      "parameters": 534
+    },
+    {
+      "id": "structure-s6311-c1-facts8-neutral-context",
+      "parameterHash": "c507a7cc1d04f21804e839541843b0fa82d8d67cfa4088771db8db8259ee5113",
+      "parameters": 1990
+    },
+    {
+      "id": "structure-s6311-c1-full",
+      "parameterHash": "ddf9b0ceac11919b2910a90e855f184d402f25ca60805d32c4caa71d8ccb36f4",
+      "parameters": 1990
+    },
+    {
+      "id": "structure-s6311-c2-facts8-neutral-context",
+      "parameterHash": "3c4f022f234e72ffcea8301a4d821687a113666398c844dd9f6449c099497805",
+      "parameters": 9998
+    },
+    {
+      "id": "structure-s6311-c2-full",
+      "parameterHash": "46511cd404e10d297f1cbe2e105a8156ffaf5ca50158a925ca11ddffbda8ed98",
+      "parameters": 9998
+    },
+    {
+      "id": "structure-s6311-c3-facts8-neutral-context",
+      "parameterHash": "1b899ae8117f5819c030f01dc9ba778af6d5f45dc6b209a16b4d7a158663ac38",
+      "parameters": 100062
+    },
+    {
+      "id": "structure-s6311-c3-full",
+      "parameterHash": "73761ce56291fb440609dfcb19ed8a9dcf18ce6215afa8edb342b92253c62bfc",
+      "parameters": 100062
+    },
+    {
+      "id": "structure-s6311-c4-facts8-neutral-context",
+      "parameterHash": "91a2037a29fe2c47920ef232a51d9e88633a0ac39d9c23126ccf70a718652b01",
+      "parameters": 999974
+    },
+    {
+      "id": "structure-s6311-c4-full",
+      "parameterHash": "437817d993c80fe581cc92b65ae4fa9c7ba487ed780d8efa408efe7efe7dd0f4",
+      "parameters": 999974
+    },
+    {
+      "id": "structure-s6312-c0-facts8-neutral-context",
+      "parameterHash": "24a6a8c27c5245a2b8d5657825bdaf95b2d68dc817b841dc1d30c3c21b30a543",
+      "parameters": 534
+    },
+    {
+      "id": "structure-s6312-c0-full",
+      "parameterHash": "3d6d40dc556edcc4db7825d5cbe929460702892781f4d764a90d836d262a48fe",
+      "parameters": 534
+    },
+    {
+      "id": "structure-s6312-c1-facts8-neutral-context",
+      "parameterHash": "98c793a3d53a854a5b01e4554a87f450cea18dc038aa7799a8056b5d861abe7d",
+      "parameters": 1990
+    },
+    {
+      "id": "structure-s6312-c1-full",
+      "parameterHash": "0392c71ce5e65793ab16419a5e8679f874e0be77191cce4aa6affcbd0a5907f7",
+      "parameters": 1990
+    },
+    {
+      "id": "structure-s6312-c2-facts8-neutral-context",
+      "parameterHash": "a8be87b3ae07a138ad23666081fdc34d06856e291373dcfe68a7f811328fd49a",
+      "parameters": 9998
+    },
+    {
+      "id": "structure-s6312-c2-full",
+      "parameterHash": "d6e53551fe2ced79be960eca6688384452e6e0717148e6e767cd78ec78b5cdf4",
+      "parameters": 9998
+    },
+    {
+      "id": "structure-s6312-c3-facts8-neutral-context",
+      "parameterHash": "0e28ac8336937c988e13d26235c83fbe8d9580496837a19d5b844111f382aa0c",
+      "parameters": 100062
+    },
+    {
+      "id": "structure-s6312-c3-full",
+      "parameterHash": "5c291943b5fa8d4d4f4ba3ec2913b44554a9f73f9caf333f911c706c954cc71f",
+      "parameters": 100062
+    },
+    {
+      "id": "structure-s6312-c4-facts8-neutral-context",
+      "parameterHash": "1ac16d62b69308eb0a0e5ca7790309c4a2012c87a4f8e845495cdca76615c523",
+      "parameters": 999974
+    },
+    {
+      "id": "structure-s6312-c4-full",
+      "parameterHash": "9a5afb1d2980539bdfa63ce0b10f7efbc2f369c8a3fd9cfdf31dff4bb9361d09",
+      "parameters": 999974
+    },
+    {
+      "id": "structure-s6313-c0-facts8-neutral-context",
+      "parameterHash": "82356d47370f0a779bfc7e83ecf05fd04d1a6900bee07a2e1ba1dfd001badb84",
+      "parameters": 534
+    },
+    {
+      "id": "structure-s6313-c0-full",
+      "parameterHash": "81d230a519c9fce7add4bb3883f9d80c79f44194405abbfcd09f65ecb8d9f360",
+      "parameters": 534
+    },
+    {
+      "id": "structure-s6313-c1-facts8-neutral-context",
+      "parameterHash": "2a124074cb31602084bdc052147e6fadbf98e0d4307894a58b4d3f02122de128",
+      "parameters": 1990
+    },
+    {
+      "id": "structure-s6313-c1-full",
+      "parameterHash": "ef72fff3d75da2ecb38f7fee59d4d397d6a5c71acdc702e632dd7fb858683748",
+      "parameters": 1990
+    },
+    {
+      "id": "structure-s6313-c2-facts8-neutral-context",
+      "parameterHash": "4409cb567ae63a4281bbc107528b44ac5943f32af005e7f3247b8c79d4ac47c0",
+      "parameters": 9998
+    },
+    {
+      "id": "structure-s6313-c2-full",
+      "parameterHash": "7ebdb787d6d0f4cd7521f6d903648abaf67b89e835b6e23eff4247698abb0682",
+      "parameters": 9998
+    },
+    {
+      "id": "structure-s6313-c3-facts8-neutral-context",
+      "parameterHash": "55843d29a7eb03dabbc9e39e1cf19a9a3459c57cc0ca04ceeb5fc0705c629283",
+      "parameters": 100062
+    },
+    {
+      "id": "structure-s6313-c3-full",
+      "parameterHash": "b4d2d323fcc2adb5906e8ed1b3da102e2e088a3192f8497722737f746835c12f",
+      "parameters": 100062
+    },
+    {
+      "id": "structure-s6313-c4-facts8-neutral-context",
+      "parameterHash": "9b7fbea17846592e5533fdc01dd2d490f13900b0d65482eb1d9c7422749004d2",
+      "parameters": 999974
+    },
+    {
+      "id": "structure-s6313-c4-full",
+      "parameterHash": "c206703255effc940f0b04c73e02f82994c00cd705166696ed84f07e9e26255b",
+      "parameters": 999974
+    }
+  ],
+  "additionalResearchModels": [
+    {
+      "id": "replication-longrun/c0-reacquired",
+      "parameterHash": "67269ac8f18e0fef979db1050727734f9d9fd65b9902943c888c067fb19d9a22",
+      "parameters": 510,
+      "update": 1304
+    },
+    {
+      "id": "replication-longrun/c1-reacquired",
+      "parameterHash": "f0a9ef9dff467b2aacacb35af44c08c0be3c31fcc2b3ae46f55c0349a08ca118",
+      "parameters": 1938,
+      "update": 1304
+    },
+    {
+      "id": "replication-longrun/c2-reacquired",
+      "parameterHash": "8bbc0b3453c3c4871d740b3d9fb0bc5fb3d2f4a065de036f4915dddec0478fe8",
+      "parameters": 9996,
+      "update": 1304
+    },
+    {
+      "id": "replication-longrun/c3-reacquired",
+      "parameterHash": "8c3f71c892e8f30bfa6bef04a8d40a0c1b4052525cb19e2e802446d840e8d98d",
+      "parameters": 99960,
+      "update": 1304
+    },
+    {
+      "id": "replication-longrun/c4-reacquired",
+      "parameterHash": "f5f8dc3dd684d5cb8f9f72f96bfa4bc8f09aa6d7dbbe6eb9ff663209feff9229",
+      "parameters": 999906,
+      "update": 1304
+    }
+  ],
+  "exports": [
+    {
+      "file": "workbench-live-dual-personality.zip",
+      "update": 34,
+      "parameterHash": "9ab58c1411f4a8a0c8244016028c757eca7a57170f423a7e523c9c1066fcb31c"
+    },
+    {
+      "file": "workbench-live-personality.zip",
+      "update": 34,
+      "parameterHash": "0e7a7bc216e220f118caef5a663f9b9ed819c26c209578b1ef883153ac84fddd"
+    },
+    {
+      "file": "workbench-personality-dual.zip",
+      "update": 34,
+      "parameterHash": "9ab58c1411f4a8a0c8244016028c757eca7a57170f423a7e523c9c1066fcb31c"
+    },
+    {
+      "file": "workbench-personality-ui.zip",
+      "update": 43,
+      "parameterHash": "d061b8e939f7bb1926bc044bedf7102e7596ae809a9aba0d50b6969be523ff44"
+    },
+    {
+      "file": "workbench-personality.zip",
+      "update": 0,
+      "parameterHash": "493ef99a40c1e4ae15ff3b4f847d992ee1495090793f46d62ee0d8eb10ce49ec"
+    }
+  ],
+  "tests": {
+    "new": 33,
+    "phase3e": 34,
+    "phase3d": 94
+  },
+  "oldProtectedFiles": 8870,
+  "phase3eProtectedFiles": 2252,
+  "olderProtectedFiles": 6618,
+  "oldChanged": 0,
+  "asistReadOnlySources": 8,
+  "asistChanged": 0,
+  "credentialMatches": 0,
+  "formalHumanEvaluationCompleted": false,
+  "humanPairsPrimary": 44,
+  "humanPairsAdditional": 40,
+  "reproduction": "Fresh-copy five-capacity offline learning/restoration and separate performance repeat; not full independent numeric replication."
+}

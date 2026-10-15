@@ -1,0 +1,6 @@
+{
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "prompt": "研究用の状況構造化です。外部ツール・ファイル・コマンドを使わず、この注釈をそのまま評価ツールの要求にしてください。数値は事実の程度で、望ましさではありません。感情・倫理の正解を補わない。JSONのみ {\"calls\":[{\"name\":\"frontalis_evaluate\",\"arguments\":注釈のargumentsそのもの}]}。\n[{\"id\":\"case-0\",\"user\":\"こちらから予定を変えてもらった。作品は完成したけれど、相手の用意した素材が使えなくなった。今、この結果をどう受け止める？\",\"arguments\":{\"query_id\":\"case-0\",\"space\":\"relational\",\"features\":[0.8,0.3,0.75,0.6,0.65,0.35,0.25,0.8],\"basis\":\"affinity\"}},{\"id\":\"case-1\",\"user\":\"知り合いが、一緒に小さなゲームを作らないかと誘っている。役割と作り方は相談して決められる。どうする？\",\"arguments\":{\"query_id\":\"case-1\",\"space\":\"relational\",\"features\":[0.85,0.2,0.55,0.2,0.65,0.7,0.45,0.75],\"basis\":\"affinity\"}}]",
+  "promptHash": "4a1e91468e718511eda2ac659743ee9b18803d1b8dafd534ff3e6b73e07e169d",
+  "caseIds": []
+}

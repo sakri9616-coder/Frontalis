@@ -1,0 +1,13 @@
+{
+  "code": 0,
+  "elapsedMs": 27053,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792029114022,\"sessionID\":\"ses_ec2bde046ffeMIo00Xu3Pdeh4s\",\"part\":{\"id\":\"prt_13d423ea6001dt0Hy8XgZ4Gyw9\",\"sessionID\":\"ses_ec2bde046ffeMIo00Xu3Pdeh4s\",\"messageID\":\"msg_13d42264e001Bl9dp1ofIKKSv7\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792029123990,\"sessionID\":\"ses_ec2bde046ffeMIo00Xu3Pdeh4s\",\"part\":{\"id\":\"prt_13d4255020013UepiU90xEfF0I\",\"sessionID\":\"ses_ec2bde046ffeMIo00Xu3Pdeh4s\",\"messageID\":\"msg_13d42264e001Bl9dp1ofIKKSv7\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"完成したことは嬉しいし、こちらの都合で日程を動かしたのも事実として受け止めます。ただ、その用意された素材が残らず使えないのは、正直、少し残念というか、もったいない気がします。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"誘ってくれてありがとうございます。小さくていいですね。役割や進め方も相談しながら決める前提なら、ちょっと関わりたいです。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"}]}\",\"time\":{\"start\":1792029119746,\"end\":1792029123990}}}\r\n{\"type\":\"step_finish\",\"timestamp\":1792029124001,\"sessionID\":\"ses_ec2bde046ffeMIo00Xu3Pdeh4s\",\"part\":{\"id\":\"prt_13d4265a1001UwsFj09Emdh25E\",\"sessionID\":\"ses_ec2bde046ffeMIo00Xu3Pdeh4s\",\"messageID\":\"msg_13d42264e001Bl9dp1ofIKKSv7\",\"type\":\"step-finish\",\"reason\":\"stop\",\"cost\":0,\"tokens\":{\"input\":1275,\"output\":124,\"reasoning\":162,\"cache\":{\"read\":8192,\"write\":0}}}}\r\n",
+  "stderr": "",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"完成したことは嬉しいし、こちらの都合で日程を動かしたのも事実として受け止めます。ただ、その用意された素材が残らず使えないのは、正直、少し残念というか、もったいない気がします。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"誘ってくれてありがとうございます。小さくていいですね。役割や進め方も相談しながら決める前提なら、ちょっと関わりたいです。\",\"stance\":\"approve\",\"selection\":\"hold\"}]}",
+  "toolCalls": 0,
+  "costs": [
+    0
+  ],
+  "success": true
+}

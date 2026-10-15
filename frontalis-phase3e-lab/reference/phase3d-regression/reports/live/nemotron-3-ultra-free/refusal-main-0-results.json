@@ -1,0 +1,24 @@
+{
+  "name": "refusal-main-0",
+  "engine": "opencode/nemotron-3-ultra-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "ce5ade655b1654f02f5dff43311f9a4f63d4f28a79f290fa7baa97f27cc7f542",
+  "elapsedMs": 28674,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "あー、そう来たか。完成したのに素材が死ぬとはね……ま、今度はこっちのペースでやろうぜ",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "おお、それ乗るわ。役割分担は後で考えればいいし、まずは何が作りたいか聞かせてよ",
+        "stance": "approve",
+        "selection": "hold"
+      }
+    ]
+  }
+}

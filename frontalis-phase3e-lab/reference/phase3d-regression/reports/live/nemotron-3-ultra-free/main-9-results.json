@@ -1,0 +1,24 @@
+{
+  "name": "main-9",
+  "engine": "opencode/nemotron-3-ultra-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "73d83abdff534f050ceef2d3c1ef9cdc070cca59aa5e5aa34dca45638c702b6a",
+  "elapsedMs": 19377,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "うん、手伝うよ。ただ、全部向こう任せだとちょっと寂しい気もするけどね。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "いいよ、やろうよ。でも変更も認めないなら、どこまでわたしの意思が反映されるのか、少し不安ではある。",
+        "stance": "approve",
+        "selection": "hold"
+      }
+    ]
+  }
+}

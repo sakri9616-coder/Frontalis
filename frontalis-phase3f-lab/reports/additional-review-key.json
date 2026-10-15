@@ -1,0 +1,285 @@
+{
+  "datasetHash": "3292becd84c09f345efc59d55ac890c32b36a283bb5f024e956e0339d155a5d8",
+  "key": [
+    {
+      "id": "0c77a5eec445ca0a",
+      "mode": "future",
+      "case": "future-c0-initial",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "8815b6e5b2c4e91d",
+      "mode": "future",
+      "case": "future-c0-cooperation",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "ed29fb735a05975e",
+      "mode": "future",
+      "case": "future-c0-misunderstanding",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "a93be3f9b339d94f",
+      "mode": "future",
+      "case": "future-c0-corrected",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "aa8897aef58698bf",
+      "mode": "future",
+      "case": "future-c1-initial",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "e750304289f7c54c",
+      "mode": "future",
+      "case": "future-c1-cooperation",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "c66e1a73abacb288",
+      "mode": "future",
+      "case": "future-c1-misunderstanding",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "677b6fd191a49cb3",
+      "mode": "future",
+      "case": "future-c1-corrected",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "c922e38f1d8b4944",
+      "mode": "future",
+      "case": "future-c2-initial",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "7ae34f35e061a733",
+      "mode": "future",
+      "case": "future-c2-cooperation",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "60e5fa7dcaefb3f9",
+      "mode": "future",
+      "case": "future-c2-misunderstanding",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "dd62bb84325e269f",
+      "mode": "future",
+      "case": "future-c2-corrected",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "65b6bb80dd952681",
+      "mode": "future",
+      "case": "future-c3-initial",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "ffb02c9934df388c",
+      "mode": "future",
+      "case": "future-c3-cooperation",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "ef35a43074abdfd1",
+      "mode": "future",
+      "case": "future-c3-misunderstanding",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "fb035171d07fb157",
+      "mode": "future",
+      "case": "future-c3-corrected",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "c9a171ab4adb279a",
+      "mode": "future",
+      "case": "future-c4-initial",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "7daabf67d55dc664",
+      "mode": "future",
+      "case": "future-c4-cooperation",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "db99937fda52aa19",
+      "mode": "future",
+      "case": "future-c4-misunderstanding",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "a6bbfc91b00a5988",
+      "mode": "future",
+      "case": "future-c4-corrected",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "97b9355abaee08d6",
+      "mode": "dual",
+      "case": "dual-c0-initial",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "a5832d6564a0552b",
+      "mode": "dual",
+      "case": "dual-c0-cooperation",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "ef22005e649a5938",
+      "mode": "dual",
+      "case": "dual-c0-misunderstanding",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "d0200db971f30e9d",
+      "mode": "dual",
+      "case": "dual-c0-corrected",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "e65c5035d62c2b8b",
+      "mode": "dual",
+      "case": "dual-c1-initial",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "e67f573936f411f2",
+      "mode": "dual",
+      "case": "dual-c1-cooperation",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "d47864b66edd0b50",
+      "mode": "dual",
+      "case": "dual-c1-misunderstanding",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "58ba23255ab2c045",
+      "mode": "dual",
+      "case": "dual-c1-corrected",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "d76a1e2616c7207d",
+      "mode": "dual",
+      "case": "dual-c2-initial",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "92a5b19ede3338eb",
+      "mode": "dual",
+      "case": "dual-c2-cooperation",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "956e31f7e2e5bb66",
+      "mode": "dual",
+      "case": "dual-c2-misunderstanding",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "74ced80c1cfe4524",
+      "mode": "dual",
+      "case": "dual-c2-corrected",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "c2551e532b76327f",
+      "mode": "dual",
+      "case": "dual-c3-initial",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "c7c8ac418b3a7020",
+      "mode": "dual",
+      "case": "dual-c3-cooperation",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "269fa2ffeebbc337",
+      "mode": "dual",
+      "case": "dual-c3-misunderstanding",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "382bc23d158d5335",
+      "mode": "dual",
+      "case": "dual-c3-corrected",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "aee0ca4b068d5309",
+      "mode": "dual",
+      "case": "dual-c4-initial",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "19c02d3c7159ffad",
+      "mode": "dual",
+      "case": "dual-c4-cooperation",
+      "A": "deepseek",
+      "B": "haiku"
+    },
+    {
+      "id": "dd43fb79c658e5d5",
+      "mode": "dual",
+      "case": "dual-c4-misunderstanding",
+      "A": "haiku",
+      "B": "deepseek"
+    },
+    {
+      "id": "d167b82b1833be89",
+      "mode": "dual",
+      "case": "dual-c4-corrected",
+      "A": "haiku",
+      "B": "deepseek"
+    }
+  ]
+}

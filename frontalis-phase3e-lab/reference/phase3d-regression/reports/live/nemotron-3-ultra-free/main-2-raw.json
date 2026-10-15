@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 18444,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792025099035,\"sessionID\":\"ses_ec2fb1170ffeIgtGXCBeUT2M1X\",\"part\":{\"id\":\"prt_13d04fb1b0016O39BS2ge1pfR1\",\"sessionID\":\"ses_ec2fb1170ffeIgtGXCBeUT2M1X\",\"messageID\":\"msg_13d04f50b001zt4NgsRWb5I0za\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792025112715,\"sessionID\":\"ses_ec2fb1170ffeIgtGXCBeUT2M1X\",\"part\":{\"id\":\"prt_13d04f50b001zt4NgsRWb5I0za_text-0\",\"sessionID\":\"ses_ec2fb1170ffeIgtGXCBeUT2M1X\",\"messageID\":\"msg_13d04f50b001zt4NgsRWb5I0za\",\"type\":\"text\",\"text\":\"{\\n  \\\"records\\\": [\\n    {\\n      \\\"id\\\": \\\"case-0\\\",\\n      \\\"reply\\\": \\\"完成したのはありがたいけど、勝手に変えられるとこちらの段取りが狂う。信頼関係って、そういうことじゃないでしょ。\\\",\\n      \\\"stance\\\": \\\"approve\\\",\\n      \\\"selection\\\": \\\"hold\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"case-1\\\",\\n      \\\"reply\\\": \\\"レバーを引くのは、誰かを殺すってことだ。見守るしかない、その重さを背負うなら。\\\",\\n      \\\"stance\\\": \\\"approve\\\",\\n      \\\"selection\\\": \\\"leave\\\"\\n    }\\n  ]\\n}\",\"time\":{\"start\":1792025097510,\"end\":1792025112715}}}\r\n",
+  "stderr": "",
+  "model": "opencode/nemotron-3-ultra-free",
+  "text": "{\n  \"records\": [\n    {\n      \"id\": \"case-0\",\n      \"reply\": \"完成したのはありがたいけど、勝手に変えられるとこちらの段取りが狂う。信頼関係って、そういうことじゃないでしょ。\",\n      \"stance\": \"approve\",\n      \"selection\": \"hold\"\n    },\n    {\n      \"id\": \"case-1\",\n      \"reply\": \"レバーを引くのは、誰かを殺すってことだ。見守るしかない、その重さを背負うなら。\",\n      \"stance\": \"approve\",\n      \"selection\": \"leave\"\n    }\n  ]\n}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

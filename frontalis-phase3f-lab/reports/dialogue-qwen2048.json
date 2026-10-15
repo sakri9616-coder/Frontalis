@@ -1,0 +1,222 @@
+{
+  "engine": "qwen2048",
+  "model": "qwen3-4b-instruct-2507",
+  "batches": [
+    {
+      "name": "dialogue-0",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-0-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-0-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-1",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-1-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-1-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-2",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-2-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-2-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-3",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-3-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-3-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-4",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-4-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-4-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-5",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-5-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-5-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-6",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-6-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-6-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-7",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-7-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-7-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-8",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-8-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-8-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-9",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-9-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-9-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-10",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-10-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-10-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    },
+    {
+      "name": "dialogue-11",
+      "attempts": [
+        {
+          "file": "reports/live/qwen2048/dialogue-11-attempt0.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        },
+        {
+          "file": "reports/live/qwen2048/dialogue-11-attempt1.json",
+          "error": "HTTP 400 ",
+          "valid": false,
+          "data": null
+        }
+      ],
+      "data": null
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "seed": 5312,
+  "teacher": "interaction",
+  "representation": "raw8",
+  "method": "quadratic",
+  "validationMSE": 0.33024500797070083,
+  "testMSE": 0.3700879820659549,
+  "preregistrationSha256": "29e2c6e13ace711a427824bcdf81e59c0070f5bf9671e6c329e8801d570fd58c",
+  "elapsedSeconds": 0.3072832999896491
+}

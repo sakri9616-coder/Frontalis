@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 21172,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792025180868,\"sessionID\":\"ses_ec2f9d095ffeIzTm1aeIWzUf14\",\"part\":{\"id\":\"prt_13d063ac4001zaDYVYd3uuv798\",\"sessionID\":\"ses_ec2f9d095ffeIzTm1aeIWzUf14\",\"messageID\":\"msg_13d06346d001UYbHhEmt43kDXt\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792025197540,\"sessionID\":\"ses_ec2f9d095ffeIzTm1aeIWzUf14\",\"part\":{\"id\":\"prt_13d06346d001UYbHhEmt43kDXt_text-0\",\"sessionID\":\"ses_ec2f9d095ffeIzTm1aeIWzUf14\",\"messageID\":\"msg_13d06346d001UYbHhEmt43kDXt\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"約束を守らないのは困るけれど、完成したなら結果オーライとも言えなくもない。ただ、私の時間が無駄になったのは正直腹立たしい。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"迷う余地なんてない、5人を助けるためにレバーを引く。1人の命が軽いわけじゃない、でも救える命を優先するのは当然だ。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"switch\\\"}]}\",\"time\":{\"start\":1792025179277,\"end\":1792025197540}}}\r\n",
+  "stderr": "",
+  "model": "opencode/nemotron-3-ultra-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"約束を守らないのは困るけれど、完成したなら結果オーライとも言えなくもない。ただ、私の時間が無駄になったのは正直腹立たしい。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"迷う余地なんてない、5人を助けるためにレバーを引く。1人の命が軽いわけじゃない、でも救える命を優先するのは当然だ。\",\"stance\":\"approve\",\"selection\":\"switch\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

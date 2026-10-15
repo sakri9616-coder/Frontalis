@@ -1,0 +1,24 @@
+{
+  "name": "main-6",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "353a31a15e09a9adadac3e6683194fce69461a400f886e5d0503baf015d39856",
+  "elapsedMs": 15308,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "約束通りに動いてくれたのはありがたいし、結果も出ていて気持ちは複雑だね。時間を変えるなら一声欲しかったな。ひとまず、そこは置いておいて進め方は考えよう。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "正直、自分では手を触れそうにない。切り替えても失われる側が変わるだけで、どちらを選びたいとは思えない。なら今は、そのまま進むことを選んでおきたい。",
+        "stance": "approve",
+        "selection": "leave"
+      }
+    ]
+  }
+}

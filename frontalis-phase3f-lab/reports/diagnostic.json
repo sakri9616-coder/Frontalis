@@ -1,0 +1,200 @@
+{
+  "sourceHash": "c699c0acd04bc1c514d346a3f397cad9f3c07df0f50db04ef5310702dcbe6d80",
+  "rows": [
+    {
+      "seed": 6311,
+      "rows": [
+        {
+          "kind": "npn",
+          "capacity": 0,
+          "parameters": 510,
+          "activeCount": 255,
+          "validationMSE": 0.2698674641004488,
+          "testMSE": 0.2895924672084821
+        },
+        {
+          "kind": "npn",
+          "capacity": 1,
+          "parameters": 1938,
+          "activeCount": 969,
+          "validationMSE": 0.24952222081023187,
+          "testMSE": 0.2699322056241152
+        },
+        {
+          "kind": "npn",
+          "capacity": 2,
+          "parameters": 9996,
+          "activeCount": 4998,
+          "validationMSE": 0.2566333103540716,
+          "testMSE": 0.27528273502157696
+        },
+        {
+          "kind": "npn",
+          "capacity": 3,
+          "parameters": 99960,
+          "activeCount": 6528,
+          "validationMSE": 0.2771712050256169,
+          "testMSE": 0.2902478791853982
+        },
+        {
+          "kind": "npn",
+          "capacity": 4,
+          "parameters": 999906,
+          "activeCount": 6528,
+          "validationMSE": 0.2771712050256169,
+          "testMSE": 0.2902478791853982
+        },
+        {
+          "kind": "linear",
+          "alpha": 10,
+          "parameters": 315,
+          "validationMSE": 0.1706340958160253,
+          "testMSE": 0.15921798410952012
+        },
+        {
+          "kind": "quadratic",
+          "alpha": 0.001,
+          "parameters": 7245,
+          "validationMSE": 0.19774581071411754,
+          "testMSE": 0.19905795382084693
+        },
+        {
+          "kind": "retrieval",
+          "storedExamples": 128,
+          "validationMSE": 0.4126263854452263,
+          "testMSE": 0.40535588845048115
+        }
+      ]
+    },
+    {
+      "seed": 6312,
+      "rows": [
+        {
+          "kind": "npn",
+          "capacity": 0,
+          "parameters": 510,
+          "activeCount": 255,
+          "validationMSE": 0.3079279560943278,
+          "testMSE": 0.3106206871651414
+        },
+        {
+          "kind": "npn",
+          "capacity": 1,
+          "parameters": 1938,
+          "activeCount": 969,
+          "validationMSE": 0.2605929346219737,
+          "testMSE": 0.27989690474582957
+        },
+        {
+          "kind": "npn",
+          "capacity": 2,
+          "parameters": 9996,
+          "activeCount": 4998,
+          "validationMSE": 0.2729383907945998,
+          "testMSE": 0.27753721131870324
+        },
+        {
+          "kind": "npn",
+          "capacity": 3,
+          "parameters": 99960,
+          "activeCount": 6528,
+          "validationMSE": 0.29319906839072424,
+          "testMSE": 0.3014712427037144
+        },
+        {
+          "kind": "npn",
+          "capacity": 4,
+          "parameters": 999906,
+          "activeCount": 6528,
+          "validationMSE": 0.29319906839072424,
+          "testMSE": 0.3014712427037144
+        },
+        {
+          "kind": "linear",
+          "alpha": 10,
+          "parameters": 315,
+          "validationMSE": 0.16789610222151838,
+          "testMSE": 0.15821454848331498
+        },
+        {
+          "kind": "quadratic",
+          "alpha": 0.1,
+          "parameters": 7245,
+          "validationMSE": 0.1992276666546334,
+          "testMSE": 0.18692922449095192
+        },
+        {
+          "kind": "retrieval",
+          "storedExamples": 128,
+          "validationMSE": 0.3610976815096902,
+          "testMSE": 0.3586242298641036
+        }
+      ]
+    },
+    {
+      "seed": 6313,
+      "rows": [
+        {
+          "kind": "npn",
+          "capacity": 0,
+          "parameters": 510,
+          "activeCount": 255,
+          "validationMSE": 0.23547259774521545,
+          "testMSE": 0.25697705216801703
+        },
+        {
+          "kind": "npn",
+          "capacity": 1,
+          "parameters": 1938,
+          "activeCount": 969,
+          "validationMSE": 0.218300153697406,
+          "testMSE": 0.23560839685689375
+        },
+        {
+          "kind": "npn",
+          "capacity": 2,
+          "parameters": 9996,
+          "activeCount": 4998,
+          "validationMSE": 0.22622128879656908,
+          "testMSE": 0.2501355288231486
+        },
+        {
+          "kind": "npn",
+          "capacity": 3,
+          "parameters": 99960,
+          "activeCount": 6528,
+          "validationMSE": 0.24751318966775404,
+          "testMSE": 0.27172982119218747
+        },
+        {
+          "kind": "npn",
+          "capacity": 4,
+          "parameters": 999906,
+          "activeCount": 6528,
+          "validationMSE": 0.24751318966775404,
+          "testMSE": 0.27172982119218747
+        },
+        {
+          "kind": "linear",
+          "alpha": 10,
+          "parameters": 315,
+          "validationMSE": 0.16194230419291866,
+          "testMSE": 0.16024000234115432
+        },
+        {
+          "kind": "quadratic",
+          "alpha": 0.1,
+          "parameters": 7245,
+          "validationMSE": 0.19245301088984842,
+          "testMSE": 0.20390642961353378
+        },
+        {
+          "kind": "retrieval",
+          "storedExamples": 128,
+          "validationMSE": 0.3848248014276231,
+          "testMSE": 0.3698452832413857
+        }
+      ]
+    }
+  ]
+}

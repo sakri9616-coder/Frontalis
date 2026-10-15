@@ -1,0 +1,46 @@
+{
+  "surface": "Codex in-app browser",
+  "url": "http://127.0.0.1:8879/reports/review.html",
+  "primaryPairs": 20,
+  "datasetId": "a012747260a1ea6e35f31aff7447ba91be9978c7e1f6ba741513f5daefc4b74a",
+  "groups01Through04Checked": true,
+  "sameHistoryRenderedOnceInGroups03And04": true,
+  "representativesPerNonemptyHistory": 3,
+  "rawExperienceRecordsInFullFold": 96,
+  "preciseNumbersFoldedByDefault": true,
+  "rawFactAxesPreserved": 8,
+  "restoredAfterReload": true,
+  "gradeExportImportRestoredTestValues": true,
+  "testGrades": {
+    "pair": "P001",
+    "values": [
+      4,
+      3,
+      2
+    ],
+    "memo": "動作確認専用。正式な人間採点ではありません。"
+  },
+  "testExport": "reports/browser-test-grades.json",
+  "testGradesExcludedFromResearch": true,
+  "testFieldsClearedAfterCheckBeforeHandoff": true,
+  "viewportChecks": [
+    {
+      "width": 1081,
+      "height": 884,
+      "horizontalOverflow": false
+    },
+    {
+      "width": 872,
+      "height": 884,
+      "horizontalOverflow": false
+    }
+  ],
+  "phoneViewportTested": false,
+  "sourceNamesBlinded": true,
+  "primaryDatasetIdentityUnchanged": true,
+  "screenshots": [
+    "reports/review-preview.png",
+    "reports/review-current-preview.png"
+  ],
+  "lastReadOnlySnapshot": "group01; rendered selects all ungraded; no user grades edited in final verification"
+}

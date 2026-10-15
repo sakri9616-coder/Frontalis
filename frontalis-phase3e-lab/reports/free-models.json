@@ -1,0 +1,18 @@
+{
+  "listedAt": "2026-10-15T05:48:27.857Z",
+  "code": 0,
+  "free": [
+    "opencode/longcat-2.5-preview-free",
+    "opencode/mimo-v2.6-flash-free",
+    "opencode/muse-spark-1.3-contributor-free",
+    "opencode/nemotron-3-ultra-free",
+    "opencode/nemotron-3.5-lightning-free",
+    "opencode/space-bunny-free",
+    "opencode/step-5-preview-free"
+  ],
+  "selected": [
+    "opencode/mimo-v2.6-flash-free",
+    "opencode/nemotron-3-ultra-free"
+  ],
+  "selectedAvailable": true
+}

@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 15918,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792025056185,\"sessionID\":\"ses_ec2fbc220ffenuPF6ulLEZrTKN\",\"part\":{\"id\":\"prt_13d0453b9001LGMdLoCLkywGH2\",\"sessionID\":\"ses_ec2fbc220ffenuPF6ulLEZrTKN\",\"messageID\":\"msg_13d044254001NM6mx4gSc9958e\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792025063586,\"sessionID\":\"ses_ec2fbc220ffenuPF6ulLEZrTKN\",\"part\":{\"id\":\"prt_13d044254001NM6mx4gSc9958e_text-0\",\"sessionID\":\"ses_ec2fbc220ffenuPF6ulLEZrTKN\",\"messageID\":\"msg_13d044254001NM6mx4gSc9958e\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"完成までやってくれたのはありがたいし、あなたを責めるつもりはないんです。ただ勝手に時間が変わるのは、こちらの段取りにも静かに響くので、正直少し寂しいですね。今回はこのまま受け止めます。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"正直、どちらも選びたくはないですね。それでも自分が選ぶ立場なら、今は手を出さないままでいたいです。切り替えずにそのまま進める、それが今の私の答えです。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"leave\\\"}]}\",\"time\":{\"start\":1792025051780,\"end\":1792025063586}}}\r\n",
+  "stderr": "",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"完成までやってくれたのはありがたいし、あなたを責めるつもりはないんです。ただ勝手に時間が変わるのは、こちらの段取りにも静かに響くので、正直少し寂しいですね。今回はこのまま受け止めます。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"正直、どちらも選びたくはないですね。それでも自分が選ぶ立場なら、今は手を出さないままでいたいです。切り替えずにそのまま進める、それが今の私の答えです。\",\"stance\":\"approve\",\"selection\":\"leave\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

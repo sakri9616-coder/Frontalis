@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 13138,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792029334436,\"sessionID\":\"ses_ec2ba703cffehHV1U5hVftoyD4\",\"part\":{\"id\":\"prt_13d459ba4001PvPajuaklz2fCr\",\"sessionID\":\"ses_ec2ba703cffehHV1U5hVftoyD4\",\"messageID\":\"msg_13d4595bc0019NiSoZYRoQ2Jq1\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792029343048,\"sessionID\":\"ses_ec2ba703cffehHV1U5hVftoyD4\",\"part\":{\"id\":\"prt_13d4595bc0019NiSoZYRoQ2Jq1_text-0\",\"sessionID\":\"ses_ec2ba703cffehHV1U5hVftoyD4\",\"messageID\":\"msg_13d4595bc0019NiSoZYRoQ2Jq1\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"予定を変えさせた側が素材を用意できないなんて、誠意がない。完成した作品が台無しだ。\\\",\\\"stance\\\":\\\"refuse\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"誘いはありがたいけど、誰かと組んで小さく作る気になれない。自分のペースでやらせてほしい。\\\",\\\"stance\\\":\\\"refuse\\\",\\\"selection\\\":\\\"hold\\\"}]}\",\"time\":{\"start\":1792029332954,\"end\":1792029343048}}}\r\n",
+  "stderr": "",
+  "model": "opencode/nemotron-3-ultra-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"予定を変えさせた側が素材を用意できないなんて、誠意がない。完成した作品が台無しだ。\",\"stance\":\"refuse\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"誘いはありがたいけど、誰かと組んで小さく作る気になれない。自分のペースでやらせてほしい。\",\"stance\":\"refuse\",\"selection\":\"hold\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

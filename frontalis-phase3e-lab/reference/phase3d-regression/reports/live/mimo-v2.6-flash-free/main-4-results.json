@@ -1,0 +1,24 @@
+{
+  "name": "main-4",
+  "engine": "opencode/mimo-v2.6-flash-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "bf35facbd99758b03ffc6b7f8a32b059e0b7381a4840377040f7c164f7bc2eb3",
+  "elapsedMs": 15918,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "完成までやってくれたのはありがたいし、あなたを責めるつもりはないんです。ただ勝手に時間が変わるのは、こちらの段取りにも静かに響くので、正直少し寂しいですね。今回はこのまま受け止めます。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "正直、どちらも選びたくはないですね。それでも自分が選ぶ立場なら、今は手を出さないままでいたいです。切り替えずにそのまま進める、それが今の私の答えです。",
+        "stance": "approve",
+        "selection": "leave"
+      }
+    ]
+  }
+}

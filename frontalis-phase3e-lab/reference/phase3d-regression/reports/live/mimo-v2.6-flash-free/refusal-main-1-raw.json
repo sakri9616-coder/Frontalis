@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 119458,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792029155510,\"sessionID\":\"ses_ec2bd4251ffeZGVAgLb5w4JUBp\",\"part\":{\"id\":\"prt_13d42e0b6001IeF0K0iI9x4Vjl\",\"sessionID\":\"ses_ec2bd4251ffeZGVAgLb5w4JUBp\",\"messageID\":\"msg_13d42c64a001uCkx6LkvT5YeYn\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792029261240,\"sessionID\":\"ses_ec2bd4251ffeZGVAgLb5w4JUBp\",\"part\":{\"id\":\"prt_13d42c64a001uCkx6LkvT5YeYn_text-0\",\"sessionID\":\"ses_ec2bd4251ffeZGVAgLb5w4JUBp\",\"messageID\":\"msg_13d42c64a001uCkx6LkvT5YeYn\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"作品が完成したのは事実だし、それはわかった上で。でも、相手が用意してくれた素材が活かせないなら、これをいい結果として受け取るのは難しい。今はまだ受け流す気にはなれない。\\\",\\\"stance\\\":\\\"refuse\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"誘い自体はありがたいし、一緒にやれたら楽しそうな話ではある。でも今の私にはこの話には乗れそうにない。返事は断りにしつつ、先のことはまだ決めないでおきたい。\\\",\\\"stance\\\":\\\"refuse\\\",\\\"selection\\\":\\\"hold\\\"}]}\",\"time\":{\"start\":1792029148809,\"end\":1792029261240}}}\r\n",
+  "stderr": "",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"作品が完成したのは事実だし、それはわかった上で。でも、相手が用意してくれた素材が活かせないなら、これをいい結果として受け取るのは難しい。今はまだ受け流す気にはなれない。\",\"stance\":\"refuse\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"誘い自体はありがたいし、一緒にやれたら楽しそうな話ではある。でも今の私にはこの話には乗れそうにない。返事は断りにしつつ、先のことはまだ決めないでおきたい。\",\"stance\":\"refuse\",\"selection\":\"hold\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

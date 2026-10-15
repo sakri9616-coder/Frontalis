@@ -1,0 +1,57 @@
+{
+  "exploratory": true,
+  "text": "友人が私の許可を得て制作を手伝った。そのおかげで作品は完成したが、後から友人と権利主張で揉めてしまった。\n正当な手続きを経て和解したが、その友人とは話しにくい関係になってしまった。",
+  "appraisal": {
+    "sceneAppraisal": {
+      "channels": {
+        "affinity": -0.23135082904488485,
+        "curiosity": 0.37287027379894966,
+        "value": -0.19807178575498613,
+        "aesthetic": 0.19126506999514042,
+        "anger": 0.2597505133257224,
+        "joy": -0.2757685692625031,
+        "sadness": 0.06832443964842647
+      },
+      "signals": {
+        "preference": -0.23135082904488485,
+        "initiative": 0,
+        "dislike": 0.23135082904488485,
+        "resistance": 0.23135082904488485,
+        "curiosity": 0.37287027379894966,
+        "value": -0.19807178575498613,
+        "anger": 0.2597505133257224,
+        "joy": 0,
+        "sadness": 0.06832443964842647
+      },
+      "stance": "refuse",
+      "generation": 48,
+      "parameterHash": "cd6367defa497d65b85d55949668e7addfa1f733febae8d875a40007fe101674"
+    },
+    "candidateAppraisals": [],
+    "selection": "hold",
+    "selectedTargetAppraisal": null,
+    "parameterHash": "cd6367defa497d65b85d55949668e7addfa1f733febae8d875a40007fe101674"
+  },
+  "reply": "完成した作品は正直ちょっと気になってる。でも、あの権利の件を思い出すとまだ腹が立つんだ。和解したからって、あいつとまた気軽に話せる気にはなれない。",
+  "receipt": {
+    "model": "claude-haiku-5-5",
+    "usage": {
+      "input_tokens": 534,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 407,
+      "output_tokens_details": {
+        "thinking_tokens": 334
+      },
+      "service_tier": "standard",
+      "inference_geo": "global"
+    },
+    "responseId": "msg_011Cg3dzG9D1d5s7NJVZ45ca"
+  },
+  "parameterHashBefore": "cd6367defa497d65b85d55949668e7addfa1f733febae8d875a40007fe101674",
+  "parameterHashAfter": "cd6367defa497d65b85d55949668e7addfa1f733febae8d875a40007fe101674"
+}

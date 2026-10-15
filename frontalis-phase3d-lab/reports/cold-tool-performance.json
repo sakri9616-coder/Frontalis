@@ -1,0 +1,27 @@
+{
+  "postResultPerformanceCheck": true,
+  "scope": "process start + Torch import + state load + one tool appraisal; filesystem cache not reset; ordinary concurrent desktop/diagnostic load",
+  "python": "C:\\Users\\sakur\\AppData\\Local\\hermes\\jef\\venv\\Scripts\\python.exe",
+  "conditions": [
+    {
+      "width": 16,
+      "processSeconds": [
+        6.282247600000119,
+        6.556796999997459,
+        7.039845500010415
+      ],
+      "medianSeconds": 6.556796999997459,
+      "sameReadoutParameterHash": true
+    },
+    {
+      "width": 31250,
+      "processSeconds": [
+        5.565275999993901,
+        5.849663499990129,
+        6.45065679999243
+      ],
+      "medianSeconds": 5.849663499990129,
+      "sameReadoutParameterHash": true
+    }
+  ]
+}

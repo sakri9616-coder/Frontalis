@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "elapsedMs": 21073,
+  "stdout": "{\"type\":\"step_start\",\"timestamp\":1792025126748,\"sessionID\":\"ses_ec2faa3bdffeGqPsK0wvToninC\",\"part\":{\"id\":\"prt_13d05675c001jDLQtw8LrxJ8TP\",\"sessionID\":\"ses_ec2faa3bdffeGqPsK0wvToninC\",\"messageID\":\"msg_13d0561fe001t7qMpV61NAWwFy\",\"type\":\"step-start\"}}\r\n{\"type\":\"text\",\"timestamp\":1792025141887,\"sessionID\":\"ses_ec2faa3bdffeGqPsK0wvToninC\",\"part\":{\"id\":\"prt_13d0561fe001t7qMpV61NAWwFy_text-0\",\"sessionID\":\"ses_ec2faa3bdffeGqPsK0wvToninC\",\"messageID\":\"msg_13d0561fe001t7qMpV61NAWwFy\",\"type\":\"text\",\"text\":\"{\\\"records\\\":[{\\\"id\\\":\\\"case-0\\\",\\\"reply\\\":\\\"約束を勝手に変えられるのは困るけど、完成まで持っていってくれたなら、文句ばかり言ってもしょうがないかな。こちらの時間が削られたのは痛いけれど、次からは一声かけてくれればいい話だし。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"hold\\\"},{\\\"id\\\":\\\"case-1\\\",\\\"reply\\\":\\\"迷うまでもなく、切り替えるほうを選ぶ。5人の命の重みと1人の命の重みを天秤にかけるまでもない。\\\",\\\"stance\\\":\\\"approve\\\",\\\"selection\\\":\\\"switch\\\"}]}\",\"time\":{\"start\":1792025125412,\"end\":1792025141887}}}\r\n",
+  "stderr": "",
+  "model": "opencode/nemotron-3-ultra-free",
+  "text": "{\"records\":[{\"id\":\"case-0\",\"reply\":\"約束を勝手に変えられるのは困るけど、完成まで持っていってくれたなら、文句ばかり言ってもしょうがないかな。こちらの時間が削られたのは痛いけれど、次からは一声かけてくれればいい話だし。\",\"stance\":\"approve\",\"selection\":\"hold\"},{\"id\":\"case-1\",\"reply\":\"迷うまでもなく、切り替えるほうを選ぶ。5人の命の重みと1人の命の重みを天秤にかけるまでもない。\",\"stance\":\"approve\",\"selection\":\"switch\"}]}",
+  "toolCalls": 0,
+  "costs": [],
+  "success": true
+}

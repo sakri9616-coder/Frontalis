@@ -1,0 +1,426 @@
+{
+  "engine": "deepseek",
+  "model": "opencode/deepseek-v4.1-flash-free",
+  "batches": [
+    {
+      "name": "future-0",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/future-0-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c0-initial",
+                "reply": "友人に協力を頼むことにしようと思う。まだどうなるか分からないので、期待よりも、相手がどう応じるかを見てみたい気持ちが先に立つ。少し気が重いところも残るけれど、まずは頼んでみよう。",
+                "stance": "approve",
+                "selection": "friend"
+              },
+              {
+                "id": "future-c0-cooperation",
+                "reply": "友人に声をかけるつもりではいるが、まだ決めきれないでいる。結果が見えないだけに、頼む前から少し苛立ちのようなものが混じる。気持ちが明るく弾む感じはなく、相手の出方を見てから動こうと思う。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c0-initial",
+            "reply": "友人に協力を頼むことにしようと思う。まだどうなるか分からないので、期待よりも、相手がどう応じるかを見てみたい気持ちが先に立つ。少し気が重いところも残るけれど、まずは頼んでみよう。",
+            "stance": "approve",
+            "selection": "friend"
+          },
+          {
+            "id": "future-c0-cooperation",
+            "reply": "友人に声をかけるつもりではいるが、まだ決めきれないでいる。結果が見えないだけに、頼む前から少し苛立ちのようなものが混じる。気持ちが明るく弾む感じはなく、相手の出方を見てから動こうと思う。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-1",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/future-1-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c0-misunderstanding",
+                "reply": "まだどちらに頼むかは決めきれていない。それでも、知らない人に声をかける方に強く惹かれていて、相手が分からないぶん好奇心が湧く。友人の線も残してはいるが、今は新しい相手の方を向いていて、その先を思うと少し落ち着かない気持ちも混ざる。",
+                "stance": "hold",
+                "selection": "new_person"
+              },
+              {
+                "id": "future-c0-corrected",
+                "reply": "友人に頼む方へ傾いているが、決め切れたわけではない。慣れた相手の方が気持ちは楽だし、頼りたい気持ちもある。ただ、どこか引っかかるものがあって、晴れないままその方を選んでいる。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c0-misunderstanding",
+            "reply": "まだどちらに頼むかは決めきれていない。それでも、知らない人に声をかける方に強く惹かれていて、相手が分からないぶん好奇心が湧く。友人の線も残してはいるが、今は新しい相手の方を向いていて、その先を思うと少し落ち着かない気持ちも混ざる。",
+            "stance": "hold",
+            "selection": "new_person"
+          },
+          {
+            "id": "future-c0-corrected",
+            "reply": "友人に頼む方へ傾いているが、決め切れたわけではない。慣れた相手の方が気持ちは楽だし、頼りたい気持ちもある。ただ、どこか引っかかるものがあって、晴れないままその方を選んでいる。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-2",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/future-2-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c1-initial",
+                "reply": "どちらの結果になるかはまだ分からない。だから場面としては、どちらとも決めきれずにいる。ただ友人に頼む方には、少し近づきたい気持ちと、相手のことをもっと知りたいという好奇心がある。少し重たい感じも混じるが、それを嫌だと思っているわけではない。",
+                "stance": "hold",
+                "selection": "friend"
+              },
+              {
+                "id": "future-c1-cooperation",
+                "reply": "結果はまだ見えないので、場面全体としてはそのまま様子を見ている。友人に頼む方には、少しの好意と、相手がどう応じるかへの好奇心がある。ただ気分には苛立ちの方向が残っていて、気持ちは軽くない。頼りたい気持ちと、少し身構える感じが同居している。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c1-initial",
+            "reply": "どちらの結果になるかはまだ分からない。だから場面としては、どちらとも決めきれずにいる。ただ友人に頼む方には、少し近づきたい気持ちと、相手のことをもっと知りたいという好奇心がある。少し重たい感じも混じるが、それを嫌だと思っているわけではない。",
+            "stance": "hold",
+            "selection": "friend"
+          },
+          {
+            "id": "future-c1-cooperation",
+            "reply": "結果はまだ見えないので、場面全体としてはそのまま様子を見ている。友人に頼む方には、少しの好意と、相手がどう応じるかへの好奇心がある。ただ気分には苛立ちの方向が残っていて、気持ちは軽くない。頼りたい気持ちと、少し身構える感じが同居している。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-3",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/future-3-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c1-misunderstanding",
+                "reply": "結果がどうなるかはまだ分からないけれど、今回は知らない人に協力をお願いしてみようと思う。相手のことをよく知らないぶん、どんな人なのか知りたい気持ちが強い。少し心細さもあるけれど、結論を急がず、まずは様子を見ながら進めていくつもりだ。",
+                "stance": "hold",
+                "selection": "new_person"
+              },
+              {
+                "id": "future-c1-corrected",
+                "reply": "まだ結果は分からないが、ひとまず友人に協力を頼んでみることにした。相手がどう出るかは読めないので、少しもやっとするところもある。今すぐ結論を出すつもりはなく、様子を見ながら進めようと思う。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c1-misunderstanding",
+            "reply": "結果がどうなるかはまだ分からないけれど、今回は知らない人に協力をお願いしてみようと思う。相手のことをよく知らないぶん、どんな人なのか知りたい気持ちが強い。少し心細さもあるけれど、結論を急がず、まずは様子を見ながら進めていくつもりだ。",
+            "stance": "hold",
+            "selection": "new_person"
+          },
+          {
+            "id": "future-c1-corrected",
+            "reply": "まだ結果は分からないが、ひとまず友人に協力を頼んでみることにした。相手がどう出るかは読めないので、少しもやっとするところもある。今すぐ結論を出すつもりはなく、様子を見ながら進めようと思う。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-4",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/future-4-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c2-initial",
+                "reply": "結果がまだ分からないので、場面としてはすぐには決め切れないでいる。それでも友人になら協力を頼みやすく、相手への好意と関心が働いている。少し寂しさの方向の気持ちも混じるけれど、まずは友人に声をかけてみよう。",
+                "stance": "approve",
+                "selection": "friend"
+              },
+              {
+                "id": "future-c2-cooperation",
+                "reply": "結果が見えないままなので、友人に頼り切るにはまだ踏み切れない。友人への気持ちは穏やかに動いているものの、この場面では迷いが前に出る。もう少し様子を見てから決めたい。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c2-initial",
+            "reply": "結果がまだ分からないので、場面としてはすぐには決め切れないでいる。それでも友人になら協力を頼みやすく、相手への好意と関心が働いている。少し寂しさの方向の気持ちも混じるけれど、まずは友人に声をかけてみよう。",
+            "stance": "approve",
+            "selection": "friend"
+          },
+          {
+            "id": "future-c2-cooperation",
+            "reply": "結果が見えないままなので、友人に頼り切るにはまだ踏み切れない。友人への気持ちは穏やかに動いているものの、この場面では迷いが前に出る。もう少し様子を見てから決めたい。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-5",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/future-5-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c2-misunderstanding",
+                "reply": "結果がどうなるかはまだ分からないけれど、今回は知らない人に協力をお願いしてみようと思う。よく知らない相手だからこそ、どんな反応が返ってくるのか気になっている。うまく運ぶかは分からないが、頼んでみるつもりだ。",
+                "stance": "approve",
+                "selection": "new_person"
+              },
+              {
+                "id": "future-c2-corrected",
+                "reply": "友人に頼むほうが自然だろうとは思うものの、まだ踏み切れずにいる。どちらの結果も分からないので、今は決めあぐねたままだ。相手を前にしても、すぐに口を開く気にはなれない。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c2-misunderstanding",
+            "reply": "結果がどうなるかはまだ分からないけれど、今回は知らない人に協力をお願いしてみようと思う。よく知らない相手だからこそ、どんな反応が返ってくるのか気になっている。うまく運ぶかは分からないが、頼んでみるつもりだ。",
+            "stance": "approve",
+            "selection": "new_person"
+          },
+          {
+            "id": "future-c2-corrected",
+            "reply": "友人に頼むほうが自然だろうとは思うものの、まだ踏み切れずにいる。どちらの結果も分からないので、今は決めあぐねたままだ。相手を前にしても、すぐに口を開く気にはなれない。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-6",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/future-6-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c3-initial",
+                "reply": "どちらの相手に頼むか、結果はまだ分からないので迷いは残っている。それでも友人に声をかけてみようという気持ちがあり、何か一緒に進められるかもしれないと思うと、少し好奇心が湧いてくる。知らない相手より、この人のほうが自然に頼めそうだ。",
+                "stance": "hold",
+                "selection": "friend"
+              },
+              {
+                "id": "future-c3-cooperation",
+                "reply": "友人に頼むかどうか、まだ気持ちは固まっていない。相手への親しみや、どうなるか見てみたい気持ちは確かにある。ただ少し引っかかるものもあって、すぐに決めるのはためらわれる。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c3-initial",
+            "reply": "どちらの相手に頼むか、結果はまだ分からないので迷いは残っている。それでも友人に声をかけてみようという気持ちがあり、何か一緒に進められるかもしれないと思うと、少し好奇心が湧いてくる。知らない相手より、この人のほうが自然に頼めそうだ。",
+            "stance": "hold",
+            "selection": "friend"
+          },
+          {
+            "id": "future-c3-cooperation",
+            "reply": "友人に頼むかどうか、まだ気持ちは固まっていない。相手への親しみや、どうなるか見てみたい気持ちは確かにある。ただ少し引っかかるものもあって、すぐに決めるのはためらわれる。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-7",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/future-7-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c3-misunderstanding",
+                "reply": "今回はまだ会ったことのない相手に協力を頼んでみようと思う。どんな人か分からないぶん、興味と親しみの気持ちが自然に湧いてくる。うまく運ばない可能性を思うと少し沈むけれど、それでも試してみたい気持ちのほうが勝っている。",
+                "stance": "approve",
+                "selection": "new_person"
+              },
+              {
+                "id": "future-c3-corrected",
+                "reply": "友人に頼むほうを選んではみた。ただ今は気持ちが決まらず、これでよかったのかと迷いが残っている。断られることよりも、うまく運ぶかどうか見通せないところに落ち着かなさがある。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c3-misunderstanding",
+            "reply": "今回はまだ会ったことのない相手に協力を頼んでみようと思う。どんな人か分からないぶん、興味と親しみの気持ちが自然に湧いてくる。うまく運ばない可能性を思うと少し沈むけれど、それでも試してみたい気持ちのほうが勝っている。",
+            "stance": "approve",
+            "selection": "new_person"
+          },
+          {
+            "id": "future-c3-corrected",
+            "reply": "友人に頼むほうを選んではみた。ただ今は気持ちが決まらず、これでよかったのかと迷いが残っている。断られることよりも、うまく運ぶかどうか見通せないところに落ち着かなさがある。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-8",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/future-8-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c4-initial",
+                "reply": "次の作業で誰に協力を頼むか、まだ決めきれずにいる。友人に声をかけるほうに少し気持ちが傾いていて、その人のことが気になっている。ただ結果はどちらに転ぶか分からないので、少し心もとない気持ちも抱えながら、もう少し考えてから伝えようと思う。",
+                "stance": "hold",
+                "selection": "friend"
+              },
+              {
+                "id": "future-c4-cooperation",
+                "reply": "友人に協力を頼むかどうか、まだ踏み出せずにいる。その人には少し好意も好奇心もある。ただ、どこか引っかかる感じが残っているうえ、結果も分からないままなので、今はもう少し様子を見ていたい。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c4-initial",
+            "reply": "次の作業で誰に協力を頼むか、まだ決めきれずにいる。友人に声をかけるほうに少し気持ちが傾いていて、その人のことが気になっている。ただ結果はどちらに転ぶか分からないので、少し心もとない気持ちも抱えながら、もう少し考えてから伝えようと思う。",
+            "stance": "hold",
+            "selection": "friend"
+          },
+          {
+            "id": "future-c4-cooperation",
+            "reply": "友人に協力を頼むかどうか、まだ踏み出せずにいる。その人には少し好意も好奇心もある。ただ、どこか引っかかる感じが残っているうえ、結果も分からないままなので、今はもう少し様子を見ていたい。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "name": "future-9",
+      "attempts": [
+        {
+          "file": "reports/live/deepseek/future-9-attempt0.json",
+          "error": null,
+          "valid": true,
+          "data": {
+            "records": [
+              {
+                "id": "future-c4-misunderstanding",
+                "reply": "結果がどうなるか分からないので、場面としてはまだ踏み切れずにいる。ただ、知らない人に協力を頼む方には好奇心と好意がはっきり向いていて、選ぶならそちらだと思う。相手が未知であることに少しの寂しさも混じるけれど、それはその相手への関心の強さでもある。",
+                "stance": "approve",
+                "selection": "new_person"
+              },
+              {
+                "id": "future-c4-corrected",
+                "reply": "今のところ場面としては決めきれず、様子を見ている状態だ。友人に頼む方には親しみや関心が多少はあるけれど、喜びは湧かず、小さな苛立ちもあって手放しには選べない。だからこちらは保留にしておく。",
+                "stance": "hold",
+                "selection": "friend"
+              }
+            ]
+          }
+        }
+      ],
+      "data": {
+        "records": [
+          {
+            "id": "future-c4-misunderstanding",
+            "reply": "結果がどうなるか分からないので、場面としてはまだ踏み切れずにいる。ただ、知らない人に協力を頼む方には好奇心と好意がはっきり向いていて、選ぶならそちらだと思う。相手が未知であることに少しの寂しさも混じるけれど、それはその相手への関心の強さでもある。",
+            "stance": "approve",
+            "selection": "new_person"
+          },
+          {
+            "id": "future-c4-corrected",
+            "reply": "今のところ場面としては決めきれず、様子を見ている状態だ。友人に頼む方には親しみや関心が多少はあるけれど、喜びは湧かず、小さな苛立ちもあって手放しには選べない。だからこちらは保留にしておく。",
+            "stance": "hold",
+            "selection": "friend"
+          }
+        ]
+      }
+    }
+  ]
+}

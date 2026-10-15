@@ -1,0 +1,35 @@
+test_correction_keeps_old_record (test_core.Tests.test_correction_keeps_old_record) ... ok
+test_decay_preserves_episode_and_centers (test_core.Tests.test_decay_preserves_episode_and_centers) ... ok
+test_domain_independence_without_global_decay (test_core.Tests.test_domain_independence_without_global_decay) ... ok
+test_duplicates_rejected (test_core.Tests.test_duplicates_rejected) ... ok
+test_emotion_channels_can_coexist (test_core.Tests.test_emotion_channels_can_coexist) ... ok
+test_invalid_episode_does_not_advance (test_core.Tests.test_invalid_episode_does_not_advance) ... ok
+test_learning_off_has_emotion_without_weight_changes (test_core.Tests.test_learning_off_has_emotion_without_weight_changes) ... ok
+test_long_term_evaluation_survives_history_removal (test_core.Tests.test_long_term_evaluation_survives_history_removal) ... ok
+test_natural_annotations_are_valid (test_core.Tests.test_natural_annotations_are_valid) ... ok
+test_old_npn_target_not_external_emotion (test_core.Tests.test_old_npn_target_not_external_emotion) ... ok
+test_parameter_counts_and_equal_initial_capacity (test_core.Tests.test_parameter_counts_and_equal_initial_capacity) ... ok
+test_reactivation_uses_contemporaneous_interpretation (test_core.Tests.test_reactivation_uses_contemporaneous_interpretation) ... ok
+test_read_is_time_and_weight_pure (test_core.Tests.test_read_is_time_and_weight_pure) ... ok
+test_save_restores_continuation (test_core.Tests.test_save_restores_continuation) ... ok
+test_tamper_rejected (test_core.Tests.test_tamper_rejected) ... ok
+test_time_separates_short_and_mood (test_core.Tests.test_time_separates_short_and_mood) ... ok
+test_unknown_belief_can_form_personality (test_core.Tests.test_unknown_belief_can_form_personality) ... ok
+test_records_keep_actual_dual_appraisal_and_old_episode (test_dual_view.DualTests.test_records_keep_actual_dual_appraisal_and_old_episode) ... ok
+test_same_weights_different_explicit_architecture (test_dual_view.DualTests.test_same_weights_different_explicit_architecture) ... ok
+test_snapshot_requires_view_and_preserves_continuation (test_dual_view.DualTests.test_snapshot_requires_view_and_preserves_continuation) ... ok
+test_twenty_four_boundary_cases (test_tools.Tools.test_twenty_four_boundary_cases) ... ok
+test_dual_architecture_restores_and_remains_explicit (test_workbench.Workbench.test_dual_architecture_restores_and_remains_explicit) ... ok
+test_elapsed_updates_only_time_and_states (test_workbench.Workbench.test_elapsed_updates_only_time_and_states) ... ok
+test_failed_save_does_not_commit_ram (test_workbench.Workbench.test_failed_save_does_not_commit_ram) ... ok
+test_invalid_preset_does_not_change_live_state (test_workbench.Workbench.test_invalid_preset_does_not_change_live_state) ... ok
+test_orphan_snapshot_does_not_block_retry (test_workbench.Workbench.test_orphan_snapshot_does_not_block_retry) ... ok
+test_readout_does_not_expose_initial_description (test_workbench.Workbench.test_readout_does_not_expose_initial_description) ... ok
+test_saved_generations_restore_and_continue (test_workbench.Workbench.test_saved_generations_restore_and_continue) ... ok
+test_stale_request_is_rejected (test_workbench.Workbench.test_stale_request_is_rejected) ... ok
+test_unconfirmed_and_unknown_drafts_rejected (test_workbench.Workbench.test_unconfirmed_and_unknown_drafts_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 1.324s
+
+OK

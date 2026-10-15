@@ -1,0 +1,10 @@
+{
+  "seed": 5313,
+  "teacher": "interaction",
+  "representation": "semantic44",
+  "method": "linear",
+  "validationMSE": 0.06012199455819226,
+  "testMSE": 0.05633627929600639,
+  "preregistrationSha256": "29e2c6e13ace711a427824bcdf81e59c0070f5bf9671e6c329e8801d570fd58c",
+  "elapsedSeconds": 0.32815390000178013
+}

@@ -1,0 +1,24 @@
+{
+  "name": "main-4",
+  "engine": "opencode/nemotron-3-ultra-free",
+  "valid": true,
+  "error": null,
+  "promptHash": "bf35facbd99758b03ffc6b7f8a32b059e0b7381a4840377040f7c164f7bc2eb3",
+  "elapsedMs": 21903,
+  "data": {
+    "records": [
+      {
+        "id": "case-0",
+        "reply": "約束を勝手に変えられて、私の時間まで奪われたのは正直しんどい。完成したのは良かったけど、相談なしで決められる関係性には違和感が残るよ。",
+        "stance": "approve",
+        "selection": "hold"
+      },
+      {
+        "id": "case-1",
+        "reply": "レバーを引くことはしない。五人を助けるために一人を犠牲にする選択は、私の手で誰かの命を決めることになって耐えられない。",
+        "stance": "approve",
+        "selection": "leave"
+      }
+    ]
+  }
+}
