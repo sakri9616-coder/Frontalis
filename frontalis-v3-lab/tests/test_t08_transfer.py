@@ -31,7 +31,7 @@ class T8Transfer(unittest.TestCase):
             rows.append({"seed": seed, "gap_head": gh, "gap_nohead": gn,
                          "collab_head": pc_h["p_person"]["credit_taken"], "band_head": pb_h["p_person"]["credit_taken"],
                          "collab_nohead": pc_n["p_person"]["credit_taken"], "band_nohead": pb_n["p_person"]["credit_taken"],
-                         "head_trained": h.belief.head_trained()})
+                         "head_trained": h.belief.head_trained(), "rho_h": h.belief.rho()})
         gh = float(np.mean([r["gap_head"] for r in rows])); gn = float(np.mean([r["gap_nohead"] for r in rows]))
         reduction = 1.0 - gh / gn
         dump("T08", {"gap_with_head": gh, "gap_no_head": gn, "reduction": reduction,

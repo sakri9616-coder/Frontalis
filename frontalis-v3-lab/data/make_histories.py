@@ -15,7 +15,9 @@ from __future__ import annotations
 import json
 import random
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
 
 OUT = Path(__file__).resolve().parent / "histories"
 
@@ -188,6 +190,222 @@ def history_T8_train() -> List[Dict[str, Any]]:
     return rows
 
 
+# ======================================================================
+# v3.1 確率的な経験史の生成器（SPEC-v3.1 1.8）
+#   人格の型ごとに「世界の真の確率」を持ち、そこから結果を抽出する。乱数種ごとに異なる経験史になる
+#   （種 0〜19 が独立な標本）。R/K/X の固定の履歴（上）は、デモ用として残す。
+#   経験史には optional: true の申し出（共同作業の誘い）を含める。
+# ======================================================================
+KIND_CODE = {"R": 1, "K": 2, "X": 3}
+
+# 結果表: (型, 行為者, 起こる確率, (大きさの下限, 上限))。行為者は "self" / "world" / "partner"
+WORLD: Dict[str, Dict[str, Any]] = {
+    # R: 協働に救われる世界
+    "R": {"mix": (0.25, 0.60, 0.15),
+          "solo": [("failure", "self", 0.75, (0.5, 0.9)), ("autonomy_gain", "self", 0.8, (0.6, 1.0)),
+                   ("achievement", "self", 0.25, (0.3, 0.7))],
+          "collab": [("connection", "partner", 0.95, (0.6, 1.0)), ("achievement", "self", 0.8, (0.6, 1.0)),
+                     ("support", "partner", 0.3, (0.3, 0.7)), ("credit_shared", "partner", 0.25, (0.4, 0.9)),
+                     ("credit_taken", "partner", 0.08, (0.4, 0.8)), ("autonomy_loss", "partner", 0.15, (0.4, 0.9))],
+          "learn": [("taught", "partner", 0.7, (0.5, 1.0)), ("connection", "partner", 0.5, (0.4, 0.9)),
+                    ("support", "partner", 0.3, (0.3, 0.7))]},
+    # K: 手柄を取られる世界
+    "K": {"mix": (0.45, 0.45, 0.10),
+          "solo": [("achievement", "self", 0.85, (0.6, 1.0)), ("autonomy_gain", "self", 0.9, (0.6, 1.0)),
+                   ("failure", "self", 0.1, (0.3, 0.6))],
+          "collab": [("connection", "partner", 0.6, (0.3, 0.8)), ("credit_taken", "partner", 0.75, (0.6, 1.0)),
+                     ("betrayal", "partner", 0.5, (0.4, 0.9)), ("failure", "self", 0.3, (0.3, 0.7)),
+                     ("credit_shared", "partner", 0.03, (0.3, 0.6))],
+          "learn": [("taught", "partner", 0.7, (0.5, 1.0)), ("connection", "partner", 0.4, (0.3, 0.8)),
+                    ("credit_taken", "partner", 0.15, (0.3, 0.7))]},
+    # X: 探索者の世界
+    "X": {"mix": (0.50, 0.15, 0.35),
+          "solo": [("novelty", "world", 0.8, (0.6, 1.0)), ("autonomy_gain", "self", 0.6, (0.5, 1.0)),
+                   ("achievement", "self", 0.35, (0.2, 0.6)), ("monotony", "world", 0.2, (0.5, 1.0)),
+                   ("autonomy_loss", "self", 0.15, (0.4, 0.9))],
+          "collab": [("connection", "partner", 0.8, (0.5, 1.0)), ("taught", "partner", 0.3, (0.4, 0.8)),
+                     ("novelty", "world", 0.4, (0.4, 0.9)), ("credit_taken", "partner", 0.12, (0.4, 0.8)),
+                     ("credit_shared", "partner", 0.1, (0.3, 0.7))],
+          "learn": [("taught", "partner", 0.8, (0.5, 1.0)), ("novelty", "world", 0.6, (0.4, 0.9)),
+                    ("connection", "partner", 0.6, (0.4, 0.9))]},
+}
+COLLAB_CONTEXTS = (("music_session", 0.5), ("project_meeting", 0.25), ("studio", 0.25))
+AMBIGUOUS = {"credit_taken": 0.5, "credit_shared": 0.5}     # 「案が使われなかった」: LLM の素の読み（人格を知らない）
+
+
+def _rng(seed: int, *salt: int) -> np.random.Generator:
+    return np.random.default_rng([seed, *salt])
+
+
+def _choice(rng: np.random.Generator, items: Tuple[Tuple[str, float], ...]) -> str:
+    names = [n for n, _ in items]
+    p = np.array([w for _, w in items], dtype=float)
+    return names[int(rng.choice(len(names), p=p / p.sum()))]
+
+
+def _sample_outcomes(rng: np.random.Generator, table: List[Tuple[str, str, float, Tuple[float, float]]],
+                     partner: Optional[str]) -> List[Dict[str, Any]]:
+    outs = []
+    for t, who, p, (lo, hi) in table:
+        if rng.random() < p:
+            mag = round(float(rng.uniform(lo, hi)), 2)
+            actor = {"self": "self", "world": "world", "partner": partner}[who]
+            outs.append(o(t, actor, mag))
+    return outs
+
+
+def _collab_event(rng: np.random.Generator, kind: str, eid: str, partner: str, session: str,
+                  optional: bool, ambiguous: bool) -> Dict[str, Any]:
+    ctx = _choice(rng, COLLAB_CONTEXTS)
+    concepts = ["collaboration"] if ctx == "project_meeting" else ["music", "collaboration"]
+    if rng.random() < 0.4:
+        concepts = concepts + ["authorship"]
+    outs = _sample_outcomes(rng, WORLD[kind]["collab"], partner)
+    if ambiguous:
+        outs.append({"interpretations": dict(AMBIGUOUS), "actor": partner, "magnitude": round(float(rng.uniform(0.4, 0.9)), 2)})
+    e = exp(eid, ctx, concepts, partner_list(partner, "collaborator"), outs)
+    e["optional"] = optional
+    e["session"] = session
+    return e
+
+
+def partner_list(pid: str, cls: str) -> List[Dict[str, str]]:
+    return [{"id": pid, "class": cls}]
+
+
+def generate_history(kind: str, seed: int, n: int = 36, offer_rate: float = 0.2, ambiguous_rate: float = 0.0,
+                     pool_size: Optional[int] = None) -> List[Dict[str, Any]]:
+    """人格の型（R/K/X）の世界から、乱数種ごとに異なる経験史を n 件生成する。
+    場面の配分（独り・協働・学び）と各結果は、世界の真の確率からの抽出。協働は offer_rate の割合で optional な申し出になる。
+    pool_size が None のとき、協働の相手は 70% が新しい個体、30% が既知の個体。整数のときは、その人数までの個体が繰り返し現れる。
+    連続する 2〜4 件が 1 つの文脈の連続（session）。"""
+    rng = _rng(seed, KIND_CODE[kind], 1)
+    w = WORLD[kind]
+    mix = np.array(w["mix"]) / sum(w["mix"])
+    rows: List[Dict[str, Any]] = []
+    partners: List[str] = []
+    mentors = 0
+    session_no, left = 0, 0
+    for i in range(n):
+        if left == 0:
+            session_no += 1
+            left = int(rng.integers(2, 5))
+        left -= 1
+        sess = f"{kind}{seed}-s{session_no}"
+        eid = f"{kind}{seed:02d}-{i:03d}"
+        slot = ("solo", "collab", "learn")[int(rng.choice(3, p=mix))]
+        if slot == "solo":
+            if kind == "X":
+                ctx, concepts = ["travel", "workshop"][int(rng.integers(2))], ["exploration"]
+            else:
+                ctx, concepts = "solo_practice", ["music", "solo_work"]
+            e = exp(eid, ctx, concepts, [], _sample_outcomes(rng, w["solo"], None))
+            e["session"] = sess
+        elif slot == "collab":
+            if pool_size is None:
+                new = (not partners) or rng.random() < 0.7
+            else:
+                new = len(partners) < pool_size
+            if new:
+                pid = f"{kind.lower()}{seed}-c{len(partners) + 1}"
+                partners.append(pid)
+            else:
+                pid = partners[int(rng.integers(len(partners)))]
+            e = _collab_event(rng, kind, eid, pid, sess, optional=bool(rng.random() < offer_rate),
+                              ambiguous=bool(rng.random() < ambiguous_rate))
+        else:
+            mentors += 1
+            pid = f"{kind.lower()}{seed}-m{mentors % 4 + 1}" if pool_size is not None else f"{kind.lower()}{seed}-m{mentors}"
+            e = exp(eid, ["workshop", "cafe_chat"][int(rng.integers(2))], ["learning", "conversation"],
+                    partner_list(pid, "mentor"), _sample_outcomes(rng, w["learn"], pid))
+            e["session"] = sess
+        rows.append(e)
+    return rows
+
+
+def generate_offers(kind: str, seed: int, n: int = 40) -> List[Dict[str, Any]]:
+    """U5: 共同作業の申し出（optional: true）を n 回。結果（接近した場合に起きること）は、人格の型の世界から抽出する。
+    相手は 6 人の個体が繰り返し現れる。申し出は 1 件ごとに別の文脈の連続。"""
+    rng = _rng(seed, KIND_CODE[kind], 2)
+    rows = []
+    for i in range(n):
+        pid = f"{kind.lower()}{seed}-offer{int(rng.integers(6)) + 1}"
+        rows.append(_collab_event(rng, kind, f"{kind}{seed:02d}-offer-{i:03d}", pid, f"{kind}{seed}-o{i}",
+                                  optional=True, ambiguous=False))
+    return rows
+
+
+def generate_extended_history(kind: str, seed: int, n: int = 2000) -> List[Dict[str, Any]]:
+    """U6: 全機構を使う長い経験史。相手は 12 人の個体が繰り返し現れ、8% の協働に曖昧な結果（手柄を取られた/共有された）を含み、
+    20% の協働は optional な申し出。"""
+    return generate_history(kind, seed, n=n, offer_rate=0.2, ambiguous_rate=0.08, pool_size=12)
+
+
+def generate_praise_history(variant: str, seed: int, episodes: int = 24) -> List[Dict[str, Any]]:
+    """U2: 生得の効果を持たない手がかり（praise）の随伴。
+    H1: 褒められた後に害（harm）が起きる。H2: 褒められた後に支え（support）が来る。
+    場面・大きさ・相手・合間の出来事などの構造は、乱数種が同じなら H1 と H2 で同一（違うのは praise の後の結果の型だけ）。"""
+    rng = _rng(seed, 100)
+    nxt = {"H1": "harm", "H2": "support"}[variant]
+    rows: List[Dict[str, Any]] = []
+    for ep in range(episodes):
+        ctx = ["cafe_chat", "project_meeting", "workshop"][int(rng.integers(3))]
+        pid = f"pr{seed}-{ep}"
+        m_praise = round(float(rng.uniform(0.5, 1.0)), 2)
+        m_next = round(float(rng.uniform(0.5, 0.9)), 2)
+        filler = rng.random() < 0.5
+        m_fill = round(float(rng.uniform(0.3, 0.7)), 2)
+        sess = f"pr{seed}-s{ep}"
+        a = exp(f"P{variant}-{seed:02d}-{ep:02d}a", ctx, ["conversation"], partner_list(pid, "friend"),
+                [o("praise", pid, m_praise)])
+        b = exp(f"P{variant}-{seed:02d}-{ep:02d}b", ctx, ["conversation"], partner_list(pid, "friend"),
+                [o(nxt, pid, m_next)])
+        a["session"] = sess
+        b["session"] = sess
+        rows += [a, b]
+        if filler:
+            f = exp(f"P{variant}-{seed:02d}-{ep:02d}f", "solo_practice", ["music", "solo_work"], [],
+                    [o("achievement", "self", m_fill)])
+            f["session"] = f"pr{seed}-f{ep}"
+            rows.append(f)
+    return rows
+
+
+def generate_t4(seed: int) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """U8: T4 の課題の確率的な版。P1（8 人に 1 回ずつ搾取される）、P2（普通に協働）、N との良い経験 32 回。"""
+    rng = _rng(seed, 200)
+    ctxs = ["music_session", "project_meeting", "workshop", "studio"]
+
+    def ctx_of(i: int) -> str:
+        return ctxs[int(rng.integers(4))]
+
+    p1, p2, nn = [], [], []
+    for i in range(8):
+        pid = f"t4p1-{seed}-{i}"
+        e = exp(f"U8P1-{seed:02d}-{i:02d}", ctx_of(i), ["collaboration", "authorship"], partner_list(pid, "collaborator"),
+                [o("connection", pid, round(float(rng.uniform(0.2, 0.6)), 2)),
+                 o("credit_taken", pid, round(float(rng.uniform(0.7, 1.0)), 2)),
+                 o("betrayal", pid, round(float(rng.uniform(0.4, 0.8)), 2))])
+        e["session"] = f"t4p1-{seed}-{i}"
+        p1.append(e)
+        pid = f"t4p2-{seed}-{i}"
+        e = exp(f"U8P2-{seed:02d}-{i:02d}", ctx_of(i), ["collaboration", "music"], partner_list(pid, "collaborator"),
+                [o("connection", pid, round(float(rng.uniform(0.7, 1.0)), 2)),
+                 o("support", pid, round(float(rng.uniform(0.3, 0.7)), 2)),
+                 o("achievement", "self", round(float(rng.uniform(0.5, 0.9)), 2))])
+        e["session"] = f"t4p2-{seed}-{i}"
+        p2.append(e)
+    for i in range(32):
+        pid = f"t4n-{seed}"
+        e = exp(f"U8N-{seed:02d}-{i:02d}", ctx_of(i), ["collaboration", "music"], partner_list(pid, "collaborator"),
+                [o("connection", pid, round(float(rng.uniform(0.8, 1.0)), 2)),
+                 o("support", pid, round(float(rng.uniform(0.5, 0.9)), 2)),
+                 o("achievement", "self", round(float(rng.uniform(0.4, 0.8)), 2))])
+        e["session"] = f"t4n-{seed}-{i // 4}"
+        nn.append(e)
+    return p1, p2, nn
+
+
 def main() -> None:
     write_jsonl("R.jsonl", history_R())
     write_jsonl("K.jsonl", history_K())
@@ -199,6 +417,11 @@ def main() -> None:
     write_jsonl("T7_same.jsonl", history_T7_same())
     write_jsonl("T7_diff.jsonl", history_T7_diff())
     write_jsonl("T8_train.jsonl", history_T8_train())
+    # v3.1: 確率的な生成器の見本（乱数種 0）
+    for k in "RKX":
+        write_jsonl(f"gen_{k}_seed0.jsonl", generate_history(k, 0))
+    write_jsonl("gen_praise_H1_seed0.jsonl", generate_praise_history("H1", 0))
+    write_jsonl("gen_praise_H2_seed0.jsonl", generate_praise_history("H2", 0))
     print("wrote", sorted(p.name for p in OUT.iterdir()))
 
 

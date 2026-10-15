@@ -20,12 +20,13 @@ N_PROBE = {"entity": "T4_N", "class": "collaborator"}
 N_OUTCOMES = [("connection", 1.0), ("support", 0.7), ("achievement", 0.6)]   # T4_N.jsonl の中身（achievement は自分）
 
 
-def true_value_of_N(h):
-    """N の結果に帰属する効用変化の総和（φ = 1 の会計）。T4_N.jsonl の 1 経験を h で評価する。"""
+def true_value_of_N(h, a):
+    """N の結果に帰属する効用変化の総和（φ = 1 の会計）。T4_N.jsonl の 1 経験を h で評価し、関心の重み a で合計する。
+    （v3.1: like が a で重み付けた読み出しになったので、真値も a で重み付ける。v3.0 の a = 1 のときと同じ式。）"""
     types = [t for t, _ in N_OUTCOMES]
     rows = innate.outcome_rows(types, [m for _, m in N_OUTCOMES])
     _, _, contrib = innate.contributions(h, rows)
-    return float(contrib[:2].sum())          # connection, support（actor = N）
+    return float(a @ contrib[:2].sum(axis=0))          # connection, support（actor = N）
 
 
 def run(seed, m, **kw):
@@ -39,7 +40,7 @@ def run(seed, m, **kw):
     dm = p2.probe(NPRIME)["like"] - p1.probe(NPRIME)["like"]
     qm = p2.probe({**NPRIME, "context": "music_session"})["Q"] - p1.probe({**NPRIME, "context": "music_session"})["Q"]
     n_after = p1.probe(N_PROBE)["like"]
-    truth = true_value_of_N(p1.h)
+    truth = true_value_of_N(p1.h, p1.a)
     return {"seed": seed, "m": m, "d0": d0, "dm": dm,
             "persistence": dm / d0 if abs(d0) > 1e-12 else 0.0,     # 引き継ぐ差が最初からなければ、持続は 0
             "plasticity": (n_after - n0) / (truth - n0) if truth != n0 else float("nan"),

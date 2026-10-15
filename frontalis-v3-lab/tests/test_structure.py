@@ -12,10 +12,10 @@ class InheritanceTests(unittest.TestCase):
         like = n.probe({"entity": "someone_new", "class": "collaborator"})
         self.assertFalse(like["known"])
         kal = n.value.person
-        expect = float(kal.W[kal.idx["people"]].sum() + kal.W[kal.idx["cls:collaborator"]].sum()
-                       + sum(kal.W[kal.idx[f"emb:{d}"]].sum() * v for d, v in
-                             enumerate(n.lex.cls_emb("collaborator")) if v != 0))
-        self.assertAlmostEqual(like["like"], expect, places=12)
+        emb = n.emb.cls("collaborator")
+        by_need = (kal.W[kal.idx["people"]] + kal.W[kal.idx["cls:collaborator"]]
+                   + sum(kal.W[kal.idx[f"emb:{d}"]] * v for d, v in enumerate(emb) if v != 0))
+        self.assertAlmostEqual(like["like"], float(n.a @ by_need), places=12)     # v3.1: 関心の重み a で合計する
         self.assertLess(like["like"], 0.0)               # K は共同作業者に手柄を取られた
 
     def test_experience_with_new_individual_starts_deviation_at_zero(self):
@@ -62,12 +62,16 @@ class HeadTests(unittest.TestCase):
         self.assertTrue(set(np.unique(ys)) <= {0.0, 1.0})
         self.assertLessEqual(n.belief.rb_len, 500)
 
-    def test_head_unused_until_50_samples(self):
+    def test_head_mixture_weight_follows_sample_count(self):
+        """v3.1（SPEC-v3.1 1.5）: 50 件の解禁は廃止。prior_cls = ρ_h head + (1 − ρ_h) m_gen、ρ_h = n/(n+30)。"""
         n = make(0)
-        feed(n, load_jsonl("T8_train.jsonl")[:49])
-        self.assertFalse(n.belief.head_trained())
-        feed(n, load_jsonl("T8_train.jsonl")[49:50])
-        self.assertTrue(n.belief.head_trained())
+        self.assertEqual(n.belief.rho(), 0.0)
+        feed(n, load_jsonl("T8_train.jsonl")[:10])
+        self.assertAlmostEqual(n.belief.rho(), 10 / 40)
+        self.assertTrue(n.belief.predict("music_session", [{"id": "x", "class": "collaborator"}]).head_used)
+        feed(n, load_jsonl("T8_train.jsonl")[10:30])
+        self.assertAlmostEqual(n.belief.rho(), 30 / 60)
+        self.assertEqual(make(0, no_head=True).belief.rho(), 0.0)
 
     def test_replay_buffer_is_bounded(self):
         n = make(0)
@@ -115,6 +119,7 @@ class AblationTests(unittest.TestCase):
         self.assertIsNone(n.belief.head)
         p = n.probe({"entity": "x", "class": "band_mate", "context": "music_session"})
         self.assertFalse(n.belief.predict("music_session", [{"id": "x", "class": "band_mate"}]).head_used)
+        self.assertEqual(n.belief.cfg.head_kind, "none")
         # 未見の類の個体の事前 = m_gen（類のデータがないので）
         m_gen = n.belief.summary()["m_gen"]["credit_taken"]
         self.assertAlmostEqual(p["m_cls"]["credit_taken"], m_gen, places=12)

@@ -3,6 +3,7 @@
 実行: python3 tests/diagnostics_m_scale.py
 T2(c)（fixed_teacher の cos ≥ 0.95）が不合格になった原因の切り分けに使った。結果は tests/results/diag_m_scale.json。
 M の大きさを変えるのは診断だけで、実装の既定（gM = 0.3）は変えていない。
+v3.1: 効果表は NPN の引数 effect_table で与える（v3.0 は innate.M を差し替えていた）。固定の R/K/X の履歴で測る。
 """
 import itertools
 import json
@@ -19,11 +20,11 @@ BASE = np.array(innate.M)
 
 
 def run(scale, **kw):
-    innate.M = BASE * (scale / 0.3)
+    table = BASE * (scale / 0.3)
     new = load_json("new_event.json")
     aps, ents = {}, []
     for name in "RKX":
-        n = persona(name, 0, **kw)
+        n = persona(name, 0, effect_table=table, **kw)
         aps[name] = n.experience(new)
         ents.append(n.ledger.entries[-1])
     keys = update_keys(ents)
@@ -40,7 +41,6 @@ def main():
         out[str(sc)] = {"kalman": run(sc), "fixed_teacher": run(sc, fixed_teacher=True)}
         print(f"gM={sc}: (a) f 最大差 {out[str(sc)]['kalman']['f_max_diff']:.3f} | (b) cos 最小 "
               f"{out[str(sc)]['kalman']['cos_min']:.3f} | (c) fixed cos 最小 {out[str(sc)]['fixed_teacher']['cos_min']:.3f}")
-    innate.M = BASE
     h = {}
     for name in "RKX":
         h[name] = [float(x) for x in persona(name, 0).h]

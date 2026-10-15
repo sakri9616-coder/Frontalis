@@ -5,7 +5,7 @@
 """
 from __future__ import annotations
 
-from typing import Dict, List, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -33,10 +33,13 @@ _M_TABLE: Dict[str, Tuple[float, float, float, float, float]] = {
     "support":         (+0.15, +0.15,  0.00,  0.00, +0.15),
     "betrayal":        (-0.30,  0.00,  0.00,  0.00, -0.30),
     "harm":            (-0.05, -0.05,  0.00,  0.00, -0.60),
-    "praise":          (+0.10, +0.20,  0.00,  0.00,  0.00),
+    # v3.1: praise は生得の効果を持たない。社会的承認の価値は、随伴関係から条件づけで形成される（SPEC-v3.1 1.2, U2）
+    "praise":          ( 0.00,  0.00,  0.00,  0.00,  0.00),
     "criticism":       (-0.05, -0.20,  0.00,  0.00, -0.05),
     "credit_taken":    ( 0.00,  0.00, -0.30,  0.00,  0.00),
     "credit_given":    (+0.05, +0.10, +0.20,  0.00,  0.00),
+    # v3.1: 手柄を共有された（曖昧な出来事「手柄を取られた／共有された」の候補、SPEC-v3.1 1.4）
+    "credit_shared":   (+0.10, +0.10, +0.10,  0.00,  0.00),
     "taught":          ( 0.00,  0.00,  0.00, +0.30,  0.00),
     "achievement":     ( 0.00, +0.30,  0.00,  0.00,  0.00),
     "failure":         ( 0.00, -0.30,  0.00,  0.00, -0.10),
@@ -96,13 +99,28 @@ def next_h(h: np.ndarray, dh: np.ndarray) -> np.ndarray:
     return h2 + LAMBDA_H * (H0 - h2)
 
 
-def outcome_rows(types: Sequence[str], magnitudes: Sequence[float]) -> np.ndarray:
-    """各結果の欲求変化 magnitude_o * M[type_o]。形は (n_outcomes, 5)。"""
+def outcome_rows(types: Sequence[str], magnitudes: Sequence[float], table: Optional[np.ndarray] = None) -> np.ndarray:
+    """各結果の欲求変化 magnitude_o * M[type_o]。形は (n_outcomes, 5)。table は効果表（既定は固定の M）。"""
     if len(types) == 0:
         return np.zeros((0, N_NEEDS))
+    tab = M if table is None else table
     idx = np.array([TYPE_INDEX[t] for t in types])
     mag = np.asarray(magnitudes, dtype=np.float64)
-    return mag[:, None] * M[idx]
+    return mag[:, None] * tab[idx]
+
+
+def mixed_rows(weights: np.ndarray, magnitudes: Sequence[float], table: Optional[np.ndarray] = None) -> np.ndarray:
+    """曖昧な結果を含む欲求変化。weights は (n_outcomes, 型数) で、行ごとに解釈の重み（明確な結果は one-hot）。
+    row_o = magnitude_o * Σ_I w_{o,I} M[I]。"""
+    tab = M if table is None else table
+    if len(weights) == 0:
+        return np.zeros((0, N_NEEDS))
+    return np.asarray(magnitudes, dtype=np.float64)[:, None] * (np.asarray(weights) @ tab)
+
+
+def perturb_table(table: np.ndarray, rng: np.random.Generator, rel: float = 0.3) -> np.ndarray:
+    """効果表の各要素を ±rel の一様乱数で揺らす（0 の要素は 0 のまま）。U3（M への頑健性）用。"""
+    return table * (1.0 + rng.uniform(-rel, rel, size=table.shape))
 
 
 def contributions(h: np.ndarray, rows: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:

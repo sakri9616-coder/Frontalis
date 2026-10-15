@@ -5,6 +5,11 @@
   状況モデル: 文脈と概念の価値。特徴 = world + ctx:<c> + concept:<x> + 概念埋め込みの平均 8 次元
   教師は帰属 φ で分ける。更新 K = Σz/(zᵀΣz+R)、W += K(Δu - zᵀW)、Σ ← Σ - K zᵀΣ、続いて関与した対角に q。
 価値ネット自身の出力は、どの更新の目標にも入らない（docs/04 補題1）。教師は Δu（欲求の効用変化）だけ。
+
+v3.1 の追加（SPEC-v3.1）
+  Concern     欲求の関心の重み a（1.1）: 目標は |Δu|（外生）。感じた価値・MB・好悪の読み出しで欲求を重み付ける。
+  Conditioning 条件づけられた価値 C（1.2）: 手がかり（概念・参加者・結果型）への線形の重み。TD(0)、目標は r + γ C_frozen。
+  felt_value  f = tanh(((Σ a_k Δu_k) + λ_C ΣC + η_ref(Σ a_k Δu_k − Q))/s_f + β m)（1.3）
 """
 from __future__ import annotations
 
@@ -16,7 +21,7 @@ import numpy as np
 from . import innate
 from .config import Config
 from .innate import N_NEEDS, N_TYPES
-from .lexicon import EMB_DIM, Lexicon
+from .lexicon import EMB_DIM, EmbeddingStore
 
 Feat = Tuple[str, str, float]   # (特徴名, 層, 値)
 
@@ -130,9 +135,9 @@ class KalmanModel:
 # 価値ネット
 # ======================================================================
 class ValueNet:
-    def __init__(self, cfg: Config, lex: Lexicon):
+    def __init__(self, cfg: Config, emb: EmbeddingStore):
         self.cfg = cfg
-        self.lex = lex
+        self.emb = emb
         if cfg.flat_value:
             # 階層を外す: 最下層（個体・文脈・概念）の特徴だけ、事前分散 0.25
             pv = {"ind": cfg.flat_var}
@@ -149,7 +154,7 @@ class ValueNet:
         if self.cfg.flat_value:
             return [(f"ind:{pid}", "ind", 1.0)]
         feats: List[Feat] = [("people", "people", 1.0), (f"cls:{cls}", "cls", 1.0), (f"ind:{pid}", "ind", 1.0)]
-        e = self.lex.cls_emb(cls)
+        e = self.emb.cls(cls)
         feats += [(f"emb:{d}", "emb", float(e[d])) for d in range(EMB_DIM)]
         return feats
 
@@ -162,34 +167,39 @@ class ValueNet:
             feats.append((f"ctx:{ctx}", "ctx", 1.0))
         feats += [(f"concept:{c}", "concept", 1.0) for c in concepts]
         if not flat and concepts:
-            m = self.lex.concept_mean(concepts)
+            m = self.emb.concept_mean(concepts)
             feats += [(f"cemb:{d}", "cemb", float(m[d])) for d in range(EMB_DIM)]
         return feats
 
     # --- MF 評価（状態を変えない）---
-    def mf(self, participants: Sequence[Dict[str, str]], ctx: str, concepts: Sequence[str]) -> Dict[str, Any]:
+    def mf(self, participants: Sequence[Dict[str, str]], ctx: str, concepts: Sequence[str],
+           a: Optional[np.ndarray] = None) -> Dict[str, Any]:
+        """MF 価値。欲求ごとの予測を関心の重み a で合計する（a = 1 なら v3.0 と同じ）。"""
+        w = np.ones(N_NEEDS) if a is None else a
         persons = []
         V = 0.0
         var = 0.0
         for p in participants:
             pred, v, known = self.person.predict(self.person_feats(p["id"], p["class"]))
-            persons.append({"id": p["id"], "value": float(pred.sum()), "var": float(v), "pred": pred, "known": known})
-            V += float(pred.sum())
+            val = float(w @ pred)
+            persons.append({"id": p["id"], "value": val, "var": float(v), "pred": pred, "known": known})
+            V += val
             var += float(v)
         pred_s, v_s, known_s = self.sit.predict(self.situation_feats(ctx, concepts))
-        V += float(pred_s.sum())
+        vs = float(w @ pred_s)
+        V += vs
         var += float(v_s)
         return {"V_MF": V, "var_MF": var, "persons": persons,
-                "situation": {"value": float(pred_s.sum()), "var": float(v_s), "pred": pred_s, "known": known_s}}
+                "situation": {"value": vs, "var": float(v_s), "pred": pred_s, "known": known_s}}
 
-    def like_entity(self, pid: str, cls: str) -> Tuple[float, float, np.ndarray, bool]:
+    def like_entity(self, pid: str, cls: str, a: Optional[np.ndarray] = None) -> Tuple[float, float, np.ndarray, bool]:
         pred, v, known = self.person.predict(self.person_feats(pid, cls))
-        return float(pred.sum()), float(v), pred, known
+        return float((np.ones(N_NEEDS) if a is None else a) @ pred), float(v), pred, known
 
-    def like_concept(self, name: str) -> Tuple[float, float, np.ndarray, bool]:
+    def like_concept(self, name: str, a: Optional[np.ndarray] = None) -> Tuple[float, float, np.ndarray, bool]:
         """概念の好悪 Like(x) = 一般 + 概念 + 埋め込みの寄与（文脈は含めない）。測定用のプローブ。"""
         pred, v, known = self.sit.predict(self.situation_feats(None, [name], with_ctx=False))
-        return float(pred.sum()), float(v), pred, known
+        return float((np.ones(N_NEEDS) if a is None else a) @ pred), float(v), pred, known
 
     def prepare(self, participants: Sequence[Dict[str, str]], ctx: str, concepts: Sequence[str]) -> None:
         """この経験で使う特徴を（学習せずに）登録する。ヤコビアンの検査用（状態写像の定義域を揃える）。"""
@@ -241,22 +251,26 @@ def stable_seed(base_seed: int, key: str) -> int:
     return int.from_bytes(d[:8], "little")
 
 
-def type_effect(h: np.ndarray, mag: np.ndarray) -> np.ndarray:
-    """型 k の結果が平均の大きさで 1 回起きたときの効用変化の総和 g_k（信念の不確実性を価値の尺度に直す係数）。"""
-    out = np.zeros(N_TYPES)
-    for k in range(N_TYPES):
-        out[k] = innate.delta_u(h, mag[k] * innate.M[k]).sum()
-    return out
+def type_effect(h: np.ndarray, mag: np.ndarray, table: Optional[np.ndarray] = None,
+                a: Optional[np.ndarray] = None) -> np.ndarray:
+    """型 k の結果が平均の大きさで 1 回起きたときの（a で重み付けた）効用変化の総和 g_k
+    （信念の不確実性を価値の尺度に直す係数）。"""
+    tab = innate.M if table is None else table
+    du = innate.delta_u(h[None, :], mag[:, None] * tab)           # (K, 5)
+    return du.sum(axis=1) if a is None else du @ a
 
 
-def model_based(pred: Any, h: np.ndarray, mag: np.ndarray, cfg: Config, key: str) -> Dict[str, Any]:
-    """V_MB(s|h): 信念の予測確率で結果の集合を M_mc 回サンプルし、U(h+Δh) - U(h) の総和を平均する。
+def model_based(pred: Any, h: np.ndarray, mag: np.ndarray, cfg: Config, key: str,
+                table: Optional[np.ndarray] = None, a: Optional[np.ndarray] = None) -> Dict[str, Any]:
+    """V_MB(s|h): 信念の予測確率で結果の集合を M_mc 回サンプルし、(a で重み付けた) U(h+Δh) - U(h) の総和を平均する。
 
     σ²_MB = サンプル間の分散 / M_mc + Σ_{e,k} g_k² Var_k(e)   （信念の事後の不確実性）
       Var_k(e) = 個体・類・一般・文脈・世界の Beta 事後分散の和（belief.predict が返す）、
       g_k = 型 k の結果 1 回の効用変化（デルタ法で、確率の不確実性を価値の尺度に直す）。
     乱数は経験 id（プローブでは正規形）と設定の種から作るので、同じ状態・同じ入力では決定的。
     """
+    tab = innate.M if table is None else table
+    w = np.ones(N_NEEDS) if a is None else a
     M_mc = cfg.mc_samples
     nP = pred.p_person.shape[0]
     rng = np.random.default_rng(stable_seed(cfg.seed, key))
@@ -264,11 +278,11 @@ def model_based(pred: Any, h: np.ndarray, mag: np.ndarray, cfg: Config, key: str
     U = rng.random((M_mc, nP + 1, N_TYPES))
     Y = (U < P[None, :, :]).astype(np.float64)
     cnt = Y.sum(axis=1)                                          # (M, K) 型ごとの発生数
-    dh = (cnt * mag[None, :]) @ innate.M                         # (M, 5)
-    tot = innate.delta_u(h[None, :], dh).sum(axis=1)
+    dh = (cnt * mag[None, :]) @ tab                              # (M, 5)
+    tot = innate.delta_u(h[None, :], dh) @ w
     V_MB = float(tot.mean())
     var_s = float(tot.var(ddof=1) / M_mc) if M_mc > 1 else 0.0
-    g = type_effect(h, mag)
+    g = type_effect(h, mag, tab, w)
     var_b = float(((g[None, :] ** 2) * pred.var_person).sum() + ((g ** 2) * pred.var_sw).sum())
     return {"V_MB": V_MB, "var_MB": var_s + var_b, "var_samples": var_s, "var_belief": var_b}
 
@@ -281,11 +295,112 @@ def arbitrate(V_MF: float, var_MF: float, V_MB: float, var_MB: float) -> Tuple[f
 
 
 # ======================================================================
+# 欲求の関心の重み a（SPEC-v3.1 1.1）
+# ======================================================================
+class Concern:
+    """人格ごとの欲求の重み a ∈ R⁵（初期値 1、和は常に 5）。
+
+    更新: a ← normalize( a + η_a ( |Δu| / mean(|Δu|_run) − a ) )。|Δu| は生得の効用の変化の大きさ（外生）。
+    **a の目標に価値ネットの出力は入らない**（補題1）。意味: 人生で大きく揺さぶられた欲求ほど、その人格にとって重要になる
+    （感作。正負は問わない。この方向は設計上の仮説）。
+    """
+
+    def __init__(self, cfg: Config):
+        self.cfg = cfg
+        self.a = np.ones(N_NEEDS)
+        self.run = 0.0        # mean_k |Δu_k| の移動平均
+        self.n = 0
+
+    def update(self, du: np.ndarray) -> np.ndarray:
+        """a を更新して、更新前の a を返す。効用変化が全欲求で 0 の経験（何も起きない）では更新しない。"""
+        before = self.a.copy()
+        if self.cfg.no_concern:
+            return before
+        mag = np.abs(du)
+        if float(mag.sum()) < 1e-12:
+            return before
+        cfg = self.cfg
+        rate = max(1.0 / (self.n + 1.0), cfg.a_run_rate)
+        self.run = self.run + rate * (float(mag.mean()) - self.run)
+        self.n += 1
+        target = np.clip(mag / max(self.run, 1e-12), 0.0, float(N_NEEDS))
+        a = self.a + cfg.eta_a * (target - self.a)
+        self.a = N_NEEDS * a / a.sum()
+        return before
+
+    def get_state(self) -> Tuple[Dict[str, Any], Dict[str, np.ndarray]]:
+        return {"run": float(self.run), "n": int(self.n)}, {"concern_a": self.a}
+
+    def set_state(self, meta: Dict[str, Any], arrays: Dict[str, np.ndarray]) -> None:
+        self.run = float(meta["run"]); self.n = int(meta["n"])
+        self.a = np.array(arrays["concern_a"], dtype=np.float64)
+
+
+# ======================================================================
+# 条件づけられた価値 C（SPEC-v3.1 1.2）
+# ======================================================================
+class Conditioning:
+    """手がかり（概念・参加者の個体と類・結果型）への線形の重み C。TD(0)で学ぶ。
+
+    事象 t+1 を見たとき、事象 t の手がかり z_t を更新する:
+        y_t = r_{t+1} + γ C_frozen(z_{t+1}),   C += α_C (y_t − C·z_t) z_t / (z_tᵀ z_t)
+    r = Σ_k a_k Δu_k（その事象の生得の効用）。C_frozen は更新前の C（勾配を止める）。同じ文脈の連続の間だけつなぎ、
+    途切れたら次の価値を 0 とする。目標の r は C に依存せず、γ < 1 のブートストラップは縮小。
+    どの手がかりがどんな価値を帯びるかは、設計者ではなく経験の随伴構造が決める。
+    """
+
+    def __init__(self, cfg: Config):
+        self.cfg = cfg
+        self.names: List[str] = []
+        self.idx: Dict[str, int] = {}
+        self.C = np.zeros(0)
+
+    def value_of(self, name: str) -> float:
+        i = self.idx.get(name)
+        return 0.0 if i is None else float(self.C[i])
+
+    def value(self, cues: Sequence[str]) -> float:
+        """手がかりの集合の価値 C·z（z は存在の 0/1）。"""
+        return float(sum(self.C[self.idx[c]] for c in cues if c in self.idx))
+
+    def update(self, cues: Sequence[str], y: float) -> Dict[str, float]:
+        """NLMS 型の更新。戻り値は手がかりごとの ΔC（台帳用）。"""
+        cues = list(dict.fromkeys(cues))
+        if not cues:
+            return {}
+        for c in cues:
+            if c not in self.idx:
+                self.idx[c] = len(self.names)
+                self.names.append(c)
+                self.C = np.append(self.C, 0.0)
+        ii = np.array([self.idx[c] for c in cues])
+        err = y - float(self.C[ii].sum())
+        d = self.cfg.alpha_c * err / len(cues)            # z は 0/1 なので z_tᵀ z_t = 手がかりの数
+        self.C[ii] += d
+        return {c: float(d) for c in cues}
+
+    def get_state(self) -> Tuple[Dict[str, Any], Dict[str, np.ndarray]]:
+        return {"names": list(self.names)}, {"cond_C": self.C}
+
+    def set_state(self, meta: Dict[str, Any], arrays: Dict[str, np.ndarray]) -> None:
+        self.names = list(meta["names"])
+        self.idx = {n: i for i, n in enumerate(self.names)}
+        self.C = np.array(arrays["cond_C"], dtype=np.float64)
+
+
+# ======================================================================
 # 感じた価値・気分・感情（読み出し。学習の目標にはしない）
 # ======================================================================
-def felt_value(du: np.ndarray, mood: float, cfg: Config) -> float:
-    """f = tanh(Σ_k Δu_k / s_f + β m)。"""
-    return float(np.tanh(du.sum() / cfg.s_f + cfg.beta_mood * mood))
+def felt_parts(inn: float, cond: float, Q: float, cfg: Config) -> Dict[str, float]:
+    """f の内訳。inn = Σ_k a_k Δu_k（生得の効用）、cond = λ_C ΣC（条件づけられた価値）、
+    ref = η_ref (inn − Q)（予期との差。参照点依存、Rutledge et al. 2014）。"""
+    ref = 0.0 if cfg.no_reference else cfg.eta_ref * (inn - Q)
+    return {"innate": float(inn), "conditioned": float(cond), "reference": float(ref)}
+
+
+def felt_value(parts: Dict[str, float], mood: float, cfg: Config) -> float:
+    """f = tanh( (Σ a_k Δu_k + λ_C ΣC + η_ref (Σ a_k Δu_k − Q)) / s_f + β m )。f は読み出しで、どの学習の目標にも入らない。"""
+    return float(np.tanh((parts["innate"] + parts["conditioned"] + parts["reference"]) / cfg.s_f + cfg.beta_mood * mood))
 
 
 def surprise(f: float, Q: float, cfg: Config) -> float:

@@ -85,3 +85,41 @@ def update_keys(entries: Sequence[Dict[str, Any]]) -> List[Any]:
 def cos(a: np.ndarray, b: np.ndarray) -> float:
     na, nb = np.linalg.norm(a), np.linalg.norm(b)
     return float(a @ b / (na * nb)) if na > 0 and nb > 0 else float("nan")
+
+
+# ----------------------------------------------------------------------
+# v3.1（U1〜U9）用の補助
+# ----------------------------------------------------------------------
+import multiprocessing as _mp  # noqa: E402
+import os as _os  # noqa: E402
+from concurrent.futures import ProcessPoolExecutor as _Pool  # noqa: E402
+
+sys.path.insert(0, str(ROOT / "data"))
+import make_histories as mh  # noqa: E402  確率的な経験史の生成器（SPEC-v3.1 1.8）
+
+KINDS = ("R", "K", "X")
+
+
+def pmap(fn, items):
+    """種ごとの計算を、fork したプロセスで並列に走らせる（結果は決定的。全テストの時間を抑えるため）。"""
+    items = list(items)
+    workers = min(4, _os.cpu_count() or 1)
+    if workers <= 1 or len(items) <= 1:
+        return [fn(x) for x in items]
+    with _Pool(max_workers=workers, mp_context=_mp.get_context("fork")) as ex:
+        return list(ex.map(fn, items, chunksize=1))
+
+
+def persona_gen(kind: str, seed: int, n: int = 36, **kw: Any) -> NPN:
+    """乱数種 seed ごとに異なる経験史（人格の型 kind の世界から抽出）で人格を育てる。NPN の種も seed。"""
+    npn = make(seed, **kw)
+    for e in mh.generate_history(kind, seed, n):
+        npn.experience(e)
+    return npn
+
+
+def align_shell(npn: NPN) -> NPN:
+    """欲求の状態 h と気分 m を基準値に揃える（U1: 状態の違いを取り除く）。"""
+    npn.h[:] = 1.0
+    npn.mood = 0.0
+    return npn

@@ -1,0 +1,43 @@
+{
+ "mean_gap": {
+  "mlp": 0.038393713119133456,
+  "linear": 0.06137494150536088,
+  "knn1": 0.027182184471895687,
+  "none": 0.1105096915720551
+ },
+ "mlp_over_none": 0.34742394601743853,
+ "judged_threshold": 0.7,
+ "fraction_of_seeds_mlp_gap_smaller_than": {
+  "linear": 1.0,
+  "knn1": 0.05,
+  "none": 1.0
+ },
+ "collab_prediction_mean": {
+  "mlp": 0.502264455753158,
+  "linear": 0.4534199562911684,
+  "knn1": 0.5413892527000268,
+  "none": 0.3681990364591353
+ },
+ "band_prediction_mean": {
+  "mlp": 0.4638707426340246,
+  "linear": 0.3920450147858075,
+  "knn1": 0.5142070682281312,
+  "none": 0.2576893448870802
+ },
+ "rho_T8": 0.8,
+ "rho_h_RKX_36_experiences": {
+  "R": {
+   "n_head_mean": 27.0,
+   "rho_mean": 0.47293245954193897
+  },
+  "K": {
+   "n_head_mean": 17.4,
+   "rho_mean": 0.3641562898358855
+  },
+  "X": {
+   "n_head_mean": 17.1,
+   "rho_mean": 0.3602491100237724
+  }
+ },
+ "mlp_beats_linear_and_knn1": false
+}

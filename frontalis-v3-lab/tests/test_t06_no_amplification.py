@@ -104,7 +104,7 @@ class T6NoAmplification(unittest.TestCase):
         e = dict(GOOD); e["id"] = "good-final"
         ap = n.appraise(e)                                  # 最後の状態での真の効用変化 Δu（appraisal の du_total）
         probe = n.probe({"context": e["context"], "concepts": e["concepts"], "participants": e["participants"]})
-        true_du = ap["du_total"]
+        true_du = ap["du_weighted"]                          # v3.1: V_MF は a で重み付けた量。真の効用変化も a で重み付ける
         rel_err = abs(probe["V_MF"] - true_du) / abs(true_du)
         diag_max = max(float(np.diag(n.value.person.S).max()), float(np.diag(n.value.sit.S).max()))
         dump("T06b", {"V_MF": probe["V_MF"], "true_du": true_du, "relative_error": rel_err,

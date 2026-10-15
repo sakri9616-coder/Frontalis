@@ -9,11 +9,13 @@ from npnv3 import innate
 
 class InnateTests(unittest.TestCase):
     def test_vocabulary_covers_spec_minimum(self):
+        """SPEC の最低限の語彙（18 型）に、v3.1 で credit_shared を加えた。"""
         need = {"connection", "rejection", "support", "betrayal", "harm", "praise", "criticism", "credit_taken",
-                "credit_given", "taught", "achievement", "failure", "autonomy_gain", "autonomy_loss", "novelty",
+                "credit_given", "credit_shared", "taught", "achievement", "failure", "autonomy_gain", "autonomy_loss", "novelty",
                 "monotony", "safety_threat", "comfort"}
         self.assertEqual(set(innate.OUTCOME_TYPES), need)
-        self.assertEqual(innate.M.shape, (18, 5))
+        self.assertEqual(innate.M.shape, (19, 5))       # v3.0 の 18 型 + credit_shared
+        self.assertTrue(np.all(innate.M[innate.TYPE_INDEX['praise']] == 0))   # v3.1: praise は生得の効果を持たない
 
     def test_utility_shapes(self):
         h = np.array([1.0, 1.0, 1.0, 1.0, 1.0])
