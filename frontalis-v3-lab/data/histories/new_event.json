@@ -1,0 +1,37 @@
+{
+ "id": "new-song-with-friendA",
+ "context": "music_session",
+ "concepts": [
+  "music",
+  "collaboration"
+ ],
+ "participants": [
+  {
+   "id": "friendA",
+   "class": "collaborator"
+  }
+ ],
+ "outcomes": [
+  {
+   "type": "connection",
+   "actor": "friendA",
+   "magnitude": 1.0
+  },
+  {
+   "type": "achievement",
+   "actor": "self",
+   "magnitude": 0.8
+  },
+  {
+   "type": "credit_taken",
+   "actor": "friendA",
+   "magnitude": 0.8
+  },
+  {
+   "type": "taught",
+   "actor": "friendA",
+   "magnitude": 0.6
+  }
+ ],
+ "optional": false
+}

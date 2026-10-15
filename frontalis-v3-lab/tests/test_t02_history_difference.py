@@ -1,0 +1,108 @@
+"""T2 履歴差 と T3 学習の向き。
+同じ初期状態から 3 つの経験史（協働に救われた R、手柄を取られた K、探索者 X）を通し、同じ新しい経験を与える。
+T2 (a) 新しい経験の感じた価値 f が 3 人格で異なる（最大差 > 0.1）
+T2 (b) 価値の更新ベクトル（全特徴×欲求）の人格間 cos の最小値 < 0.5
+T2 (c) fixed_teacher では cos ≥ 0.95
+T3     相手 A への評価の更新の符号が、少なくとも 1 人格で他と逆になる
+数値は種 0〜19 の 20 本。(a)(b)(c) は平均と全本の両方で満たすことを要求する。
+"""
+import itertools
+import unittest
+
+import numpy as np
+
+from helpers import SEEDS, cos, dump, feed, flat_update, load_json, persona, update_keys
+
+NAMES = ["R", "K", "X"]
+
+
+def run_new_event(seed, **kw):
+    new = load_json("new_event.json")
+    aps, entries = {}, []
+    for name in NAMES:
+        n = persona(name, seed, **kw)
+        aps[name] = n.experience(new)
+        entries.append(n.ledger.entries[-1])
+    keys = update_keys(entries)
+    vecs = {name: flat_update(e, keys) for name, e in zip(NAMES, entries)}
+    return aps, vecs
+
+
+class T2HistoryDifference(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.default = [run_new_event(s) for s in SEEDS]
+        cls.fixed = [run_new_event(s, fixed_teacher=True) for s in SEEDS]
+
+    def test_t2a_felt_value_differs(self):
+        spans = [max(ap[n]["f"] for n in NAMES) - min(ap[n]["f"] for n in NAMES) for ap, _ in self.default]
+        dump("T02a", {"f_max_diff_by_seed": spans, "mean": float(np.mean(spans)), "min": float(np.min(spans)),
+                      "f_seed0": {n: self.default[0][0][n]["f"] for n in NAMES}})
+        self.assertGreater(float(np.mean(spans)), 0.1)
+        self.assertGreater(float(np.min(spans)), 0.1)
+
+    def test_t2b_update_vector_directions_differ(self):
+        mins, pair0 = [], {}
+        for i, (_, vecs) in enumerate(self.default):
+            cs = {(a, b): cos(vecs[a], vecs[b]) for a, b in itertools.combinations(NAMES, 2)}
+            mins.append(min(cs.values()))
+            if i == 0:
+                pair0 = {f"{a}-{b}": v for (a, b), v in cs.items()}
+        dump("T02b", {"min_cos_by_seed": mins, "mean": float(np.mean(mins)), "max": float(np.max(mins)),
+                      "pairs_seed0": pair0})
+        self.assertLess(float(np.mean(mins)), 0.5)
+        self.assertLess(float(np.max(mins)), 0.5)
+
+    def test_t2c_fixed_teacher_directions_agree(self):
+        mins, pair0 = [], {}
+        for i, (_, vecs) in enumerate(self.fixed):
+            cs = {(a, b): cos(vecs[a], vecs[b]) for a, b in itertools.combinations(NAMES, 2)}
+            mins.append(min(cs.values()))
+            if i == 0:
+                pair0 = {f"{a}-{b}": v for (a, b), v in cs.items()}
+        dump("T02c", {"min_cos_by_seed": mins, "mean": float(np.mean(mins)), "min": float(np.min(mins)),
+                      "pairs_seed0": pair0})
+        self.assertGreaterEqual(float(np.mean(mins)), 0.95)
+        self.assertGreaterEqual(float(np.min(mins)), 0.95)
+
+    def test_t3_direction_of_learning_flips(self):
+        deltas, flips = [], 0
+        for ap, _ in self.default:
+            d = {n: ap[n]["value_change"]["entities"]["friendA"]["delta"] for n in NAMES}
+            deltas.append(d)
+            signs = {np.sign(v) for v in d.values()}
+            flips += int(len(signs) > 1)
+        dump("T03", {"delta_like_friendA_seed0": deltas[0], "seeds_with_sign_disagreement": flips,
+                     "n_seeds": len(SEEDS)})
+        self.assertEqual(flips, len(SEEDS), deltas[0])
+
+    # ---- 補助（SPEC 第 8 節の外）----
+    def test_extra_expectation_and_surprise_differ_by_history(self):
+        """補助: 学習した価値が効くのは、感じた価値 f ではなく、予期 Q と驚き δ である（f は h と気分で決まる）。
+        同じ新しい経験への予期 Q が人格で 0.1 を超えて違い（最小の本でも）、驚き δ の符号も分かれる。"""
+        qs = [{n: ap[n]["Q"] for n in NAMES} for ap, _ in self.default]
+        ds = [{n: ap[n]["delta"] for n in NAMES} for ap, _ in self.default]
+        span_q = [max(q.values()) - min(q.values()) for q in qs]
+        dump("T02_extra", {"Q_seed0": qs[0], "delta_seed0": ds[0], "Q_span_min_over_seeds": float(np.min(span_q))})
+        self.assertGreater(float(np.min(span_q)), 0.1)
+        self.assertTrue(all(max(d.values()) > 0 > min(d.values()) for d in ds))      # 驚きの符号が人格で分かれる
+
+    def test_extra_subtyping_prediction_of_docs04_section6(self):
+        """補助（docs/04 第 6 節の予測。デモを見たあとに検査として追加）: 傷ついた履歴の K は、予期より良い個人 A を
+        『例外』として高く評価し、類（共同作業者）への見方はほとんど変えない。"""
+        new = load_json("new_event.json")
+        n = persona("K", 0)
+        kal = n.value.person
+        cls_before = float(kal.W[kal.idx["cls:collaborator"]].sum())
+        a = n.experience(new)
+        cls_after = float(kal.W[kal.idx["cls:collaborator"]].sum())
+        v = a["value_change"]["entities"]["friendA"]
+        dump("T03_subtyping", {"A_before": v["before"], "A_after": v["after"], "cls_before": cls_before,
+                               "cls_after": cls_after})
+        self.assertLess(v["before"], 0.0)
+        self.assertGreater(v["after"], 0.0)                              # A は例外として高く評価される
+        self.assertLess(abs(cls_after - cls_before), 0.2 * abs(v["after"] - v["before"]))   # 類はほとんど動かない
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,0 +1,16 @@
+{
+ "gap_with_head": 0.02847247429018941,
+ "gap_no_head": 0.19056305636428483,
+ "reduction": 0.8505876488685155,
+ "seeds_reduction_ge_30pct": 20,
+ "seed0": {
+  "seed": 0,
+  "gap_head": 0.06125602190150442,
+  "gap_nohead": 0.19056305636428483,
+  "collab_head": 0.5209970460675785,
+  "band_head": 0.45974102416607404,
+  "collab_nohead": 0.4167584704561569,
+  "band_nohead": 0.22619541409187205,
+  "head_trained": true
+ }
+}

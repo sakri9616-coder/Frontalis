@@ -1,0 +1,7 @@
+{
+ "before": 0.2,
+ "rise_same_partner_x8": 0.35152058166782874,
+ "rise_eight_partners_x1": 0.4766314433849864,
+ "seeds_where_eight_partners_larger": 20,
+ "n_seeds": 20
+}
