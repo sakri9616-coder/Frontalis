@@ -31,3 +31,4 @@
 | 26 | Sonnet(理念批評) | v3.1 再批評。判定「限定つきで可」。理念違反 P1（a・C → 学習の経路がない）、P2（a は曝露統計で方向は仮説）。重大: C は行き止まり、U1 の識別力、世界表が対比を作る、κ 改訂の前提は否定、NN は 1-NN に勝たない | reviews/critique-v3.1.md |
 | 27 | Sonnet(実装) | 改訂2（想起・再帰属、オンラインEM、K_r=10）。信念の持続は m=32 で 0.54→0.71（同じ場面）、0.60→0.91（未見の場面）。Q の U8 は 0.567/0.411 で不合格。残る原因は場面の価値の可塑性と欲求状態への依存（設計どおり）。π は固定点に収束し、張り付きは単一説明の長い履歴でのみ | CHANGELOG G' 節 |
 | 28 | オーケストレーター | v3.2 実装を指示。U8 は不合格のまま残し、診断に基づく U8′（状態を揃え、未見の場面で、人に帰属する部分の持続）を事後定義として追加 | – |
+| 29 | Haiku(再現確認) | 新規 clone（claude/charming-galileo-wawr7u、HEAD acc237d835512dc6bb4993a9df6c8e33b3d4c75e）で再現。unittest 146 件、不合格 4（U8、U8′可塑性 m=8、W2、W4(a)）、expectedFailure 3、所要 351 秒（REPORT の約 330 秒より長い）。demo は exit 0・約 2.3 秒。CLI の init・feed・show は exit 0。REPORT §8 の診断と経験史の再生成も exit 0、tracked ファイルの差分なし。REPORT §9 は未記入 | /tmp/claude-0/-home-user-Frontalis/72635c51-dda1-5f12-9bae-7b9ed27bb621/scratchpad/repro/test_run.log |
