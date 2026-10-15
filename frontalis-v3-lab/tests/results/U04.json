@@ -1,10 +1,10 @@
 {
- "weight_credit_taken_K": 0.7969841516714141,
- "weight_credit_taken_R": 0.335163133148461,
- "difference": 0.4618210185229531,
- "P_before_mean": 0.4519741374227232,
- "P_after_mean": 0.24797596873528932,
- "relative_drop": 0.4541820477393673,
- "relative_drop_unseen_collaborator_8_partners": 0.391112400341307,
+ "weight_credit_taken_K": 0.7970215440670926,
+ "weight_credit_taken_R": 0.3350336034727998,
+ "difference": 0.46198794059429277,
+ "P_before_mean": 0.452203543443198,
+ "P_after_mean": 0.2514808623312667,
+ "relative_drop": 0.4463572967695001,
+ "relative_drop_unseen_collaborator_8_partners": 0.3908230502229776,
  "seeds_drop_ge_30pct": 20
 }

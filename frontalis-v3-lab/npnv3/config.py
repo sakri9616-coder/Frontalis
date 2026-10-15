@@ -42,7 +42,9 @@ class Config:
     no_reference: bool = False    # v3.1: 参照点項 η_ref を 0 にする
     no_interpretation: bool = False  # v3.1: 曖昧な結果を LLM の確率のまま混合し、信念を使わない
     interpretation_counts: bool = False  # v3.1 実験条件: 曖昧な結果からも（解釈の重みで）信念を計数する
-    estimate_kappa: bool = True   # v3.1 1.7: 類ごとの κ_e を周辺尤度で推定（False なら固定 κ_e）
+    estimate_kappa: bool = True   # v3.1 1.7: κ_e を周辺尤度で推定（False なら固定 κ_e）
+    kappa_per_type: bool = True   # v3.1 改訂: κ_e を（類 × 結果型）ごとに推定（False なら類ごとに 1 つ）。改訂前の挙動の再現用
+    kappa_prior_sigma: float = 1.0  # 型ごとの log κ の事前（類全体の log κ の周りの正規分布）の標準偏差
     record_ledger: bool = True    # False のとき台帳に記録しない（長い履歴の検査用。学習には影響しない）
 
     # --- v3.1: 欲求の関心の重み a（1.1）---

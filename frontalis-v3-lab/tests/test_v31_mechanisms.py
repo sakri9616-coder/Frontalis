@@ -8,7 +8,7 @@ import numpy as np
 
 from helpers import deep_equal, feed, load_json, load_jsonl, make, mh, persona
 from npnv3 import NPN, innate
-from npnv3.belief import estimate_kappa, lgamma_np
+from npnv3.belief import estimate_kappa, estimate_kappa_by_type, lgamma_np
 
 
 def exp(eid, outcomes, ctx="cafe_chat", concepts=("conversation",), participants=(), session=None, **kw):
@@ -275,6 +275,62 @@ class KappaTests(unittest.TestCase):
         n = make(0, estimate_kappa=False)
         feed(n, load_jsonl("K.jsonl"))
         self.assertEqual(n.belief.kappa_of("collaborator"), 2.0)
+        self.assertTrue(np.all(n.belief.kappa_by_type("collaborator") == 2.0))
+
+    # ---- 設計の改訂（オーケストレーター承認。Kemp, Perfors & Tenenbaum 2007）: κ_e を（類 × 結果型）ごとに ----
+    def _counts(self):
+        """型 0 は個体ごとに 0% か 100%（異質）、型 1 は全員 50%（均質）、型 2 は正の計数なし。"""
+        n = 12
+        het = np.array([6.0 if i % 2 == 0 else 0.0 for i in range(n)])
+        N1 = np.stack([het, np.full(n, 3.0), np.zeros(n)], axis=1)
+        N0 = np.stack([6.0 - het, np.full(n, 3.0), np.full(n, 6.0)], axis=1)
+        return N1, N0
+
+    def test_per_type_kappa_is_small_for_heterogeneous_type_and_large_for_homogeneous_type(self):
+        grid = np.exp(np.linspace(np.log(0.3), np.log(50), 12))
+        N1, N0 = self._counts()
+        kc, kv = estimate_kappa_by_type(N1, N0, 1.0, 4.0, grid, 1.0)
+        self.assertLess(kv[0], 1.5)
+        self.assertGreater(kv[1], 10.0)
+        self.assertGreater(kv[1], 8 * kv[0])
+        self.assertEqual(kv[2], kc)                                         # 正の計数がない型は類全体の値
+        self.assertAlmostEqual(kc, estimate_kappa(N1, N0, 1.0, 4.0, grid), places=12)   # 類全体の値は従来の推定と同じ
+
+    def test_shrinkage_toward_class_kappa(self):
+        grid = np.exp(np.linspace(np.log(0.3), np.log(50), 12))
+        N1, N0 = self._counts()
+        kc, tight = estimate_kappa_by_type(N1, N0, 1.0, 4.0, grid, 0.05)
+        _, loose = estimate_kappa_by_type(N1, N0, 1.0, 4.0, grid, 50.0)
+        self.assertTrue(np.all(np.abs(tight - kc) < 0.15 * kc))             # 強い事前: 類全体の値のまま
+        self.assertLess(loose[0], tight[0])                                 # 弱い事前: 型のデータが勝つ
+        self.assertGreater(loose[1], tight[1])
+        # データの少ない型（個体 2 人、各 1 回）は、類全体の値の近くに留まる
+        kc2, few = estimate_kappa_by_type(N1[:2, :2] * 0 + np.array([[1.0, 1.0], [0.0, 1.0]]),
+                                          N0[:2, :2] * 0 + np.array([[0.0, 0.0], [1.0, 0.0]]), 1.0, 4.0, grid, 1.0)
+        self.assertTrue(np.all(np.abs(np.log(few) - np.log(kc2)) < 1.2))
+
+    def test_belief_uses_per_type_kappa(self):
+        n = make(0)
+        for i in range(6):                       # 手柄を取る人と取らない人が混ざる類。connection は全員
+            outs = [{"type": "connection", "actor": f"q{i}", "magnitude": 0.6}]
+            if i % 2 == 0:
+                outs += [{"type": "credit_taken", "actor": f"q{i}", "magnitude": 0.7}] * 1
+            for r in range(4):
+                n.experience(exp(f"e{i}-{r}", outs, ctx="project_meeting", concepts=("collaboration",),
+                                 participants=[person(f"q{i}", "collaborator")]))
+        kv = n.belief.kappa_by_type("collaborator")
+        self.assertLess(kv[innate.TYPE_INDEX["credit_taken"]], kv[innate.TYPE_INDEX["connection"]])
+        self.assertGreater(float(np.ptp(kv)), 0.5)                          # 型で違う
+        # 改訂前の挙動（類ごとに 1 つ）は kappa_per_type=False で再現できる
+        m = make(0, kappa_per_type=False)
+        for i in range(6):
+            for r in range(4):
+                outs = [{"type": "connection", "actor": f"q{i}", "magnitude": 0.6}]
+                if i % 2 == 0:
+                    outs.append({"type": "credit_taken", "actor": f"q{i}", "magnitude": 0.7})
+                m.experience(exp(f"e{i}-{r}", outs, ctx="project_meeting", concepts=("collaboration",),
+                                 participants=[person(f"q{i}", "collaborator")]))
+        self.assertEqual(float(np.ptp(m.belief.kappa_by_type("collaborator"))), 0.0)
 
 
 class GeneratorTests(unittest.TestCase):

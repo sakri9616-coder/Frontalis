@@ -14,7 +14,10 @@
 v3.1 の変更
   1.5 事前ヘッドの利用: prior_cls = ρ_h · head + (1 − ρ_h) · m_gen,  ρ_h = n_head/(n_head + 30)（50 件の解禁を廃止）。
       head_kind ∈ {mlp, linear, knn1, none}（基線との比較用）。
-  1.7 類ごとの κ_e を、格子（0.3〜50 の対数 12 点）上の Beta–Binomial 周辺尤度の事後平均で推定（個体が 2 人未満の類は κ_e = 2）。
+  1.7 κ_e を、格子（0.3〜50 の対数 12 点）上の Beta–Binomial 周辺尤度の事後平均で推定（個体が 2 人未満の類は κ_e = 2）。
+      設計の改訂（オーケストレーター承認。Kemp, Perfors & Tenenbaum 2007）: 類全体で 1 つではなく、（類 × 結果型）ごとに推定する。
+      どの型が個体間でどれだけばらつくかは型ごとに違う（誰でも同じ「つながり」と、人で大きく違う「手柄を取る」）。
+      データの少ない型は、類全体の κ（全型をまとめた周辺尤度）へ縮約する: 型ごとの log κ の事後 ∝ 型の周辺尤度 × N(log κ_類, σ²)。
   1.4 曖昧な結果の型は観測なし（マスク）: 解釈が信念を自己訓練するループを作らない。
 """
 from __future__ import annotations
@@ -50,13 +53,12 @@ def lgamma_np(x: np.ndarray) -> np.ndarray:
     return (y - 0.5) * np.log(y) - y + 0.9189385332046727 + series - np.log(prod)
 
 
-def estimate_kappa(N1: np.ndarray, N0: np.ndarray, prior_a: float, prior_b: float, grid: np.ndarray) -> Optional[float]:
-    """類の個体差の集中度 κ_e を、格子上の Beta–Binomial 周辺尤度（弱い対数一様事前）の事後平均で推定する。
-    N1, N0: (個体, 型) の（責任で重み付けた）計数。正の計数が 1 つもない型は個体差の情報がほぼないので除く。
-    戻り値は事後平均、情報がなければ None。"""
+def _loglik_grid(N1: np.ndarray, N0: np.ndarray, prior_a: float, prior_b: float, grid: np.ndarray):
+    """格子の各 κ での Beta–Binomial 周辺尤度の対数（個体について和、型ごと）。形は (格子, 正の計数のある型)。
+    正の計数が 1 つもない型は個体差の情報がほぼないので除く（active でない）。"""
     active = N1.sum(axis=0) > 1e-9
     if not active.any():
-        return None
+        return None, active
     a1, a0 = N1[:, active], N0[:, active]
     t1, t0 = a1.sum(axis=0), a0.sum(axis=0)
     m = (t1 + prior_a) / (t1 + t0 + prior_a + prior_b)           # 類の率（型ごと）
@@ -64,9 +66,41 @@ def estimate_kappa(N1: np.ndarray, N0: np.ndarray, prior_a: float, prior_b: floa
     al = kap * m[None, None, :]
     be = kap * (1.0 - m)[None, None, :]
     ll = (lgamma_np(a1[None] + al) + lgamma_np(a0[None] + be) - lgamma_np(a1[None] + a0[None] + kap)
-          - (lgamma_np(al) + lgamma_np(be) - lgamma_np(kap + 0.0 * al))).sum(axis=(1, 2))
-    w = np.exp(ll - ll.max())
+          - (lgamma_np(al) + lgamma_np(be) - lgamma_np(kap + 0.0 * al))).sum(axis=1)
+    return ll, active
+
+
+def estimate_kappa(N1: np.ndarray, N0: np.ndarray, prior_a: float, prior_b: float, grid: np.ndarray) -> Optional[float]:
+    """類の個体差の集中度 κ_e を、格子上の Beta–Binomial 周辺尤度（弱い対数一様事前）の事後平均で推定する（全型をまとめた、類全体の値）。
+    N1, N0: (個体, 型) の（責任で重み付けた）計数。情報がなければ None。"""
+    ll, _ = _loglik_grid(N1, N0, prior_a, prior_b, grid)
+    if ll is None:
+        return None
+    tot = ll.sum(axis=1)
+    w = np.exp(tot - tot.max())
     return float((w * grid).sum() / w.sum())
+
+
+def estimate_kappa_by_type(N1: np.ndarray, N0: np.ndarray, prior_a: float, prior_b: float, grid: np.ndarray,
+                           sigma: float) -> Optional[Tuple[float, np.ndarray]]:
+    """（類 × 結果型）ごとの κ_e（設計の改訂。Kemp, Perfors & Tenenbaum 2007 の階層の超仮説）。
+    戻り値は (類全体の κ, 型ごとの κ（型数,）)。
+      類全体の κ: 全型をまとめた周辺尤度の事後平均（estimate_kappa と同じ）。
+      型 k の κ_k: log κ の事後 ∝ 型 k だけの周辺尤度 × N(log κ_類, σ²)（格子上で正規化し、κ の事後平均）。
+        データが少ない型は事前（類全体の値）に縮約し、個体間で大きくばらつく型は小さく、誰でも同じ型は大きくなる。
+      正の計数が 1 つもない型は類全体の κ。"""
+    ll, active = _loglik_grid(N1, N0, prior_a, prior_b, grid)
+    if ll is None:
+        return None
+    tot = ll.sum(axis=1)
+    wc = np.exp(tot - tot.max())
+    kc = float((wc * grid).sum() / wc.sum())
+    kvec = np.full(N1.shape[1], kc)
+    logprior = -0.5 * ((np.log(grid) - np.log(kc)) / sigma) ** 2
+    lp = ll + logprior[:, None]
+    w = np.exp(lp - lp.max(axis=0, keepdims=True))
+    kvec[active] = (w * grid[:, None]).sum(axis=0) / w.sum(axis=0)
+    return kc, kvec
 
 
 class Prediction:
@@ -153,38 +187,49 @@ class BeliefNet:
         return self.rho() > 0.0
 
     # ------------------------------------------------------------------ 集計
-    def _kappa(self, cls: str, rows: List[int]) -> float:
+    def _kappas(self, cls: str, rows: List[int]) -> Tuple[float, np.ndarray]:
+        """類の κ_e: (類全体の値, 型ごとの値)。推定しない・個体が 2 人未満・情報がないときは固定の κ_e。"""
         cfg = self.cfg
+        default = (cfg.kappa_e, np.full(N_TYPES, cfg.kappa_e))
         if not cfg.estimate_kappa or len(rows) < 2:
-            return cfg.kappa_e
+            return default
         v = self._kcache.get(cls)
         if v is None:
-            est = estimate_kappa(self.N1[rows], self.N0[rows], cfg.prior_a, cfg.prior_b, self._grid)
-            v = cfg.kappa_e if est is None else est
+            if cfg.kappa_per_type:
+                est = estimate_kappa_by_type(self.N1[rows], self.N0[rows], cfg.prior_a, cfg.prior_b, self._grid,
+                                             cfg.kappa_prior_sigma)
+            else:
+                e = estimate_kappa(self.N1[rows], self.N0[rows], cfg.prior_a, cfg.prior_b, self._grid)
+                est = None if e is None else (e, np.full(N_TYPES, e))
+            v = default if est is None else est
             self._kcache[cls] = v
         return v
 
     def kappa_of(self, cls: str) -> float:
-        rows = [i for i, c in enumerate(self.ind_cls) if c == cls]
-        return self._kappa(cls, rows)
+        """類全体の κ_e（全型をまとめた推定）。"""
+        return self._kappas(cls, [i for i, c in enumerate(self.ind_cls) if c == cls])[0]
 
-    def _class_agg(self) -> Dict[str, Tuple[np.ndarray, np.ndarray, float]]:
-        """類ごとの (W = Σ w_i, WR = Σ w_i r_i, その類の κ_e)。"""
-        out: Dict[str, Tuple[np.ndarray, np.ndarray, float]] = {}
+    def kappa_by_type(self, cls: str) -> np.ndarray:
+        """（類 × 結果型）ごとの κ_e。"""
+        return self._kappas(cls, [i for i, c in enumerate(self.ind_cls) if c == cls])[1]
+
+    def _class_agg(self) -> Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]:
+        """類ごとの (W = Σ w_i, WR = Σ w_i r_i, その類の型ごとの κ_e)。"""
+        out: Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
         groups: Dict[str, List[int]] = {}
         for i, c in enumerate(self.ind_cls):
             groups.setdefault(c, []).append(i)
         for c in sorted(groups):
             rows = groups[c]
-            ke = self._kappa(c, rows)
+            ke = self._kappas(c, rows)[1]
             N1, N0 = self.N1[rows], self.N0[rows]
             n = N1 + N0
-            w = n / (n + ke)
+            w = n / (n + ke[None, :])
             r = np.divide(N1, n, out=np.zeros_like(n), where=n > 0)
             out[c] = (w.sum(axis=0), (w * r).sum(axis=0), ke)
         return out
 
-    def _gen_mean(self, agg: Dict[str, Tuple[np.ndarray, np.ndarray, float]]) -> Tuple[np.ndarray, np.ndarray]:
+    def _gen_mean(self, agg: Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]) -> Tuple[np.ndarray, np.ndarray]:
         cfg = self.cfg
         num = np.full(N_TYPES, cfg.kappa_g * self.prior_mean)
         den = np.full(N_TYPES, cfg.kappa_g)
@@ -206,7 +251,7 @@ class BeliefNet:
         return num / den, w.sum(axis=0)
 
     def _priors(self, classes: List[str], ctx: Optional[str], m_gen: np.ndarray,
-                agg: Dict[str, Tuple[np.ndarray, np.ndarray, float]]) -> Tuple[np.ndarray, bool]:
+                agg: Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]) -> Tuple[np.ndarray, bool]:
         """類の事前平均 prior_cls = ρ_h · head + (1 − ρ_h) · m_gen（行 = 参加者）。"""
         kind, rho = self.cfg.head_kind, self.rho()
         n = len(classes)
@@ -266,7 +311,7 @@ class BeliefNet:
         priors, head_used = self._priors([p["class"] for p in participants], ctx, m_gen, agg)
         for j, p in enumerate(participants):
             c = p["class"]
-            W, WR, ke = agg.get(c, (np.zeros(K), np.zeros(K), ke0))
+            W, WR, ke = agg.get(c, (np.zeros(K), np.zeros(K), np.full(K, ke0)))
             m_cls = (kc * priors[j] + WR) / (kc + W)
             v_cls = m_cls * (1 - m_cls) / (kc + W + 1.0)
             i = self.ind_idx.get(p["id"])
@@ -364,7 +409,8 @@ class BeliefNet:
         for c, (W, WR, ke) in agg.items():
             m_cls = (kc * m_gen + WR) / (kc + W)
             out["class_rate"][c] = {t: float(m_cls[k]) for k, t in enumerate(OUTCOME_TYPES)}
-            out["kappa_e"][c] = float(ke)
+            out["kappa_e"][c] = float(self.kappa_of(c))
+            out.setdefault("kappa_e_by_type", {})[c] = {t: float(ke[k]) for k, t in enumerate(OUTCOME_TYPES)}
         return out
 
     # ------------------------------------------------------------------ 保存・復元
