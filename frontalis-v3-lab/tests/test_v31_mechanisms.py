@@ -117,6 +117,8 @@ class ConditioningTests(unittest.TestCase):
             n.experience(e)
         tot = {}
         for en in n.ledger.entries:
+            if en["kind"] != "experience":
+                continue
             for k, v in en["td"]["dC"].items():
                 tot[k] = tot.get(k, 0.0) + v
         for k, v in tot.items():

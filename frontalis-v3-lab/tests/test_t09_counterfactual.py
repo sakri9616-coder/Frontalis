@@ -65,9 +65,12 @@ class T9Counterfactual(unittest.TestCase):
         for name in ("like", "p_credit"):
             self.assertEqual(out["seeds_formative_larger"][name], len(SEEDS), f"{name}: {out}")
 
-    @unittest.expectedFailure
-    def test_immediate_probe_is_confounded_by_need_state(self):
-        """既知の制約: 休止なしで測ると、直近の経験を除く（プラセボ）は欲求の状態 h を通じて Q を大きく動かす。"""
+    def test_immediate_probe_original_version(self):
+        """元の版（休止なし）。v3.0・v3.1 では不合格で expectedFailure として残していた: 直近の経験を除く（プラセボ）が欲求の状態 h を
+        通じて Q を大きく動かした（形成期 0.0052 対 プラセボ 0.0108、3/20 本）。設計の改訂 2（想起）の後は、形成期の経験を除いた効果が
+        信念の再帰属を通じて大きくなり、平均では合格する（下の注意を参照）。そのため expectedFailure を外し、通常のテストにした。
+        注意: 想起の掃引は『K_r 経験ごと』なので、どの経験を除いても掃引の位置がずれ、プラセボの信念も動く（P(credit_taken) の変化が
+        0 でなくなった）。この版の合格は、休止ありの正式版ほど強い証拠ではない。"""
         out = measure([])
         dump("T09_immediate", out)
         m = out["mean"]

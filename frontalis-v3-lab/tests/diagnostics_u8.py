@@ -14,7 +14,9 @@ import numpy as np  # noqa: E402
 
 from helpers import RESULTS, SEEDS, feed, make, mh, pmap  # noqa: E402
 
-VARIANTS = {"default（型ごとの κ_e）": {}, "改訂前（類ごとに 1 つの κ_e）": {"kappa_per_type": False},
+VARIANTS = {"default（型ごとの κ_e、想起あり）": {}, "想起なし（no_reattribution）": {"no_reattribution": True},
+            "想起なし・類ごとに 1 つの κ_e": {"no_reattribution": True, "kappa_per_type": False},
+            "想起あり・類ごとに 1 つの κ_e": {"kappa_per_type": False},
             "固定 κ_e = 2": {"estimate_kappa": False}, "固定 κ_e = 1": {"estimate_kappa": False, "kappa_e": 1.0},
             "固定 κ_e = 0.5": {"estimate_kappa": False, "kappa_e": 0.5},
             "no_scope": {"no_scope": True}, "no_concern": {"no_concern": True}}
@@ -53,7 +55,7 @@ def main():
             res[name][str(m)]["persistence_MB_part"] = res[name][str(m)]["dMB"] / d0["dMB"]
             res[name][str(m)]["persistence_MF_part"] = res[name][str(m)]["dMF"] / d0["dMF"]
         res[name]["kappa_P1_final_mean"] = float(np.mean([r[name]["kappa_P1"] for r in rows]))
-        print(f"{name:26s} Q の持続 m=8: {res[name]['8']['persistence_Q']:.3f}  m=32: {res[name]['32']['persistence_Q']:.3f} | "
+        print(f"{name:30s} Q の持続 m=8: {res[name]['8']['persistence_Q']:.3f}  m=32: {res[name]['32']['persistence_Q']:.3f} | "
               f"MB 部分 {res[name]['8']['persistence_MB_part']:.3f} / {res[name]['32']['persistence_MB_part']:.3f} | "
               f"MF 部分 {res[name]['8']['persistence_MF_part']:.3f} / {res[name]['32']['persistence_MF_part']:.3f} | "
               f"ω(P1) {res[name]['0']['omega1']:.2f}→{res[name]['32']['omega1']:.2f} | κ_e(P1) {res[name]['kappa_P1_final_mean']:.2f}")

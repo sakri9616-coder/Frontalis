@@ -37,6 +37,7 @@ v3.1 は、自己増幅を起こさずに、**経験が評価基準そのもの�
 | 1.6 | **埋め込みは NPN が所有** | 初めて現れた語の埋め込みを状態に写して保存。LLM や埋め込みモデルを替えても既存の人格の座標は変わらない |
 | 1.7 | **κ_e の経験ベイズ推定**（改訂: 類 × 結果型ごと） | 「上位の層の有効標本数は相手の数」を固定の κ でなく推定で。どの型が個体間でばらつくかは型ごとに違う（Kemp et al. 2007） |
 | 1.8 | **確率的な経験史の生成器** | 乱数種 20 本が独立な標本になる（`data/make_histories.py`） |
+| 改訂 2 | **想起・再帰属**（オーケストレーター承認） | 責任 φ を経験の時点で凍結せず、K_r = 10 経験ごとに信念の帰属をやり直す（docs/04 第5節 手順7）。価値ネットの教師の分割は再帰属しない（非対称） |
 
 > この実装が確かめるのは学習の機構です。「人格らしい発言」ができるかは対象外で、LLM との接続も含みません。
 > **「人格が形成された」「循環が成立した」とは主張しません。** 何が確かめられ、何が確かめられていないかは REPORT.md を見てください。
@@ -74,7 +75,7 @@ frontalis-v3-lab/
 2. **予期**（結果を見る前）: 信念の予測 → `V_MB`, `V_MF`（a で重み付け）, `ω`, `Q`。曖昧な結果は、ここで信念により解釈の重みが決まる。
 3. `optional: true` なら、接近確率 `σ(4 (Q + 0.05))` で接近・回避を選ぶ。**回避したら、回避したことだけ台帳に記録して終わり**（学習しない。信念の計数は不変）。
 4. 欲求の変化 Δh、効用変化 Δu（5 欲求のベクトル）、結果ごとの寄与、感じた価値 `f`（生得＋条件づけ＋参照点）、驚き `δ`、感情。
-5. **信念の更新**: 責任 φ（人のせい／場面のせい）→ 計数、スコープの事前 π、型の大きさ、リプレイ緩衝 → 事前ヘッドの SGD（目標は観測そのもの）。**曖昧な結果の型は観測なし**（計数しない）。
+5. **信念の更新**: 責任 φ（人のせい／場面のせい）→ 計数、スコープの事前 π、型の大きさ、リプレイ緩衝 → 事前ヘッドの SGD（目標は観測そのもの）。**曖昧な結果の型は観測なし**（計数しない）。参加者が行為者の観測は記録に残り、**10 経験ごとに想起**（下）で帰属をやり直す。
 6. **価値の更新**: Δu を φ で人モデルと状況モデルに分け、それぞれカルマン更新。**条件づけ C を TD(0) で更新**（直前の事象の手がかりを、この事象の `r + γ C_frozen` へ）。
 7. **関心の重み a**、欲求の状態 `h`、気分 `m` の更新。
 8. 台帳に記録（経験 id、各特徴の ΔW、ΔC、a、φ、Δu、Q、f、δ）。
@@ -170,6 +171,10 @@ M は NPN ごとに引数 `effect_table` で差し替えられます（U3 の頑
   基線: `linear`（ロジスティック回帰）、`knn1`（既知の類のうち埋め込みが最も近い類の率）、`none`（`no_head=True` と同じ）。学習は直近 500 件のリプレイ緩衝から毎経験 4 ミニバッチ（各 16 件）、SGD 学習率 0.05、**目標は観測 y であり事後平均ではない**。
 - スコープ帰属: `φ_person ∝ π_{k,person} Bern(y; p_ind)`、`φ_ctx ∝ π_{k,ctx} Bern(y; p_ctx^person)`。計数は φ で重み付けして加え、π（Dirichlet(1,1)）の計数にも φ を加える。
   予測 `P(y_{e,k}=1) = π̄_person p_ind + π̄_ctx p_ctx^person`。
+- **想起・再帰属（設計の改訂 2）**: 参加者が行為者の観測（個体・文脈・型ごとの y・マスク・当時の φ）を記録として持つ（保存・復元に含む）。`reattribute_every = 10` 経験ごとに全記録を 1 回掃引する。
+  各観測について、**自分の寄与だけ**（人 φ、文脈 1−φ、π）を計数から引き（retract）、今の信念（個体の率・文脈の率・π）で φ を計算し直して足し直す（reassign）。オンライン EM の 1 ステップ（leave-one-out、掃引内は同時更新、類と世界の水準は掃引の間固定）。
+  1 観測の寄与の和は常に 1、計数の総和は不変。曖昧な型は記録のマスクが 0。
+  **非対称: 価値ネット（人モデル・状況モデル）の教師の分割は再帰属しない**（教師は経験の時点の φ のまま凍結。カルマンの更新の再生は未実装）。信念の側だけが後から訂正される。`no_reattribution=True` で無効。
 - **曖昧な結果（v3.1）**: 解釈の重み `w_I ∝ q_LLM(I) · P_belief(I | actor, context)`。効果（Δh, Δu, 帰属, 教師）は重みでの混合で計算する。**信念の計数は曖昧な結果の型では更新しない**（観測なしとしてマスク。解釈が信念を自己訓練するループを作らない）。実験条件 `interpretation_counts=True` で、重みで計数する。`no_interpretation=True` は w_I = q_LLM(I)（信念を使わない）。
 
 ### 価値（`value.py`）
@@ -236,7 +241,7 @@ h1 = mh.generate_praise_history("H1", seed=7)              # 褒められた後�
 ```
 
 アブレーション（テスト用、既定はすべて OFF）: `flat_value`、`fixed_teacher`、`no_head`（= `head_kind="none"`）、`no_scope`、
-**`no_concern`**（a = 1 固定）、**`no_conditioning`**（C を使わない）、**`no_reference`**（η_ref = 0）、**`no_interpretation`**（曖昧な結果を LLM の確率のまま混合）。
+**`no_concern`**（a = 1 固定）、**`no_conditioning`**（C を使わない）、**`no_reference`**（η_ref = 0）、**`no_interpretation`**（曖昧な結果を LLM の確率のまま混合）、**`no_reattribution`**（想起・再帰属を行わない。`reattribute_every=0` でも同じ）。
 そのほか `head_kind="mlp"|"linear"|"knn1"|"none"`、`estimate_kappa=False`、`interpretation_counts=True`（実験条件）、`record_ledger=False`（長い履歴の検査用）。
 `appraise` / `experience` の戻り値の主なキー: `Q, V_MB, V_MF, omega, sigma2_MB, sigma2_MF, f, f_parts, delta, mood, du, du_weighted, a, dh, contributions, phi, interpretations, teachers, emotions, cues, warnings`（`experience` のみ `value_change`, `mood_after`）。
 
@@ -261,18 +266,19 @@ python3 examples/demo.py
 ## テストの実行
 
 ```
-python3 -m unittest discover -s tests -v          # 全体で約 3.5 分（numpy のみ。pytest は使わない。種ごとの計算は 4 プロセスで並列）
+python3 -m unittest discover -s tests -v          # 全体で約 4.2 分（numpy のみ。pytest は使わない。種ごとの計算は 4 プロセスで並列）
 python3 -m unittest discover -s tests -p "test_u04*.py" -v
 python3 tests/diagnostics_m_scale.py              # 診断（T2(c) の原因の切り分け。テストではない）
 python3 tests/diagnostics_u8.py                   # 診断（U8 の持続が不合格になった原因の切り分け）
 python3 tests/diagnostics_u8_scope.py             # 診断（U8: 信念の人の部分と文脈の部分に分ける）
+python3 tests/diagnostics_u8_types.py             # 診断（U8: 結果の型ごとの信念と価値への寄与）
 python3 tests/diagnostics_head.py                 # 診断（R/K/X でヘッドが評価と帰属を動かしているか）
 python3 data/make_histories.py                    # 経験史を再生成（決定的）
 ```
 
 - **v3.0 の判定基準 T1〜T10**: `tests/test_t01_*.py` 〜 `test_t10_*.py`（固定の履歴。閾値は SPEC 第8節のまま）。T2(a) は記録用（状態を測っていた）、T2(c) は expectedFailure。
 - **v3.1 の判定基準 U1〜U9**: `tests/test_u01_*.py` 〜 `test_u09_*.py`。種 0〜19 でそれぞれ別の経験史を生成する。測り方の細部は各ファイルの冒頭に実装前に書いた。
-- 機構の単体検査: `test_v31_mechanisms.py`（a・C・参照点・解釈・埋め込み・κ_e・生成器・ヘッドの種類）、`test_innate.py`、`test_schema.py`、`test_ledger_and_purity.py`、`test_structure.py`、`test_cli.py`。
+- 機構の単体検査: `test_v31_mechanisms.py`（a・C・参照点・解釈・埋め込み・κ_e・生成器・ヘッドの種類）、`test_recall.py`（想起の不変量・機構・自己増幅）、`test_innate.py`、`test_schema.py`、`test_ledger_and_purity.py`、`test_structure.py`、`test_cli.py`。
 - 測った数値は `tests/results/*.json` に書かれます。`expectedFailure` の 3 件は「既知の制約」の記録です（REPORT 参照）。
 
 ## 実装時の解釈（SPEC に明記がない点）
@@ -297,7 +303,7 @@ docs/04 の全体フレームのうち、この最小実装は次を**含みま�
 - **後悔**、**コミットメント**、**変動性 q の学習**（q は層ごとに固定）
 - **予報ヘッド V̂** と、驚きの δ_V / δ_W への分解
 - 価値→信念の経路のうち、曖昧な結果の解釈以外（望ましさによる更新の非対称、自己奉仕的な帰属）
-- **想起・反すう**（オフラインの再帰属）
+- **想起の価値ネット側**: 信念の再帰属は実装したが、価値ネットの教師の分割の再帰属（カルマンの更新の再生）は未実装
 - **κ_c・κ_g・π の事前の経験ベイズ学習**（κ_e だけ推定）、**行為者タグの誤りの混同行列 Λ**、**割引（変動性）**
 - **LLM 抽出の接続**（入力は構造化 JSON を直接与える）、凍結した文埋め込み（手作りの 8 次元で代用）
 - 個体の類を途中で変えること（関係の発達）、状態サイズ・計算量の最適化（新しい個体ごとに特徴が増え、Σ は密行列）、保存の原子性と真正性（ハッシュは完全性だけ）

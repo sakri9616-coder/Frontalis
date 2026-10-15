@@ -33,7 +33,7 @@ class LedgerTests(unittest.TestCase):
 
     def test_ledger_records_every_experience(self):
         n = persona("K", 0)
-        self.assertEqual(len(n.ledger), 20)
+        self.assertEqual(sum(e["kind"] == "experience" for e in n.ledger.entries), 20)   # 想起（recall）の掃引の要約も別の種類で入る
         e = n.ledger.entries[0]
         for key in ("id", "Q", "f", "delta", "du", "phi", "dW", "teachers"):
             self.assertIn(key, e)
@@ -74,7 +74,7 @@ class PurityTests(unittest.TestCase):
                 base.value = copy.deepcopy(m.value); base.belief = copy.deepcopy(m.belief)
                 self.assertTrue(np.array_equal(m.h, n.h) and m.mood == n.mood)
                 self.assertEqual(m.ledger.avoided(), [f"opt-{i}"])
-                self.assertEqual(len(m.ledger), len(n.ledger) + 1)
+                self.assertEqual(len(m.ledger), len(n.ledger) + 1)       # 回避した申し出は台帳に 1 件増える（想起の掃引は起きない）
                 self.assertTrue(np.array_equal(m.value.person.W, n.value.person.W))
                 self.assertTrue(np.array_equal(m.belief.N1, n.belief.N1))
                 self.assertIsNone(ap["f"])
