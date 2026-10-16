@@ -145,6 +145,10 @@ class NPN:
         self.G: Dict[str, float] = {}                      # C-OR: 対象 e についての、受け入れた訂正の罪悪感と後悔の累積（減らさない。M3 は Stage 3。_m3_guilt_regret）
         self.n_ticks = 0                                   # 空の刻み（advance_clock）の数。時計に足される
         self.n_verifications = 0
+        # --- v3.4 Stage 3（M3）---
+        self.log_tau: Dict[str, float] = {}                # 自分の解釈への信頼 log τ（鍵 = "類|文脈"。無ければ 0 = τ 1）。変わるのは訂正の出来事だけ（H3・H9）
+        self.tau_yoke: Optional[List[Dict[str, float]]] = None   # τ-yoke（試験用）: 訂正の通し番号ごとの log τ の全体（他の人格の軌跡）
+        self.last_ev: Dict[str, str] = {}                  # "kappa:<源>" / "tau:<鍵>" → その量を最後に動かした出来事の id（台帳の因果の連鎖用）
         self.just_src: Dict[str, Dict[str, float]] = {}    # 正当化 J の源ごとの和（手がかり → 源 → 和。Σ 源 = J。P1）
         self.chosen_before: List[str] = []                 # 以前に選んだ選択肢の手がかり（persist の reaffirm）
         self.decisions: List[Dict[str, Any]] = []          # record_decisions のとき、経験ごとの離散的な決定（B1。状態ではない。保存しない）
@@ -159,12 +163,12 @@ class NPN:
     # ==================================================================
     # 評価の核（状態を変えない）
     # ==================================================================
-    def _interp_weights(self, interp: Dict[str, float], pvec: np.ndarray) -> np.ndarray:
-        """w_I ∝ q_LLM(I) · P_belief(I | actor, context)（正規化）。no_interpretation では信念を使わず w_I = q_LLM(I)。"""
+    def _interp_weights(self, interp: Dict[str, float], pvec: np.ndarray, tau: float = 1.0) -> np.ndarray:
+        """w_I ∝ q_LLM(I) · P_belief(I | actor, context)^τ（正規化。SPEC-v3.4 4.4。τ = 1 では v3.3 と同じ式そのもの）。no_interpretation では信念を使わず w_I = q_LLM(I)。"""
         w = np.zeros(N_TYPES)
         for t, q in interp.items():
             k = TYPE_INDEX[t]
-            w[k] = q if self.cfg.no_interpretation else q * pvec[k]
+            w[k] = q if self.cfg.no_interpretation else (q * pvec[k] if tau == 1.0 else q * pvec[k] ** tau)
         return w / w.sum()
 
     def _j_cues(self, ctx: str, concepts: List[str], participants: List[Dict[str, str]]) -> List[str]:
@@ -192,9 +196,23 @@ class NPN:
         Q = Q_val + C_Q + J_Q
         return {"pred": pred, "mf": mf, "mb": mb, "omega": omega, "Q_val": Q_val, "C_Q": C_Q, "J_Q": J_Q, "Q": Q, "cues_q": cues_q}
 
-    def _parse_outcomes(self, P: List[Dict[str, str]], outs: List[Dict[str, Any]], pred: Any, belief: Optional[BeliefNet] = None) -> Dict[str, Any]:
+    @staticmethod
+    def tau_key(cls_or_actor: str, ctx: Optional[str]) -> str:
+        return f"{cls_or_actor}|{ctx}"
+
+    def tau_of(self, cls_or_actor: str, ctx: Optional[str], log_tau: Optional[Dict[str, float]] = None) -> float:
+        """自分の解釈への信頼 τ（類 × 文脈。無ければ 1）。v33 では常に 1。"""
+        if self.cfg.reappraisal_mode == "v33" or ctx is None:
+            return 1.0
+        lt = self.log_tau if log_tau is None else log_tau
+        v = lt.get(self.tau_key(cls_or_actor, ctx), 0.0)
+        return 1.0 if v == 0.0 else math.exp(v)
+
+    def _parse_outcomes(self, P: List[Dict[str, str]], outs: List[Dict[str, Any]], pred: Any, belief: Optional[BeliefNet] = None,
+                        ctx: Optional[str] = None, log_tau: Optional[Dict[str, float]] = None) -> Dict[str, Any]:
         """結果の列を、解釈の重み W_out、観測 y とマスク、責任 φ、結果ごとの φ_o に直す（経験の評価と訂正で共通）。状態を変えない。
-        belief は責任 φ を求める信念（既定は自分の信念。v3.4 M2 が、写しの信念で当時の事実を作り直すときに渡す）。"""
+        belief は責任 φ を求める信念（既定は自分の信念。v3.4 M2 が、写しの信念で当時の事実を作り直すときに渡す）。
+        ctx を渡すと、曖昧な結果の解釈の重みに v3.4 M3 の τ（行為者の類 × 文脈。log_tau を渡せば当時の値）が効く。"""
         cfg = self.cfg
         bel = self.belief if belief is None else belief
         nP = len(P)
@@ -210,7 +228,10 @@ class NPN:
             else:
                 ambiguous[i] = True
                 pvec = pred.p_person[actor_j[i]] if actor_j[i] >= 0 else pred.p_sw
-                W_out[i] = self._interp_weights(o["interpretations"], pvec)
+                tau_i = 1.0
+                if ctx is not None and self.cfg.reappraisal_mode != "v33":
+                    tau_i = self.tau_of(P[actor_j[i]]["class"] if actor_j[i] >= 0 else o["actor"], ctx, log_tau)
+                W_out[i] = self._interp_weights(o["interpretations"], pvec, tau_i)
         # 観測 y とマスク（曖昧な型は観測なし。interpretation_counts のときは重みで計数）
         y_person = np.zeros((nP, N_TYPES)); y_mask = np.ones((nP, N_TYPES))
         y_sw = np.zeros(N_TYPES); sw_mask = np.ones(N_TYPES)
@@ -279,7 +300,7 @@ class NPN:
         Q_val, C_Q, J_Q, Q, cues_q = ex["Q_val"], ex["C_Q"], ex["J_Q"], ex["Q"], ex["cues_q"]
         Q_person = float(omega * mf["V_MF_person"] + (1.0 - omega) * mb["V_MB_person"])
         # 結果の解釈の重み（曖昧な結果は信念で決める）、観測 y、責任 φ
-        po = self._parse_outcomes(P, outs, pred)
+        po = self._parse_outcomes(P, outs, pred, ctx=e["context"])
         W_out, ambiguous, actor_j, phi, phi_o, is_person = po["W_out"], po["ambiguous"], po["actor_j"], po["phi"], po["phi_o"], po["is_person"]
         y_person, y_mask, y_sw, sw_mask = po["y_person"], po["y_mask"], po["y_sw"], po["sw_mask"]
         # Δh, Δu, 寄与
@@ -785,6 +806,8 @@ class NPN:
         nv = V.ValueNet(cfg, self.emb)
         h = np.full(N_NEEDS, innate.H0)
         for rec in self.exp_log:
+            if rec.get("how") == "correction":
+                continue                                          # v3.4 M3: 訂正の経験の記録は価値の教師を持たない（kind = correction_experience）
             P = rec["participants"]
             n_o = len(rec["outcomes"])
             W_out = np.array(rec["w_out"], dtype=np.float64).reshape(n_o, N_TYPES)
@@ -808,7 +831,9 @@ class NPN:
         4. 訂正そのものの感じた価値（安堵・罪悪感の手がかり）を読み出して台帳に記録する（学習には使わない）。
         アブレーション: retroactive_value（価値を訂正後の事実で最初から再生。人モデルも状況モデルも作り直すので、台帳の ΔW は両方の差）、no_reappraisal（価値を変えない）。
         v3.4（reappraisal_mode = "v34" | "v34_or"）: 手順 3 を M1 に置き換える（_m1_absorb。含意された変化 D_i を g_i で重み付けて、事後共分散に沿って W に吸収する）。
-        手順 1・2・4 は同じ。検証待ちの登録は M2（_verify_pending）。M3（罪悪感・後悔・τ・時計と気分）は Stage 3。"""
+        手順 1・2・4 は同じ。検証待ちの登録は M2（_verify_pending）。
+        v3.4 M3（Stage 3。absorb_on のときだけ）: 訂正の主観的評価（f_c・安堵・own_i・罪悪感・後悔・自己正当化。_m3_evaluate）→ 双方向で有界の τ の更新 →
+        訂正を時間の出来事にする（時計 +1、気分 m ← 0.8 m + 0.2 δ_c）。f_c と安堵は気分にだけ入る。台帳 kind = "correction_experience" と exp_log に追記する。"""
         cfg = self.cfg
         absorb_on = cfg.reappraisal_mode != "v33" and not cfg.no_reappraisal and not cfg.retroactive_value
         pos = self._exp_pos.get(c["refers_to"])
@@ -841,7 +866,7 @@ class NPN:
         # 1. 信念
         old = self.belief.withdraw_experience(rec["serial"])
         pred = self.belief.predict(rec["context"], P)
-        po = self._parse_outcomes(P, c["corrected_outcomes"], pred)
+        po = self._parse_outcomes(P, c["corrected_outcomes"], pred, ctx=rec["context"])
         if absorb_on:
             llr = self._fact_llr(pred, nP, prev_w_out, prev_actor, po["W_out"], po["actor_j"])      # M1 手順 2: 取り消した後の信念 B₋ⱼ での、訂正後の事実と当時の事実の対数尤度の差
         self.belief.install_experience(old, po["y_person"], po["y_mask"], po["phi"], po["y_sw"], po["sw_mask"])
@@ -892,6 +917,10 @@ class NPN:
         relief = float(min(1.0, f)) if (f > 0.0 and ex0["Q"] < 0.0) else 0.0
         guilt = float(np.tanh(sum(max(l1 - l0, 0.0) for l0, l1 in zip(like0, like1) if l0 < 0.0) / cfg.s_f))
         p1 = np.array(self.belief.predict(rec["context"], P).p_person)
+        m3: Optional[Dict[str, Any]] = None
+        if absorb_on:
+            m3 = self._m3_evaluate(c, rec, P, prev_outcomes, prev_w_out, prev_actor, po, m1, like0, like1, ex0, ex1, f, relief)
+            guilt = m3["guilt"]
         types_changed = sorted({o["type"] for o in rec["original_outcomes"] if "type" in o} | {o["type"] for o in c["corrected_outcomes"] if "type" in o})
         belief_change = {p["id"]: {t: [float(p0[j, TYPE_INDEX[t]]), float(p1[j, TYPE_INDEX[t]])] for t in types_changed} for j, p in enumerate(P)}
         ap = {"kind": "correction", "id": c["id"], "refers_to": c["refers_to"], "source": c["source"], "reappraisal": mode,
@@ -902,12 +931,165 @@ class NPN:
               "belief_change": belief_change}
         if m1 is not None:
             ap["m1"] = m1
+        if m3 is not None:
+            ap["emotions"] = {"relief": relief, "guilt": m3["guilt"], "regret": m3["regret"], "defend": m3["defend"]}
+            ap["m3"] = m3
         if cfg.record_ledger:
             self.ledger.add({**{k: v for k, v in ap.items() if k != "kind"}, "kind": "correction", "t": float(t_now),
                              "dW": {"person": {n: [float(x) for x in r_] for n, r_ in dW_person.items()},
                                    "situation": {n: [float(x) for x in r_] for n, r_ in dW_sit.items()}}})
         self.n_corrections += 1
         return _py(ap)
+
+    # ------------------------------------------------------------------ v3.4 M3: 訂正の主観的評価と τ（SPEC-v3.4 4.4）
+    @staticmethod
+    def _same_outcome(a: Dict[str, Any], b: Dict[str, Any]) -> bool:
+        return json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True)
+
+    def _own_units(self, P: List[Dict[str, str]], prev_outcomes: List[Dict[str, Any]], prev_w_out: np.ndarray, corrected: List[Dict[str, Any]],
+                   W_new: np.ndarray) -> List[Dict[str, Any]]:
+        """訂正で変わった結果の単位。取り除かれた結果（当時の版にあり、訂正後の版に同じものがない）を、同じ行為者の追加された結果と対にする
+        （対がなければ単独）。追加だけの結果も 1 単位。misread = 当時の結果が曖昧で（型を人格自身の解釈が決めていた）、解釈の最大の型が対の訂正後の型と違う。
+        報告の誤り（曖昧でない誤った結果）、対のない結果、追加だけの結果は misread にならない（own への寄与 0）。"""
+        removed = [i for i, o in enumerate(prev_outcomes) if not any(self._same_outcome(o, q) for q in corrected)]
+        added = [k for k, q in enumerate(corrected) if not any(self._same_outcome(p, q) for p in prev_outcomes)]
+        used: set = set()
+        units: List[Dict[str, Any]] = []
+        pcls = {p["id"]: p["class"] for p in P}
+        for i in removed:
+            o = prev_outcomes[i]
+            k = next((kk for kk in added if kk not in used and corrected[kk]["actor"] == o["actor"]), None)
+            if k is not None:
+                used.add(k)
+            amb = "type" not in o
+            prev_t = OUTCOME_TYPES[int(np.argmax(prev_w_out[i]))]
+            new_t = OUTCOME_TYPES[int(np.argmax(W_new[k]))] if k is not None else None
+            mis = bool(amb and new_t is not None and prev_t != new_t)
+            units.append({"prev_index": int(i), "added_index": None if k is None else int(k), "actor": o["actor"], "ambiguous": amb,
+                          "prev_type": prev_t, "new_type": new_t, "misread": mis, "class": pcls.get(o["actor"], o["actor"]),
+                          "interpretations": dict(o["interpretations"]) if amb else None})
+        for k in added:
+            if k not in used:
+                units.append({"prev_index": None, "added_index": int(k), "actor": corrected[k]["actor"], "ambiguous": False, "prev_type": None,
+                              "new_type": OUTCOME_TYPES[int(np.argmax(W_new[k]))], "misread": False,
+                              "class": pcls.get(corrected[k]["actor"], corrected[k]["actor"]), "interpretations": None})
+        return units
+
+    @staticmethod
+    def _tau_step(defend: float, guilt: float, regret: float, eta: float) -> float:
+        """1 回の Δ log τ = η_τ · clip(defend − guilt − regret, −1, 1)。SPEC の式（clip なし）は guilt + regret > 1 のとき |Δ| > η_τ になり、
+        同じ節の「1 回の変化は |Δ log τ| ≤ η_τ」と食い違う。後者（不変量 H9）を守るため符号つきの和を [−1, 1] に切る（CHANGELOG-v3.4 S3-3）。"""
+        return float(eta * max(-1.0, min(1.0, defend - guilt - regret)))
+
+    def set_tau_yoke(self, trajectory: Optional[List[Dict[str, float]]]) -> None:
+        """【試験用の入口】τ-yoke: 訂正の通し番号 i の評価の後の log τ の全体として、与えた軌跡の i 番目をそのまま使う（自分の評価では動かさない）。
+        軌跡は、別の人格の台帳から取る（npnv3.trace.tau_trajectory）。cfg.m3_variant = "tau_yoke" のときだけ使われる。"""
+        self.tau_yoke = None if trajectory is None else [{str(k): float(v) for k, v in d.items()} for d in trajectory]
+
+    def _tick(self) -> None:
+        """出来事の時計を 1 進める（条件づけの時刻 now、J の減衰）。信念・価値・a・C・h・気分は変えない。台帳の tick は advance_clock が足す。"""
+        self.n_ticks += 1
+        self.cond.now = self._clock()
+        self._j_commit("tick:" + str(self.n_ticks))
+
+    def _m3_evaluate(self, c: Dict[str, Any], rec: Dict[str, Any], P: List[Dict[str, str]], prev_outcomes: List[Dict[str, Any]], prev_w_out: np.ndarray,
+                     prev_actor: np.ndarray, po: Dict[str, Any], m1: Dict[str, Any], like0: List[float], like1: List[float], ex0: Dict[str, Any],
+                     ex1: Dict[str, Any], f: float, relief: float) -> Dict[str, Any]:
+        """M3 の本体（吸収の後に呼ぶ）。own_i・罪悪感・後悔・自己正当化を求め、τ を更新し、訂正を時間の出来事にして気分を動かし、
+        kind = "correction_experience" を exp_log と台帳に追記する。f_c と安堵は気分にだけ入る（学習の目標に入る経路を作らない）。"""
+        cfg = self.cfg
+        variant = cfg.m3_variant
+        ctx = rec["context"]
+        units = self._own_units(P, prev_outcomes, prev_w_out, c["corrected_outcomes"], po["W_out"])
+        own = float(sum(1 for u in units if u["misread"])) / len(units) if units else 0.0
+        s_f = cfg.s_f
+        guilt = own * float(np.tanh(sum(max(l1 - l0, 0.0) for l0, l1 in zip(like0, like1) if l0 < 0.0) / s_f))
+        regret = own * float(np.tanh(sum(max(l0 - l1, 0.0) for l0, l1 in zip(like0, like1) if l0 > 0.0) / s_f))
+        a_now = self.concern.a
+        pids = [p["id"] for p in P]
+        dmag = float(sum(float(a_now @ np.abs(np.array([m1["D"][pid][nm] for nm in NEEDS], dtype=np.float64))) for pid in pids))
+        g_i = float(m1["g"])                                        # 基底の g_i = σ(logit κ̄ + LLR)。C-OR の (1 + λ_g G_e) は掛けない（CHANGELOG-v3.4 S3-4）
+        defend = own * (1.0 - g_i) * float(np.tanh(dmag / s_f))
+        # --- τ ---
+        mis_keys: List[str] = []
+        amb_keys: List[str] = []
+        for u in units:
+            k = self.tau_key(u["class"], ctx)
+            if u["misread"] and k not in mis_keys:
+                mis_keys.append(k)
+            if u["ambiguous"] and k not in amb_keys:
+                amb_keys.append(k)
+        raw = defend - guilt - regret
+        step = self._tau_step(defend, guilt, regret, cfg.eta_tau)
+        lt_before = dict(self.log_tau)
+        lim = math.log(cfg.tau_max)
+        tau_source = {"clamp_tau": "clamp", "clamp_both": "clamp", "tau_off": "off", "tau_yoke": "yoke"}.get(variant, "own")
+        ordinal = int(self.n_corrections)
+        if tau_source == "own":
+            if step != 0.0:
+                for k in mis_keys:
+                    self.log_tau[k] = max(-lim, min(lim, self.log_tau.get(k, 0.0) + step))
+        elif tau_source == "yoke":
+            if self.tau_yoke is not None and ordinal < len(self.tau_yoke):
+                self.log_tau = dict(self.tau_yoke[ordinal])
+            else:
+                tau_source = "yoke_missing"
+        changed = sorted(k for k in set(lt_before) | set(self.log_tau) if lt_before.get(k, 0.0) != self.log_tau.get(k, 0.0))
+        eid = "corr:" + str(c["id"])
+        # τ が効いた解釈の重みの変化（誤読された結果の解釈の重みを、同じ信念で τ の前後に求める）
+        tau_effect: Dict[str, Any] = {}
+        if changed:
+            predb = self.belief.predict(ctx, P)
+            for u in units:
+                if not u["ambiguous"]:
+                    continue
+                k = self.tau_key(u["class"], ctx)
+                if k in changed and k not in tau_effect:
+                    j = next((jj for jj, p in enumerate(P) if p["id"] == u["actor"]), -1)
+                    pv = predb.p_person[j] if j >= 0 else predb.p_sw
+                    wb = self._interp_weights(u["interpretations"], pv, math.exp(lt_before.get(k, 0.0)))
+                    wa = self._interp_weights(u["interpretations"], pv, math.exp(self.log_tau.get(k, 0.0)))
+                    ts = sorted(u["interpretations"])
+                    tau_effect[k] = {"types": ts, "w_before": [float(wb[TYPE_INDEX[t]]) for t in ts], "w_after": [float(wa[TYPE_INDEX[t]]) for t in ts]}
+        # --- 因果の連鎖（既にある経路だけ: κ → g、τ → 解釈の重み → LLR）---
+        skey = m1["source"]
+        refs: List[List[str]] = []
+        if ("kappa:" + skey) in self.last_ev:
+            refs.append([self.last_ev["kappa:" + skey], "kappa->g"])
+        for k in amb_keys:
+            if ("tau:" + k) in self.last_ev:
+                refs.append([self.last_ev["tau:" + k], "tau->interpretation->llr"])
+        for k in changed:
+            self.last_ev["tau:" + k] = eid
+        # --- 時間の出来事と気分（f_c・安堵は気分にだけ入る）---
+        delta_c = float(V.surprise(f, ex0["Q"], cfg))
+        mood_before = float(self.mood)
+        clock_on = variant != "clock_off"
+        mood_on = variant not in ("clamp_mood", "clamp_both", "clock_off")
+        t_before = self._clock()
+        if clock_on:
+            self._tick()
+        if mood_on:
+            self.mood = V.next_mood(self.mood, delta_c, cfg)
+        inc = float(guilt) + float(regret)
+        if inc != 0.0:
+            for pid in pids:
+                self.G[pid] = self.G.get(pid, 0.0) + inc
+        out = {"eid": eid, "own": own, "units": units, "guilt": float(guilt), "regret": float(regret), "defend": float(defend),
+               "f_c": float(f), "relief": float(relief), "delta_c": delta_c, "g": g_i, "llr": float(m1["llr"]),
+               "kappa_bar": [float(m1["kappa_bar"]), float(m1["kappa_bar"])],
+               "tau_raw": float(raw), "tau_step": float(step), "tau_source": tau_source, "tau_clamped": tau_source == "clamp",
+               "log_tau": {k: [float(lt_before.get(k, 0.0)), float(self.log_tau.get(k, 0.0))] for k in changed},
+               "tau_effect": tau_effect, "mood": [mood_before, float(self.mood)], "mood_on": mood_on, "clock_on": clock_on,
+               "t": [float(t_before), float(self._clock())], "G_added": inc, "refs": refs, "variant": variant}
+        out = _py(out)
+        if cfg.record_ledger:
+            self.ledger.add(_py({"kind": "correction_experience", "id": c["id"], "refers_to": c["refers_to"], "source": skey, **out,
+                                 "like": {p["id"]: [like0[j], like1[j]] for j, p in enumerate(P)}, "Q": [float(ex0["Q"]), float(ex1["Q"])]}))
+        self.exp_log.append({"id": c["id"], "how": "correction", "serial": None, "original_outcomes": [], "refers_to": c["refers_to"], "source": skey, "t": float(t_before),
+                             "own": own, "guilt": float(guilt), "regret": float(regret), "defend": float(defend), "f_c": float(f), "g": g_i,
+                             "log_tau_after": {k: float(v) for k, v in self.log_tau.items()}})
+        return out
 
     # ------------------------------------------------------------------ v3.4 M1: 含意された変化の吸収（SPEC-v3.4 4.2）
     @staticmethod
@@ -958,11 +1140,6 @@ class NPN:
             return tot
         return ll(yp_n, ys_n) - ll(yp_o, ys_o)
 
-    def _m3_guilt_regret(self, c: Dict[str, Any], rec: Dict[str, Any], P: List[Dict[str, str]]) -> Tuple[float, float]:
-        """【Stage 3 の入口（スタブ）】この訂正の罪悪感 guilt_i と後悔 regret_i（SPEC-v3.4 4.4。own_i · tanh(...)）。C-OR の G_e の累積に足される。
-        Stage 2 は M3 を実装しないので (0.0, 0.0) を返す。Stage 3 が差し替える。"""
-        return 0.0, 0.0
-
     def _seed_G(self, pid: str, value: float) -> None:
         """【試験用の入口】対象 pid の C-OR の累積 G_e を設定する（Stage 2 は M3 がないので G_e が自然には動かない。g > 1 の経路と RA5 の検査を単体で動かすため）。"""
         if not (math.isfinite(value) and value >= 0.0):
@@ -994,19 +1171,14 @@ class NPN:
         res = self.value.absorb(P, rec["context"], rec["concepts"], delta_p, delta_s)
         after_p = [self.value.predict_person(p) for p in P]
         after_s = self.value.predict_situation(rec["context"], rec["concepts"])
-        guilt_i = regret_i = 0.0
-        if or_mode:
-            guilt_i, regret_i = self._m3_guilt_regret(c, rec, P)
-            inc = float(guilt_i) + float(regret_i)
-            if inc != 0.0:
-                for pid in pids:
-                    self.G[pid] = self.G.get(pid, 0.0) + inc
+        # G_e の累積（受け入れた訂正の罪悪感と後悔）は、like_後が要るので _m3_evaluate が吸収の後に足す（Stage 3）
         self.ver_pending.append({"correction": c["id"], "source": skey, "refers_to": c["refers_to"], "serial": int(rec["serial"]),
-                                 "targets": list(pids), "prev_outcomes": prev_outcomes})
+                                 "targets": list(pids), "prev_outcomes": prev_outcomes,
+                                 "correction_eid": "corr:" + str(c["id"]), "log_tau": dict(self.log_tau),           # 当時の読み（この訂正の τ の更新の前）
+                                 "tau_refs": {k: self.last_ev["tau:" + k] for k in sorted(self.log_tau) if ("tau:" + k) in self.last_ev}})
         m1 = _py({
             "source": skey, "kappa_bar": kbar, "kappa_alpha_beta": [al, be], "llr": float(llr), "z": z, "z_clipped": abs(z) > cfg.g_logit_clip,
             "g": g, "g_e": {pid: g_e[j] for j, pid in enumerate(pids)}, "G_e": G_before, "or": or_mode,
-            "G_added": float(guilt_i) + float(regret_i),
             "D": {pid: _need_dict(D_person[j]) for j, pid in enumerate(pids)}, "D_sit": _need_dict(D_sit),
             "delta": {pid: _need_dict(delta_p[j]) for j, pid in enumerate(pids)}, "delta_sit": _need_dict(delta_s),
             "remainder": {pid: _need_dict(D_person[j] - delta_p[j]) for j, pid in enumerate(pids)}, "remainder_sit": _need_dict(D_sit - delta_s),
@@ -1022,7 +1194,7 @@ class NPN:
         bel = copy.deepcopy(self.belief, {id(self.emb): self.emb})
         old = bel.withdraw_experience(rec["serial"])
         pred = bel.predict(rec["context"], P)
-        po = self._parse_outcomes(P, pend["prev_outcomes"], pred, belief=bel)
+        po = self._parse_outcomes(P, pend["prev_outcomes"], pred, belief=bel, ctx=rec["context"], log_tau=pend.get("log_tau", {}))
         bel.install_experience(old, po["y_person"], po["y_mask"], po["phi"], po["y_sw"], po["sw_mask"])
         return bel
 
@@ -1047,7 +1219,9 @@ class NPN:
             p_cur = np.asarray(it["pred"].p_person, dtype=np.float64)[tj]
             y, m = it["y_person"][tj], it["y_mask"][tj]
             llr_ver = self._row_ll(p_cur, y, m) - self._row_ll(p_rev, y, m)
-            self._verify_source(pend["source"], llr_ver, {"correction": pend["correction"], "experience": e["id"], "target": P[tj]["id"], "synthetic": False})
+            refs = [[pend["correction_eid"], "verifies"]] + [[v, "tau->interpretation->llr_ver"] for v in pend.get("tau_refs", {}).values()]
+            self._verify_source(pend["source"], llr_ver, {"correction": pend["correction"], "experience": e["id"], "target": P[tj]["id"], "synthetic": False,
+                                                           "eid": "ver:" + str(pend["correction"]), "refs": refs, "tau_snapshot": dict(pend.get("log_tau", {}))})
         self.ver_pending = keep
 
     def _verify_source(self, skey: str, llr_ver: float, info: Dict[str, Any]) -> Dict[str, Any]:
@@ -1057,7 +1231,13 @@ class NPN:
         al2, be2 = al + s_, be + (1.0 - s_)
         self.src_beta[skey] = [al2, be2]
         self.n_verifications += 1
-        ent = {"kind": "verification", "source": skey, "llr_ver": float(llr_ver), "d_alpha": float(s_), "d_beta": float(1.0 - s_),
+        info = dict(info)
+        eid = info.pop("eid", None) or f"ver:syn{self.n_verifications}"
+        refs = list(info.pop("refs", []))
+        if ("kappa:" + skey) in self.last_ev:
+            refs.append([self.last_ev["kappa:" + skey], "kappa(prev)"])
+        self.last_ev["kappa:" + skey] = eid
+        ent = {"kind": "verification", "eid": eid, "refs": refs, "source": skey, "llr_ver": float(llr_ver), "d_alpha": float(s_), "d_beta": float(1.0 - s_),
                "alpha": [al, al2], "beta": [be, be2], "kappa": [al / (al + be), al2 / (al2 + be2)], **info}
         if self.cfg.record_ledger:
             self.ledger.add(ent)
@@ -1071,11 +1251,14 @@ class NPN:
         """【試験用の入口】空の刻み: 出来事の時計を k 進めるだけ（SPEC-v3.4 第 5.2 節「訂正なしの枝」）。信念・価値・気分・a・C は変えない。
         J は、その刻みで orig の毎経験の減衰を受ける（persist は変わらない）。条件づけの時刻 now を更新する。Stage 3 が「訂正を時計の出来事にする」ときの時計と同じ量。"""
         for _ in range(int(k)):
-            self.n_ticks += 1
-            self.cond.now = self._clock()
-            self._j_commit("tick:" + str(self.n_ticks))
+            self._tick()
             if self.cfg.record_ledger:
                 self.ledger.add({"kind": "tick", "t": self._clock()})
+
+    def trace_loop(self) -> Dict[str, Any]:
+        """κ と τ の変化の連鎖を台帳だけから再構成する（npnv3.trace.trace_loop）。"""
+        from .trace import trace_loop
+        return trace_loop(self.ledger.entries)
 
     def probe(self, p: Dict[str, Any]) -> Dict[str, Any]:
         """学習しない評価。状況 / エンティティ / 概念 / 手がかり。"""
@@ -1181,7 +1364,8 @@ class NPN:
             "exp_log": _py(self.exp_log),
             "n_corrections": int(self.n_corrections),
             "reappraisal": {"src_beta": _py(self.src_beta), "ver_pending": _py(self.ver_pending), "G": _py(self.G),
-                            "n_ticks": int(self.n_ticks), "n_verifications": int(self.n_verifications)},
+                            "n_ticks": int(self.n_ticks), "n_verifications": int(self.n_verifications),
+                            "log_tau": _py(self.log_tau), "tau_yoke": _py(self.tau_yoke), "last_ev": _py(self.last_ev)},
         }
         arrays = {"h": self.h, "M": self.M}
         for d in (barr, varr, carr, darr, earr):
@@ -1235,7 +1419,7 @@ class NPN:
         obj.just_src = {k: {s_: float(d) for s_, d in row.items()} for k, row in meta["justification_sources"].items()}
         obj.chosen_before = list(meta["chosen_before"])
         obj.exp_log = meta["exp_log"]
-        obj._exp_pos = {r["id"]: i for i, r in enumerate(obj.exp_log)}
+        obj._exp_pos = {r["id"]: i for i, r in enumerate(obj.exp_log) if r.get("how") != "correction"}
         obj.n_corrections = int(meta["n_corrections"])
         ra = meta.get("reappraisal") or {}                      # スキーマ 7 の状態には無い（空として扱う = v3.3 と同じ）
         obj.src_beta = {k: [float(v[0]), float(v[1])] for k, v in ra.get("src_beta", {}).items()}
@@ -1243,6 +1427,10 @@ class NPN:
         obj.G = {k: float(v) for k, v in ra.get("G", {}).items()}
         obj.n_ticks = int(ra.get("n_ticks", 0))
         obj.n_verifications = int(ra.get("n_verifications", 0))
+        obj.log_tau = {k: float(v) for k, v in (ra.get("log_tau") or {}).items()}
+        ty = ra.get("tau_yoke")
+        obj.tau_yoke = None if ty is None else [{k: float(v) for k, v in d.items()} for d in ty]
+        obj.last_ev = {k: str(v) for k, v in (ra.get("last_ev") or {}).items()}
         obj.cond.now = obj._clock()
         return obj
 

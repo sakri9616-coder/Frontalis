@@ -288,8 +288,8 @@ class COR(unittest.TestCase):
 
     def test_cor_equals_cv34_bitwise_when_the_accumulated_G_is_zero(self):
         """Stage 2 は M3 を持たないので G_e は自然には増えない（0）。そのとき C-OR は C-v34 と同じ（g^OR = σ(·)）。"""
-        a = build(3490, "v34", src="unreliable", err="interp")
-        b = build(3490, "v34_or", src="unreliable", err="interp")
+        a = build(3490, "v34", src="unreliable", err="report")          # Stage 3: ERR-interp は own > 0 で G が自然に増えるので、own = 0 の ERR-report を使う
+        b = build(3490, "v34_or", src="unreliable", err="report")
         self.assertTrue(np.array_equal(a.value.person.W, b.value.person.W))
         self.assertTrue(np.array_equal(a.value.sit.W, b.value.sit.W))
         for ca, cb in zip(corrections(a), corrections(b)):
@@ -360,7 +360,7 @@ class COR(unittest.TestCase):
         for bad in (-0.1, float("nan"), float("inf")):
             with self.assertRaises(ValueError):
                 n._seed_G("A", bad)
-        self.assertEqual(n._m3_guilt_regret({}, {}, []), (0.0, 0.0))          # Stage 3 の入口
+        self.assertFalse(hasattr(n, "_m3_guilt_regret"))                      # Stage 3 でスタブは _m3_evaluate に置き換わった（CHANGELOG-v3.4 Stage 3）
         self.assertEqual(n.G, {})
 
 

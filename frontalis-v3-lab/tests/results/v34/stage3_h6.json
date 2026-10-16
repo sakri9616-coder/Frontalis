@@ -1,0 +1,508 @@
+{
+ "python": "3.12.13",
+ "numpy": "2.5.4",
+ "baseline": "tests/results/v34/stage2_h6.json baseline_sha256 (v3.3 code ed7c59c unchanged, same environment; rule L2)",
+ "new": "v3.4 Stage 3 npnv3 with reappraisal_mode default 'v33'",
+ "summary": {
+  "n_result_files": 64,
+  "n_rewritten_in_new_run": 50,
+  "n_bit_identical_to_baseline": 48,
+  "n_not_bit_identical_to_baseline": [
+   "U03.json",
+   "W05.json"
+  ],
+  "modules_total_ran_v33_modules": 350,
+  "modules_total_ran_incl_ra_modules": 425,
+  "modules_with_different_outcome": [],
+  "elapsed_s": 4008
+ },
+ "note": "Run in a scratch copy outside the repository (pmap replaced by a spawn pool of 2 / serial; tests/results of the repository untouched). U03.json and W05.json differ from the baseline bytes in the same way as in Stage 2 (Counter key order, process hash randomisation); the 14 diag_*.json are diagnostics, not rewritten by tests.",
+ "tests": {
+  "test_p_mechanisms": {
+   "new": {
+    "ran": 24,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 24,
+    "result": "OK"
+   }
+  },
+  "test_cli": {
+   "new": {
+    "ran": 5,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 5,
+    "result": "OK"
+   }
+  },
+  "test_e_mechanisms": {
+   "new": {
+    "ran": 71,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 71,
+    "result": "OK"
+   }
+  },
+  "test_innate": {
+   "new": {
+    "ran": 6,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 6,
+    "result": "OK"
+   }
+  },
+  "test_ledger_and_purity": {
+   "new": {
+    "ran": 8,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 8,
+    "result": "OK"
+   }
+  },
+  "test_e_extinction": {
+   "new": {
+    "ran": 12,
+    "result": "FAILED (failures=6)"
+   },
+   "baseline": {
+    "ran": 12,
+    "result": "FAILED (failures=6)"
+   }
+  },
+  "test_m_trace": {
+   "new": {
+    "ran": 6,
+    "result": "FAILED (failures=1)"
+   },
+   "baseline": {
+    "ran": 6,
+    "result": "FAILED (failures=1)"
+   }
+  },
+  "test_ra_m3": {
+   "new": {
+    "ran": 43,
+    "result": "OK"
+   },
+   "baseline": null
+  },
+  "test_ra_mechanisms": {
+   "new": {
+    "ran": 32,
+    "result": "OK"
+   },
+   "baseline": null
+  },
+  "test_schema": {
+   "new": {
+    "ran": 10,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 10,
+    "result": "OK"
+   }
+  },
+  "test_structure": {
+   "new": {
+    "ran": 12,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 12,
+    "result": "OK"
+   }
+  },
+  "test_recall": {
+   "new": {
+    "ran": 9,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 9,
+    "result": "OK"
+   }
+  },
+  "test_t01_loop": {
+   "new": {
+    "ran": 2,
+    "result": "OK (expected failures=1)"
+   },
+   "baseline": {
+    "ran": 2,
+    "result": "OK (expected failures=1)"
+   }
+  },
+  "test_t02_history_difference": {
+   "new": {
+    "ran": 6,
+    "result": "OK (expected failures=1)"
+   },
+   "baseline": {
+    "ran": 6,
+    "result": "OK (expected failures=1)"
+   }
+  },
+  "test_t04_continual": {
+   "new": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   }
+  },
+  "test_t05_persistence": {
+   "new": {
+    "ran": 2,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 2,
+    "result": "OK"
+   }
+  },
+  "test_t07_generalization": {
+   "new": {
+    "ran": 1,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "OK"
+   }
+  },
+  "test_t08_transfer": {
+   "new": {
+    "ran": 1,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "OK"
+   }
+  },
+  "test_t06_no_amplification": {
+   "new": {
+    "ran": 2,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 2,
+    "result": "OK"
+   }
+  },
+  "test_t10_determinism": {
+   "new": {
+    "ran": 3,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 3,
+    "result": "OK"
+   }
+  },
+  "test_t09_counterfactual": {
+   "new": {
+    "ran": 2,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 2,
+    "result": "OK"
+   }
+  },
+  "test_u02_conditioning": {
+   "new": {
+    "ran": 1,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "OK"
+   }
+  },
+  "test_u03_effect_table_robustness": {
+   "new": {
+    "ran": 2,
+    "result": "FAILED (failures=1)"
+   },
+   "baseline": {
+    "ran": 2,
+    "result": "FAILED (failures=1)"
+   }
+  },
+  "test_u01_learned_state_appraisal": {
+   "new": {
+    "ran": 2,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 2,
+    "result": "OK"
+   }
+  },
+  "test_u04_interpretation": {
+   "new": {
+    "ran": 1,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "OK"
+   }
+  },
+  "test_u05_closed_loop": {
+   "new": {
+    "ran": 1,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "OK"
+   }
+  },
+  "test_u08_total_evaluation_persistence": {
+   "new": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   }
+  },
+  "test_u08b_person_attributed_persistence": {
+   "new": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   }
+  },
+  "test_u09_llm_independence": {
+   "new": {
+    "ran": 2,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 2,
+    "result": "OK"
+   }
+  },
+  "test_v31_mechanisms": {
+   "new": {
+    "ran": 36,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 36,
+    "result": "OK"
+   }
+  },
+  "test_v32_mechanisms": {
+   "new": {
+    "ran": 23,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 23,
+    "result": "OK"
+   }
+  },
+  "test_u07_nn_contribution": {
+   "new": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   }
+  },
+  "test_w01_criteria_to_learning": {
+   "new": {
+    "ran": 1,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "OK"
+   }
+  },
+  "test_w02_conditioning_to_action": {
+   "new": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   }
+  },
+  "test_w03_within_between": {
+   "new": {
+    "ran": 1,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "OK"
+   }
+  },
+  "test_w04_random_worlds": {
+   "new": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "FAILED (failures=1)"
+   }
+  },
+  "test_w07_head_weights": {
+   "new": {
+    "ran": 1,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 1,
+    "result": "OK"
+   }
+  },
+  "test_y_correction": {
+   "new": {
+    "ran": 7,
+    "result": "FAILED (failures=1)"
+   },
+   "baseline": {
+    "ran": 7,
+    "result": "FAILED (failures=1)"
+   }
+  },
+  "test_yz_mechanisms": {
+   "new": {
+    "ran": 39,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 39,
+    "result": "OK"
+   }
+  },
+  "test_u06_no_amplification_extended": {
+   "new": {
+    "ran": 3,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 3,
+    "result": "OK"
+   }
+  },
+  "test_z_choice": {
+   "new": {
+    "ran": 9,
+    "result": "FAILED (failures=1)"
+   },
+   "baseline": {
+    "ran": 9,
+    "result": "FAILED (failures=1)"
+   }
+  },
+  "test_x_nn_transfer": {
+   "new": {
+    "ran": 14,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 14,
+    "result": "OK"
+   }
+  },
+  "test_p_persist": {
+   "new": {
+    "ran": 7,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 7,
+    "result": "OK"
+   }
+  },
+  "test_b_health": {
+   "new": {
+    "ran": 12,
+    "result": "OK"
+   },
+   "baseline": {
+    "ran": 12,
+    "result": "OK"
+   }
+  }
+ },
+ "new_sha256": {
+  "B01_B03.json": "52e1ffecd77cfb74e75ba126ea9e27a3819c8081dfc4d88d0954210b26e5f08b",
+  "E01_E09.json": "a4478a20322bde0b2b0e433d80492e9829e8bcc46765b09865bae70c35ad01f0",
+  "E08b_valued_cue.json": "d840d4f9169b47966e4c17dd45a90a0bafcf91b2d0d352d5e0134c9dc05f740a",
+  "M01_M05.json": "44cd11f41a028cc0d585c68733990498acbc229720ddcf893ba089633e190fea",
+  "M01_M05_revised.json": "80aa3f8a2a16ee61d8a54cc21dabe94cf80621f3cc87386ebb5a5f1a1e53bae3",
+  "P01_P07.json": "22055aa98f9593aa567fa6a737136f0df55a65c5f7b68b4141a6a1946839ebf0",
+  "RECALL_collinear.json": "641d95ef40dc39cb5b1a9176485a369532db2ad63e1f99533a6d48dc61213873",
+  "RECALL_mechanism.json": "bb3842048a7f0608348efeda7bce76a4a0dc5f68f008de1eacd37c9a494a87ec",
+  "RECALL_repeat.json": "511ef1050fde5516aa81f7913e8db0b2d6781fc06abd447e53029defef4772cb",
+  "T01.json": "9e21ed33c5cbc2be6a9d89aa52420b12abcb2e7634d608a8fc0dfb030a29e5e3",
+  "T01_state_coupling.json": "d83c8b46ecc64e9c808ac01c852ce1add7887e74fc9451a0ffa80cd99ec875e6",
+  "T02_extra.json": "d66e98411e5c6d39466fec368ce47ea6a5257bc93b40274f9565662695bbca0d",
+  "T02a.json": "23b419ddb12296b511aba5f18c999118cacfb373566d89f117bbcb84ea063a84",
+  "T02b.json": "0d708a438e33e1e70af0b6da2ed8431d95f05ed98a04328868d51257fca5ae60",
+  "T02c.json": "65b6f81a93836051e93224ea27f1756de767c921272ee0111761dfe9b200be50",
+  "T03.json": "a77ba7e266627ae96366977886bddc5a9f61e4c7a1025550d9c76c3c011a8560",
+  "T03_subtyping.json": "d6a3299d88547800be31dd7a0a0d239082ee443b57419abe0931a7fc7570fdd8",
+  "T04.json": "e265ff4a1ba4e793696540e12aa059a43f2bfb5b263abcf77152004cd261fcc4",
+  "T06a.json": "2b172a6175106ebfb12febaa476fbe01902a709b0fe8ce3866ed876bdbb123ae",
+  "T06b.json": "f75118e6975c97a8dcc5accf1deefe088afc351763469149c61e6898fe98a1e6",
+  "T07.json": "37655765e030a4221d1d5b7d4d0c1bf9c87b9c3dde2a3b18be5e4c50ed894e59",
+  "T08.json": "ed6c4d6f9d23bafb91e1145b49f20e4142e5f632f7af987ecd7f8d8e8c371fe2",
+  "T09.json": "81280ec1e9570cd8729d0e0611bd91961a10d66b6695d4928d1edac1f9db25f3",
+  "T09_immediate.json": "44093f3cb4ba10e62b2b190326ff7533bcf7470a79b46b1e4347e5fe3927a25e",
+  "U01a.json": "c2009346a3f589d0d2127b6abb75aad58a06272399ebc23149168e74242d047e",
+  "U01b.json": "a3a4f7d114563aa6450b57cb98fa934aab5b82193efc1905a774942ffbf3f01d",
+  "U02.json": "e9cb3610435b58ece7e6e86e93c67e0f3ac72171f965b2bc9e581cec21f18d30",
+  "U03.json": "490ee22717d7c9644fd0d2c33d1a2777672f378624e56cdf581abf14e390c99f",
+  "U04.json": "23cf79c95908b47d2f0058fbd8367ed7737dbce1148dd731f3fd01d6619f0413",
+  "U05.json": "a68094c74ecd615e065d812d4f34039e5e9bec43f5b332cbb8ece14df744fee5",
+  "U06.json": "520f364ece89445af93b3ddf4de776b899d61c03632d2a9b5bac7c73b991ad0f",
+  "U06b.json": "c7abcf7fbe45c0c7d18217166ef711988503d3ec9976b3dda189ab6f4046e75b",
+  "U07.json": "bce8a6eedebcc0c193e6f2b536d23861dc8b0443ee3be43484f5c120e019ea24",
+  "U08.json": "51416ca207fceb4ef086d71f8341b9ff3bebab6f42630a57b7ccfc3277da30ea",
+  "U08b.json": "50a77bda692f8cea822db0a52c483ccfc7d9b08b9ed35a7bd12f9bf3989723f3",
+  "U09.json": "37956ac1a86ab6d4c2daf2a63cfab65702792c7ebc31abb15a9f4791bb116077",
+  "W01.json": "00f1de6eaa67074ccbf50cbd14773428b664572629cf9cc401b2f1c372e168cc",
+  "W02.json": "0b41948b43e111c2ca6164c436095f5d8bc39e0c1935d61b3cfffdf74442178f",
+  "W03.json": "b26ad25d629feaac849130ffd5d9820a7990cb7089e04ca79731d7379c6121ad",
+  "W04.json": "d57e1f2a48b70c0e417947da62f5fcadec64f4c0198cf5545916ff084538bc43",
+  "W05.json": "8748b1584a9cc96caa3b9d01b887bcbe91016b5f9039a7d6bfc7a86e9c4e95e7",
+  "W06.json": "f5d2d8a25158f18af1b53d9406deb73733ae56ab4b396d953d148a4176ae9f0c",
+  "W07.json": "6aefd1b72fb970cf5a83e3209347083c6eb18b80790a24c5dbd93543c4110dc5",
+  "X01.json": "79e3e39ad9d4378f73af85e6ab8b847174ec19df3a264dd2295d57917353e585",
+  "X02.json": "b3991fc6a06bfb5e23412c35f6c6453772ec80a308728528fa848932eabf1635",
+  "X03.json": "796c6a5e00b3e7094fdc083e8cb889c95349318f3bed5a3dc39d1c4d0bb3d5e5",
+  "X04.json": "1d1aeb9edb75fb30b72c6645c2a34ded93fe20ffe81e73d6d5e07f145490ba17",
+  "Y01_Y07.json": "5c9ec4fee9af76112243b0c039e28d3939f252f533e26316a37e9c2147b4aaac",
+  "Z01_Z07.json": "32272e8bd6eb83282f7f51b4dbc941154af470c4fd4ccdea934618985261d741",
+  "Z08.json": "262b0d749370ca236b52d66eab1b5f6bd997c9d5c8e567188ec45ed5b7f2e18c"
+ }
+}

@@ -1,10 +1,13 @@
-"""v3.4 Y 系の測定と条件の枠組み（SPEC-v3.4 第 5〜7 節）。Stage 1 の版。
+"""v3.4 Y 系の測定と条件の枠組み（SPEC-v3.4 第 5〜7 節）。Stage 1 の版に Stage 3 の入口（C-v34・C-OR・clamp・A-τ-off・A-clock-off・τ-yoke・G5 の入れ替え）を足した版。
+Stage 3 の変更は CHANGELOG-v3.4.md に旧・新の SHA-256 と理由を書いた（Stage 4 が freeze-protocol.json の第 2 版を書く）。
 
 この版で動く条件（新しい機構 M1〜M3 を要さないもの）:
   C-v33（v3.3 の既定。w_reapp = 0.5 のカルマン更新 1 回、時計を進めない）、C-nocorr（訂正なしの枝）、C-retro（retroactive_value）、
   C-none（no_reappraisal）、diag-q0（C-v33 で、再評価の更新のときだけ過程雑音 q = 0。診断）。
   訂正の直前の状態の入れ替え（val-swap・hm-eq・swap-G）の道具（swap_groups、run_swap）は、C-v33 などの任意の動く条件の上で動く（G5 = κ・τ だけは未実装）。
-動かない条件（C-v34、C-OR、A-*、clamp-*、τ-yoke、local-reattr、A-clock-off）は、取り出すと NotImplementedError を起こす（Stage 2・3 で実装する）。
+Stage 3 で動く条件: C-v34、C-OR、C-nocorr-v34（v34 の訂正なしの枝: 空の刻みを N 進める）、A-τ-off、A-clock-off、clamp-τ、clamp-mood、clamp-both、τ-yoke（run_tau_yoke）。
+M3 の変種（A-τ-off、A-clock-off、clamp-*、τ-yoke）は **COR の直前から**効かせる（cor_overrides）。COR の直前の状態を全条件で同じにするため（SPEC 第 7.3 節）。
+動かない条件（A-g-const、A-κ-fixed、local-reattr）は、取り出すと NotImplementedError を起こす。
 
 乱数種の守り: Stage 1 で走らせてよいのは、開発 3490〜3499（phase = "dev"）と診断 3460〜3479（phase = "diag"）だけ。評価 3400〜3439、変異 3450〜3459、
 予約 3500〜3539 は、どの条件でも実行できない（guard_seeds が拒否する）。後の段階で許可を広げるときは STAGE_ALLOWED を変え、CHANGELOG-v3.4.md に書く。
@@ -117,6 +120,8 @@ class Condition:
     prefix_overrides: Tuple[Tuple[str, Any], ...] = ()      # 最初から人格に与える設定
     skip_cor: bool = False                                  # 訂正を与えない枝
     q0: bool = False                                        # 再評価の更新のときだけ過程雑音 q = 0（診断）
+    cor_overrides: Tuple[Tuple[str, Any], ...] = ()         # COR の直前から人格の設定に与える（M3 の変種。通常の経験・背景・情報源の履歴には効かせない）
+    yoke: bool = False                                      # τ-yoke: 他の人格の τ の軌跡が要る（run_tau_yoke）
 
 
 _STUB = "{} は M1〜M3（reappraisal_mode='v34'。Stage 2・3 で実装）を要する条件で、Stage 1 では実装されていない。"
@@ -127,13 +132,27 @@ _IMPL = [
     Condition("C-none", prefix_overrides=(("no_reappraisal", True),), note="価値を変えない対照"),
     Condition("diag-q0", q0=True, note="C-v33 で、再評価のカルマン更新のときだけ q = 0（RC1 の診断）"),
 ]
-_STUBS = ["C-v34", "C-OR", "A-g-const", "A-κ-fixed", "A-τ-off", "A-clock-off", "clamp-τ", "clamp-mood", "clamp-both", "τ-yoke", "local-reattr"]
-CONDITIONS: Dict[str, Condition] = {c.name: c for c in _IMPL}
+_V34 = (("reappraisal_mode", "v34"),)
+_IMPL3 = [
+    Condition("C-v34", prefix_overrides=_V34, note="M1 + M2 + M3 + 訂正を時間の出来事にする（主条件）"),
+    Condition("C-OR", prefix_overrides=(("reappraisal_mode", "v34_or"),), note="上限のない吸収（過剰な反省）"),
+    Condition("C-nocorr-v34", prefix_overrides=_V34, skip_cor=True, note="v34 の訂正なしの枝: COR の代わりに空の刻みを N 進める"),
+    Condition("A-τ-off", prefix_overrides=_V34, cor_overrides=(("m3_variant", "tau_off"),), note="τ ≡ 1"),
+    Condition("A-clock-off", prefix_overrides=_V34, cor_overrides=(("m3_variant", "clock_off"),), note="訂正が時計と気分を進めない（T.2 のまま）"),
+    Condition("clamp-τ", prefix_overrides=_V34, cor_overrides=(("m3_variant", "clamp_tau"),), note="罪悪感・後悔・自己正当化を τ に渡さない（気分の経路は残す）"),
+    Condition("clamp-mood", prefix_overrides=_V34, cor_overrides=(("m3_variant", "clamp_mood"),), note="f_c・安堵を気分に渡さない（τ の経路は残す）"),
+    Condition("clamp-both", prefix_overrides=_V34, cor_overrides=(("m3_variant", "clamp_both"),), note="両方を切る"),
+    Condition("τ-yoke", prefix_overrides=_V34, cor_overrides=(("m3_variant", "tau_yoke"),), yoke=True, note="別の背景の人格の τ の軌跡を与える（run_tau_yoke）"),
+]
+_STUBS = ["A-g-const", "A-κ-fixed", "local-reattr"]
+CONDITIONS: Dict[str, Condition] = {c.name: c for c in _IMPL + _IMPL3}
 for _n in _STUBS:
     CONDITIONS[_n] = Condition(_n, implemented=False, note=_STUB.format(_n))
+ALIASES = {"clamp-tau": "clamp-τ", "tau-yoke": "τ-yoke", "A-tau-off": "A-τ-off", "A-kappa-fixed": "A-κ-fixed"}
 
 
 def get_condition(name: str) -> Condition:
+    name = ALIASES.get(name, name)
     if name not in CONDITIONS:
         raise KeyError(f"未知の条件: {name!r}")
     c = CONDITIONS[name]
@@ -143,7 +162,9 @@ def get_condition(name: str) -> Condition:
 
 
 def advance_clock(npn: NPN, k: int = 1) -> None:
-    raise NotImplementedError("advance_clock（訂正や空の刻みが時計を進める）は Stage 2 の機構。Stage 1 の条件は時計を進めない（v3.3 の T.2）。")
+    """空の刻み。v34 の人格では時計を進める（npn.advance_clock）。v33 の人格では何もしない（v3.3 の T.2: 刻みも訂正も時計を進めない）。"""
+    if npn.cfg.reappraisal_mode != "v33":
+        npn.advance_clock(k)
 
 
 # ----------------------------------------------------------------------
@@ -154,9 +175,10 @@ def make_persona(seed: int, overrides: Tuple[Tuple[str, Any], ...] = ()) -> NPN:
 
 
 def feed_items(npn: NPN, items: Sequence[Dict[str, Any]]) -> None:
-    """経験と訂正を与える。空の刻みは、Stage 1 の条件では時計を進めないので無視する。"""
+    """経験と訂正を与える。空の刻みは、v33 の人格では時計を進めないので無視し、v34 の人格では時計を 1 進める。"""
     for it in items:
         if it.get("kind") == "tick":
+            advance_clock(npn, 1)
             continue
         npn.experience(copy.deepcopy(it))
 
@@ -265,11 +287,17 @@ def run_individual(seed: int, bg: str, src: str, err: str, n: int, m_extra: int,
             out["ctrl"][json.dumps(key, default=str)] = {"R_pre": prefixes[key]["R_ctrl_pre"], "R_fol": read_R(ctrl2, oc)}
     for c in cs:
         pf = prefixes[c.prefix_overrides]
+        if c.yoke:
+            raise ValueError("τ-yoke は他の人格の τ の軌跡が要る。run_tau_yoke を使う")
         npn = copy.deepcopy(pf["mis"])
+        for k_, v_ in c.cor_overrides:
+            setattr(npn.cfg, k_, v_)
         log: List[Dict[str, Any]] = []
         if not c.skip_cor:
             with reappraise_probe(log, q0=c.q0):
                 feed_items(npn, h["cor"])
+        else:
+            advance_clock(npn, len(h["cor"]))            # v34 の訂正なしの枝: 訂正の数だけ空の刻み（v33 では何もしない）
         R_cor = read_R(npn, oc)
         split = {pid: layer_split(npn, pf["W_pre"], pf["a_pre"], pid, "collaborator") for pid in (H.A, H.A2)}
         feed_items(npn, h["fol"])
@@ -330,7 +358,11 @@ def swap_groups(target: NPN, source: NPN, groups: Sequence[str]) -> NPN:
         elif g == "G4":
             t.cond = s.cond
         elif g == "G5":
-            raise NotImplementedError("G5（κ の Beta、τ）は M2・M3（Stage 2・3）で加わる状態。")
+            t.src_beta = s.src_beta                 # κ の Beta
+            t.log_tau = s.log_tau                   # τ
+            t.G = s.G                               # C-OR の累積（M3 の評価から作られる）
+            t.last_ev = s.last_ev
+            t.n_verifications = s.n_verifications
         elif g == "G6":
             t.h = s.h.copy()
             t.mood = float(s.mood)
@@ -340,8 +372,10 @@ def swap_groups(target: NPN, source: NPN, groups: Sequence[str]) -> NPN:
 
 
 def run_swap(seed: int, src: str, err: str, bg_target: str, bg_source: str, groups: Sequence[str], cond: str, phase: str,
-             n: int = 8, m_extra: int = 0) -> Optional[Dict[str, Any]]:
-    """同じ種・同じ SRC・同じ ERR の 2 個体（背景だけ違う）の間で、訂正の直前に状態の群を入れ替えて訂正を与える。並びが一致しなければ None（除く）。"""
+             n: int = 8, m_extra: int = 0, literal: bool = False) -> Optional[Dict[str, Any]]:
+    """同じ種・同じ SRC・同じ ERR の 2 個体（背景だけ違う）の間で、訂正の直前に状態の群を入れ替えて訂正を与える。並びが一致しなければ None（除く）。
+    literal = True なら aligned_literal（条件づけの手がかりの並びまで一致を求める文面どおりの読み。感度分析。CHANGELOG-v3.4 A1・L1）。
+    val-swap = groups VAL_SWAP、hm-eq = HM_EQ、swap-G = 任意の群（G5 = κ・τ を含む）。cond の cor_overrides（clamp など）は入れ替えの後に効かせる。"""
     guard_seeds([seed], phase)
     c = get_condition(cond)
     ht = H.make_history(seed, bg_target, src, err, n, m_extra)
@@ -349,9 +383,11 @@ def run_swap(seed: int, src: str, err: str, bg_target: str, bg_source: str, grou
     oc = ht["meta"]["o_class"]
     t = _prefix(seed, ht, c.prefix_overrides, "mis")
     s = _prefix(seed, hs, c.prefix_overrides, "mis")
-    if not aligned(t, s):
+    if not (aligned_literal(t, s) if literal else aligned(t, s)):
         return None
     sw = swap_groups(t, s, groups)
+    for k_, v_ in c.cor_overrides:
+        setattr(sw.cfg, k_, v_)
     log: List[Dict[str, Any]] = []
     if not c.skip_cor:
         with reappraise_probe(log, q0=c.q0):
@@ -359,6 +395,40 @@ def run_swap(seed: int, src: str, err: str, bg_target: str, bg_source: str, grou
     R_cor = read_R(sw, oc)
     feed_items(sw, ht["fol"])
     return {"R_cor": R_cor, "R_fol": read_R(sw, oc)}
+
+
+def run_val_swap(seed: int, src: str, err: str, bg_target: str, bg_source: str, phase: str, cond: str = "C-v34", n: int = 8, m_extra: int = 0,
+                 literal: bool = False) -> Optional[Dict[str, Any]]:
+    """val-swap（SPEC 第 6 節）: 信念・経験記録・h・m・κ・τ は自分のまま、価値の評価状態（G1 の W・Σ、G3 の a、G4 の C）だけを入れ替える。"""
+    return run_swap(seed, src, err, bg_target, bg_source, VAL_SWAP, cond, phase, n, m_extra, literal)
+
+
+def run_hm_eq(seed: int, src: str, err: str, bg_target: str, bg_source: str, phase: str, cond: str = "C-v34", n: int = 8, m_extra: int = 0,
+              literal: bool = False) -> Optional[Dict[str, Any]]:
+    """hm-eq（SPEC 第 6 節）: 欲求の状態 h と気分 m だけを相手の値に揃える。"""
+    return run_swap(seed, src, err, bg_target, bg_source, HM_EQ, cond, phase, n, m_extra, literal)
+
+
+def run_tau_yoke(seed: int, src: str, err: str, bg_target: str, bg_donor: str, phase: str, n: int = 8, m_extra: int = 0) -> Dict[str, Any]:
+    """τ-yoke（プラセボ τ。SPEC 第 6 節）: 同じ種・同じ SRC・同じ ERR で別の背景の人格（donor）に同じ訂正の列を与えて生じた τ の軌跡を、
+    target に（自分の評価で動かす代わりに）そのまま与える。donor は C-v34、target の他の状態は自分のまま。"""
+    guard_seeds([seed], phase)
+    from npnv3.trace import tau_trajectory
+    ht = H.make_history(seed, bg_target, src, err, n, m_extra)
+    hd = H.make_history(seed, bg_donor, src, err, n, m_extra)
+    oc = ht["meta"]["o_class"]
+    donor = _prefix(seed, hd, _V34, "mis")
+    feed_items(donor, hd["cor"])
+    traj = tau_trajectory(donor.ledger.entries)
+    c = get_condition("τ-yoke")
+    t = _prefix(seed, ht, c.prefix_overrides, "mis")
+    for k_, v_ in c.cor_overrides:
+        setattr(t.cfg, k_, v_)
+    t.set_tau_yoke(traj)
+    feed_items(t, ht["cor"])
+    R_cor = read_R(t, oc)
+    feed_items(t, ht["fol"])
+    return {"R_cor": R_cor, "R_fol": read_R(t, oc), "log_tau": dict(t.log_tau), "donor_log_tau": dict(donor.log_tau)}
 
 
 # ----------------------------------------------------------------------

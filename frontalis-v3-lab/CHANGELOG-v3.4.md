@@ -140,3 +140,77 @@ RC3 = 好悪の変化 Δlike(A) の層（ind と共有 = people + cls + emb）�
 - **L4（357 と 350 の件数）の答え。** 350 が正しい。`unittest` のローダーで `tests/test_*.py` を数えると 350 件（v3.3 の報告と同じ）、今回の実行の合計も 350 件。Stage 1 の 357 は、`test_p_persist`（7 件）を直列の写しと spawn の写しの両方で走らせ、ログの `Ran` を二重に足した数え違い（350 + 7）。テストの欠落や追加はない。
 - 単体テスト `tests/test_ra_mechanisms.py`: 32 件すべて合格（開発用の種 3490〜3492 のみ）。
 
+## Stage 3（2026-10-17）: M3（罪悪感・後悔・自己正当化 → 双方向の τ → 解釈）、訂正を時間の出来事にする変更、条件の入口
+
+実装者: Claude（Sonnet 5.5）。環境: Python 3.12.13、numpy 2.5.4（変更・再インストールなし）。開発用の種 3490〜3499 だけを使った（単体テストは 3490〜3492、観察は 3490〜3499）。評価・変異・予約の種は実行していない。診断用の種は読んでも使ってもいない。
+SPEC・PLAN・凍結済みの結果ファイル・`freeze-protocol.json` は変えていない。
+
+### 作った / 変えたもの
+
+- `npnv3/config.py`: `eta_tau = 0.5`、`tau_max = 3.0`、`m3_variant`（"none" | "clamp_tau" | "clamp_mood" | "clamp_both" | "tau_off" | "clock_off" | "tau_yoke"。試験用の入口。訂正の出来事にだけ効く）。
+- `npnv3/npn.py`:
+  - M3: `_m3_evaluate`（own_i・罪悪感・後悔・自己正当化・τ の更新・時計と気分・台帳と exp_log への追記）、`_own_units`、`_tau_step`、`_tick`、`set_tau_yoke`、`tau_of`、`trace_loop`。Stage 2 のスタブ `_m3_guilt_regret` は削除した。
+  - τ は `log_tau`（鍵 = "行為者の類|文脈"）。解釈の重み w_I ∝ q_LLM · P_belief^τ（τ = 1 のときは v3.3 の式そのもの）。`_parse_outcomes` に `ctx`・`log_tau` の任意引数。v33 では τ を見ない。
+  - 台帳: kind = "correction_experience"（訂正ごとに 1 件）。検証（kind = "verification"）と訂正に、出来事の id（eid）と、先行する出来事への参照（refs = [eid, 経路] の対）を足した。
+  - 状態: `meta["reappraisal"]` に `log_tau`・`tau_yoke`・`last_ev` を追加（保存・復元はビット単位で一致）。
+- `npnv3/trace.py`（新）: `trace_loop(ledger_entries)`（κ̄ と τ の変化の連鎖を台帳だけから再構成し、増幅の起点を返す）、`tau_trajectory`（τ-yoke 用の軌跡）。
+- `tests/ra_protocol.py`: 条件の入口（C-v34、C-OR、C-nocorr-v34、A-τ-off、A-clock-off、clamp-τ、clamp-mood、clamp-both、τ-yoke）、`advance_clock`、`feed_items`（v34 の刻み）、`swap_groups` の G5、`run_swap` の `literal`、`run_val_swap`・`run_hm_eq`・`run_tau_yoke`。
+  **変更の記録（`freeze-protocol.json` の第 1 版は変えていない。Stage 4 が第 2 版を書く）:** SHA-256（CRLF を LF に揃えた値）は、旧 `d21ec5b0f2f26b68b292793cf4cdf195eed040c8ff4d443ef49de9248a96f30c`、新 `4302646543152cbe39c68f59b218f816a7e2663c38e46e08e61cca1f9f99c4d7`。
+  理由: Stage 1 では `NotImplementedError` だった入口（PLAN の Stage 3 の成果物）を実装するため。既存の条件（C-v33、C-nocorr、C-retro、C-none、diag-q0）と、測定（読み出し R、効果、統計）の定義は変えていない。診断用の種の結果を見て変えたものではない。
+  `data/make_histories_v34.py` は変えていない（SHA-256 `33bb0934…cd71` のまま）。
+- `tests/test_ra_m3.py`（新、43 件）。
+- `tests/test_ra_mechanisms.py`（Stage 2 のテスト）の最小の変更 2 か所:
+  (1) `test_seed_G_rejects_invalid_values_and_the_m3_hook_is_a_stub` の 1 行。`_m3_guilt_regret({}, {}, []) == (0.0, 0.0)` の確認を、スタブが置き換わったことの確認（`hasattr` が偽）に。
+  (2) `test_cor_equals_cv34_bitwise_when_the_accumulated_G_is_zero` の履歴を ERR-interp から ERR-report に。Stage 2 の前提「M3 がないので G_e は 0」が Stage 3 で成り立たなくなった（ERR-interp は own > 0 で G_e が自然に増える）。ERR-report では own = 0 で G_e = 0 のままなので、テストの主張（G_e = 0 のとき C-OR は C-v34 と同じ）はそのまま検査される。他のテストは弱めても消してもいない。
+
+### SPEC の曖昧さ・矛盾と、Stage 3 での読み（黙って選ばずに記録する。SPEC は変えていない）
+
+- **S3-1 スキーマ版は上げない（8 のまま）。** 新しい状態は `meta["reappraisal"]` と設定への追加だけで、Stage 2 の状態は新しい項目を空として読める（単体テストで確認）。SPEC は版について何も言わない。
+- **S3-2 own_i の「変わった結果」の数え方。** SPEC は「訂正で変わった結果のうち …… の割合」としか言わない。当時の版にあって訂正後の版に同じもの（JSON が同一）がない結果を「取り除かれた結果」、その逆を「追加された結果」とし、同じ行為者の追加された結果と対にして 1 単位にした（対がなければ単独）。
+  misread = 取り除かれた結果が曖昧で、当時の解釈の最大の型（記録された w_out の argmax）が、対の訂正後の型（その結果の w_out の argmax）と違う。対のない結果・追加だけの結果・曖昧でない誤った結果は misread にならない。own = misread の数 / 単位の数。
+  ERR-interp は単位が 1 つ（credit_taken/credit_shared の曖昧な結果。achievement は同一）なので own ∈ {0, 1}。**人格の信念が credit_shared に傾いている場合は、曖昧でも誤読ではなく own = 0 になる**（開発用の種では BG-trust と SRC-reliable の組で多い）。
+- **S3-3（SPEC の内部矛盾）τ の更新量の上限。** 第 4.4 節は「log τ ← clip(log τ + η_τ (defend − guilt − regret), ±log 3)」と「1 回の変化は |Δ log τ| ≤ η_τ」を両方書くが、guilt と regret は別々の人（like_前 < 0 と > 0）に由来するので、どちらも 0 から 1 に近づきうる。defend − guilt − regret は (−2, 1) に出るので、式のままでは |Δ| ≤ η_τ が破れる。
+  不変量 H9（|Δ log τ| ≤ η_τ）を守るため、符号つきの和を [−1, 1] に切った（Δ log τ = η_τ · clip(defend − guilt − regret, −1, 1)）。和が [−1, 1] の中にあれば SPEC の式と同じ。開発用の種の自然な実行では、切る場合は観察されなかった（90 個体で |和| の最大は 0.016）。
+- **S3-4 自己正当化の (1 − g_i)。** C-OR では g_i^OR が 1 を超えうるので、(1 − g_i^OR) は負になりうる。基底の g_i = σ(logit κ̄ + LLR)（C-v34 の g）を使った（defend ≥ 0 を保つ）。C-OR の (1 + λ_g G_e) は吸収の量にだけ掛かる。
+- **S3-5 M3 と時間の出来事は、吸収を行う条件（v34 / v34_or）だけ。** `no_reappraisal` と `retroactive_value`（C-none、C-retro）は v34 の上でも、Stage 2 のとおり対照として自分の規則を使い、M3 も時計も気分の更新も持たない。SPEC は対照の扱いを言わない。
+- **S3-6 τ の鍵。** 「読み違えた結果の行為者の類と文脈」を、misread の結果の行為者の類（参加者でなければ行為者の id: self / world）と、参照先の経験の文脈とした。複数の鍵があれば、それぞれに同じ Δ log τ を 1 回ずつ加える。τ が効くのは、曖昧な結果の解釈の重みを求めるすべての場所（経験の評価と学習、訂正後の結果の解釈、probe でない appraise による読み出し r6・r7・r9）。
+- **S3-7 exp_log の訂正の記録。** SPEC 第 4.1 節は「exp_log と台帳に kind = correction_experience として追記」とする。exp_log には `how = "correction"` の記録を足した（`serial = None`、`original_outcomes = []`。RA6 の検査が全記録の `original_outcomes` を読めるように空のリストを置く）。
+  価値の再生（`_replay_values`）は、この記録を飛ばす（教師を持たない）。`_exp_pos`（訂正の参照先の索引）には入れない。台帳には、既存の kind = "correction"（ΔW を持つ）とは別に kind = "correction_experience" を 1 件足す（`Ledger.totals` は ΔW を持つ kind だけを数えるので影響しない）。
+- **S3-8 G_e。** 「対象 e についての累積」を、Stage 2 の読み（訂正ごとの guilt_i + regret_i を、その訂正の全参加者の G に足す）のまま実装した。e ごとに分解する別の読み（e ごとの like の変化から作る）は採らなかった。G は C-v34 でも累積する（C-OR の吸収率にだけ使われる）。
+- **S3-9 変種は COR の直前から効かせる。** SPEC 第 7.3 節は「COR の直前の状態は全条件で同じ」とするので、clamp-τ・clamp-mood・clamp-both・A-τ-off・A-clock-off・τ-yoke は、情報源の履歴（SRC）の訂正には効かせず、COR の訂正だけに効かせる（`Condition.cor_overrides`）。
+  A-clock-off は SPEC の「T.2 のまま」を厳密に読めば履歴全体で時計を進めないが、そうすると SRC-reliable・unreliable で COR の直前の状態が C-v34 と変わる。直前の状態を揃える方を採った。
+- **S3-10 τ-yoke。** 「別の背景の人格の τ の軌跡をそのまま与える」を、訂正の通し番号（SRC の訂正も数える）ごとに、donor の評価の後の log τ の全体を代入する、と読んだ。donor は同じ種・同じ SRC・同じ ERR の別の背景の C-v34。軌跡がなければ動かさず、`tau_source = "yoke_missing"` と記録する。
+- **S3-11（構造上のゼロ効果の限定）。** SPEC は「v3.3 の構造では、気分は …… どの学習の教師にも入らない」とし、f_c・安堵の学習への効果が構造上ゼロだと述べる。コードを確認すると、気分 → f → δ は、**二択（kind = "choice"）の Z-persist の overwhelm**（δ が正当化 J を減らし、J が割り引きを通じて人モデルの教師を変える）にも入る。
+  つまり、二択を含む経験史では、気分から学習への経路が v3.3 から既にある。v3.4 の経験史（BG・SRC・MIS・COR・FOL）に二択はなく、`justification_mode` の既定は "orig"（この経路は無い）なので、検査（clamp-mood で後続の学習がビット単位で同じ）は成り立つ。経験史に二択を含めるときは、この経路を考慮する必要がある。
+- **S3-12 検証の「当時の読み」の τ。** M2 の戻した信念で当時の結果を作り直すとき（`_reverted_belief`）、τ は訂正の時点の値（この訂正の τ の更新の前）を使う（検証待ちの項目に保存）。訂正の更新の後の τ を使うと、検証の LLR_ver が訂正自身の評価に依存してしまう。
+- **S3-13 評価の時刻。** 訂正の評価（Q_前・Q_後、like）は時計を進める前の時刻で求め、そのあとに時計を 1 進める（気分の更新はさらにその後）。J の減衰は時計の 1 刻みで一度かかる（orig のとき）。
+- **S3-14 C-nocorr-v34。** v34 の訂正なしの枝を条件として足した（Stage 1 の C-nocorr は v33 の上）。`advance_clock` で N 個の刻み。C-OR の対照も同じ（SRC の訂正では G が増えず、C-v34 と C-OR の COR 直前の状態は同じ）。A-g-const・A-κ-fixed・local-reattr は Stage 3 の範囲外で、`NotImplementedError` のまま。
+
+### ユーザーの追加の注意（M2 と M3 の相互作用）への対応
+
+- 実装は凍結した仕様の経路だけを使う。新しい結合は足していない。κ̄ → 吸収率 g、τ → 解釈の重み → 信念 → LLR_i と検証 → κ̄。上限も罰則も足していない。自己強化に見える連鎖は故障として扱わない。
+- 訂正と検証の台帳に、出来事の id、情報源、訂正前後の κ̄ と log τ、g_i、LLR_i（検証は LLR_ver）、τ が効いた解釈の重みの変化（tau_effect）、先行する出来事の参照（refs と経路）を記録する。
+- `trace_loop` は台帳だけから κ̄・τ を再生して状態と照合し、「受け入れる向き」（κ̄ の上昇、log τ の低下）が同じ符号で参照の鎖につながる連なりを、自己強化に見える連鎖として報告し、最初の出来事を起点にする。同じ情報源の前の検証への参照（kappa(prev)）は、同じ量の積み重ねなので連鎖の判定には使わない。
+  これは観察の道具で、判定ではない。台帳の改ざんは不整合として検出される（単体テスト）。
+
+### 開発用の種での観察（3490〜3499、ERR-interp、N = 8、SRC 3 種 × BG 3 種 × 10 種 = 90 個体。判定ではない。閾値や条件を見て変えていない）
+
+観察の枠組みは `tests/` に置かない一時の script（出力は報告に写した）。正規化の尺度は 90 個体の COR 直前の R の標準偏差。
+
+1. **τ の動きの向きと大きさ。** 訂正ごとの Δ log τ の符号は上にも下にも出た（SRC-unreliable の BG-trust では下が 40 回、上が 20 回。BG-betray の SRC-none では下が 7 回、上が 42 回）。最終の log τ は、SRC-none では 3 つの BG ですべて正（10/10 個体）、SRC-unreliable の BG-trust では 6/10 が負、4/10 が正。
+   大きさは小さい: 最終の |log τ| の最大は 0.025（τ にして 1.025 倍）、1 回の |Δ log τ| の最大は 0.008（上限 η_τ = 0.5 の 1.6%）。罪悪感・後悔・自己正当化の最大は 0.03。like の動きが小さいので tanh の値が小さい。境界（1/3, 3）に達した個体はない。
+2. **誤読の有無が人格で違う（同じ訂正）。** SRC-none の own の合計（8 回の訂正のうち誤読だった回数）の平均は、BG-trust 3.3、BG-betray 4.9、BG-neutral 4.2。SRC-reliable の BG-trust と BG-neutral では 0（解釈が credit_shared に傾いているので誤読にならず、τ は動かない）。
+3. **自己強化に見える連鎖。** 90 個体中 42 個体で、κ̄ と τ の両方を含む参照の連鎖が（長さ 2 以上で）見つかった。長さ 7 の例: 種 3490・BG-betray・SRC-reliable。起点 ver:src1x → ver:src2x → ver:src3x → corr:c0 → corr:c3 → corr:c4 → ver:c4。受け入れる向きの符号 −1 = κ̄ が下がり τ が上がる側）。SRC-unreliable では 30/30 個体で κ̄ と τ を含む連鎖があり、起点はすべて情報源の履歴の検証（ver:src…）。
+   τ が下がる → 次の訂正の吸収率 g が下がる、という直接の連鎖は、この経験史では見えなかった: 訂正ごとの g は、κ̄ の積み重ね（検証）で全体として上がり続け、τ の符号とは関係なく次の g が上がる回が多数（τ 下: 62 回上昇、12 回下降。τ 上: 173 回上昇、32 回下降）。τ は解釈の重み（A2 の曖昧な出来事の credit_taken の重みなど）を動かすが、その大きさは 1e-3 のオーダー（tau_effect の例: 0.2347 → 0.2343）。
+4. **同じ訂正を異なる経験史に与えたときの、次の学習の向き（Δτ = L_fol(C-v34) − L_fol(clamp-τ)、成分は R の正規化値）。** SRC-none（種 10 本、98.33% 区間のブートストラップ。第 7.3 節の「向きが違う」の定義。n = 10 なので参考）: BG-trust と BG-betray の間で向きが違う（r2 = like(A2) の符号が逆、余弦 0.22）。BG-trust と BG-neutral も違う（r2 の符号が逆、余弦 0.43）。BG-betray と BG-neutral は同じ向き（余弦 0.87）。
+   Δτ は 6 成分で 0 を含まない（r1、r2、r3、r6、r7、r8）が、大きさは正規化値で最大 0.016 と小さい。SRC-reliable では Δτ はほぼ 0（τ がほとんど動かない）。SRC-unreliable では BG-betray と BG-neutral が同じ向き（余弦 0.87）、BG-trust は Δτ が 0 に近く余弦の区間が広い（判定不能）。
+   参考: 訂正の因果効果 CE（FOL の後）の向きは、SRC-none では BG-trust が BG-betray・BG-neutral と r1 の符号が逆（余弦 0.82・0.90）。つまり同じ訂正で、人格によって like(A) の動く向きが違うのは、τ の経路を待たず、吸収（M1）と信念の違いからも出る。
+   **この観察は、τ → 解釈 → 次の学習の経路が存在し、人格（経験史）によって向きが違いうることは示すが、効果の大きさは小さく、RA3 の合否の予測ではない。**
+
+### 検証と H6
+
+- `tests/test_ra_m3.py` 43 件、`tests/test_ra_mechanisms.py` 32 件がすべて合格（開発用の種のみ）。
+- **H6（既定モードで v3.3 の結果が不変。L2 の規則）。** Stage 2 と同じ方法（現在の `npnv3/` を作業用の写し（リポジトリ外）に置き、v3.3 の全 41 モジュールを別プロセスで実行）で、`reappraisal_mode` 既定（"v33"）の v3.4 Stage 3 を、`stage2_h6.json` の同じ環境の基準（v3.3 のコード ed7c59c、変更なし）と比べた。`tests/results/v34/stage3_h6.json` に記録した。
+  結果: 書き直された結果 JSON 50 件のうち **48 件がバイト単位で一致、2 件（U03・W05）は Stage 2 と同じ辞書のキーの並びだけの差**（Counter を文字列の集合の順で作るため、プロセスごとの文字列ハッシュの乱数で並びが変わる）。残りの 14 件（`diag_*.json`）はテストが書き直さない診断の出力。
+  実行件数は v3.3 の 41 モジュールで 350 件（基準と同じ）、合否もモジュールごとに基準と同じ（不合格 16、expectedFailure 2。Stage 2 と同じ内訳）。v3.4 の `test_ra_mechanisms`（32 件）と `test_ra_m3`（43 件）も同じ写しで合格し、合計 425 件。凍結済みのファイルには書いていない。
+  実行の都合: Windows に fork がないので `pmap` は spawn のプール（2 本）または直列に差し替えた（Stage 1 の逸脱 E1 と同じ）。所要約 67 分。自分が起動したプロセスの PID だけを管理し、イメージ名での一括終了はしていない。

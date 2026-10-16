@@ -98,6 +98,12 @@ class Config:
     lambda_g: float = 0.25         # C-OR の λ_g（SPEC-v3.4 4.6）
     kappa_alpha0: float = 1.0      # 情報源の信用 Beta(α, β) の事前（SPEC-v3.4 4.2 手順 3: Beta(1, 1)）
     kappa_beta0: float = 1.0
+    eta_tau: float = 0.5           # M3: log τ ← clip(log τ + η_τ (defend − guilt − regret), ±log 3)（SPEC-v3.4 4.4）。全人格共通
+    tau_max: float = 3.0           # M3: τ ∈ [1/τ_max, τ_max]
+    # 試験用の入口（SPEC-v3.4 第 6 節の条件）。M3 の訂正の出来事にだけ効き、通常の経験には効かない。reappraisal_mode が v34 / v34_or のときだけ働く:
+    #   "none"（C-v34）| "clamp_tau"（罪悪感・後悔・自己正当化を τ に渡さない）| "clamp_mood"（f_c・安堵を気分に渡さない）| "clamp_both" |
+    #   "tau_off"（A-τ-off: τ ≡ 1）| "clock_off"（A-clock-off: 訂正が時計と気分を進めない）| "tau_yoke"（τ-yoke: 他の人格の τ の軌跡を与える。set_tau_yoke）
+    m3_variant: str = "none"
     g_logit_clip: float = 30.0     # σ の引数の数値の安全のための制限（|z| > 30 では σ が 1 または 0 に丸まり (0, 1) を保てない）。台帳には制限前の z も残す
 
     # --- v3.3 第2部 3: 選択の正当化 J（二択 kind = "choice"。SPEC-v3.3 3.3, 3.4）---
@@ -198,6 +204,8 @@ class Config:
             raise ValueError(f"concern_direction が不正です: {self.concern_direction!r}")
         if self.reappraisal_mode not in ("v33", "v34", "v34_or"):
             raise ValueError(f"reappraisal_mode が不正です: {self.reappraisal_mode!r}")
+        if self.m3_variant not in ("none", "clamp_tau", "clamp_mood", "clamp_both", "tau_off", "clock_off", "tau_yoke"):
+            raise ValueError(f"m3_variant が不正です: {self.m3_variant!r}")
 
     def to_dict(self) -> Dict[str, Any]:
         return dataclasses.asdict(self)
