@@ -11,6 +11,8 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+if str(ROOT / "benchmarks") not in sys.path:
+    sys.path.insert(0, str(ROOT / "benchmarks"))      # v3.3: nn_transfer（X2・X3 のベンチマーク）
 
 from npnv3 import NPN  # noqa: E402
 

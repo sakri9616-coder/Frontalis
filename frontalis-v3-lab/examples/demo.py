@@ -1,4 +1,4 @@
-"""デモ（v3.2）: 3 人格が異なる経験史を経て、同じ新しい経験をどう評価し、何を学ぶか。保存→復元→継続も見せる。
+"""デモ（v3.3）: 3 人格が異なる経験史を経て、同じ新しい経験をどう評価し、何を学ぶか。保存→復元→継続も見せる。
 
 実行: python3 examples/demo.py [--seed 0]
 
@@ -12,6 +12,10 @@ v3.2 で見せること（評価基準が、学習と行動を変える）:
   - 褒められた後に害を受けた人格は、褒め言葉を伴う申し出を避ける（条件づけられた価値 C が予期 Q に入る）
   - 関心の重み a が違うと、同じ経験から学ぶ量が変わる（欲求ごとの観測雑音 R/a_k）。a の方向（sensitize / habituate）は実験条件
   - 事前ヘッドの重みは予測性能で決まる（前向きの対数尤度）
+v3.3 で見せること（第 1 部: NN の再検証と消去）:
+  - 事前ヘッドは、予測する類自身の観測を使わない（leave-class-out）。重みは、類を除いたモデルの転移性能（対数尤度の softmax、温度 1）で決まる。
+    差は穏やか（転移できる世界でも、ヘッドの重みはほぼ一様に近い）。mlp は X3 の結論（ベンチマークで最良の条件がなかった）で既定の mixture から外した
+  - 条件づけ価値 C は潜在原因を持つ。文脈 A で獲得し、文脈 B で消去すると、元の嫌悪が文脈 A に戻るか（single_cause と比べる）
 """
 from __future__ import annotations
 
@@ -226,12 +230,64 @@ def main() -> None:
     print("  主張は『a が経験から形成され、受け止め方と学習を変える』まで。どちらの方向が人に近いかは主張しない。")
 
     # --- 4d. 事前ヘッドの重み ---
-    hr("4d. 事前ヘッドの重みは予測性能で決まる（前向きの対数尤度の softmax、v3.2）")
-    print(f"  {'人格':<14}" + "".join(f"{h:>9}" for h in ("mlp", "linear", "knn1", "none")) + "   （none = 一般の率。観測前の予測の対数尤度で重み付け）")
+    hr("4d. 事前ヘッドは予測する類を除いて作る。重みは転移性能で決まる（leave-class-out、v3.3）")
+    print("  R/K/X の履歴は類が 1〜2 つしかなく、1 つの類を除くと残りから転移する情報がない。重みは一様になる（正直な結果）。")
+    names = [h for h in ("mlp", "linear", "knn1", "knnk", "none") if h in npns["R"].cfg.mixture_heads]
+    print(f"  {'人格':<14}" + "".join(f"{h:>9}" for h in names) + f"   既定の mixture = {names}（mlp は X3 の結論で外した。設定は残してある）")
     for k, n in npns.items():
         w = n.belief.head_weights_dict()
-        print(f"  {LABEL[k]:<14}" + "".join(f"{w[h]:>9.2f}" for h in ("mlp", "linear", "knn1", "none")))
-    print("  短い履歴では、最も近い既知の類の率を使う knn1 が最も予測が良く、重みが大きい。MLP が必ず勝つわけではない（W7 の数値を参照）。")
+        print(f"  {LABEL[k]:<14}" + "".join(f"{w[h]:>9.2f}" for h in names))
+    from npnv3 import Lexicon
+    all_heads = ("mlp", "linear", "knn1", "knnk", "none")
+    print("\n  類が 12 個ある合成の世界（類の埋め込みは 8 次元。型 credit_taken の率が、埋め込みの線形関数 / 埋め込みと無関係）。5 ヘッドすべてを mixture に入れた。")
+    print(f"  {'世界':<22}" + "".join(f"{h:>9}" for h in all_heads) + "    ヘッドの寄与 ρ")
+    for structured in (True, False):
+        ws, rhos = [], []
+        for sd in range(4):
+            d = Lexicon.load().to_dict()
+            rng = np.random.default_rng([sd, 21])
+            E = rng.normal(size=(12, 8)); E /= np.linalg.norm(E, axis=1, keepdims=True)
+            for i in range(12):
+                d["classes"][f"z{i:02d}"] = E[i].tolist()
+            w_true = rng.normal(0.0, 3.0, size=8)
+            p_true = 1.0 / (1.0 + np.exp(-(E @ w_true))) if structured else rng.uniform(0.1, 0.9, size=12)
+            m = NPN(seed=sd, lexicon=Lexicon(d), mixture_heads=all_heads)
+            order = rng.permutation(96) % 12
+            for i, c in enumerate(order):
+                pid = f"d4-{c}-{i}"
+                outs = [{"type": "connection", "actor": pid, "magnitude": 0.6}]
+                if rng.random() < p_true[c]:
+                    outs.append({"type": "credit_taken", "actor": pid, "magnitude": 0.7})
+                m.experience({"id": f"d4-{sd}-{i}", "context": "music_session", "concepts": ["collaboration"],
+                              "participants": [{"id": pid, "class": f"z{c:02d}"}], "outcomes": outs})
+            ws.append([m.belief.head_weights_dict()[h] for h in all_heads]); rhos.append(m.belief.rho())
+        label = "転移できる（線形な率）" if structured else "転移できない（無関係な率）"
+        print(f"  {label:<22}" + "".join(f"{x:>9.2f}" for x in np.mean(ws, axis=0)) + f"    {np.mean(rhos):.2f}")
+    print("  重みは対数尤度の softmax（温度 1）なので差は穏やか。ベンチマーク（benchmarks/nn_transfer.py）では、未見の類への転移で mlp が最良の条件はなかった。")
+
+    # --- 4e. 消去・復元・復位（潜在原因による条件づけ価値、v3.3）---
+    hr("4e. 嫌悪の獲得 → 消去 → 復元（潜在原因による条件づけ価値、v3.3）")
+    def _ev(eid, ctx, concepts, outcomes, sess):
+        return {"id": eid, "context": ctx, "concepts": concepts, "participants": [], "outcomes": outcomes, "optional": False, "session": sess}
+    def _run(single):
+        m = NPN(seed=0, single_cause=single)
+        tr = 0
+        def trial(kind, ctx):
+            nonlocal tr
+            tr += 1
+            m.experience(_ev(f"e4-{tr}c", ctx, ["praise_from_X"], [], f"e4s{tr}"))
+            m.experience(_ev(f"e4-{tr}u", ctx, [], [{"type": "harm", "actor": "world", "magnitude": 0.8}] if kind == "acq" else [], f"e4s{tr}"))
+        rd = lambda ctx: m.probe({"cue": "concept:praise_from_X", "context": ctx})["C"]
+        for _ in range(12): trial("acq", "studio")
+        c0 = rd("studio")
+        for _ in range(20): trial("ext", "cafe_chat")
+        return c0, {ctx: rd(ctx) / c0 for ctx in ("cafe_chat", "studio", "garden")}, m.cond.n_causes("concept:praise_from_X")
+    print("  獲得: 文脈 studio で『手がかり → 害』を 12 回。消去: 文脈 cafe_chat で『手がかり → 何も起きない』を 20 回。比 = C / 獲得直後の C。")
+    print(f"  {'':<28}{'獲得直後 C':>11}{'消去した B':>12}{'元の A (ABA)':>14}{'未見の C (ABC)':>16}{'原因の数':>10}")
+    for single, label in ((False, "潜在原因（既定）"), (True, "single_cause（K = 1）")):
+        c0, r, k = _run(single)
+        print(f"  {label:<26}{c0:>11.3f}{r['cafe_chat']:>12.2f}{r['studio']:>14.2f}{r['garden']:>16.2f}{k:>10d}")
+    print("  single_cause は消去で C が下がり、どの文脈でも同じ値（元に戻らない）。潜在原因では文脈 A でわずかに戻るが、SPEC の閾値（ABA ≥ 0.5、ABC ≥ 0.4）には届かない（E3・E4 は不合格。CHANGELOG の原因の切り分けを参照）。")
 
     # --- 5. 曖昧な出来事の解釈 ---
     hr("5. 曖昧な出来事の解釈は人格の信念で違い、その解釈のまま学ぶ（v3.1）")

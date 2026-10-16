@@ -7,7 +7,8 @@ experience(exp) の順序（SPEC 6、v3.1・v3.2 で拡張）
   3. optional なら接近・回避を選ぶ。回避なら記録して終了
   4. Δh, Δu（ベクトル）, 寄与の分解, 感じた価値 f（a・C・参照点、1.3）, δ, 感情
   5. 信念の更新（責任 φ → 計数、π、型の大きさ、リプレイ緩衝 → 事前ヘッドの SGD）。曖昧な型は計数しない（既定）
-  6. 価値の更新（φ で教師を分け、人モデル・状況モデルのカルマン。欲求 k の観測雑音は R/a_k、v3.2 1.1）。条件づけ C の TD(0)（1.2）
+  6. 価値の更新（φ で教師を分け、人モデル・状況モデルのカルマン。欲求 k の観測雑音は R/a_k、v3.2 1.1）。条件づけ C の TD(0)（1.2。v3.3 4.2: 潜在原因ごと、
+     文脈と時刻つき。手がかりなしの嫌悪の結果は、負の価値を持つ原因の最後に使われた時刻を更新する = 復位）
   7. 欲求の関心の重み a（1.1）、欲求の状態 h、気分 m の更新
   8. 台帳に記録
 """
@@ -30,7 +31,8 @@ from .lexicon import EmbeddingStore, Lexicon
 from .mlp import sigmoid
 from .schema import validate_experience, validate_probe
 
-SCHEMA_VERSION = 4          # v3.0 は 1、v3.1 は 2（a, C, 所有する埋め込み, 効果表）。改訂 2 で観測の記録（想起）、v3.2 で欲求ごとの Σ とヘッドの対数尤度が加わった(3 → 4)
+SCHEMA_VERSION = 5          # v3.0 は 1、v3.1 は 2（a, C, 所有する埋め込み, 効果表）。改訂 2 で観測の記録（想起）、v3.2 で欲求ごとの Σ とヘッドの対数尤度が加わった(3 → 4)。
+                            # v3.3 で、類ごとの生の計数・類を除いたヘッドのモデル（leave-class-out）・潜在原因つきの条件づけ（原因の価値・文脈の計数・時刻）・pending の文脈と時刻が加わった(4 → 5)
 STATE_FILE = "state.json"
 ARRAY_FILE = "arrays.npz"
 
@@ -146,13 +148,14 @@ class NPN:
         n_o = len(outs)
         warnings = self.emb.unknown_words([("cls", p["class"]) for p in P] + [("ctx", e["context"])]
                                           + [("concept", c) for c in e["concepts"]])
+        t_now = self._clock()
         # 2. 予期
         pred = self.belief.predict(e["context"], P)
         mf = self.value.mf(P, e["context"], e["concepts"], a)
         mb = V.model_based(pred, self.h, self.belief.mag, cfg, e["id"], self.M, a)
         omega, Q_val = V.arbitrate(mf["V_MF"], mf["var_MF"], mb["V_MB"], mb["var_MB"])
         cues_q = self._cues_q(e["concepts"], P, e["announced"])
-        C_Q = self._c_q(cues_q)
+        C_Q = self._c_q(cues_q, e["context"], t_now)
         Q = Q_val + C_Q
         Q_person = float(omega * mf["V_MF_person"] + (1.0 - omega) * mb["V_MB_person"])
         # 結果の解釈の重み（曖昧な結果は信念で決める）
@@ -222,7 +225,7 @@ class NPN:
         cues = _dedupe([f"concept:{c}" for c in e["concepts"]]
                        + [x for p in P for x in (f"ind:{p['id']}", f"cls:{p['class']}")] + types_in)
         inn = float(a @ du)
-        cond = 0.0 if cfg.no_conditioning else cfg.lambda_c * self.cond.value(cues)
+        cond = 0.0 if cfg.no_conditioning else cfg.lambda_c * self.cond.value(cues, e["context"], t_now)
         parts = V.felt_parts(inn, cond, Q, cfg)
         f = V.felt_value(parts, self.mood, cfg)
         delta = V.surprise(f, Q, cfg)
@@ -270,11 +273,15 @@ class NPN:
                        + [x for p in participants for x in (f"ind:{p['id']}", f"cls:{p['class']}")]
                        + [f"type:{t}" for t in announced])
 
-    def _c_q(self, cues: List[str]) -> float:
-        """Q に入る条件づけられた価値 λ_CQ ΣC(手がかり)。no_conditioning / no_cq では 0。"""
+    def _clock(self) -> float:
+        """経験の通し番号（学習した ＋ 回避した）。条件づけの潜在原因の時間（τ = 30 経験）はこれで数える。状態から決まる。"""
+        return float(self.n_experiences + self.n_avoided)
+
+    def _c_q(self, cues: List[str], ctx: Optional[str], t: float) -> float:
+        """Q に入る条件づけられた価値 λ_CQ ΣC(手がかり | 文脈, t)。no_conditioning / no_cq では 0。"""
         if self.cfg.no_conditioning or self.cfg.no_cq:
             return 0.0
-        return self.cfg.lambda_cq * self.cond.value(cues)
+        return self.cfg.lambda_cq * self.cond.value(cues, ctx, t)
 
     def _p_approach(self, Q: float) -> float:
         return float(sigmoid(np.array([self.cfg.beta_choice * (Q + self.cfg.explore_bonus)]))[0])
@@ -316,6 +323,7 @@ class NPN:
                     self.ledger.add({"kind": "avoid", "id": e["id"], "context": e["context"],
                                      "Q": float(ap["Q"]), "C_Q": float(ap["C_Q"]), "p_approach": p_app})
                 self.n_avoided += 1
+                self.cond.now = self._clock()
                 for key in ("f", "f_parts", "delta", "du", "du_total", "du_weighted", "dh", "contributions", "phi",
                             "teachers", "emotions", "interpretations"):
                     ap[key] = None
@@ -332,6 +340,10 @@ class NPN:
         # 5. 信念の更新
         bu = self.belief.update(e["context"], P, it["y_person"], it["y_mask"], it["y_sw"], it["sw_mask"], it["phi"],
                                 e["outcomes"], self.rng)
+        if bu.get("retrained") and cfg.record_ledger:             # v3.3: 類を除いたヘッドの学び直し。使った類・観測の数・混合の重みを残す
+            self.ledger.add({"kind": "head_retrain", "after": e["id"], "classes": list(self.belief.rawcls),
+                             "rows": int(self.belief.rb_len), "trained_heads": list(self.belief.trained_names()),
+                             "weights": self.belief.head_weights_dict()})
         if bu["recall"] is not None and cfg.record_ledger:        # 想起（帰属のやり直し）。台帳には掃引の要約を残す
             self.ledger.add({"kind": "recall", "after": e["id"], **{k: float(v) for k, v in bu["recall"].items()}})
         # 6. 価値の更新
@@ -340,17 +352,25 @@ class NPN:
         lr = self.value.learn(P, e["context"], e["concepts"], it["person_teachers"], it["sit_teacher"], a)
         mf_after = self.value.mf(P, e["context"], e["concepts"], a)
         # 6b. 条件づけ C の TD(0): 直前の事象の手がかりを、この事象の r + γ C_frozen で更新する
+        #     潜在原因は、手がかりが現れたときの文脈と時刻（pending）で事後を求める。この事象の C_frozen は、この事象の文脈・時刻での応答
         dC: Dict[str, float] = {}
         td_y: Optional[float] = None
+        cdet: Dict[str, Any] = {}
+        reinst: List[Any] = []
+        t_now = self._clock()
         if not cfg.no_conditioning:
             r = it["inn"]
             if self.pending is not None:
                 if self._continues(self.pending["session"], e["session"]):
-                    td_y = r + cfg.gamma_c * self.cond.value(it["cues"])
+                    td_y = r + cfg.gamma_c * self.cond.value(it["cues"], e["context"], t_now)
                 else:
                     td_y = 0.0                                  # 文脈が途切れたら、次の価値は 0
-                dC = self.cond.update(self.pending["cues"], td_y)
-            self.pending = {"cues": list(it["cues"]), "session": e["session"]}
+                dC, cdet = self.cond.update(self.pending["cues"], td_y, self.pending["context"], self.pending["t"])
+            # 復位: 手がかりなしで嫌悪の結果が起きたとき、負の価値を持つ原因の最後に使われた時刻を更新する（この事象と直前の事象の手がかりは除く）
+            if r <= -cfg.lc_aversive_threshold:
+                skip = list(it["cues"]) + (list(self.pending["cues"]) if self.pending is not None else [])
+                reinst = self.cond.reinstate(skip, t_now)
+            self.pending = {"cues": list(it["cues"]), "session": e["session"], "context": e["context"], "t": t_now}
         # 7. 関心の重み a、欲求の状態 h、気分 m
         self.concern.update(it["du"])
         mood_before = self.mood
@@ -373,7 +393,7 @@ class NPN:
                                  "situation": _need_dict(lr["err_situation"])},
             "top_features": [{"model": m, "feature": n, "dW": _need_dict(r_), "dW_sum": float(r_.sum())}
                              for _, m, n, r_ in tops[:6]],
-            "conditioned": {"td_target": td_y, "dC": dC},
+            "conditioned": {"td_target": td_y, "dC": dC, "reinstated": [[c, int(k)] for c, k in reinst]},
             "a_after": self.concern.a.copy(),
         }
         ap["mood_after"] = float(self.mood)
@@ -386,13 +406,15 @@ class NPN:
                 "phi": [[x["participant"], x["type"], x["phi_person"]] for x in ap["phi"]],
                 "mood": [float(mood_before), float(self.mood)],
                 "a": [[float(x) for x in a], [float(x) for x in self.concern.a]],
-                "td": {"y": td_y, "dC": {k: float(v) for k, v in dC.items()}},
+                "td": {"y": td_y, "dC": {k: float(v) for k, v in dC.items()}, "lc": cdet,
+                       "reinstated": [[c, int(k)] for c, k in reinst]},
                 "teachers": {"person": {p["id"]: [float(x) for x in t] for p, t in zip(P, it["person_teachers"])},
                              "situation": [float(x) for x in it["sit_teacher"]]},
                 "dW": {"person": {n: [float(x) for x in r_] for n, r_ in lr["dW_person"].items()},
                        "situation": {n: [float(x) for x in r_] for n, r_ in lr["dW_situation"].items()}},
             })
         self.n_experiences += 1
+        self.cond.now = self._clock()
         return _py(ap)
 
     def probe(self, p: Dict[str, Any]) -> Dict[str, Any]:
@@ -407,7 +429,7 @@ class NPN:
             mb = V.model_based(pred, self.h, self.belief.mag, cfg, probe_key(q), self.M, a)
             omega, Q_val = V.arbitrate(mf["V_MF"], mf["var_MF"], mb["V_MB"], mb["var_MB"])
             cues_q = self._cues_q(q["concepts"], q["participants"], q["announced"])
-            C_Q = self._c_q(cues_q)
+            C_Q = self._c_q(cues_q, q["context"], self._clock())
             out = {"kind": kind, "Q": Q_val + C_Q, "Q_val": Q_val, "C_Q": C_Q,
                    "V_MB": mb["V_MB"], "V_MF": mf["V_MF"], "omega": omega,
                    "V_MF_person": mf["V_MF_person"], "V_MB_person": mb["V_MB_person"],
@@ -428,22 +450,24 @@ class NPN:
             V_MB = float((g * pp).sum())
             var_MB = float(((g ** 2) * (pred.var_person[0] + pp * (1 - pp) / cfg.mc_samples)).sum())
             omega, Q_val = V.arbitrate(like, var_mf, V_MB, var_MB)
-            C_Q = self._c_q([f"ind:{q['entity']}", f"cls:{q['class']}"])
+            C_Q = self._c_q([f"ind:{q['entity']}", f"cls:{q['class']}"], q["context"], self._clock())
             out = {"kind": kind, "entity": q["entity"], "class": q["class"], "context": q["context"],
                    "like": like, "like_by_need": _need_dict(pred5), "known": known,
                    "V_MF": like, "V_MB": V_MB, "omega": omega, "Q": Q_val + C_Q, "Q_val": Q_val, "C_Q": C_Q,
                    "sigma2_MF": var_mf, "sigma2_MB": var_MB,
-                   "conditioned": self.cond.value([f"ind:{q['entity']}", f"cls:{q['class']}"]),
+                   "conditioned": self.cond.value([f"ind:{q['entity']}", f"cls:{q['class']}"], q["context"], self._clock()),
                    "p_person": {t: float(pp[k]) for k, t in enumerate(OUTCOME_TYPES)},
                    "p_ind": {t: float(pred.p_ind[0, k]) for k, t in enumerate(OUTCOME_TYPES)},
                    "m_cls": {t: float(pred.m_cls[0, k]) for k, t in enumerate(OUTCOME_TYPES)}}
             return _py(out)
         if kind == "cue":
-            return _py({"kind": kind, "cue": q["cue"], "C": self.cond.value_of(q["cue"]),
-                        "known": q["cue"] in self.cond.idx})
+            return _py({"kind": kind, "cue": q["cue"], "context": q["context"],
+                        "C": self.cond.value_of(q["cue"], q["context"], self._clock()),
+                        "n_causes": self.cond.n_causes(q["cue"]), "known": q["cue"] in self.cond.idx})
         like, var_mf, pred5, known = self.value.like_concept(q["concept"], a)
         return _py({"kind": kind, "concept": q["concept"], "like": like, "like_by_need": _need_dict(pred5),
-                    "known": known, "sigma2_MF": var_mf, "conditioned": self.cond.value_of(f"concept:{q['concept']}")})
+                    "known": known, "sigma2_MF": var_mf,
+                    "conditioned": self.cond.value_of(f"concept:{q['concept']}", None, self._clock())})
 
     # ==================================================================
     # 保存・復元
@@ -517,6 +541,7 @@ class NPN:
         obj.ledger = Ledger.from_list(meta["ledger"])
         obj.n_experiences = int(meta["n_experiences"])
         obj.n_avoided = int(meta["n_avoided"])
+        obj.cond.now = obj._clock()
         return obj
 
     # ==================================================================
@@ -529,11 +554,12 @@ class NPN:
                     if not nm.startswith(("emb:", "cemb:"))]
             rows.sort(key=lambda t: -abs(t[0]))
             return [{"feature": nm, "value": v, "by_need": _need_dict(w)} for v, nm, w in rows[:n]]
-        conds = sorted(zip(self.cond.names, self.cond.C), key=lambda t: -abs(t[1]))[:8]
+        conds = sorted(zip(self.cond.names, self.cond.C, [self.cond.n_causes(n) for n in self.cond.names]),
+                       key=lambda t: -abs(t[1]))[:8]
         return _py({
             "n_experiences": self.n_experiences, "n_avoided": self.n_avoided,
             "h": _need_dict(self.h), "mood": self.mood, "a": _need_dict(self.concern.a),
             "person_top": top(self.value.person), "situation_top": top(self.value.sit),
-            "conditioned_top": [{"cue": n, "C": float(c)} for n, c in conds],
+            "conditioned_top": [{"cue": n, "C": float(c), "n_causes": int(k)} for n, c, k in conds],
             "belief": self.belief.summary(), "warnings": list(self.warnings),
         })

@@ -50,7 +50,8 @@ class T10Determinism(unittest.TestCase):
 
     def test_different_seed_differs(self):
         xs = inputs()[:10]
-        a, b = make(0), make(1)
+        kw = {"mixture_heads": ("mlp", "linear", "knn1", "none")}      # v3.3: 既定の mixture から mlp を外したので、種で初期値が変わる mlp を入れて確かめる
+        a, b = make(0, **kw), make(1, **kw)
         feed(a, xs); feed(b, xs)
         self.assertFalse(np.array_equal(a.belief.head.W1, b.belief.head.W1))
 

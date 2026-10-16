@@ -8,6 +8,7 @@ import numpy as np
 
 from helpers import deep_equal, feed, load_json, load_jsonl, make, mh, persona
 from npnv3 import NPN, innate
+from npnv3.innate import TYPE_INDEX
 from npnv3.belief import estimate_kappa, estimate_kappa_by_type, lgamma_np
 
 
@@ -112,7 +113,9 @@ class ConditioningTests(unittest.TestCase):
         self.assertEqual(n.appraise(load_json("new_event.json"))["f_parts"]["conditioned"], 0.0)
 
     def test_ledger_records_C_updates_and_totals_match(self):
-        n = make(0)
+        """v3.1 の不変量: 台帳の ΔC の総和は現在の C に等しい。v3.3 では single_cause（K = 1、v3.2 と同じ算術）で成り立つ。
+        潜在原因つき（既定）の不変量は、原因ごとの ΔC の総和が原因の価値に等しい（test_e_extinction_mechanisms.py）。"""
+        n = make(0, single_cause=True)
         for e in mh.generate_praise_history("H1", 3, 6):
             n.experience(e)
         tot = {}
@@ -367,19 +370,25 @@ class GeneratorTests(unittest.TestCase):
 
 class HeadKindTests(unittest.TestCase):
     def test_all_head_kinds_run_and_none_ignores_embeddings(self):
-        for kind in ("mlp", "linear", "knn1", "none"):
+        for kind in ("mlp", "linear", "knn1", "knnk", "none"):
             n = make(0, head_kind=kind)
             feed(n, load_jsonl("T8_train.jsonl")[:40])
             p = n.probe({"entity": "x", "class": "band_mate", "context": "music_session"})["p_person"]["credit_taken"]
             self.assertTrue(0.0 < p < 1.0, kind)
 
     def test_knn1_uses_nearest_known_class_rate(self):
+        """未見の類（band_mate）には、最も近い既知の類（共同作業者。手柄を取る率が高い）の率。
+        v3.3: 既知の類（共同作業者）には、自分を除いた最も近い類（師・見知らぬ人。手柄を取る率が低い）の率が事前になる（自己参照の排除）。"""
         n = make(0, head_kind="knn1")
         feed(n, load_jsonl("T8_train.jsonl"))
         bm = n.probe({"entity": "x", "class": "band_mate", "context": "music_session"})["m_cls"]["credit_taken"]
-        col = n.probe({"entity": "y", "class": "collaborator", "context": "music_session"})["m_cls"]["credit_taken"]
-        self.assertGreater(bm, 0.25)       # 最も近い既知の類は共同作業者（手柄を取る率が高い）
-        self.assertGreater(col, 0.25)
+        self.assertGreater(bm, 0.25)
+        k = TYPE_INDEX["credit_taken"]
+        out = n.belief.head_outputs(["band_mate", "collaborator"], "music_session", ("knn1",))["knn1"]
+        self.assertGreater(out[0, k], 0.25)             # band_mate: 最近傍は共同作業者
+        self.assertLess(out[1, k], 0.25)                # collaborator: 自分を除くと、最近傍は師か見知らぬ人
+        names = n.belief.rawcls
+        self.assertEqual(sorted(names), ["collaborator", "mentor", "stranger"])
 
 
 if __name__ == "__main__":

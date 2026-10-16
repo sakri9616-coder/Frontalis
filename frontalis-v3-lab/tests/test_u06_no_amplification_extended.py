@@ -25,6 +25,10 @@ v3.2 の変更（W6 を同じ実行に統合）:
   摂動 B（追加の検査。判定基準は U6 と同じ）: A に加えて、想起の記録の φ（参加者が行為者の観測、全体で 1 ノルムの雑音）を摂動し、
   計数を記録から作り直す。‖Δ‖ には記録の φ の差も加える。想起のループ（φ → 計数 → 信念 → φ）の増幅を測る。
   v3.2: B はさらにヘッドの前向き対数尤度 ll_ema（ヘッドの重みの状態）にも雑音を入れ、‖Δ‖ にその差も加える（= W6）。
+
+v3.3: 条件づけ C は潜在原因ごとの価値（cond.CK）。摂動 A / B は、手がかりごとの雑音を、存在する全ての原因の価値に同じだけ足す（cond.C の setter）。
+  ‖Δ‖ の C の部分は原因ごとの価値の差（cond.state_items()）。有界の検査は全ての原因の価値の絶対値の最大。
+  類を除いたヘッドのモデルや、類ごとの生の計数は、摂動していない（ll_ema だけ。ヘッドのモデルは周期ごとに計数から決まる学び直しで、状態の摂動が増える経路を持たない）。
 """
 import copy
 import unittest
@@ -45,8 +49,7 @@ def state_vec(n):
         for i, name in enumerate(kal.names):
             for k in range(5):
                 d[(tag, name, k)] = float(kal.W[i, k])
-    for name, c in zip(n.cond.names, n.cond.C):
-        d[("C", name)] = float(c)
+    d.update(n.cond.state_items())          # v3.3: 潜在原因ごとの価値（K = 1 では手がかりごとの重みそのもの）
     for k in range(5):
         d[("a", k)] = float(n.concern.a[k]); d[("h", k)] = float(n.h[k])
     d[("m",)] = float(n.mood)
@@ -134,7 +137,7 @@ def worker(seed):
                 praise_avoided += int(not r1["approached"])
         if i % 100 == 0 or i == TOTAL - WARMUP - 1:
             for q in (base, pertA, pertB):
-                max_c = max(max_c, float(np.abs(q.cond.C).max()))
+                max_c = max(max_c, float(np.abs(q.cond.CK).max()) if q.cond.CK.size else 0.0)
                 max_a = max(max_a, float(q.concern.a.max()))
     piv = base.belief.pi[:, 0] / base.belief.pi.sum(axis=1)
     return {"seed": seed, "kind": kind, "ratio": distance(base, pertA) / d0A, "d0": d0A, "max_C": max_c, "max_a": max_a,

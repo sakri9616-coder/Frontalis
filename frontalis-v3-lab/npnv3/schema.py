@@ -9,6 +9,9 @@ v3.1 の変更:
       {"interpretations": {"credit_taken": 0.5, "credit_shared": 0.5}, "actor": "friendA", "magnitude": 0.8}
   - 経験に任意の `session`（文脈の連続。条件づけの TD をつなぐ範囲、1.2）。
 
+v3.3 の変更:
+  - 手がかりのプローブに任意の `context`（条件づけの潜在原因の事前は文脈に依存する。省くと文脈の項を 1 として読む）。
+
 v3.2 の変更:
   - 経験と状況プローブに任意の `announced`（申し出に前もって付いている結果の型のリスト。例: 褒め言葉を伴う申し出なら ["praise"]）。
     予期 Q の手がかり（Q = U_val + λ_CQ ΣC）に `type:<型>` として入る。結果そのものではない（結果は outcomes に書く）。
@@ -28,7 +31,7 @@ _EXP_KEYS = {"id", "context", "concepts", "participants", "outcomes", "optional"
 _SIT_KEYS = {"id", "context", "concepts", "participants", "announced"}
 _ENT_KEYS = {"id", "entity", "class", "context"}
 _CON_KEYS = {"id", "concept"}
-_CUE_KEYS = {"id", "cue"}
+_CUE_KEYS = {"id", "cue", "context"}
 
 
 class SchemaError(ValueError):
@@ -162,5 +165,8 @@ def validate_probe(p: Any) -> Dict[str, Any]:
         return {"kind": "concept", "id": p.get("id", "probe"), "concept": _word(p["concept"], "concept")}
     if "cue" in p:
         _check_keys(p, _CUE_KEYS, "手がかりプローブ")
-        return {"kind": "cue", "id": p.get("id", "probe"), "cue": _word(p["cue"], "cue")}
+        out_c: Dict[str, Any] = {"kind": "cue", "id": p.get("id", "probe"), "cue": _word(p["cue"], "cue"), "context": None}
+        if p.get("context") is not None:
+            out_c["context"] = _word(p["context"], "context")      # v3.3: 潜在原因の事前は文脈に依存する
+        return out_c
     return validate_situation(p)

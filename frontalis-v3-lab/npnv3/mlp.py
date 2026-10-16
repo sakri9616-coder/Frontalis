@@ -39,6 +39,18 @@ class MLP:
         H = np.tanh(X @ self.W1 + self.b1)
         return H @ self.W2 + self.b2, H
 
+    def copy(self) -> "MLP":
+        m = MLP(self.n_in, self.n_hidden, self.n_out)
+        m.W1, m.b1, m.W2, m.b2 = self.W1.copy(), self.b1.copy(), self.W2.copy(), self.b2.copy()
+        return m
+
+    def load_from(self, other: "MLP") -> None:
+        """other の重みを（コピーして）取り込む。オブジェクトの同一性は保つ（v3.3: 再学習は初期値から）。"""
+        self.W1, self.b1, self.W2, self.b2 = other.W1.copy(), other.b1.copy(), other.W2.copy(), other.b2.copy()
+
+    def set_output_bias(self, b: np.ndarray) -> None:
+        self.b2 = np.array(b, dtype=np.float64)
+
     def predict_proba(self, X: np.ndarray) -> np.ndarray:
         logits, _ = self.forward(X)
         return sigmoid(logits)
@@ -87,6 +99,17 @@ class LogReg:
 
     def predict_proba(self, X: np.ndarray) -> np.ndarray:
         return sigmoid(np.atleast_2d(X) @ self.W + self.b)
+
+    def copy(self) -> "LogReg":
+        m = LogReg(self.n_in, self.n_out)
+        m.W, m.b = self.W.copy(), self.b.copy()
+        return m
+
+    def load_from(self, other: "LogReg") -> None:
+        self.W, self.b = other.W.copy(), other.b.copy()
+
+    def set_output_bias(self, b: np.ndarray) -> None:
+        self.b = np.array(b, dtype=np.float64)
 
     def sgd_step(self, X: np.ndarray, Y: np.ndarray, lr: float, mask: Optional[np.ndarray] = None) -> float:
         X = np.atleast_2d(X)

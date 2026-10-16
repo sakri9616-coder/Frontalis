@@ -1,48 +1,48 @@
 {
  "mean_gap": {
-  "mlp": 0.05585454175222798,
-  "linear": 0.10304536861378825,
-  "knn1": 0.04033664090791422,
+  "mlp": 0.15552427719996892,
+  "linear": 0.17825843488024082,
+  "knn1": 0.17052893096634408,
   "none": 0.2014796069848809,
-  "mixture": 0.04059468193128128
+  "mixture": 0.033257787537084124
  },
- "mlp_over_none": 0.27722181211331887,
+ "mlp_over_none": 0.7719107632150558,
  "judged_threshold": 0.7,
  "fraction_of_seeds_mlp_gap_smaller_than": {
-  "linear": 1.0,
-  "knn1": 0.1,
+  "linear": 0.65,
+  "knn1": 0.6,
   "none": 1.0,
   "mixture": 0.0
  },
  "collab_prediction_mean": {
-  "mlp": 0.5807648458773,
-  "linear": 0.5217908955871294,
-  "knn1": 0.609969851318733,
+  "mlp": 0.3222702663269913,
+  "linear": 0.3139842031102241,
+  "knn1": 0.31202746831045325,
   "none": 0.4204932459001613,
-  "mixture": 0.5948545708548874
+  "mixture": 0.3396684065502342
  },
  "band_prediction_mean": {
-  "mlp": 0.5249103041250721,
-  "linear": 0.4187455269733412,
-  "knn1": 0.5696332104108189,
+  "mlp": 0.47779454352696027,
+  "linear": 0.49224263799046497,
+  "knn1": 0.48255639927679733,
   "none": 0.21901363891528042,
-  "mixture": 0.5542598889236061
+  "mixture": 0.3729261940873184
  },
  "rho_T8": 0.8,
  "rho_h_RKX_36_experiences": {
   "R": {
-   "n_head_mean": 27.2,
-   "rho_mean": 0.9421471944361285
+   "n_head_mean": 26.65,
+   "rho_mean": 0.45636451065243816
   },
   "K": {
-   "n_head_mean": 17.4,
-   "rho_mean": 0.9419502973639233
+   "n_head_mean": 17.5,
+   "rho_mean": 0.47825328624669217
   },
   "X": {
-   "n_head_mean": 17.15,
-   "rho_mean": 0.9486299186199296
+   "n_head_mean": 16.85,
+   "rho_mean": 0.7363524519503659
   }
  },
- "mlp_beats_linear_and_knn1": false,
- "mixture_over_none (v3.2 default; reported, not judged here; T8 judges it)": 0.2014828326239862
+ "mlp_beats_linear_and_knn1": true,
+ "mixture_over_none (v3.2 default; reported, not judged here; T8 judges it)": 0.16506776062740583
 }

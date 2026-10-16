@@ -1,14 +1,14 @@
 {
  "mean": {
-  "formative_Q": 0.012398911739085689,
-  "placebo_Q_mean": 0.003655069094335636,
-  "formative_like": 0.0015460538828030294,
-  "placebo_like_mean": 0.0005206654858509352,
-  "formative_p_credit": 0.012357292913148382,
-  "placebo_p_credit_mean": 0.00615850099540326
+  "formative_Q": 0.007999578994682446,
+  "placebo_Q_mean": 0.003322407440542516,
+  "formative_like": 0.003644799411157404,
+  "placebo_like_mean": 0.0003344872781226166,
+  "formative_p_credit": 0.018110806155062442,
+  "placebo_p_credit_mean": 0.003950299679541636
  },
  "seeds_formative_larger": {
-  "Q": 20,
+  "Q": 18,
   "like": 20,
   "p_credit": 20
  },

@@ -89,7 +89,8 @@ def _probe_line(p: Dict[str, Any]) -> str:
                 f"({_fmt_needs(p['like_by_need'])}) 既知={p['known']}; Q={p['Q']:+.3f}; "
                 f"P(手柄を取る)={p['p_person']['credit_taken']:.2f}; 条件づけ C={p['conditioned']:+.3f}")
     if k == "cue":
-        return f"手がかり {p['cue']}: 条件づけられた価値 C={p['C']:+.3f} 既知={p['known']}"
+        ctx = f"（文脈 {p['context']}）" if p.get("context") else "（文脈を問わない）"
+        return f"手がかり {p['cue']}{ctx}: 条件づけられた価値 C={p['C']:+.3f} 原因の数={p['n_causes']} 既知={p['known']}"
     return (f"概念 {p['concept']}: like={p['like']:+.3f} ({_fmt_needs(p['like_by_need'])}) 既知={p['known']}"
             f" 条件づけ C={p['conditioned']:+.3f}")
 
@@ -121,13 +122,14 @@ def cmd_show(args: argparse.Namespace) -> int:
     print("\n状況モデルの価値（上位）")
     for r in s["situation_top"]:
         print(f"  {r['feature']:<28s} {r['value']:+.3f}  ({_fmt_needs(r['by_need'])})")
-    print("\n条件づけられた価値 C（手がかり。|C| の大きい順）")
+    print("\n条件づけられた価値 C（手がかり。|C| の大きい順。C は潜在原因の価値の、計数による加重平均。読み出しの応答は文脈と時刻に依存する）")
     for r in s["conditioned_top"]:
-        print(f"  {r['cue']:<28s} {r['C']:+.3f}")
+        print(f"  {r['cue']:<28s} {r['C']:+.3f}  （原因 {r['n_causes']} 個）")
     b = s["belief"]
     print(f"\n信念: 個体 {b['n_individuals']}、文脈 {b['n_contexts']}、観測 {b['n_obs']}、事前ヘッド {b['head_kind']}（ヘッドの寄与 ρ_h={b['rho_h']:.2f}）")
     if b["head_kind"] == "mixture":
-        print("  ヘッドの重み（前向きの対数尤度の softmax）: " + ", ".join(f"{h} {w:.2f}" for h, w in b["head_weights"].items()))
+        print("  ヘッドの重み（類を除いたモデルの転移性能の softmax）: "
+              + ", ".join(f"{h} {w:.2f}" for h, w in b["head_weights"].items() if h in b["mixture_heads"]))
     for c, rates in sorted(b["class_rate"].items()):
         top = sorted(rates.items(), key=lambda kv: -kv[1])[:4]
         print(f"  類 {c}（κ_e={b['kappa_e'][c]:.2f}）: " + ", ".join(f"{t} {v:.2f}" for t, v in top))

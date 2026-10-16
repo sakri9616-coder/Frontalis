@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import dataclasses
 from dataclasses import dataclass, field
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 
 def _person_var() -> Dict[str, float]:
@@ -64,15 +64,35 @@ class Config:
     alpha_c: float = 0.1
     gamma_c: float = 0.6
 
+    # --- v3.3 4.2: 潜在原因による条件づけ価値（Gershman, Blei & Niv 2010 の簡約）---
+    single_cause: bool = False     # アブレーション: 原因を 1 つだけにする（K = 1。v3.2 の条件づけと同じ算術）
+    lc_max_causes: int = 5         # K: 手がかりごとの原因の最大数
+    lc_alpha: float = 0.5          # 新しい原因の事前の質量 α（SPEC-v3.3 4.2）
+    lc_tau: float = 30.0           # 原因の事前の時間減衰 τ（経験。SPEC-v3.3 4.2）
+    lc_sigma_r: float = 0.15       # 事後の尤度 N(目標; C_{x,k}, σ_r²) の σ_r（SPEC-v3.3 4.2）
+    lc_beta: float = 1.0           # 文脈の Dirichlet 予測の疑似計数 β（SPEC に値の指定なし。対称・一様な事前として 1 を、結果を見る前に決めた）
+    lc_neg_threshold: float = 0.02      # 復位: 「負の価値を持つ原因」の閾値（C < −0.02。SPEC に指定なし。結果を見る前に決めた）
+    lc_aversive_threshold: float = 0.05 # 復位: 「嫌悪の結果」の閾値（事象の Σ a_k Δu_k ≤ −0.05。同上）
+
     # --- v3.1: 受け止め方 f（1.3）---
     lambda_c: float = 1.0
     eta_ref: float = 0.5
 
     # --- v3.1: ニューラル事前ヘッド（1.5）---
-    head_kind: str = "mixture"    # v3.2 の既定は "mixture"。単一ヘッドは "mlp" | "linear" | "knn1" | "none"
+    head_kind: str = "mixture"    # v3.2 の既定は "mixture"。単一ヘッドは "mlp" | "linear" | "knn1" | "knnk" | "none"
     rho_scale: float = 30.0       # 単一ヘッドの ρ_h = n_head / (n_head + 30)（mixture では使わない）
     head_ll_rate: float = 0.05    # v3.2 1.4: 前向きの対数尤度の移動平均の速さ（max(1/(n+1), 率)）
     head_temperature: float = 1.0 # softmax の温度（SPEC-v3.2: 1）
+
+    # --- v3.3 1.2: 類を除いた事前（leave-class-out）と、転移性能での混合 ---
+    # mixture に入れるヘッド（"none" は必須）。X3 の結論（benchmarks/nn_transfer.py: どの条件でも mlp は最良でない）で、既定から mlp を外した。
+    # mlp を入れたいときは mixture_heads=("mlp", "linear", "knn1", "none")（設定は残してある）。knnk も選べる。
+    mixture_heads: Tuple[str, ...] = ("linear", "knn1", "none")
+    head_retrain_every: int = 10  # 類を除いたモデルの再学習の周期（経験。想起 reattribute_every と同じ）
+    head_fit_steps: int = 300     # 再学習の全バッチ勾配降下の回数（ベンチマークと共通）
+    head_fit_lr: float = 0.5      # 再学習の学習率（同上）
+    head_knn_smooth: float = 2.0  # knn の近傍の類の率の平滑（疑似計数。他の類を除いた全体の率へ寄せる）
+    head_knn_k: int = 3           # knnk の k（距離重み）
 
     # --- v3.1: 類の集中度 κ_e の推定（1.7）---
     kappa_grid_lo: float = 0.3
@@ -90,11 +110,7 @@ class Config:
 
     # --- ニューラル事前ヘッド（SPEC 4.4）---
     head_hidden: int = 16
-    head_lr: float = 0.05
-    head_batches: int = 4
-    head_batch_size: int = 16
-    replay_size: int = 500
-    head_min_samples: int = 50
+    replay_size: int = 500        # v3.3: 再学習に使う直近の観測の数（v3.2 の head_lr / head_batches / head_batch_size / head_min_samples は廃止）
 
     # --- 価値ネット（SPEC 5.1）---
     obs_noise: float = 0.01       # 観測雑音 R
@@ -118,8 +134,16 @@ class Config:
     def __post_init__(self) -> None:
         if self.no_head:
             self.head_kind = "none"
-        if self.head_kind not in ("mixture", "mlp", "linear", "knn1", "none"):
+        if self.head_kind not in ("mixture", "mlp", "linear", "knn1", "knnk", "none"):
             raise ValueError(f"head_kind が不正です: {self.head_kind!r}")
+        self.mixture_heads = tuple(self.mixture_heads)
+        known = ("mlp", "linear", "knn1", "knnk", "none")
+        if not set(self.mixture_heads) <= set(known) or len(set(self.mixture_heads)) != len(self.mixture_heads):
+            raise ValueError(f"mixture_heads が不正です: {self.mixture_heads!r}")
+        if "none" not in self.mixture_heads:
+            raise ValueError("mixture_heads には none（一般の率）が必要です")
+        if self.lc_max_causes < 1:
+            raise ValueError("lc_max_causes は 1 以上です")
         if self.concern_direction not in ("sensitize", "habituate"):
             raise ValueError(f"concern_direction が不正です: {self.concern_direction!r}")
 

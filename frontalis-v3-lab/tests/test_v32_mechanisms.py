@@ -11,7 +11,7 @@ import unittest
 
 import numpy as np
 
-from helpers import align_shell, feed, load_json, load_jsonl, make, persona
+from helpers import align_shell, feed, load_json, load_jsonl, make, mh, persona
 from npnv3 import NPN, innate
 from npnv3.belief import HEAD_NAMES
 from npnv3.schema import SchemaError
@@ -135,20 +135,27 @@ class ConditionedValueEntersQ(unittest.TestCase):
         base = n.probe(SIT)
         self.assertAlmostEqual(base["Q"], base["Q_val"] + base["C_Q"], places=12)
         cues = ["concept:collaboration", "ind:x1", "cls:collaborator"]
-        expected = sum(n.probe({"cue": c})["C"] for c in cues)
+        # v3.3: 潜在原因の事前は文脈に依存するので、手がかりのプローブにも文脈を渡す
+        expected = sum(n.probe({"cue": c, "context": SIT["context"]})["C"] for c in cues)
         self.assertAlmostEqual(base["C_Q"], expected, places=12)
-        # C を手で動かすと、Q がそのぶん動く（U_val は変わらない）
-        m = copy.deepcopy(n)
-        i = m.cond.idx["concept:collaboration"]
-        m.cond.C[i] += 0.5
+        # single_cause（K = 1、v3.2 と同じ）: C を手で動かすと、Q がそのぶん動く（U_val は変わらない）
+        s1 = persona("K", 0, single_cause=True)
+        base1 = s1.probe(SIT)
+        m = copy.deepcopy(s1)
+        m.cond.nudge("concept:collaboration", 0.5)
         shifted = m.probe(SIT)
-        self.assertAlmostEqual(shifted["Q"] - base["Q"], 0.5, places=12)
-        self.assertAlmostEqual(shifted["Q_val"], base["Q_val"], places=12)
+        self.assertAlmostEqual(shifted["Q"] - base1["Q"], 0.5, places=12)
+        self.assertAlmostEqual(shifted["Q_val"], base1["Q_val"], places=12)
+        # 既定（潜在原因）: 全ての原因の価値を動かすと、応答は事前の重みの和（< 1）倍だけ動く
+        m2 = copy.deepcopy(n)
+        m2.cond.nudge("concept:collaboration", 0.5)
+        d = m2.probe(SIT)["C_Q"] - base["C_Q"]
+        self.assertTrue(0.0 < d <= 0.5 + 1e-12)
 
     def test_lambda_cq_and_ablations(self):
         n = persona("K", 0)
         m = copy.deepcopy(n)
-        m.cond.C[m.cond.idx["concept:collaboration"]] += 0.5
+        m.cond.nudge("concept:collaboration", 0.5)
         q1 = m.probe(SIT)["C_Q"]
         m.cfg.lambda_cq = 2.0
         self.assertAlmostEqual(m.probe(SIT)["C_Q"], 2.0 * q1, places=12)
@@ -159,9 +166,9 @@ class ConditionedValueEntersQ(unittest.TestCase):
             self.assertEqual(z.probe(SIT)["Q"], z.probe(SIT)["Q_val"])
 
     def test_announced_type_is_a_cue_of_q_only(self):
-        n = persona("K", 0)
-        n.cond.names.append("type:praise"); n.cond.idx["type:praise"] = len(n.cond.names) - 1
-        n.cond.C = np.append(n.cond.C, -0.4)
+        n = persona("K", 0, single_cause=True)
+        n.cfg.mc_samples = 2048                  # MB の乱数はプローブの内容で決まる。announced で Q_val が動かないことを見るため、サンプルを増やして雑音を小さくする
+        n.cond.set_single("type:praise", -0.4)
         a = n.probe({**SIT, "announced": ["praise"]})
         b = n.probe(SIT)
         self.assertAlmostEqual(a["C_Q"] - b["C_Q"], -0.4, places=12)
@@ -171,7 +178,7 @@ class ConditionedValueEntersQ(unittest.TestCase):
              "outcomes": [{"type": "praise", "actor": "world", "magnitude": 0.5}], "optional": True, "announced": ["praise"]}
         ap = n.appraise(e)
         self.assertIn("type:praise", ap["cues_Q"])
-        self.assertAlmostEqual(ap["C_Q"], n.cond.value(ap["cues_Q"]), places=12)
+        self.assertAlmostEqual(ap["C_Q"], n.cond.value(ap["cues_Q"], "music_session", n._clock()), places=12)
 
     def test_schema_validates_announced(self):
         n = make(0)
@@ -185,14 +192,13 @@ class ConditionedValueEntersQ(unittest.TestCase):
         n.appraise({**base, "announced": ["praise"]})
 
     def test_conditioned_value_changes_approach_probability(self):
-        n = make(0)
+        n = make(0, single_cause=True)
         e = {"id": "o1", "context": "studio", "concepts": ["music"], "participants": [],
              "outcomes": [{"type": "praise", "actor": "world", "magnitude": 0.5}], "optional": True, "announced": ["praise"]}
         p0 = n.appraise(e)["p_approach"]
-        n.cond.names.append("type:praise"); n.cond.idx["type:praise"] = 0
-        n.cond.C = np.array([-0.6])
+        n.cond.set_single("type:praise", -0.6)
         p1 = n.appraise(e)["p_approach"]
-        n.cond.C = np.array([+0.6])
+        n.cond.set_single("type:praise", +0.6)
         p2 = n.appraise(e)["p_approach"]
         self.assertLess(p1, p0)
         self.assertLess(p0, p2)
@@ -264,23 +270,30 @@ class HeadMixture(unittest.TestCase):
     def test_default_is_mixture_and_weights_form_a_distribution(self):
         n = make(0)
         self.assertEqual(n.cfg.head_kind, "mixture")
-        self.assertEqual(set(n.belief.heads), {"mlp", "linear"})
+        self.assertEqual(set(n.belief.heads), {"linear"})                    # v3.3: X3 の結論で、既定の mixture から mlp を外した（学習するヘッドは linear だけ）
+        self.assertEqual(n.cfg.mixture_heads, ("linear", "knn1", "none"))
         w0 = n.belief.head_weights()
         self.assertEqual(float(w0[HEAD_NAMES.index("none")]), 1.0)          # 観測 0 件: どのヘッドにも実績がない → 一般の率
         self.assertEqual(n.belief.rho(), 0.0)
         feed(n, load_jsonl("T8_train.jsonl")[:40])
         w = n.belief.head_weights()
         self.assertAlmostEqual(float(w.sum()), 1.0, places=12)
-        self.assertTrue(np.all(w > 0))
+        for nm in HEAD_NAMES:
+            self.assertEqual(w[HEAD_NAMES.index(nm)] > 0, nm in n.cfg.mixture_heads)
         self.assertAlmostEqual(n.belief.rho(), 1.0 - float(w[HEAD_NAMES.index("none")]), places=12)
+        # mlp は設定として残してある
+        self.assertEqual(set(make(0, mixture_heads=("mlp", "linear", "knn1", "none")).belief.heads), {"mlp", "linear"})
 
-    def test_weights_are_softmax_of_forward_loglik_ema(self):
+    def test_weights_are_softmax_of_transfer_loglik_ema(self):
         n = make(0)
         feed(n, load_jsonl("T8_train.jsonl")[:60])
-        z = n.belief.ll_ema
+        act = [HEAD_NAMES.index(h) for h in n.cfg.mixture_heads]
+        z = n.belief.ll_ema[act]
         e = np.exp(z - z.max())
-        self.assertTrue(np.allclose(n.belief.head_weights(), e / e.sum(), atol=1e-12))
+        expected = np.zeros(len(HEAD_NAMES)); expected[act] = e / e.sum()
+        self.assertTrue(np.allclose(n.belief.head_weights(), expected, atol=1e-12))
         self.assertEqual(n.belief.ll_cnt, 60)
+        self.assertTrue(np.all(n.belief.ll_ema[[i for i in range(len(HEAD_NAMES)) if i not in act]] == 0.0))
 
     def test_forward_loglik_uses_the_state_before_the_observation(self):
         """最初の経験: 計数も学習もまだない。none ヘッドの予測は全型 0.2（事前の平均）で、移動平均は rate = 1 なので一回分の対数尤度そのもの。"""
@@ -304,13 +317,15 @@ class HeadMixture(unittest.TestCase):
         ll = 1 * np.log(0.2) + (innate.N_TYPES - 3) * np.log(0.8)           # connection=1、マスク 2 型を除く 16 型は 0
         self.assertAlmostEqual(float(n.belief.ll_ema[HEAD_NAMES.index("none")]), ll, places=10)
 
-    def test_a_good_head_gets_weight_and_a_bad_head_loses_it(self):
-        """類の違いが結果を決める世界（T8）では、none（一般の率）の重みが下がり、類を見るヘッドの重みが上がる。"""
+    def test_t8_three_class_world_cannot_support_transfer_so_none_dominates(self):
+        """v3.3: 重みは転移性能（類を除いたヘッドで、その類の観測を予測した対数尤度）で決まる。T8 の世界は類が 3 つしかなく、1 つの類を除くと
+        残りの 2 つからは似た類の率を学べない（共同作業者を除くと師と見知らぬ人だけ）ので、どのヘッドも転移できず、none（他の類をまとめた率）が最大になる。
+        （v3.2 では自分の類を含むヘッドが有利で none の重みは 0.08 だった。転移できる世界で類を見るヘッドが重みを得ることは test_x_nn_transfer.py）"""
         n = make(0)
         feed(n, load_jsonl("T8_train.jsonl"))
         w = n.belief.head_weights_dict()
-        self.assertLess(w["none"], 0.25)
-        self.assertGreater(1.0 - w["none"], 0.75)
+        self.assertEqual(max(w, key=w.get), "none")
+        self.assertGreater(w["none"], 0.5)
 
     def test_save_and_restore_keep_head_state(self):
         n = make(0)
@@ -335,17 +350,22 @@ class HeadMixture(unittest.TestCase):
                 self.assertEqual(n.belief.rho(), 0.0)
 
 
-class V31Equivalence(unittest.TestCase):
-    def test_three_switches_reproduce_v31_after_revision_2(self):
-        """v3.2 の追加は、3 つの切り替え（no_precision_weighting、no_cq、head_kind = "mlp"）で完全に外せる。
-        外すと、改訂 2 の後の v3.1 の数値（T2(a) の記録、種 0 の f: R 0.64596…、K 0.77522…、X 0.30363…）に 1e-9 以内で戻る。"""
-        ref = {"R": 0.6459646887016268, "K": 0.7752202176478848, "X": 0.30362681850016693}
+class V32Equivalence(unittest.TestCase):
+    def test_v33_additions_can_be_switched_off_to_reproduce_v32(self):
+        """v3.3 の追加（類を除いたヘッド、潜在原因の条件づけ）は、head_kind = "none" と single_cause = True で完全に外せる。
+        外すと、v3.2 の head_kind = "none" の数値（v3.2 のコードで測った値）に戻る（種 0 の f と H1 の C(praise)、1e-12 以内）。
+        （v3.2 の既定の mixture / mlp へのヘッドの SGD は、学び直しに置き換えたので、v3.1 の数値への復帰の検査は廃止した。）"""
+        ref = {"R": 0.47996245797296794, "K": 0.772816079486168, "X": 0.34298498586776577}
         new = load_json("new_event.json")
         for k, f0 in ref.items():
-            n = persona(k, 0, no_precision_weighting=True, no_cq=True, head_kind="mlp")
-            self.assertAlmostEqual(n.appraise(new)["f"], f0, places=9)
-        n = persona("K", 0)                               # 既定（v3.2）では違う
-        self.assertGreater(abs(n.appraise(new)["f"] - ref["K"]), 1e-3)
+            n = persona(k, 0, head_kind="none", single_cause=True)
+            self.assertAlmostEqual(n.appraise(new)["f"], f0, places=12)
+        n = make(0, head_kind="none", single_cause=True)
+        for e in mh.generate_praise_history("H1", 0):
+            n.experience(e)
+        self.assertAlmostEqual(n.probe({"cue": "type:praise"})["C"], -0.14606508077008556, places=12)
+        # 既定（v3.3）では違う
+        self.assertGreater(abs(persona("K", 0).appraise(new)["f"] - ref["K"]), 1e-3)
 
 
 if __name__ == "__main__":
