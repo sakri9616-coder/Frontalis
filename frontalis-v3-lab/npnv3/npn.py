@@ -135,6 +135,12 @@ class NPN:
         self.exp_log: List[Dict[str, Any]] = []            # v3.3 第2部 2: 学習した経験の記録（訂正が参照する）
         self._exp_pos: Dict[str, int] = {}                 # 経験 id → exp_log の位置（記録から作り直せる。状態ではない）
         self.n_corrections = 0
+        self.just_src: Dict[str, Dict[str, float]] = {}    # 正当化 J の源ごとの和（手がかり → 源 → 和。Σ 源 = J。P1）
+        self.chosen_before: List[str] = []                 # 以前に選んだ選択肢の手がかり（persist の reaffirm）
+        self.decisions: List[Dict[str, Any]] = []          # record_decisions のとき、経験ごとの離散的な決定（B1。状態ではない。保存しない）
+        self.force_decisions: Optional[List[Dict[str, Any]]] = None
+        self._force_i = 0
+        self._dec: Dict[str, Any] = {}
 
     @property
     def a(self) -> np.ndarray:
@@ -367,30 +373,148 @@ class NPN:
         kind = experience_kind(exp)
         if kind == KIND_CORRECTION:
             return self._correct(validate_correction(exp))
-        if kind == KIND_CHOICE:
-            return self._choose(validate_choice(exp), commit=True)
-        return self._experience(validate_experience(exp))
+        v = validate_choice(exp) if kind == KIND_CHOICE else validate_experience(exp)
+        forced = self._next_forced()
+        self._dec = {"id": v["id"], "approach": None, "choice": None, "assign": {}, "reinstate_called": False, "reinstate": []}
+        ap = self._choose(v, commit=True, forced=forced) if kind == KIND_CHOICE else self._experience(v, forced=forced)
+        if self.cfg.record_decisions:
+            self.decisions.append(self._dec)
+        return ap
 
-    # ------------------------------------------------------------------ 正当化 J（v3.3 第2部 3.3）
-    def _j_apply(self, dJ: Dict[str, float]) -> Dict[str, float]:
-        """J の 1 経験分の更新（保存はしない）: 動かした手がかり J ← J + dJ、J ← J_max tanh(J/J_max)（有界）、続いて毎経験の減衰 J ← (1 − λ_J) J。
-        動かしていない手がかりは減衰だけ（dJ = 0 の手がかり、つまり両方の選択肢に共通の手がかりも動かさない）。"""
+    def _next_forced(self) -> Optional[Dict[str, Any]]:
+        """B1 の強制再生: force_decisions（元の実行の離散的な決定の列。npn.decisions）が与えられていれば、経験ごとに次の決定を返す。"""
+        if self.force_decisions is None:
+            return None
+        d = self.force_decisions[self._force_i]
+        self._force_i += 1
+        return d             # 一部の項目だけでもよい（省いた項目は自然な決定。例: {"choice": 0} だけで二択の選択を強制）
+
+    # ------------------------------------------------------------------ 正当化 J（v3.3 第2部 3.3、第8節）
+    # J の変化はすべて源つきの出来事 (手がかり, 源, 変化量) として記録する（just_src。台帳の kind = "justification"）。Σ 源 = J（P1）。
+    #   orig（Z-orig。第3節そのまま）: spread（迷った選択）、bound（J_max tanh の有界化で変わった分）、decay（毎経験の減衰 λ_J）
+    #   persist（Z-persist）: spread、reaffirm（再び選ぶ）、counter（反する選択）、overwhelm（圧倒的な反証）、cap（数値の安全の上限 J_num）。減衰なし
+    #   persist_with_decay: persist に decay
+    def _j_step_orig(self, dJ: Dict[str, float]) -> Tuple[Dict[str, float], List[Tuple[str, str, float]]]:
+        """Z-orig の 1 経験分の更新（保存はしない）: 動かした手がかり J ← J + dJ、J ← J_max tanh(J/J_max)（有界）、続いて毎経験の減衰 J ← (1 − λ_J) J。
+        動かしていない手がかりは減衰だけ。出来事の列（spread・bound・decay）も返す。"""
         cfg = self.cfg
         out: Dict[str, float] = {}
+        events: List[Tuple[str, str, float]] = []
         for k, v in self.just.items():
             if dJ.get(k, 0.0) == 0.0:
-                out[k] = (1.0 - cfg.lambda_j) * v
+                nv = (1.0 - cfg.lambda_j) * v
+                out[k] = nv
+                events.append((k, "decay", nv - v))
         for k, d in dJ.items():
             if d != 0.0:
-                v = cfg.j_max * float(np.tanh((self.just.get(k, 0.0) + d) / cfg.j_max))
-                out[k] = (1.0 - cfg.lambda_j) * v
-        return {k: out[k] for k in sorted(out)}
+                j0 = self.just.get(k, 0.0)
+                raw = j0 + d
+                v = cfg.j_max * float(np.tanh(raw / cfg.j_max))
+                nv = (1.0 - cfg.lambda_j) * v
+                out[k] = nv
+                events += [(k, "spread", d), (k, "bound", v - raw), (k, "decay", nv - v)]
+        return {k: out[k] for k in sorted(out)}, events
+
+    def _j_step_persist(self, events_in: List[Tuple[str, str, float]]) -> Tuple[Dict[str, float], List[Tuple[str, str, float]]]:
+        """Z-persist の更新: 記録された出来事だけを足す。数値の安全のための上限（cap）。persist_with_decay は続いて毎経験の減衰。出来事がなければ J は一切変わらない（P2）。"""
+        cfg = self.cfg
+        out = dict(self.just)
+        events: List[Tuple[str, str, float]] = []
+        for k, src, d in events_in:
+            out[k] = out.get(k, 0.0) + d
+            events.append((k, src, d))
+        for k in sorted(out):
+            if abs(out[k]) > cfg.j_num:
+                nv = float(np.sign(out[k])) * cfg.j_num
+                events.append((k, "cap", nv - out[k]))
+                out[k] = nv
+        if cfg.justification_mode == "persist_with_decay":
+            for k in sorted(out):
+                nv = (1.0 - cfg.lambda_j) * out[k]
+                events.append((k, "decay", nv - out[k]))
+                out[k] = nv
+        if not events:
+            return dict(self.just), events
+        return {k: out[k] for k in sorted(out)}, events
+
+    def _j_commit(self, exp_id: str, dJ: Optional[Dict[str, float]] = None, events_in: Optional[List[Tuple[str, str, float]]] = None,
+                  discount: Optional[Dict[str, Any]] = None, chosen_cues: Optional[List[str]] = None) -> None:
+        """1 経験分の J の更新を確定する（orig は dJ、persist は出来事の列）。源ごとの和 just_src を更新し、変化があれば台帳に kind = "justification" を残す。"""
+        cfg = self.cfg
+        if cfg.justification_mode == "orig":
+            new, events = self._j_step_orig(dJ or {})
+        else:
+            new, events = self._j_step_persist(events_in or [])
+        self.just = new
+        for k, src, d in events:
+            row = self.just_src.setdefault(k, {})
+            row[src] = row.get(src, 0.0) + d
+        if chosen_cues:
+            self.chosen_before = sorted(set(self.chosen_before) | set(chosen_cues))
+        if cfg.record_ledger and (events or discount):
+            ent: Dict[str, Any] = {"kind": "justification", "after": exp_id, "mode": cfg.justification_mode,
+                                   "events": [{"cue": k, "source": src, "delta": float(d)} for k, src, d in events]}
+            if discount:
+                ent["discount"] = discount
+            self.ledger.add(ent)
+
+    @staticmethod
+    def _apply_discount(person_teachers: List[np.ndarray], sit_teacher: np.ndarray, q: float) -> Tuple[List[np.ndarray], np.ndarray, List[np.ndarray]]:
+        """反証への抵抗（Z-persist。SPEC-v3.3 8.3）: 人モデルの教師の負の部分の割合 q = ρ_dis tanh(J) を「自分の選択のせいではない」として割り引き、
+        状況モデル（場面のせい）の教師へ回す。割り引いた量 moved_j = q · min(教師_j, 0)（負）を返す。教師の合計（人 + 状況）は変わらない。価値ネットの出力は使わない。"""
+        moved = [q * np.minimum(t, 0.0) for t in person_teachers]
+        pt = [t - m for t, m in zip(person_teachers, moved)]
+        st = sit_teacher
+        for m in moved:
+            st = st + m
+        return pt, st, moved
+
+    # ------------------------------------------------------------------ 選好の説明（Z8）
+    def explain_preference(self, options: List[Dict[str, Any]], key: str = "preference") -> Dict[str, Any]:
+        """予期 Q を「経験に根拠のある部分」と「正当化 J の部分」に分けて返す（学習しない。状態を変えない）。
+        options は 1 つか 2 つの状況プローブ（context・concepts・participants・announced）。各選択肢について:
+          Q = Q_grounded + J_Q、Q_grounded = Q_val + C_Q（価値・信念・条件づけ。経験に根拠のある部分）、J_Q = Σ J(手がかり)。
+          手がかりごとの J と、その源ごとの和（spread・reaffirm・counter・overwhelm・bound・cap・decay。Σ 源 = J）。
+        2 つなら、差 ΔQ = Δ根拠 + Δ正当化、選ぶ確率、どちらを好むか（Q・根拠のみ・正当化のみ）、正当化が選好を決めているか（Q と根拠のみで向きが違う）。
+        MB の標本は key で決まる（二択の id を渡すと、その二択の選択と同じ Q）。"""
+        if len(options) not in (1, 2):
+            raise SchemaError("explain_preference の options は 1 つか 2 つの状況です")
+        qs = [validate_probe(o) for o in options]
+        for q in qs:
+            if q["kind"] != "situation":
+                raise SchemaError("explain_preference の options は状況（context を持つ）です")
+        t_now = self._clock()
+        out_opts = []
+        for q in qs:
+            ex = self._expectation(q["context"], q["concepts"], q["participants"], q["announced"], key, t_now)
+            cues = self._j_cues(q["context"], q["concepts"], q["participants"])
+            jd = {}
+            for c in cues:
+                v = 0.0 if self.cfg.no_justification else float(self.just.get(c, 0.0))
+                if v != 0.0 or c in self.just_src:
+                    jd[c] = {"J": v, "sources": {s_: float(d) for s_, d in sorted(self.just_src.get(c, {}).items()) if d != 0.0}}
+            out_opts.append({"Q": float(ex["Q"]), "Q_grounded": float(ex["Q_val"] + ex["C_Q"]), "Q_val": float(ex["Q_val"]), "C_Q": float(ex["C_Q"]),
+                             "J_Q": float(ex["J_Q"]), "justification": jd})
+        out: Dict[str, Any] = {"mode": self.cfg.justification_mode, "options": out_opts}
+        if len(out_opts) == 2:
+            a_, b_ = out_opts
+            dQ, dG, dJ = a_["Q"] - b_["Q"], a_["Q_grounded"] - b_["Q_grounded"], a_["J_Q"] - b_["J_Q"]
+            z = self.cfg.beta_choice * np.array([a_["Q"], b_["Q"]])
+            e_ = np.exp(z - z.max())
+            pr = e_ / e_.sum()
+            pick = lambda d: (0 if d > 0 else 1) if d != 0 else None
+            out["delta"] = {"Q": float(dQ), "grounded": float(dG), "justification": float(dJ)}
+            out["p_choose"] = [float(pr[0]), float(pr[1])]
+            out["preferred"] = {"by_Q": pick(dQ), "by_grounded": pick(dG), "by_justification": pick(dJ)}
+            out["justification_decides"] = bool(pick(dQ) != pick(dG))
+        return _py(out)
 
     # ------------------------------------------------------------------ 二択（v3.3 第2部 3.2〜3.3）
-    def _choose(self, ch: Dict[str, Any], commit: bool) -> Dict[str, Any]:
+    def _choose(self, ch: Dict[str, Any], commit: bool, forced: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """二択。各選択肢の Q（C と J を含む）から softmax(β_c Q) で選ぶ。選んだ側の結果だけを観測して学ぶ（通常の経験として）。
         葛藤の強さ c = exp(−(ΔQ/σ_c)²)（ΔQ = 選ぶ前の Q の差）。選んだ側の手がかり（概念・類・文脈）の J を +η_J c、選ばなかった側の J を −η_J c 動かす
-        （両方に共通の手がかりは相殺）。J の有界化と減衰は経験の最後（_j_apply）。commit=False は選ばずに数値だけ返す（appraise）。"""
+        （両方に共通の手がかりは相殺）。orig: J の有界化と減衰は経験の最後（_j_step_orig）。persist: さらに reaffirm（再び選ぶ）・counter（反する選択）の出来事を足す。
+        commit=False は選ばずに数値だけ返す（appraise）。forced は B1 の強制再生用（選んだ側を記録された決定に合わせる。乱数は同じだけ引く）。"""
         cfg = self.cfg
         opts = ch["options"]
         for o in opts:
@@ -413,32 +537,57 @@ class NPN:
         if not commit:
             return info
         chosen = int(self.rng.random() < p[1])
+        if forced is not None and forced.get("choice") is not None:
+            chosen = int(forced["choice"])
+        ch_c = [x for x in jcues[chosen] if x not in jcues[1 - chosen]]           # 選んだ側だけの手がかり（共通の手がかりは相殺するので動かさない）
+        un_c = [x for x in jcues[1 - chosen] if x not in jcues[chosen]]
+        step = cfg.eta_j * conflict
         dJ: Dict[str, float] = {}
+        pre_events: List[Tuple[str, str, float]] = []
         if not cfg.no_justification:
-            step = cfg.eta_j * conflict
-            for cue in jcues[chosen]:
-                dJ[cue] = dJ.get(cue, 0.0) + step
-            for cue in jcues[1 - chosen]:
-                dJ[cue] = dJ.get(cue, 0.0) - step
+            for cue in ch_c:
+                dJ[cue] = step
+            for cue in un_c:
+                dJ[cue] = -step
             dJ = {k: v for k, v in dJ.items() if v != 0.0}
-        j_after = self._j_apply(dJ)
+            if cfg.justification_mode != "orig":
+                pre_events = [(k, "spread", v) for k, v in dJ.items()]
+                for cue in ch_c:                                                   # reaffirm: 以前に選んだ手がかりを再び選ぶ（葛藤がなくても起きる）
+                    if cue in self.chosen_before:
+                        pre_events.append((cue, "reaffirm", cfg.eta_r * (1.0 - abs(self.just.get(cue, 0.0)) / cfg.j_num)))
+                for cue in un_c:                                                   # counter: J > 0 の手がかりを持つ選択肢を選ばなかった
+                    jv = self.just.get(cue, 0.0)
+                    if jv > 0.0:
+                        pre_events.append((cue, "counter", -cfg.eta_r * jv))
+        if cfg.justification_mode == "orig":
+            j_after, _ = self._j_step_orig(dJ)
+        else:
+            sim = dict(self.just)
+            for k, _src, d in pre_events:
+                sim[k] = sim.get(k, 0.0) + d
+            j_after = {k: max(-cfg.j_num, min(cfg.j_num, v)) for k, v in sim.items()}      # overwhelm の前（出来事の全体は台帳の kind = "justification"）
+        touched = sorted({k for k, _s, _d in pre_events} | set(dJ))
         info["chosen"] = chosen
         info["dJ"] = dict(dJ)
-        info["J_before"] = {k: float(self.just.get(k, 0.0)) for k in dJ}
-        info["J_after"] = {k: float(j_after.get(k, 0.0)) for k in dJ}
+        info["pre_events"] = [{"cue": k, "source": s_, "delta": float(d)} for k, s_, d in pre_events]
+        info["J_before"] = {k: float(self.just.get(k, 0.0)) for k in touched}
+        info["J_after"] = {k: float(j_after.get(k, 0.0)) for k in touched}
         if cfg.record_ledger:
             self.ledger.add({"kind": "choice", "id": ch["id"], "chosen": chosen, "Q": [float(x) for x in Q], "p_choose": [float(p[0]), float(p[1])],
-                             "dQ": dQ, "conflict": conflict, "dJ": {k: float(v) for k, v in dJ.items()},
-                             "J_before": dict(info["J_before"]), "J_after": dict(info["J_after"]),
+                             "dQ": dQ, "conflict": conflict, "dJ": {k: float(v) for k, v in dJ.items()}, "mode": cfg.justification_mode,
+                             "pre_events": list(info["pre_events"]), "J_before": dict(info["J_before"]), "J_after": dict(info["J_after"]),
                              "options": [{"Q_val": float(x["Q_val"]), "C_Q": float(x["C_Q"]), "J_Q": float(x["J_Q"])} for x in exs]})
         o = opts[chosen]
         e = {"id": ch["id"], "context": o["context"], "concepts": list(o["concepts"]), "participants": list(o["participants"]),
              "outcomes": list(ch["outcomes_by_option"][str(chosen)]), "optional": False, "session": o["session"], "announced": list(o["announced"])}
-        return self._experience(e, choice=info, dJ=dJ)
+        jctx = {"dJ": dJ, "pre_events": pre_events, "chosen_cues": ch_c}
+        return self._experience(e, choice=info, jctx=jctx, forced=forced)
 
     # ------------------------------------------------------------------ 経験
-    def _experience(self, e: Dict[str, Any], choice: Optional[Dict[str, Any]] = None, dJ: Optional[Dict[str, float]] = None) -> Dict[str, Any]:
-        """検証済みの経験を評価して学習する（通常の経験と、二択で選んだ側）。choice は二択の情報（あれば自分で選んだ経験: chosen = 1）。"""
+    def _experience(self, e: Dict[str, Any], choice: Optional[Dict[str, Any]] = None, jctx: Optional[Dict[str, Any]] = None,
+                    forced: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """検証済みの経験を評価して学習する（通常の経験と、二択で選んだ側）。choice は二択の情報（あれば自分で選んだ経験: chosen = 1）。
+        jctx は二択の正当化の出来事（dJ・事前の出来事・選んだ側だけの手がかり）。forced は B1 の強制再生（離散的な決定を記録に合わせる）。"""
         cfg = self.cfg
         for p in e["participants"]:
             self.belief.check_class(p["id"], p["class"])
@@ -448,21 +597,37 @@ class NPN:
         if e["optional"]:
             p_app = self._p_approach(ap["Q"])
             approached = bool(self.rng.random() < p_app)
+            if forced is not None and forced.get("approach") is not None:
+                approached = bool(forced["approach"])                   # 強制再生: 乱数は同じだけ引いた上で、記録された決定に合わせる
             ap["p_approach"] = p_app
             ap["approached"] = approached
+            self._dec["approach"] = approached
             if not approached:
                 if cfg.record_ledger:
                     self.ledger.add({"kind": "avoid", "id": e["id"], "context": e["context"],
                                      "Q": float(ap["Q"]), "C_Q": float(ap["C_Q"]), "J_Q": float(ap["J_Q"]), "p_approach": p_app})
                 self.n_avoided += 1
                 self.cond.now = self._clock()
-                self.just = self._j_apply({})                           # 時間は経つ（毎経験の減衰）
+                self._j_commit(e["id"])                                 # 時間は経つ（orig と persist_with_decay は毎経験の減衰。persist は何も変えない）
                 for key in ("f", "f_parts", "delta", "du", "du_total", "du_weighted", "dh", "contributions", "phi",
                             "teachers", "emotions", "interpretations"):
                     ap[key] = None
                 ap["value_change"] = None
                 return _py(ap)
         chosen = bool(choice is not None or e["optional"])              # 主体性: 自分で選んだ経験（optional を受けた、または二択で選んだ）
+        if choice is not None:
+            self._dec["choice"] = int(choice["chosen"])
+        # 反証への抵抗（Z-persist。SPEC-v3.3 8.3）: J > 0 の選択肢を選んだ経験で、人モデルの負の教師の ρ_dis tanh(J) を場面へ回す。教師は結果と J だけから決まる（価値ネットの出力を使わない）
+        disc: Optional[Dict[str, Any]] = None
+        if choice is not None and jctx is not None and cfg.justification_mode != "orig" and not cfg.no_justification:
+            jt = float(sum(self.just.get(x, 0.0) for x in jctx["chosen_cues"]))
+            if jt > 0.0:
+                q_dis = cfg.rho_dis * float(np.tanh(jt))
+                it["person_teachers"], it["sit_teacher"], moved = self._apply_discount(it["person_teachers"], it["sit_teacher"], q_dis)
+                ap["teachers"] = {"person": {p["id"]: _need_dict(it["person_teachers"][j]) for j, p in enumerate(e["participants"])},
+                                  "situation": _need_dict(it["sit_teacher"])}
+                disc = {"q": q_dis, "J_chosen": jt, "moved": {p["id"]: [float(x) for x in m] for p, m in zip(e["participants"], moved)}}
+                ap["discount"] = disc
         serial = self.n_experiences
         h_before = self.h.copy()
         # 埋め込みの登録（学習時のみ。以後は状態の値を使う）と警告
@@ -501,7 +666,9 @@ class NPN:
                     td_y = r + cfg.gamma_c * self.cond.value(it["cues"], e["context"], t_now)
                 else:
                     td_y = 0.0                                  # 文脈が途切れたら、次の価値は 0
-                dC, cdet = self.cond.update(self.pending["cues"], td_y, self.pending["context"], self.pending["t"])
+                dC, cdet = self.cond.update(self.pending["cues"], td_y, self.pending["context"], self.pending["t"],
+                                            force=None if forced is None else forced.get("assign"))
+                self._dec["assign"] = {c_: {"created": d_["created"] is not None, "map": int(d_["map"])} for c_, d_ in cdet.items() if "created" in d_}
                 if cfg.record_ledger and self.cond.K > 1:                  # 割当の記録（どちらの設計でも）: 手がかりの経験ごとに、事前の内訳・事後・MAP の原因・学習前後の C_k・各原因の ΔC
                     for cue_name, d in cdet.items():
                         self.ledger.add({"kind": "assignment", "after": e["id"], "cue_event": self.pending.get("id"), "cue": cue_name,
@@ -509,9 +676,12 @@ class NPN:
                                          "y_x": d["y_x"], "post": d["post"], "post_new": d["post_new"], "map": d["map"],
                                          "created": d["created"], "reused": d["reused"], **d["trace"]})
             # 復位: 手がかりなしで嫌悪の結果が起きたとき、負の価値を持つ原因の最後に使われた時刻を更新する（この事象と直前の事象の手がかりは除く）
-            if r <= -cfg.lc_aversive_threshold:
+            called = (r <= -cfg.lc_aversive_threshold) if (forced is None or forced.get("reinstate_called") is None) else bool(forced["reinstate_called"])
+            self._dec["reinstate_called"] = bool(called)
+            if called:
                 skip = list(it["cues"]) + (list(self.pending["cues"]) if self.pending is not None else [])
-                reinst = self.cond.reinstate(skip, t_now, e["context"], r)
+                reinst = self.cond.reinstate(skip, t_now, e["context"], r, force=None if (forced is None or forced.get("reinstate_called") is None) else forced.get("reinstate"))
+                self._dec["reinstate"] = [[c_, int(k_)] for c_, k_ in reinst]
                 if cfg.record_ledger and self.cond.last_reinstate:                            # 復位: revised は推論した原因とその事後、spec_literal は時刻を更新した原因の一覧
                     self.ledger.add({"kind": "reinstate", "after": e["id"], **self.cond.last_reinstate})
             self.pending = {"cues": list(it["cues"]), "session": e["session"], "context": e["context"], "t": t_now, "id": e["id"]}
@@ -547,7 +717,7 @@ class NPN:
         # 8. 台帳
         if cfg.record_ledger:
             self.ledger.add({
-                "kind": "experience", "id": e["id"], "context": e["context"],
+                "kind": "experience", "id": e["id"], "context": e["context"], "chosen": bool(chosen),
                 "Q": float(ap["Q"]), "C_Q": float(ap["C_Q"]), "J_Q": float(ap["J_Q"]), "f": ap["f"], "delta": ap["delta"], "emotions": dict(ap["emotions"]),
                 "du": [float(x) for x in it["du"]], "dh": [float(x) for x in it["dh"]],
                 "phi": [[x["participant"], x["type"], x["phi_person"]] for x in ap["phi"]],
@@ -560,15 +730,26 @@ class NPN:
                 "dW": {"person": {n: [float(x) for x in r_] for n, r_ in lr["dW_person"].items()},
                        "situation": {n: [float(x) for x in r_] for n, r_ in lr["dW_situation"].items()}},
             })
-        self._log_experience(e, it, serial, t_now, h_before, a, "choice" if choice is not None else "experience")
+        self._log_experience(e, it, serial, t_now, h_before, a, "choice" if choice is not None else "experience", 0.0 if disc is None else disc["q"])
         self.n_experiences += 1
         self.cond.now = self._clock()
-        self.just = self._j_apply(dJ or {})                              # 正当化 J: 選んだ側 +、選ばなかった側 −、有界化、毎経験の減衰（二択の最後）
+        # 正当化 J の確定（二択の最後）。orig: 選んだ側 +、選ばなかった側 −、有界化、毎経験の減衰。persist: 記録された出来事（spread・reaffirm・counter・overwhelm）だけ
+        events: List[Tuple[str, str, float]] = list(jctx["pre_events"]) if jctx else []
+        if choice is not None and jctx is not None and cfg.justification_mode != "orig" and not cfg.no_justification:
+            pos = {x: self.just.get(x, 0.0) for x in jctx["chosen_cues"] if self.just.get(x, 0.0) > 0.0}
+            jp = float(sum(pos.values()))
+            if jp > 0.0:                                                 # overwhelm: 負の予測誤差 ε = max(0, −δ) が、正当化で割り引ける量 tanh(J) を超えた分に比例して J を減らす
+                excess = max(max(0.0, -float(ap["delta"])) - float(np.tanh(jp)), 0.0)
+                if excess > 0.0:
+                    frac = min(cfg.eta_ov * excess, 1.0)                  # 超えた分に比例して、正の J の手がかりを割合 frac だけ減らす（乗算型。excess ≥ 1/η_ov ですべて消える）
+                    events += [(x, "overwhelm", -frac * v) for x, v in pos.items()]
+        self._j_commit(e["id"], dJ=(jctx or {}).get("dJ"), events_in=events, discount=disc,
+                       chosen_cues=jctx["chosen_cues"] if (choice is not None and jctx is not None) else None)
         return _py(ap)
 
     # ------------------------------------------------------------------ 経験記録（訂正が参照する。台帳とは別）
     def _log_experience(self, e: Dict[str, Any], it: Dict[str, Any], serial: int, t_now: float, h_before: np.ndarray,
-                        a_before: np.ndarray, how: str) -> None:
+                        a_before: np.ndarray, how: str, discount_q: float = 0.0) -> None:
         """学習した経験の記録: 参加者・結果（現在の事実）・解釈の重み・責任 φ_o・欲求の状態と a・参加者ごとの寄与。訂正（kind = "correction"）が、
         当時の寄与を引き、価値の再生（retroactive_value）が使う。当時の記録（f, φ, Δu, 感情）は台帳に残り、訂正では変えない。"""
         P = e["participants"]
@@ -579,7 +760,7 @@ class NPN:
             "outcomes": outs, "original_outcomes": copy.deepcopy(outs),
             "w_out": [[float(x) for x in row] for row in it["W_out"]], "phi_o": [float(x) for x in it["phi_o"]],
             "actor_j": [int(x) for x in it["actor_j"]], "h_before": [float(x) for x in h_before], "a_before": [float(x) for x in a_before],
-            "teacher_by_participant": [[float(x) for x in v] for v in it["person_teachers"]], "corrections": []})
+            "teacher_by_participant": [[float(x) for x in v] for v in it["person_teachers"]], "discount_q": float(discount_q), "corrections": []})
         self._exp_pos[e["id"]] = len(self.exp_log) - 1
 
     def _replay_values(self) -> V.ValueNet:
@@ -596,6 +777,8 @@ class NPN:
             dh, du, contrib = innate.contributions(h, rows)
             actor_j = np.array(rec["actor_j"], dtype=int)
             pt, st = self._split_teachers(contrib, np.array(rec["phi_o"], dtype=np.float64), (actor_j >= 0).astype(np.float64), actor_j, len(P))
+            if rec.get("discount_q", 0.0) > 0.0:
+                pt, st, _ = self._apply_discount(pt, st, rec["discount_q"])           # Z-persist: 当時の割り引きを同じ割合で再現する
             nv.learn(P, rec["context"], rec["concepts"], pt, st, np.array(rec["a_before"], dtype=np.float64))
             h = innate.next_h(h, dh)
         return nv
@@ -641,7 +824,9 @@ class NPN:
         #    重みなしの寄与どうしの差だと、人モデルが φ の分しか学んでいないのに全部を引いてしまい、過剰に訂正する（CHANGELOG の D 節）。
         rows = innate.mixed_rows(po["W_out"], [o["magnitude"] for o in c["corrected_outcomes"]], self.M)
         dh, du, contrib = innate.contributions(np.array(rec["h_before"], dtype=np.float64), rows)
-        new_teach, _ = self._split_teachers(contrib, po["phi_o"], po["is_person"], po["actor_j"], nP)
+        new_teach, new_sit = self._split_teachers(contrib, po["phi_o"], po["is_person"], po["actor_j"], nP)
+        if rec.get("discount_q", 0.0) > 0.0:
+            new_teach, new_sit, _ = self._apply_discount(new_teach, new_sit, rec["discount_q"])      # 当時の抵抗（Z-persist）と同じ割合で割り引く
         old_teach = [np.array(v) for v in rec["teacher_by_participant"]]
         shifts = [new_teach[j] - old_teach[j] for j in range(nP)]
         # 経験記録を現在の事実に直す（当時の結果は original_outcomes に残る）
@@ -788,6 +973,8 @@ class NPN:
             "warnings": list(self.warnings),
             "ledger": _py(self.ledger.to_list()),
             "justification": _py(self.just),
+            "justification_sources": _py(self.just_src),
+            "chosen_before": list(self.chosen_before),
             "exp_log": _py(self.exp_log),
             "n_corrections": int(self.n_corrections),
         }
@@ -840,6 +1027,8 @@ class NPN:
         obj.n_experiences = int(meta["n_experiences"])
         obj.n_avoided = int(meta["n_avoided"])
         obj.just = {k: float(v) for k, v in meta["justification"].items()}
+        obj.just_src = {k: {s_: float(d) for s_, d in row.items()} for k, row in meta["justification_sources"].items()}
+        obj.chosen_before = list(meta["chosen_before"])
         obj.exp_log = meta["exp_log"]
         obj._exp_pos = {r["id"]: i for i, r in enumerate(obj.exp_log)}
         obj.n_corrections = int(meta["n_corrections"])

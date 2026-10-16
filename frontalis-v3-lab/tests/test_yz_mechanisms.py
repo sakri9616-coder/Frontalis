@@ -403,11 +403,12 @@ class ChoiceMechanics(unittest.TestCase):
         n = make(0)
         n.experience(Y.hesitant_choice("l", "a", "b"))
         kinds = [e["kind"] for e in n.ledger.entries]
-        self.assertEqual(kinds[-2:], ["choice", "experience"])
-        ch = n.ledger.entries[-2]
+        self.assertEqual(kinds[-3:], ["choice", "experience", "justification"])          # 選択 → 学んだ経験 → J の出来事（源つき）
+        ch = n.ledger.entries[-3]
         for key in ("chosen", "Q", "p_choose", "dQ", "conflict", "dJ", "J_before", "J_after"):
             self.assertIn(key, ch)
-        self.assertEqual(n.ledger.entries[-1]["id"], "l")
+        self.assertEqual(n.ledger.entries[-2]["id"], "l")
+        self.assertEqual(n.ledger.entries[-1]["after"], "l")
 
     def test_choice_runs_through_the_same_learning_as_an_experience(self):
         """二択で選んだ側は、同じ内容の通常の経験と、学習が同じ（a の更新の速さだけ、自分で選んだ分が違う）。"""

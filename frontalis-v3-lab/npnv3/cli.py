@@ -1,10 +1,12 @@
 """コマンドライン。
 
-python -m npnv3 init  STATE_DIR [--seed 0]
+python -m npnv3 init  STATE_DIR [--seed 0] [--justification-mode orig|persist|persist_with_decay] [--lc-design spec_literal|revised]
 python -m npnv3 feed  STATE_DIR experiences.jsonl      学習し、各経験の要約を表示し、保存（行ごとに kind = "experience"（省略可）| "correction"（訂正）| "choice"（二択））
 python -m npnv3 probe STATE_DIR probes.json            学習せずに評価
 python -m npnv3 show  STATE_DIR                         価値の上位・信念の要約
 python -m npnv3 explain STATE_DIR CUE [--context C] [--time T] [--trace N]   条件づけられた価値の応答の内訳（原因ごとの重み・価値・寄与と要因）と、割当の記録の最後の N 件
+python -m npnv3 preference STATE_DIR options.json [--key K]   選好の説明（学習しない）: 予期 Q を「経験に根拠のある部分」と「正当化 J の部分」に分け、J の源（spread・reaffirm・counter・overwhelm…）を示す。
+                                                               options.json は状況 1 つか 2 つ（context・concepts・participants）。
 """
 from __future__ import annotations
 
@@ -48,10 +50,17 @@ def _summarize_correction(ap: Dict[str, Any]) -> str:
 def _summarize_choice(ap: Dict[str, Any]) -> str:
     ch = ap["choice"]
     o = ch["options"]
-    return (f"[{ap['id']}] 二択: 選択肢 0 の Q={o[0]['Q']:+.3f}（J {o[0]['J_Q']:+.3f}）, 選択肢 1 の Q={o[1]['Q']:+.3f}（J {o[1]['J_Q']:+.3f}）  "
-            f"P(選ぶ) = {ch['p_choose'][0]:.2f} / {ch['p_choose'][1]:.2f} → 選択肢 {ch['chosen']} を選んだ\n"
-            f"    ΔQ={ch['dQ']:+.3f}  葛藤の強さ c={ch['conflict']:.3f}  正当化 J の動き: "
-            + (", ".join(f"{k} {v:+.3f}" for k, v in ch["dJ"].items()) or "なし"))
+    out = (f"[{ap['id']}] 二択: 選択肢 0 の Q={o[0]['Q']:+.3f}（J {o[0]['J_Q']:+.3f}）, 選択肢 1 の Q={o[1]['Q']:+.3f}（J {o[1]['J_Q']:+.3f}）  "
+           f"P(選ぶ) = {ch['p_choose'][0]:.2f} / {ch['p_choose'][1]:.2f} → 選択肢 {ch['chosen']} を選んだ\n"
+           f"    ΔQ={ch['dQ']:+.3f}  葛藤の強さ c={ch['conflict']:.3f}  正当化 J の動き: "
+           + (", ".join(f"{k} {v:+.3f}" for k, v in ch["dJ"].items()) or "なし"))
+    extra = [e for e in ch.get("pre_events", []) if e["source"] != "spread"]
+    if extra:                                                     # Z-persist: 再び選ぶ（reaffirm）・反する選択（counter）
+        out += "\n    源つきの出来事: " + ", ".join(f"{e['cue']} {e['source']} {e['delta']:+.3f}" for e in extra)
+    if ap.get("discount"):                                        # Z-persist: 反証への抵抗（人モデルの負の教師の一部を場面へ）
+        d = ap["discount"]
+        out += f"\n    反証への抵抗: 割り引き q={d['q']:.3f}（選んだ側の J の和 {d['J_chosen']:+.3f}）。人モデルの負の教師の q を場面（状況モデル）へ回した"
+    return out
 
 
 def _summarize(ap: Dict[str, Any]) -> str:
@@ -88,9 +97,15 @@ def _summarize_experience(ap: Dict[str, Any]) -> str:
 
 
 def cmd_init(args: argparse.Namespace) -> int:
-    n = NPN(seed=args.seed)
+    kw: Dict[str, Any] = {}
+    if args.justification_mode is not None:
+        kw["justification_mode"] = args.justification_mode
+    if args.lc_design is not None:
+        kw["lc_design"] = args.lc_design
+    n = NPN(seed=args.seed, **kw)
     h = n.save(args.state_dir)
-    print(f"初期化しました: {args.state_dir}（種 {args.seed}、内容ハッシュ {h[:12]}…）")
+    extra = "".join(f"、{k} = {v}" for k, v in kw.items())
+    print(f"初期化しました: {args.state_dir}（種 {args.seed}{extra}、内容ハッシュ {h[:12]}…）")
     return 0
 
 
@@ -160,9 +175,12 @@ def cmd_show(args: argparse.Namespace) -> int:
     print("\n条件づけられた価値 C（手がかり。|C| の大きい順。C は潜在原因の価値の、計数による加重平均。読み出しの応答は文脈と時刻に依存する）")
     for r in s["conditioned_top"]:
         print(f"  {r['cue']:<28s} {r['C']:+.3f}  （原因 {r['n_causes']} 個）")
-    print("\n選択の正当化 J（二択で迷った選択から生じる。経験の教師ではなく、予期 Q に加わる。|J| の大きい順）")
+    mode = n.cfg.justification_mode
+    print(f"\n選択の正当化 J（二択から生じる。予期 Q に加わる。|J| の大きい順。条件 justification_mode = {mode}"
+          + ("、反証への抵抗あり: 教師が変わる" if mode != "orig" else "、経験の教師にはならない") + "）")
     for r in s["justification_top"]:
-        print(f"  {r['cue']:<28s} {r['J']:+.3f}")
+        src = n.just_src.get(r["cue"], {})
+        print(f"  {r['cue']:<28s} {r['J']:+.3f}" + ("  （源: " + ", ".join(f"{k} {v:+.3f}" for k, v in sorted(src.items()) if abs(v) > 1e-9) + "）" if src else ""))
     if not s["justification_top"]:
         print("  （なし）")
     if s["n_corrections"]:
@@ -194,11 +212,35 @@ def cmd_explain(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_preference(args: argparse.Namespace) -> int:
+    n = NPN.load(args.state_dir)
+    with open(args.options, "r", encoding="utf-8") as f:
+        doc = json.load(f)
+    opts: List[Dict[str, Any]] = doc if isinstance(doc, list) else [doc]
+    ex = n.explain_preference(opts, key=args.key)
+    print(f"選好の説明（justification_mode = {ex['mode']}。学習しない。MB の標本は key = {args.key!r} で決まる）")
+    for i, o in enumerate(ex["options"]):
+        print(f"  選択肢 {i}: Q={o['Q']:+.3f} = 根拠のある部分 {o['Q_grounded']:+.3f}（価値 {o['Q_val']:+.3f} + 条件づけ {o['C_Q']:+.3f}） + 正当化 J の部分 {o['J_Q']:+.3f}")
+        for cue, d in o["justification"].items():
+            src = ", ".join(f"{k} {v:+.3f}" for k, v in d["sources"].items()) or "源の記録なし"
+            print(f"      {cue:<26s} J={d['J']:+.3f}  源: {src}")
+    if "delta" in ex:
+        d = ex["delta"]
+        print(f"  ΔQ = {d['Q']:+.3f} = 根拠 {d['grounded']:+.3f} + 正当化 {d['justification']:+.3f}  P(選ぶ) = {ex['p_choose'][0]:.2f} / {ex['p_choose'][1]:.2f}")
+        pf = ex["preferred"]
+        print(f"  好む側: Q では {pf['by_Q']}、根拠のみでは {pf['by_grounded']}、正当化のみでは {pf['by_justification']}"
+              + ("  → 正当化が選好を決めている（根拠のみとは向きが違う）" if ex["justification_decides"] else ""))
+    return 0
+
+
 def main(argv: List[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="python -m npnv3", description="NPN v3 最小実装")
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("init", help="新しい NPN を作って保存"); p.add_argument("state_dir")
-    p.add_argument("--seed", type=int, default=0); p.set_defaults(fn=cmd_init)
+    p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--justification-mode", default=None, choices=["orig", "persist", "persist_with_decay"], help="正当化 J の条件（既定 orig = Z-orig。persist = Z-persist）")
+    p.add_argument("--lc-design", default=None, choices=["spec_literal", "revised"], help="条件づけの潜在原因の設計（既定 spec_literal。revised は実験設定）")
+    p.set_defaults(fn=cmd_init)
     p = sub.add_parser("feed", help="経験（JSONL）を学習して保存"); p.add_argument("state_dir")
     p.add_argument("experiences"); p.set_defaults(fn=cmd_feed)
     p = sub.add_parser("probe", help="学習せずに評価"); p.add_argument("state_dir"); p.add_argument("probes")
@@ -207,6 +249,8 @@ def main(argv: List[str] | None = None) -> int:
     p = sub.add_parser("explain", help="条件づけられた価値の応答の内訳と割当の記録"); p.add_argument("state_dir"); p.add_argument("cue")
     p.add_argument("--context", default=None); p.add_argument("--time", type=float, default=None); p.add_argument("--trace", type=int, default=5)
     p.set_defaults(fn=cmd_explain)
+    p = sub.add_parser("preference", help="選好の説明（Q を根拠のある部分と正当化 J の部分に分ける）"); p.add_argument("state_dir"); p.add_argument("options")
+    p.add_argument("--key", default="preference"); p.set_defaults(fn=cmd_preference)
     args = ap.parse_args(argv)
     try:
         return args.fn(args)

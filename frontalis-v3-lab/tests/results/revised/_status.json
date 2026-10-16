@@ -3,6 +3,7 @@
 "test_cli.CLITests.test_explain_prints_the_breakdown_and_the_assignment_records": "ok",
 "test_cli.CLITests.test_feed_correction_and_choice_kinds": "ok",
 "test_cli.CLITests.test_init_feed_probe_show": "ok",
+"test_cli.CLITests.test_persist_mode_init_choice_summary_and_preference_command": "ok",
 "test_e_extinction.EExtinction.test_E1_maintenance": "FAIL",
 "test_e_extinction.EExtinction.test_E2_extinction": "ok",
 "test_e_extinction.EExtinction.test_E3_renewal_ABA": "FAIL",
@@ -303,7 +304,9 @@
 "test_z_choice.ZChoice.test_Z5_agency_weight": "ok",
 "test_z_choice.ZChoice.test_Z6_no_self_reinforcement_without_utility_change": "ok",
 "test_z_choice.ZChoice.test_Z7_justification_is_not_a_teacher_of_experience": "ok",
-"_time_seconds": 486.8,
+"test_z_choice.ZChoice.test_Z8_choice_ledger_and_explain_preference_Z_orig": "ok",
+"test_z_choice.ZChoice.test_Z8_choice_ledger_and_explain_preference_Z_persist": "ok",
+"_time_seconds": 499.9,
 "_design": "revised",
 "_overrides": {}
 }

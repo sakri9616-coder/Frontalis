@@ -80,6 +80,42 @@ class CLITests(unittest.TestCase):
             r = run("feed", st, bad); self.assertEqual(r.returncode, 2)
             self.assertIn("参照先が見つかりません", r.stderr)
 
+    def test_persist_mode_init_choice_summary_and_preference_command(self):
+        """v3.3 第 2 部 8: init で justification_mode / lc_design を選べる。persist の二択の要約（源つきの出来事・反証への抵抗）と show の源、preference コマンド（Z8）。"""
+        import yz_protocol as Y
+        with tempfile.TemporaryDirectory() as d:
+            st = os.path.join(d, "state")
+            r = run("init", st, "--justification-mode", "persist", "--lc-design", "revised"); self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn("justification_mode = persist", r.stdout)
+            self.assertIn("lc_design = revised", r.stdout)
+            warm = []
+            for i in range(2):
+                warm.append({"id": f"wa{i}", "context": Y.Z_CTX, "concepts": ["project_x"], "participants": [dict(Y.ALLY)],
+                             "outcomes": [{"type": "connection", "actor": "ally", "magnitude": 0.8}, {"type": "support", "actor": "ally", "magnitude": 0.6}]})
+            lines = warm + [Y.hesitant_choice("p1", "pp_x", "pp_y"), Y.hesitant_choice("p2", "pp_x", "pp_y"), Y.hesitant_choice("p3", "pp_x", "pp_y")]
+            fp = os.path.join(d, "e.jsonl")
+            with open(fp, "w", encoding="utf-8") as f:
+                f.write("\n".join(json.dumps(e) for e in lines) + "\n")
+            r = run("feed", st, fp); self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn("源つきの出来事", r.stdout)                 # 再び選ぶ（reaffirm）または反する選択（counter）
+            r = run("show", st); self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn("justification_mode = persist", r.stdout)
+            self.assertIn("（源: ", r.stdout)
+            self.assertIn("spread", r.stdout)
+            op = os.path.join(d, "o.json")
+            with open(op, "w", encoding="utf-8") as f:
+                json.dump([{"context": "studio", "concepts": ["pp_x"]}, {"context": "studio", "concepts": ["pp_y"]}], f)
+            r = run("preference", st, op); self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn("根拠のある部分", r.stdout)
+            self.assertIn("正当化 J の部分", r.stdout)
+            self.assertIn("ΔQ =", r.stdout)
+            self.assertIn("源:", r.stdout)
+            bad = os.path.join(d, "bad.json")
+            with open(bad, "w", encoding="utf-8") as f:
+                json.dump([{"cue": "concept:x"}], f)
+            r = run("preference", st, bad); self.assertEqual(r.returncode, 2)
+            r = run("init", os.path.join(d, "s2"), "--justification-mode", "forever"); self.assertNotEqual(r.returncode, 0)
+
     def test_bad_input_reports_error(self):
         with tempfile.TemporaryDirectory() as d:
             st = os.path.join(d, "state")

@@ -1,6 +1,10 @@
-"""Z1〜Z7 選択による関心学習: 正当化と、経験に根拠のある価値を分ける（SPEC-v3.3 第 3 節）。判定基準は実装前に固定されたまま（閾値は一度も変えていない）。
+"""Z1〜Z8 選択による関心学習: 正当化と、経験に根拠のある価値を分ける（SPEC-v3.3 第 3 節、第 8 節）。判定基準は実装前に固定されたまま（閾値は一度も変えていない）。
 
 プロトコルの細部（SPEC に細部がなかった点）は tests/yz_protocol.py の冒頭に、数値を見る前に書いた。乱数種 0〜19。
+
+**読み方（SPEC-v3.3 8.1〜8.2）: ここは実験条件 Z-orig（第 3 節の J: 毎経験の減衰 λ_J = 0.02、上限 J_max = 0.2、葛藤による自己制限）の Z1〜Z7 を、事前登録どおりの定義で判定する。
+Z2〜Z4 が不合格でも、それは「この条件の J が持続する（Z3）・反証に抵抗する（Z4）・摂動で分岐する（Z2）」という性質の記録であり、数値的な故障を意味しない。
+故障の判定は B1〜B3（test_b_health.py）と、Z-persist の P1〜P7（test_p_persist.py）。** 第 7.3 節の Z 系の再定義は第 8.2 節で撤回されている（定義は変えていない）。
 
   Z1 迷った選択でだけ生じる   易しい選択（|ΔQ| > 0.3）と迷う選択（|ΔQ| < 0.05）を 20 回ずつ: 易しい選択での J の総変化 < 0.01、迷う選択での選んだ側と選ばなかった側の J の差 ≥ 0.02
   Z2 有界・正帰還なし         同じ迷う二択を 1000 回: max|J| ≤ J_max、1e-3 の摂動の比 ≤ 1（中央値。U6/W6 と同じ。最大も報告）、後半 500 回の J の増分が前半の 10% 以下（20 本の平均）
@@ -8,7 +12,9 @@
   Z4 経験が正当化に勝つ       J で好むようになった選択肢に反する結果（害）を与える: 5 回以内に選好が反転する（全種で）
   Z5 主体性の重み             同じ |Δu| の経験を「選んだ」場合と「強制された」場合: a の変化の比 ≥ 1.5
   Z6 自己強化なし             効用の変化がない（Δu = 0）選択を 100 回: a の変化 < 1e-6
-  Z7 J は経験の教師にならない  同じ経験列を強制で与え、J だけを入れ替える: W と C の学習がビット単位で同一
+  Z7 J は経験の教師にならない  同じ経験列を強制で与え、J だけを入れ替える: W と C の学習がビット単位で同一（Z-orig の性質。Z-persist には適用しない: 反証への抵抗は教師を変える。P5）
+  Z8 正当化の追跡（追加）      二択ごとに、葛藤 c・ΔQ・J の変化を台帳に記録する。explain_preference が予期 Q を「経験に根拠のある部分」と「正当化 J の部分」に分けて返す。保存・復元で完全一致する
+                              （Z-orig と Z-persist の両方で測る。判定は恒等式（≤ 1e-12）と完全一致）
 """
 import unittest
 
@@ -24,6 +30,9 @@ _CACHE = {}
 
 def rows(name):
     if name not in _CACHE:
+        if name.startswith("z8_"):
+            _CACHE[name] = pmap(Y.z8_worker, [(s, name[3:]) for s in SEEDS])
+            return _CACHE[name]
         fn = {"z1": Y.z1_worker, "z2": Y.z2_worker, "z3": Y.z3_worker, "z4": Y.z4_worker, "z5": Y.z5_worker, "z6": Y.z6_worker, "z7": Y.z7_worker}[name]
         _CACHE[name] = pmap(fn, SEEDS)
     return _CACHE[name]
@@ -76,6 +85,17 @@ class ZChoice(unittest.TestCase):
             out["Z7"] = {"all_identical": all(all(x["identical"].values()) for x in r), "checked": sorted(r[0]["identical"]),
                          "min_over_seeds_of_max_abs_Q_difference (non-vacuous if > 0)": min(x["max_abs_Q_difference"] for x in r), "n_experiences": r[0]["n"]}
         dump("Z01_Z07", out)
+        z8 = {}
+        for mode in ("orig", "persist"):
+            if f"z8_{mode}" in _CACHE:
+                r = _CACHE[f"z8_{mode}"]
+                z8[mode] = {"max_errors": {k: max(x["errors"][k] for x in r) for k in r[0]["errors"]}, "explain_is_pure_all": all(x["explain_is_pure"] for x in r),
+                            "restore_same_state_all": all(x["restore_same_state"] for x in r), "restore_same_explain_all": all(x["restore_same_explain"] for x in r),
+                            "restore_same_future_all": all(x["restore_same_future"] for x in r), "choices_per_seed": r[0]["n_choices"],
+                            "seeds_where_J_decides_the_preference (Q and grounded-only disagree)": int(sum(x["example_J_decides"]["justification_decides"] for x in r)),
+                            "example_seed0_explain_preference": r[0]["example_J_decides"]}
+        if z8:
+            dump("Z08", z8)
 
     def test_Z1_justification_arises_only_in_hesitant_choices(self):
         r = rows("z1")
@@ -86,6 +106,7 @@ class ZChoice(unittest.TestCase):
             self.assertGreaterEqual(x["hes_min_gap"], 0.02, x["seed"])
 
     def test_Z2_bounded_and_no_positive_feedback(self):
+        """事前登録どおりの判定。不合格の項目（摂動の比、後半の増分）があれば、それは Z-orig の J の性質の記録（SPEC 8.2）。"""
         r = rows("z2")
         for x in r:
             self.assertLessEqual(x["max_abs_J"], J_MAX, x["seed"])
@@ -95,12 +116,15 @@ class ZChoice(unittest.TestCase):
         self.assertLessEqual(d2, 0.1 * d1)
 
     def test_Z3_unfounded_justification_fades_and_founded_value_stays(self):
+        """事前登録どおりの判定（J の残存 ≤ 20%、W の残存 ≥ 70%）。不合格なら、それは Z-orig の J の性質の記録（SPEC 8.2）。"""
         r = rows("z3")
         self.assertLessEqual(mean(x["J_remaining"] for x in r), 0.2)
         self.assertGreaterEqual(min(x["W_remaining"] for x in r), 0.7)
         self.assertGreater(min(x["J_before"] for x in r), 0.01)                     # 前提: J ができている（残存の比は尺度に依らない。検査が空でないことの確認だけ）
 
     def test_Z4_experience_beats_justification(self):
+        """事前登録どおりの判定（5 回以内に選好が反転する。全種で）。不合格の場合、それは「この条件（Z-orig）の J が反証に抵抗する」という性質の記録で、数値的な故障ではない
+        （SPEC 8.2。故障の判定は B1〜B3）。何回で反転したかは Z01_Z07.json に残る。"""
         for x in rows("z4"):
             self.assertIsNotNone(x["reversed_at"], (x["seed"], x["gaps"]))
             self.assertLessEqual(x["reversed_at"], 5, (x["seed"], x["gaps"]))
@@ -119,6 +143,25 @@ class ZChoice(unittest.TestCase):
         for x in rows("z7"):
             self.assertTrue(all(x["identical"].values()), (x["seed"], x["identical"]))
             self.assertGreater(x["max_abs_Q_difference"], 1e-3, x["seed"])          # 検査が空でない: Q は J で違う
+
+    def _z8(self, mode):
+        for x in rows(f"z8_{mode}"):
+            for k, v in x["errors"].items():
+                self.assertLessEqual(v, 1e-12, (x["seed"], k))                        # 台帳の c・ΔQ・ΔJ と explain_preference の恒等式
+            self.assertEqual(x["ledger_choice_entries"], x["n_choices"], x["seed"])    # 二択ごとに台帳の記録がある
+            self.assertTrue(x["explain_is_pure"], x["seed"])                          # 説明は状態も乱数も変えない
+            self.assertTrue(x["restore_same_state"], x["seed"])                       # 保存・復元で完全一致
+            self.assertTrue(x["restore_same_explain"], x["seed"])
+            self.assertTrue(x["restore_same_future"], x["seed"])                      # 続きの選択も同一
+            e = x["example_J_decides"]
+            self.assertNotEqual(e["delta"]["justification"], 0.0, x["seed"])          # 検査が空でない: J の部分がある
+            self.assertAlmostEqual(e["delta"]["Q"], e["delta"]["grounded"] + e["delta"]["justification"], places=12)
+
+    def test_Z8_choice_ledger_and_explain_preference_Z_orig(self):
+        self._z8("orig")
+
+    def test_Z8_choice_ledger_and_explain_preference_Z_persist(self):
+        self._z8("persist")
 
 
 if __name__ == "__main__":

@@ -74,9 +74,10 @@ class Config:
     lc_neg_threshold: float = 0.02      # 復位: 「負の価値を持つ原因」の閾値（C < −0.02。SPEC に指定なし。結果を見る前に決めた）
     lc_aversive_threshold: float = 0.05 # 復位: 「嫌悪の結果」の閾値（事象の Σ a_k Δu_k ≤ −0.05。同上）
     # --- v3.3 第1部の設計の改訂（オーケストレーター承認。結果を見た後の改訂。値は固定）。既定は第2部で spec_literal に戻した（CHANGELOG の M 節）---
+    # 既定の選択は**現時点の設計上の選択**で、revised が数値的に壊れているという判定ではない（B1〜B3 = 状態の有界性・学習規則の整合性・分岐の説明可能性は、両方の設計で合格している）。
+    # 戻した理由は二つだけ: (1) 事前に「故障」の基準と定めた E1（嫌悪の維持）が revised で不合格になった、(2) 条件づけ価値が行動に効く範囲（W1 の C だけの寄与・W2 の差・U2 の C(praise)）が狭まった。
     # "spec_literal": SPEC-v3.3 4.2 の式のとおり（lc_tau, lc_beta, lc_neg_threshold を使う。柔らかい事後で更新する。**既定**。E1・E2・E8 が合格、E3〜E6・E9 が不合格）。
-    # "revised": 冪乗則の時間の重み・原因ごとの試行の履歴・文脈の集中度（最初の原因は広く、後の原因は狭く）・局所 MAP の学習・原因を推論する復位（実験設定。
-    #            E6 が合格したが、E1 の維持が崩れ、1e-3 の摂動で選択が分岐し、条件づけ価値が行動に効かなくなった = 故障に近い側が悪化したので既定から外した）。
+    # "revised": 冪乗則の時間の重み・原因ごとの試行の履歴・文脈の集中度（最初の原因は広く、後の原因は狭く）・局所 MAP の学習・原因を推論する復位（実験設定。E6 が合格する）。
     lc_design: str = "spec_literal"
     lc_decay_d: float = 1.0        # 原因の事前 Σ_{i∈k} (t − t_i + 1)^(−d) の d（Gershman, Blei & Niv 2010 の距離依存 CRP）
     lc_beta_first: float = 5.0     # 最初に作られた原因（獲得）の文脈の Dirichlet の集中度（広い。未見の文脈にも確率を残す）
@@ -95,6 +96,18 @@ class Config:
     lambda_j: float = 0.02         # 毎経験の J の減衰 λ_J
     kappa_ag: float = 1.0          # 主体性の重み κ_ag: a の更新の速さ η_a (1 + κ_ag · chosen)。chosen = 自分で選んだ経験（optional を受けた、または二択で選んだ）
     no_justification: bool = False # アブレーション: J を作らない・Q に入れない
+
+    # --- v3.3 第2部 3（SPEC-v3.3 第8節）: 正当化 J の実験条件 ---
+    # "orig"（既定。Z-orig = 第3節の設計そのまま: 毎経験の減衰 λ_J、上限 J_max、葛藤による自己制限。Z1〜Z7 を事前登録どおりに判定する）|
+    # "persist"（Z-persist: 強制的な減衰なし。J は記録された出来事 spread・reaffirm・counter・overwhelm でだけ変わる。上限 J_num は数値の安全のためだけ）|
+    # "persist_with_decay"（persist に毎経験の減衰 λ_J を足した変種）。
+    # 正当化が持続する・反証に抵抗する・選択で自己強化されることは、それ自体では故障ではない。故障は数値的な故障（有界でない・非数・規則違反・説明できない変化）だけ（B1〜B3、P1〜P7）。
+    justification_mode: str = "orig"
+    eta_r: float = 0.03            # persist: reaffirm（再び選ぶ）の +η_r (1 − |J|/J_num) と counter（反する選択）の −η_r |J|
+    j_num: float = 2.0             # persist: 数値の安全のための上限（心理的な上限ではない）
+    rho_dis: float = 0.5           # persist: 反証への抵抗。J > 0 の選択肢を選んで害を受けたとき、人モデルの負の教師の ρ_dis tanh(J) を場面（状況モデル）へ回す
+    eta_ov: float = 1.0            # persist: overwhelm（圧倒的な反証）で正の J を減らす割合 = min(η_ov × 超えた分, 1)（乗算型。SPEC に比例の係数の指定なし。試走で加算型だと 1 回の害で J が全部消えたので乗算型・η_ov = 1 に決めた。P 系の実行前）
+    record_decisions: bool = False # True のとき、経験ごとの離散的な決定（接近・回避、二択の選択、原因の割当、復位）を npn.decisions に残す（B1 の分岐点の特定）。数値に影響しない
 
     # --- v3.1: 受け止め方 f（1.3）---
     lambda_c: float = 1.0
@@ -168,6 +181,8 @@ class Config:
             raise ValueError("lc_max_causes は 1 以上です")
         if self.lc_design not in ("revised", "spec_literal"):
             raise ValueError(f"lc_design が不正です: {self.lc_design!r}")
+        if self.justification_mode not in ("orig", "persist", "persist_with_decay"):
+            raise ValueError(f"justification_mode が不正です: {self.justification_mode!r}")
         if self.concern_direction not in ("sensitize", "habituate"):
             raise ValueError(f"concern_direction が不正です: {self.concern_direction!r}")
 

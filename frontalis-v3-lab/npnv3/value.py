@@ -420,8 +420,9 @@ class Conditioning:
       事後         事前 × N(y_x; C_{x,k}, σ_r²)。y_x は他の手がかりの応答を引いた、この手がかりが説明すべき目標（手がかりが 1 つなら TD の目標 y そのもの）
     事前の重み w_k と、学習・復位の規則は、設計 lc_design で二通りある。
 
-    ◆ lc_design = "revised"（実験設定。v3.3 第 1 部の設計の改訂。オーケストレーター承認、結果を見た後。第 2 部で既定から外した: 嫌悪の維持 E1 が崩れ、1e-3 の摂動で選択が分岐し、
-      条件づけの価値が行動に効かなくなったため。固定した値: d = 1、α = 0.5、β_first = 5、β_later = 0.2、σ_r = 0.15、K = 5）
+    ◆ lc_design = "revised"（実験設定。v3.3 第 1 部の設計の改訂。オーケストレーター承認、結果を見た後。第 2 部で既定から外した。**現時点の設計上の選択であって、数値的に壊れているという判定ではない**
+      （B1〜B3 は合格）。理由は二つだけ: 事前に故障の基準と定めた E1（嫌悪の維持）が不合格になったことと、条件づけの価値が行動に効く範囲が狭まったこと。
+      固定した値: d = 1、α = 0.5、β_first = 5、β_later = 0.2、σ_r = 0.15、K = 5）
       原因 k は、割り当てられた試行 i の履歴（時刻 t_i と文脈）を持つ。
       事前    w_k = Σ_{i∈k} (t − t_i + 1)^(−d) · Dir予測(文脈 | n_{x,k}, β_k)
               Dir予測 = (n_{x,k}(c) + β_k)/(N_k + β_k S)（N_k = Σ_c n_{x,k}(c)、S = 手がかり x が見た文脈の数 ＋ （c が新しければ 1））。
@@ -637,8 +638,10 @@ class Conditioning:
 
     # ------------------------------------------------------------------ 学習
     def update(self, cues: Sequence[str], y: float, ctx: Optional[str] = None,
-               t: Optional[float] = None) -> Tuple[Dict[str, float], Dict[str, Any]]:
-        """TD の更新。戻り値は (手がかりごとの ΔC の和（台帳用）, 内訳)。ctx, t は手がかりが現れたときの文脈と時刻。"""
+               t: Optional[float] = None, force: Optional[Dict[str, Dict[str, Any]]] = None) -> Tuple[Dict[str, float], Dict[str, Any]]:
+        """TD の更新。戻り値は (手がかりごとの ΔC の和（台帳用）, 内訳)。ctx, t は手がかりが現れたときの文脈と時刻。
+        force（B1 の強制再生用。通常は None）: 手がかりごとの離散的な決定 {"created": 新しい原因を作るか, "map": MAP の原因の添字} を、記録された決定に合わせる。
+        連続な量（事後・価値・重み）は強制しない。"""
         cues = list(dict.fromkeys(cues))
         if not cues:
             self.last_detail = {}
@@ -649,8 +652,8 @@ class Conditioning:
         if self.K == 1:
             return self._update_single(cues, ii, y)
         if self.revised:
-            return self._update_revised(cues, ii, y, ctx, float(self.now if t is None else t))
-        return self._update_latent(cues, ii, y, ctx, float(self.now if t is None else t))
+            return self._update_revised(cues, ii, y, ctx, float(self.now if t is None else t), force)
+        return self._update_latent(cues, ii, y, ctx, float(self.now if t is None else t), force)
 
     def _update_single(self, cues: List[str], ii: np.ndarray, y: float) -> Tuple[Dict[str, float], Dict[str, Any]]:
         """v3.2 の NLMS 型の更新（算術も同じ）。"""
@@ -662,7 +665,7 @@ class Conditioning:
         return {c: float(d) for c in cues}, detail
 
     def _update_latent(self, cues: List[str], ii: np.ndarray, y: float, ctx: Optional[str],
-                       t: float) -> Tuple[Dict[str, float], Dict[str, Any]]:
+                       t: float, force: Optional[Dict[str, Dict[str, Any]]] = None) -> Tuple[Dict[str, float], Dict[str, Any]]:
         """spec_literal（SPEC-v3.3 4.2 のとおり）: 柔らかい事後に比例した更新。割当の記録（trace）には、事前の内訳・柔らかい事後・更新に使った重み・各原因の ΔC を残す。"""
         cfg = self.cfg
         n = len(cues)
@@ -695,7 +698,8 @@ class Conditioning:
             created: Optional[int] = None
             reused = False
             replaced_uid = -1
-            if post_new > float(post.max()):                      # 新しい原因の事後が最大 → 作る
+            fc = None if force is None else force.get(c)
+            if (post_new > float(post.max())) if fc is None else bool(fc["created"]):                      # 新しい原因の事後が最大 → 作る（強制再生では記録された決定）
                 free = np.nonzero(~alive)[0]
                 if free.size > 0:
                     created = int(free[0])
@@ -717,7 +721,7 @@ class Conditioning:
             self.CK[i] += (cfg.alpha_c / n) * post * err * self.AL[i]
             if j is not None:
                 self.CNT[i, :, j] += post * self.AL[i]
-            kmap = int(np.argmax(post))
+            kmap = int(np.argmax(post)) if fc is None else int(fc["map"])
             self.TK[i, kmap] = t
             detail[c] = {"post": [float(x) for x in post], "post_new": float(post_new), "map": kmap, "created": created,
                          "reused": reused, "resp_before": float(resp[a]), "y_x": float(y_x[a])}
@@ -745,7 +749,7 @@ class Conditioning:
         return dC, detail
 
     def _update_revised(self, cues: List[str], ii: np.ndarray, y: float, ctx: Optional[str],
-                        t: float) -> Tuple[Dict[str, float], Dict[str, Any]]:
+                        t: float, force: Optional[Dict[str, Dict[str, Any]]] = None) -> Tuple[Dict[str, float], Dict[str, Any]]:
         """revised: 局所 MAP。事後が最大の原因（新しい原因を含む）だけを TD の誤差で更新し、その履歴に (t, 文脈) を加える。"""
         cfg = self.cfg
         n = len(cues)
@@ -774,7 +778,8 @@ class Conditioning:
             uid_before = self.UID[i].copy()
             c_before = self.CK[i].copy()
             replaced_uid = -1
-            if post_new > float(post.max()):                      # 新しい原因の事後が最大 → 作る
+            fc = None if force is None else force.get(c)
+            if (post_new > float(post.max())) if fc is None else bool(fc["created"]):                      # 新しい原因の事後が最大 → 作る（強制再生では記録された決定）
                 free = np.nonzero(self.AL[i] < 0.5)[0]
                 if free.size > 0:
                     k = int(free[0])
@@ -791,7 +796,7 @@ class Conditioning:
                 self.next_uid += 1
                 created = k
             else:
-                k = int(np.argmax(post))
+                k = int(np.argmax(post)) if fc is None else int(fc["map"])
             self.CK[i, k] += (cfg.alpha_c / n) * (y_x[a] - self.CK[i, k])
             self._hist_add(i, k, t, -1 if j is None else j)
             if j is not None:
@@ -823,19 +828,34 @@ class Conditioning:
         return dC, detail
 
     def reinstate(self, skip: Sequence[str], t: float, ctx: Optional[str] = None,
-                  r: Optional[float] = None) -> List[Tuple[str, int]]:
+                  r: Optional[float] = None, force: Optional[List[Sequence[Any]]] = None) -> List[Tuple[str, int]]:
         """復位。手がかりなしで嫌悪の結果が起きたときに呼ぶ（skip の手がかりは除く）。戻り値は更新した (手がかり, 原因の添字)。single_cause では何もしない。
         revised（r = その事象の Σ a_k Δu_k を渡したとき）: その結果がどの原因から来たかを、価値が予測する嫌悪の大きさの尤度 N(r; C_{x,k}, σ_r²) で推論し、
         「どの原因でもない」（N(r; 0, σ_r²)）より大きい中で最大の 1 つに (t, 文脈) の試行を加える（価値は更新しない）。
-        spec_literal: 負の価値（C < −lc_neg_threshold）を持つ全ての原因の最後に使われた時刻を現在に更新する。"""
+        spec_literal: 負の価値（C < −lc_neg_threshold）を持つ全ての原因の最後に使われた時刻を現在に更新する。
+        force（B1 の強制再生用。通常は None）: 更新する（手がかり, 原因）の組を、記録された決定に合わせる（閾値や尤度の比較をしない）。"""
         self.last_reinstate = {}
         if self.K == 1 or self.CK.shape[0] == 0:
             return []
+        if force is not None and self.revised and r is not None:
+            if not force:
+                return []
+            i, k = self.idx[force[0][0]], int(force[0][1])
+            j = self._ctx_col(ctx, create=ctx is not None)
+            self._hist_add(i, k, t, -1 if j is None else j)
+            if j is not None:
+                self.CNT[i, k, j] += 1.0
+            self.TK[i, k] = t
+            return [(self.names[i], k)]
         if not (self.revised and r is not None):
             mask = (self.AL > 0.5) & (self.CK < -self.cfg.lc_neg_threshold)
+            if force is not None:
+                mask = np.zeros(self.AL.shape, dtype=bool)
+                for cue_f, k_f in force:
+                    mask[self.idx[cue_f], int(k_f)] = True
             for c in skip:
                 i = self.idx.get(c)
-                if i is not None:
+                if i is not None and force is None:
                     mask[i, :] = False
             rows, cols = np.nonzero(mask)
             if self.trace and not self.revised:

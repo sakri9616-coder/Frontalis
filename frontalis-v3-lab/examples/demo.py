@@ -17,10 +17,14 @@ v3.3 で見せること（第 1 部: NN の再検証と消去。4f は設計の�
     差は穏やか（転移できる世界でも、ヘッドの重みはほぼ一様に近い）。mlp は X3 の結論（ベンチマークで最良の条件がなかった）で既定の mixture から外した
   - 条件づけ価値 C は潜在原因を持つ。文脈 A で獲得し、文脈 B で消去すると、元の嫌悪が文脈 A に戻るか（single_cause と比べる）
   - 既定の設計は SPEC-v3.3 4.2 のとおり（spec_literal。柔らかい事後で更新）。割当の記録（柔らかい事後の重みと各原因の ΔC）で、なぜ戻らなかったかを追える。
-    第 1 部の設計の改訂（revised。局所 MAP）は実験設定（lc_design = "revised"）
+    第 1 部の設計の改訂（revised。局所 MAP）は実験設定（lc_design = "revised"）。既定の選択は現時点の設計上の選択（理由: 事前に故障の基準と定めた E1 の不合格と、条件づけが行動に効く範囲）で、
+    revised が数値的に壊れているという判定ではない（B1〜B3 は両方の設計で合格）
 v3.3 で見せること（第 2 部: 価値の再帰属と、選択の正当化）:
   - 訂正（kind = "correction"）: 事実（信念）は訂正され、当時の主観的な記録は残り、価値は自動では消えずに一部残り、その後の良い経験で薄れる
-  - 二択（kind = "choice"）: 迷った選択でだけ選んだものへの正当化 J が生じ、有界で、経験の裏付けがなければ減衰し、反する経験に負ける。J は経験の教師にならない
+  - 二択（kind = "choice"）: 迷った選択でだけ選んだものへの正当化 J が生じ、有界で、経験の裏付けがなければ減衰し、反する経験に負ける。J は経験の教師にならない（Z-orig。SPEC 3.3）
+  - Z-persist（SPEC 8.3）: 時間では減衰しない正当化。J の変化はすべて源つきの出来事（spread・reaffirm・counter・overwhelm）で、持続・増幅・反証への抵抗を源の記録で説明できる。
+    予期 Q を「経験に根拠のある部分」と「正当化の部分」に分けて返す（explain_preference）。持続・増幅・抵抗は故障ではなく経験史による個人差でありうる。故障と見るのは、状態が有界でない・
+    学習規則が自分の定義どおりに動かない・分岐や変化の原因を記録から説明できない、のどれかだけ（B1〜B3）
 """
 from __future__ import annotations
 
@@ -378,7 +382,8 @@ def main() -> None:
     for label, r in rows:
         print(f"  {label:<22} 消去した B {r['cafe_chat']:+.2f}   元の A {r['studio']:+.2f}   未見の C {r['garden']:+.2f}")
     print(f"  revised は消去の 20 試行で獲得の原因 #{uid_r} を一度も更新しない（MAP に選ばれた試行 {sel}）。消去は毎回、新しい原因に入る。")
-    print("  ただし revised は E1（嫌悪の維持）を破り（理由なく縮む）、1e-3 の摂動で選択が分岐し、条件づけ価値が行動に効かなくなった。それで既定から外した（CHANGELOG の M 節）。")
+    print("  ただし revised は、事前に故障の基準と定めた E1（嫌悪の維持）が不合格になり（使われない手がかりの応答が、時間とともに縮む既存の原因の重みと一定の新しい原因 α の比で縮む）、")
+    print("  条件づけ価値が行動に効く範囲も狭まった。それで既定を spec_literal に置いている。これは現時点の設計上の選択で、revised が数値的に壊れているという判定ではない（B1〜B3 は合格。CHANGELOG の M 節）。")
 
     # --- 5. 曖昧な出来事の解釈 ---
     hr("5. 曖昧な出来事の解釈は人格の信念で違い、その解釈のまま学ぶ（v3.1）")
@@ -450,7 +455,7 @@ def main() -> None:
     print(f"  訂正を与えず、A と無関係な経験を 8 回: 対照との差 {d_pre:+.3f} → {YD.like(m2) - YD.like(k2):+.3f}。誤解は誤解のまま残る（研究思想 §7: 誤解が解かれないこともある）。")
 
     # --- 8. 選択の正当化（v3.3 第 2 部 3）---
-    hr("8. 迷った選択でだけ正当化 J が生じ、有界で、経験の裏付けがなければ減衰し、反する経験に負ける（v3.3 第 2 部）")
+    hr("8. 迷った選択でだけ正当化 J が生じ、有界で、経験の裏付けがなければ減衰し、反する経験に負ける（Z-orig。v3.3 第 2 部 3）")
     n = YD.warm()
     print("人格: 友人 ally（connection・support）と敵 foe（harm・betrayal）の経験を 6 回ずつ。二択は softmax(β Q) で選び、選んだ側の結果だけを観測して学ぶ。")
     r = n.experience(YD.easy_choice(0))
@@ -472,7 +477,7 @@ def main() -> None:
               + ("  （反転: 害 %d 回目）" % r_["reversed_at"] if r_["reversed_at"] else "  （10 回でも反転しない）"))
     ra = [r_["reversed_at"] for r_ in rows]
     print(f"    20 種: 5 回以内に反転 {sum(1 for x in ra if x is not None and x <= 5)} 種、6〜10 回で反転 {sum(1 for x in ra if x is not None and x > 5)} 種、10 回でも反転しない {sum(1 for x in ra if x is None)} 種"
-          "（Z4 の基準は全種で 5 回以内。不合格。害は文脈・世界の特徴にも分配されるので、概念だけの二択では好む側と他方の差にあまり効かない。CHANGELOG の「v3.3 第2部」）")
+          "（Z4 の基準は全種で 5 回以内。不合格。これは Z-orig の J が反証に抵抗する、という性質の記録で、故障ではない（SPEC 8.2）。害は文脈・世界の特徴にも分配されるので、概念だけの二択では好む側と他方の差にあまり効かない。CHANGELOG の「v3.3 第2部」）")
     z = copy.deepcopy(YD.warm())
     for i in range(6):
         z.experience(YD.hesitant("dz%d" % i, "novel_c", "novel_d"))
@@ -488,6 +493,37 @@ def main() -> None:
     same = bool(np.array_equal(f1.value.person.W, f2.value.person.W) and np.array_equal(f1.value.sit.W, f2.value.sit.W) and np.array_equal(f1.cond.CK, f2.cond.CK))
     print(f"  J を入れ替えて同じ強制の経験列を与えても、W と C の学習はビット単位で同じ: {same}（J は経験の教師にならない。予期 Q と、そこから出る f にだけ入る）。")
     print("  主体性の重み: 同じ結果の経験を『自分で選んだ（optional を受けた）』場合は、強制された場合より a が速く動く（η_a (1 + κ_ag chosen)、κ_ag = 1）。効用の変化がなければ a は動かない。")
+
+    # --- 8b. Z-persist ---
+    hr("8b. Z-persist: 時間で減衰しない正当化。持続・増幅・抵抗は、記録された出来事の源で説明される（v3.3 第 2 部 8）")
+    sys.path.insert(0, str(ROOT / "tests"))
+    import p_protocol as PP
+    n, fav, oth = PP.base_persona(0)
+    x = f"concept:{fav}"
+    print("  J の変化は、源つきの出来事だけ: spread（迷った選択）・reaffirm（再び選ぶ。+η_r(1−|J|/J_num)）・counter（反する選択）・overwhelm（圧倒的な反証）。時間の減衰はない。")
+    print(f"  迷う二択を 3 回した後: J({fav}) = {n.just[x]:+.3f}（源: " + ", ".join(f"{k} {v:+.3f}" for k, v in sorted(n.just_src[x].items())) + "）")
+    j0 = dict(n.just)
+    for e in YD.unrelated(100, tag="p2u"):
+        n.experience(e)
+    print(f"  二択のない経験を 100 回: J は一切変わらない（厳密に同じ: {n.just == j0}）。Z-orig では同じ区間で毎経験 2% ずつ減衰し、100 経験で 13% しか残らない。")
+    for i in range(10):
+        PP.run_forced(n, PP.rechoice(fav, oth, f"d8r{i}"), 0)
+    print(f"  友人 ally との二択で同じ側を 10 回選ぶ（葛藤はない。|ΔQ| ≈ 0.5）: J({fav}) = {n.just[x]:+.3f}（源: "
+          + ", ".join(f"{k} {v:+.3f}" for k, v in sorted(n.just_src[x].items())) + "）。再び選ぶこと自体が J を押し上げる（コミットメント）。")
+    jb = n.just[x]
+    for i in range(5):
+        r = PP.run_forced(n, PP.rechoice(fav, oth, f"d8f{i}", harm=True), 0)
+        d = r.get("discount")
+        print(f"    反証 {i + 1} 回目（選んだ相手に裏切られる。δ={r['delta']:+.2f}）: 抵抗 q={d['q']:.3f}（人モデルの負の教師の {d['q']:.0%} を場面へ回す）  J({fav}) {n.just[x]:+.3f}")
+    ev = PP.event_sums(n, x)
+    print(f"  反証の後の J({fav}) = {n.just[x]:+.3f}（反証の前 {jb:+.3f}）。台帳の源ごとの和: " + ", ".join(f"{k} {v:+.3f}" for k, v in ev.items() if abs(v) > 1e-9))
+    print("  → 最初の反証は予測誤差 δ が大きく負で、正当化で割り引ける量 tanh(J) を大きく超えるので、overwhelm が J の正の部分をほぼ消した（超えた分 ≥ 1/η_ov のとき割合 1）。")
+    print("     その後の +0.03 は、反証を受けながら同じ側を選び続けること自体の reaffirm（η_r）。残った分も、減った分も、どの出来事でそうなったかを記録から言える（P1・P4）。")
+    print("     反証に抵抗した分（人モデルの負の教師を場面へ回した量）は discount の記録（P5）。J が小さいので抵抗の割合 q = ρ_dis tanh(J) は小さい。")
+    ex = n.explain_preference([{"context": "studio", "concepts": [fav]}, {"context": "studio", "concepts": [oth]}], key="demo")
+    d = ex["delta"]
+    print(f"  選好の説明（explain_preference）: ΔQ = {d['Q']:+.3f} = 経験に根拠のある部分 {d['grounded']:+.3f} + 正当化の部分 {d['justification']:+.3f}。正当化が選好を決めているか: {ex['justification_decides']}")
+    print("  持続・増幅・抵抗の強さは合否にしない。判定するのは、J のすべての変化に源があること・無条件の正帰還がないこと・数値的に健全なこと（P1〜P6、B1〜B3）。")
 
     # --- 9. 保存 → 復元 → 継続 ---
     hr("9. 保存 → 復元 → 継続（K）")

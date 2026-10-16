@@ -287,8 +287,8 @@ def z3_worker(seed: int) -> Dict[str, Any]:
     return {"seed": seed, "J_before": j0, "J_after": j1, "J_remaining": j1 / j0, "W_before": w0, "W_after": w1, "W_remaining": w1 / w0}
 
 
-def z4_worker(seed: int) -> Dict[str, Any]:
-    n = make(seed)
+def z4_worker(seed: int, **kw: Any) -> Dict[str, Any]:
+    n = make(seed, **kw)
     for i in range(6):
         n.experience(hesitant_choice(f"z4c{i}", "z4_a", "z4_b"))
     probe = lambda c: n.probe({"context": "studio", "concepts": [c]})
@@ -366,3 +366,108 @@ def z7_worker(seed: int) -> Dict[str, Any]:
                       ("a", a.concern.a, b.concern.a)):
         same[tag] = bool(np.array_equal(x, y))
     return {"seed": seed, "identical": same, "max_abs_Q_difference": float(np.max(np.abs(np.array(qa) - np.array(qb)))), "n": len(hist)}
+
+
+# ======================================================================
+# Z8（追加。SPEC-v3.3 7.3 の表の Z8、8.2）: 正当化の追跡
+# ======================================================================
+def _state_pair(n: NPN):
+    m, a = n.get_state()
+    return copy.deepcopy(m), {k: np.array(v, copy=True) for k, v in a.items()}
+
+
+def _states_equal(x: NPN, y: NPN) -> bool:
+    from helpers import deep_equal
+    mx, ax = x.get_state()
+    my, ay = y.get_state()
+    return deep_equal(mx, my) and ax.keys() == ay.keys() and all(np.array_equal(ax[k], ay[k]) for k in ax)
+
+
+def z8_choices(seed: int) -> List[Dict[str, Any]]:
+    """Z8 の二択の列: 迷う二択 12（概念を 3 組で巡る）、易しい二択 4、結果つきの二択 4（選んだ側の結果が違う）。"""
+    out: List[Dict[str, Any]] = []
+    for i in range(12):
+        out.append(hesitant_choice(f"z8h{i}", f"z8_{i % 3}_a", f"z8_{i % 3}_b"))
+    for i in range(4):
+        out.append(easy_choice(100 + i))
+    for i in range(4):
+        out.append({"id": f"z8o{i}", "kind": "choice", "options": [{"context": "workshop", "concepts": ["z8_t1"]}, {"context": "workshop", "concepts": ["z8_t2"]}],
+                    "outcomes_by_option": {"0": [{"type": "achievement", "actor": "self", "magnitude": 0.4}], "1": [{"type": "harm", "actor": "world", "magnitude": 0.3}]}})
+    return out
+
+
+def z8_worker(args) -> Dict[str, Any]:
+    """二択ごとの台帳（c, ΔQ, ΔJ）と explain_preference（Q = 根拠 + 正当化）、保存・復元の完全一致を、1 つの種・1 つの条件（orig / persist）で測る。"""
+    import tempfile
+    from helpers import deep_equal
+    seed, mode = args
+    n = warm_persona(seed, justification_mode=mode)
+    cfg = n.cfg
+    err = {"conflict": 0.0, "dQ": 0.0, "p_choose": 0.0, "Q_vs_appraise": 0.0, "Q_split": 0.0, "dJ_chosen_side": 0.0, "J_before": 0.0, "J_after": 0.0, "explain_Q_vs_appraise": 0.0,
+           "explain_Q_split": 0.0, "explain_delta_split": 0.0, "explain_sources_sum": 0.0}
+    n_ch, n_dec, explain_pure = 0, 0, True
+    for ch in z8_choices(seed):
+        pre_state = _state_pair(n) if n_ch == 0 else None
+        pre_rng = copy.deepcopy(n.rng.bit_generator.state)
+        j_before = dict(n.just)
+        ap = n.appraise(copy.deepcopy(ch))
+        ex = n.explain_preference([{k: o[k] for k in ("context", "concepts", "participants") if k in o} for o in ch["options"]], key=ch["id"])
+        if pre_state is not None:
+            post = _state_pair(n)
+            explain_pure = bool(deep_equal(pre_state[0], post[0]) and all(np.array_equal(pre_state[1][k], post[1][k]) for k in post[1]) and n.rng.bit_generator.state == pre_rng)
+        for i in (0, 1):
+            e_o, a_o = ex["options"][i], ap["options"][i]
+            err["explain_Q_vs_appraise"] = max(err["explain_Q_vs_appraise"], abs(e_o["Q"] - a_o["Q"]), abs(e_o["Q_val"] - a_o["Q_val"]), abs(e_o["C_Q"] - a_o["C_Q"]), abs(e_o["J_Q"] - a_o["J_Q"]))
+            err["explain_Q_split"] = max(err["explain_Q_split"], abs(e_o["Q"] - (e_o["Q_grounded"] + e_o["J_Q"])), abs(e_o["Q_grounded"] - (e_o["Q_val"] + e_o["C_Q"])))
+            for c, d in e_o["justification"].items():
+                err["explain_sources_sum"] = max(err["explain_sources_sum"], abs(sum(d["sources"].values()) - d["J"]))
+        err["explain_delta_split"] = max(err["explain_delta_split"], abs(ex["delta"]["Q"] - (ex["delta"]["grounded"] + ex["delta"]["justification"])))
+        r = n.experience(copy.deepcopy(ch))
+        ent = [e for e in n.ledger.entries if e["kind"] == "choice"][-1]
+        n_ch += 1
+        c = ent
+        err["conflict"] = max(err["conflict"], abs(c["conflict"] - float(np.exp(-((c["dQ"] / cfg.sigma_conflict) ** 2)))))
+        err["dQ"] = max(err["dQ"], abs(c["dQ"] - (c["Q"][0] - c["Q"][1])))
+        z = cfg.beta_choice * np.array(c["Q"])
+        p = np.exp(z - z.max()); p /= p.sum()
+        err["p_choose"] = max(err["p_choose"], float(np.abs(np.array(c["p_choose"]) - p).max()))
+        err["Q_vs_appraise"] = max(err["Q_vs_appraise"], abs(c["Q"][0] - ap["options"][0]["Q"]), abs(c["Q"][1] - ap["options"][1]["Q"]))
+        for o in c["options"]:
+            err["Q_split"] = max(err["Q_split"], abs(o["Q_val"] + o["C_Q"] + o["J_Q"] - (c["Q"][c["options"].index(o)])))
+        # ΔJ: 選んだ側 +η_J c、選ばなかった側 −η_J c（両方に共通の手がかりは相殺）
+        for cue, d in c["dJ"].items():
+            err["dJ_chosen_side"] = max(err["dJ_chosen_side"], abs(abs(d) - cfg.eta_j * c["conflict"]))
+        # J の前後: 二択の前の値と、二択の後の状態
+        for cue, v in c["J_before"].items():
+            err["J_before"] = max(err["J_before"], abs(v - j_before.get(cue, 0.0)))
+        post_ev: Dict[str, float] = {}
+        for en in n.ledger.entries[-3:]:
+            if en["kind"] == "justification" and en["after"] == ch["id"]:
+                for ev in en["events"]:
+                    if mode != "orig" and ev["source"] in ("overwhelm", "decay"):          # J_after は overwhelm と（変種の）減衰の前の値。orig の J_after は有界化と減衰を含む
+                        post_ev[ev["cue"]] = post_ev.get(ev["cue"], 0.0) + ev["delta"]
+        for cue, v in c["J_after"].items():
+            expect = v + post_ev.get(cue, 0.0)
+            err["J_after"] = max(err["J_after"], abs(n.just.get(cue, 0.0) - expect))
+        n_dec += int(c["chosen"] in (0, 1))
+    n_ledger_choice = sum(1 for e in n.ledger.entries if e["kind"] == "choice")
+    # 保存・復元: 完全一致。説明も、続きの選択も
+    final_pair = [{"context": "studio", "concepts": ["z8_0_a"]}, {"context": "studio", "concepts": ["z8_0_b"]}]
+    with tempfile.TemporaryDirectory() as d:
+        n.save(d)
+        m = NPN.load(d)
+    same_state = _states_equal(n, m)
+    same_explain = bool(deep_equal(n.explain_preference(final_pair, key="z8-final"), m.explain_preference(final_pair, key="z8-final")))
+    same_future = True
+    for i in range(6):
+        ch = hesitant_choice(f"z8f{i}", f"z8_{i % 3}_a", f"z8_{i % 3}_b")
+        same_future = same_future and bool(deep_equal(n.experience(copy.deepcopy(ch)), m.experience(copy.deepcopy(ch))))
+    same_future = same_future and _states_equal(n, m)
+    ex = n.explain_preference(final_pair, key="z8-final")
+    # 正当化が選好を決めている（Q と根拠のみで向きが違う）二択が作れるか: 根拠が同じ（概念だけが違う）で J だけが違う → Q の差は J の差
+    n2 = warm_persona(seed, justification_mode=mode)
+    for i in range(6):
+        n2.experience(hesitant_choice(f"z8d{i}", "z8_d_a", "z8_d_b"))
+    ex2 = n2.explain_preference([{"context": "studio", "concepts": ["z8_d_a"]}, {"context": "studio", "concepts": ["z8_d_b"]}], key="z8-d")
+    return {"seed": seed, "mode": mode, "n_choices": n_ch, "errors": err, "explain_is_pure": explain_pure, "restore_same_state": same_state, "restore_same_explain": same_explain,
+            "restore_same_future": same_future, "example_explain": ex, "example_J_decides": ex2, "ledger_choice_entries": n_ledger_choice}
