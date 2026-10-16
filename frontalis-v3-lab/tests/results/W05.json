@@ -1,18 +1,20 @@
 {
- "rank_agreement": 0.7,
- "chance_level_shuffled_pairing": 0.585585,
- "difference": 0.11441499999999993,
+ "rank_agreement": 0.75,
+ "chance_level_shuffled_pairing": 0.5827449999999998,
+ "difference": 0.16725500000000015,
  "uniform_chance_1_over_6": 0.16666666666666666,
- "n_distinct_rankings_orig": 3,
+ "n_distinct_rankings_orig": 4,
  "ranking_counts_orig": {
-  "X < K < R": 5,
   "K < R < X": 1,
-  "K < X < R": 14
+  "K < X < R": 15,
+  "X < R < K": 1,
+  "X < K < R": 3
  },
  "ranking_counts_pert": {
-  "X < K < R": 2,
   "R < K < X": 1,
-  "K < X < R": 16,
-  "X < R < K": 1
+  "K < X < R": 15,
+  "X < R < K": 1,
+  "K < R < X": 1,
+  "X < K < R": 2
  }
 }

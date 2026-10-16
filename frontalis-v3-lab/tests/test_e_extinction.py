@@ -4,6 +4,9 @@
 消去 20 試行 → 各テスト。各テストは消去直後の状態の写しから分岐。20 本の乱数種で、害の大きさ・無関係な経験の中身が変わる）。
 比 = C / C_獲得直後（獲得直後の文脈 A の C を 1 とする。負の C どうしの比）。判定は 20 本の平均。`single_cause`（K = 1）は同じプロトコルを v3.2 の条件づけで走らせた対照。
 
+**判定する潜在原因（"latent"）は、v3.3 第 1 部の設計の改訂後の既定（lc_design = "revised"）。** 改訂前（lc_design = "spec_literal"。SPEC-v3.3 4.2 の式のとおり）は、
+同じプロトコル・同じ種で走らせて `E01_E09.json` の "pre_revision_spec_literal" に報告する（判定しない。改訂前の数値の再現: E3 0.299、E4 0.167、E5 −0.040、E6 +0.004、E7 の対照 0.494、E9 −0.026）。
+
 判定（SPEC-v3.3 4.4 の表のとおり）:
   E1 維持     消去なしで無関係な経験 50 回 → 比 ≥ 0.7
   E2 消去     文脈 B で 20 試行の消去の後、B でテスト → 比 ≤ 0.3。`single_cause` も ≤ 0.3
@@ -39,12 +42,15 @@ def worker(seed):
             "latent": run_variant(seed),
             "single": run_variant(seed, single_cause=True),
             "e9_one": run_variant(seed, ext_contexts=(CTX_B,), full=False),
-            "e9_three": run_variant(seed, ext_contexts=EXT_CONTEXTS_3, full=False)}
+            "e9_three": run_variant(seed, ext_contexts=EXT_CONTEXTS_3, full=False),
+            "old": run_variant(seed, lc_design="spec_literal"),                                            # 改訂前（報告のみ）
+            "old_e9_one": run_variant(seed, lc_design="spec_literal", ext_contexts=(CTX_B,), full=False),
+            "old_e9_three": run_variant(seed, lc_design="spec_literal", ext_contexts=EXT_CONTEXTS_3, full=False)}
 
 
 def valued_worker(args):
-    seed, single = args
-    return valued_cue_leak(seed, single)
+    seed, single, design = args
+    return valued_cue_leak(seed, single, lc_design=design)
 
 
 _ROWS = None
@@ -70,8 +76,8 @@ class EExtinction(unittest.TestCase):
     def tearDownClass(cls):
         rs = rows()
         res = {}
-        for which in ("latent", "single"):
-            res[which] = {
+        for which in ("latent", "single", "old"):
+            res["pre_revision_spec_literal" if which == "old" else which] = {
                 "E1_maintenance": mean(col(which, "E1")),
                 "E2_extinction_B": mean(col(which, "E2_B")),
                 "E3_ABA": mean(col(which, "ABA")),
@@ -103,6 +109,9 @@ class EExtinction(unittest.TestCase):
                 "E8b_reference_evening_walk_value_before": float(np.mean([r[which]["ctl_before"]["evening_walk"] for r in rs])),
                 "E8c_all_equal": all(r[which]["E8c_restore_state_equal_at_save"] and r[which]["E8c_restore_continue_equal"] for r in rs),
             }
+        res["E9_pre_revision_spec_literal"] = {"ABC_one_context": mean([r["old_e9_one"]["ABC"] for r in rs]),
+                                               "ABC_three_contexts": mean([r["old_e9_three"]["ABC"] for r in rs]),
+                                               "difference_one_minus_three": mean([r["old_e9_one"]["ABC"] - r["old_e9_three"]["ABC"] for r in rs])}
         res["E9"] = {"ABC_one_context": mean([r["e9_one"]["ABC"] for r in rs]),
                      "ABC_three_contexts": mean([r["e9_three"]["ABC"] for r in rs]),
                      "difference_one_minus_three": mean([r["e9_one"]["ABC"] - r["e9_three"]["ABC"] for r in rs]),
@@ -166,13 +175,14 @@ class EExtinction(unittest.TestCase):
     def test_E8b_valued_other_cue_unchanged(self):
         """値を持つ別の手がかり（別の嫌悪の手がかり other_fear。C ≈ −0.2）が、x のプロトコル全体の前後で変わる量 ≤ 0.05（v3.3 の再開後に足した。冒頭の注）。"""
         out = {}
-        for w, single in (("latent", False), ("single", True)):
-            rs = pmap(valued_worker, [(s, single) for s in SEEDS])
+        for w, single, design in (("latent", False, "revised"), ("single", True, "revised"), ("pre_revision_spec_literal", False, "spec_literal")):
+            rs = pmap(valued_worker, [(s, single, design) for s in SEEDS])
             out[w] = {"value_before_mean": mean([r["before"] for r in rs]),
                       "max_abs_change_protocol": max(abs(r["after_protocol"] - r["before"]) for r in rs),
                       "max_abs_change_time_matched_unrelated_control (reported, not judged)": max(abs(r["after_control"] - r["before"]) for r in rs),
                       "max_abs_protocol_minus_control (reported)": max(abs(r["after_protocol"] - r["after_control"]) for r in rs)}
         dump("E08b_valued_cue", out)
+        out.pop("pre_revision_spec_literal")                                                  # 改訂前は報告のみ
         for w in out:
             self.assertGreater(abs(out[w]["value_before_mean"]), 0.1)                          # 検査が空でない
             self.assertLessEqual(out[w]["max_abs_change_protocol"], 0.05, w)

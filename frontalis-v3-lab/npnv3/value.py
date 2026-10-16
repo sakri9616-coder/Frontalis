@@ -400,16 +400,29 @@ class Conditioning:
     どの手がかりがどんな価値を帯びるかは、設計者ではなく経験の随伴構造が決める。
 
     【v3.3 4.2: 潜在原因による条件づけ価値（Gershman, Blei & Niv 2010 の簡約）】
-    手がかり x ごとに、最大 K = 5 個の潜在原因 k を持つ。各原因は 価値 C_{x,k}、文脈の計数 n_{x,k}(文脈)、最後に使われた時刻 t_k。
-      原因の事前   p(k) ∝ N_k · Dir予測(文脈 | n_{x,k}) · exp(−(t − t_k)/τ)          （N_k = Σ_文脈 n_{x,k}）
-                   新しい原因は ∝ α。Dir予測 = (n_{x,k}(c) + β)/(N_k + β S)（S = 手がかり x が見た文脈の数 ＋ （c が新しければ 1））
-      応答         C(x | 文脈, t) = Σ_k p(k) C_{x,k}   （新しい原因の価値は 0。Q と f に入る）
-      事後         事前 × N(y_x; C_{x,k}, σ_r²)。y_x は他の手がかりの応答を引いた、この手がかりが説明すべき目標
-                   （手がかりが 1 つなら TD の目標 y そのもの）
-      学習         ΔC_{x,k} = (α_C / 手がかりの数) · 事後_k · (y_x − C_{x,k})   （事後の重みに比例した、原因ごとの TD の更新）
-                   新しい原因の事後が最大なら、その原因を作る（満員なら N_k exp(−(t−t_k)/τ) が最小の原因を再利用）。
-                   文脈の計数は n_{x,k}(文脈) += 事後_k。最後に使われた時刻 t_k は、事後が最大の原因だけ現在に更新する。
-      復位         手がかりなしで嫌悪の結果が起きたとき、負の価値を持つ原因の t_k を現在に更新する（reinstate）。
+    手がかり x ごとに、最大 K = 5 個の潜在原因 k を持つ。各原因は 価値 C_{x,k}、文脈の計数 n_{x,k}(文脈) を持つ。応答は事前の重みでの期待値:
+      応答         C(x | 文脈, t) = Σ_k p(k) C_{x,k},  p(k) = w_k / (Σ_k' w_k' + α)   （新しい原因の価値は 0。Q と f に入る）
+      事後         事前 × N(y_x; C_{x,k}, σ_r²)。y_x は他の手がかりの応答を引いた、この手がかりが説明すべき目標（手がかりが 1 つなら TD の目標 y そのもの）
+    事前の重み w_k と、学習・復位の規則は、設計 lc_design で二通りある。
+
+    ◆ lc_design = "revised"（既定。v3.3 第 1 部の設計の改訂。オーケストレーター承認、結果を見た後。固定した値: d = 1、α = 0.5、β_first = 5、β_later = 0.2、σ_r = 0.15、K = 5）
+      原因 k は、割り当てられた試行 i の履歴（時刻 t_i と文脈）を持つ。
+      事前    w_k = Σ_{i∈k} (t − t_i + 1)^(−d) · Dir予測(文脈 | n_{x,k}, β_k)
+              Dir予測 = (n_{x,k}(c) + β_k)/(N_k + β_k S)（N_k = Σ_c n_{x,k}(c)、S = 手がかり x が見た文脈の数 ＋ （c が新しければ 1））。
+              時間の重みは冪乗則（Gershman, Blei & Niv 2010 の距離依存の CRP; Blei & Frazier 2011）。時間が経つと最近性の差が薄れ、試行の多い原因が戻る。
+              β_k は原因が作られた順序で決まる: 手がかりの最初の原因（獲得）は β_first = 5（広い）、2 番目以降（意外さで作られる）は β_later = 0.2（狭い）。
+              後から学んだ情報（消去）は、最初に学んだ情報（獲得）より文脈に依存する（Bouton 2004 の簡約）。これは設計上の仮説である。
+      学習    局所 MAP: 事後が最大の原因（新しい原因を含む）だけを TD の誤差で更新する: C_{x,k*} += (α_C / 手がかりの数)(y_x − C_{x,k*})。
+              その原因の履歴に (t, 文脈) を加える（Anderson 1991 の合理的分類モデルの近似）。新しい原因の事後が最大なら作る（満員なら現在の質量 Σ(t−t_i+1)^(−d) が最小の原因を再利用し、その履歴を捨てる）。
+      復位    手がかりなしで嫌悪の結果（大きさ r < 0）が起きたとき、その結果を「どの原因から来たか」で推論する。除外した手がかり（その事象と直前の事象の手がかり）以外の
+              全ての（手がかり, 原因）について尤度 N(r; C_{x,k}, σ_r²) を求め、「どの原因でもない」（価値 0 の尤度 N(r; 0, σ_r²)）より大きい中で最大のもの 1 つに、
+              (t, 文脈) の試行として加える（価値は更新しない）。尤度が同じなら事前の重みが大きい方。事前の重みを選択に使わないのは、価値 0 の消去の原因（質量が大きい）が
+              嫌悪の結果を吸収して、嫌悪の原因に帰属されなくなるのを避けるため（実装前の解析による判断。事前も掛けた版は試していない）。
+    ◆ lc_design = "spec_literal"（SPEC-v3.3 4.2 のとおり。改訂前の実装。K > 1 のときの対照・再現用）
+      事前    w_k = N_k · Dir予測(文脈 | n_{x,k}, β = lc_beta) · exp(−(t − t_k)/τ)（t_k = 最後に使われた時刻）
+      学習    ΔC_{x,k} = (α_C / 手がかりの数) · 事後_k · (y_x − C_{x,k})（事後に比例した柔らかい更新）、n_{x,k}(c) += 事後_k、t_k は事後が最大の原因だけ更新。
+              新しい原因の事後が最大なら作る（満員なら N_k exp(−(t−t_k)/τ) が最小の原因を再利用）。
+      復位    負の価値（C < −lc_neg_threshold）を持つ全ての原因（除外した手がかり以外のすべての手がかり）の t_k を現在に更新する。
     single_cause（K = 1）は上のすべてを使わず、v3.2 の更新と完全に同じ算術で動く（応答 = 重み C、文脈・時刻に依存しない）。
 
     時刻 t は NPN が数える経験（学習した ＋ 回避した）の通し番号。文脈は経験の context。文脈を渡さない読み出し（context=None）は、
@@ -427,6 +440,13 @@ class Conditioning:
         self.ctx_names: List[str] = []                  # 文脈の計数の列（潜在原因が見た文脈の名前）
         self.ctx_idx: Dict[str, int] = {}
         self.CNT = np.zeros((0, self.K, 0))             # 文脈の計数 n_{x,k}(文脈)
+        self.revised = (self.K > 1 and cfg.lc_design == "revised")
+        self.BK = np.zeros((0, self.K))                 # revised: 原因ごとの文脈の Dirichlet の集中度 β_k（作られた順序で決まる）
+        self.CRE = np.zeros(0, dtype=np.int64)          # revised: 手がかりごとに、これまでに作られた原因の数
+        self.hist_t: List[np.ndarray] = []              # revised: 手がかりごとの試行の履歴（時刻・原因・文脈。容量を倍にして伸ばす）
+        self.hist_k: List[np.ndarray] = []
+        self.hist_c: List[np.ndarray] = []
+        self.hist_n: List[int] = []
         self.last_detail: Dict[str, Any] = {}           # 直前の update の内訳（台帳用。状態ではない）
 
     # ------------------------------------------------------------------ 互換: 手がかりごとの 1 つの値 C
@@ -465,6 +485,11 @@ class Conditioning:
             al[:, 0] = 1.0
         self.AL = np.vstack([self.AL, al])
         self.CNT = np.concatenate([self.CNT, np.zeros((add, self.K, self.CNT.shape[2]))], axis=0)
+        self.BK = np.vstack([self.BK, np.full((add, self.K), self.cfg.lc_beta_first)])
+        self.CRE = np.concatenate([self.CRE, np.zeros(add, dtype=np.int64)])
+        for _ in range(add):
+            self.hist_t.append(np.zeros(0)); self.hist_k.append(np.zeros(0, dtype=np.int64)); self.hist_c.append(np.zeros(0, dtype=np.int64))
+            self.hist_n.append(0)
 
     def _register(self, cue: str) -> int:
         i = self.idx.get(cue)
@@ -487,9 +512,8 @@ class Conditioning:
         return j
 
     # ------------------------------------------------------------------ 原因の事前（応答と更新で共通）
-    def _prior_weights(self, ii: np.ndarray, ctx: Optional[str], t: float) -> np.ndarray:
-        """手がかり ii の、存在する原因の事前の重み（正規化前。形 (m, K)）。新しい原因の重みは cfg.lc_alpha。"""
-        cfg = self.cfg
+    def _ctx_pred(self, ii: np.ndarray, ctx: Optional[str], beta: Any) -> Tuple[np.ndarray, np.ndarray]:
+        """文脈の Dirichlet–多項の予測 (n_{x,k}(c) + β)/(N_k + β S)（形 (m, K)）と N_k。beta は スカラーか (m, K)。文脈が None なら予測は 1。"""
         CNT = self.CNT[ii]                                   # (m, K, S)
         N = CNT.sum(axis=2)                                  # (m, K)
         pred = np.ones_like(N)
@@ -503,13 +527,53 @@ class Conditioning:
             else:
                 n_c = CNT[:, :, j]
                 S_eff = S_eff + (~seen[:, j]).astype(np.float64)
-            pred = (n_c + cfg.lc_beta) / (N + cfg.lc_beta * S_eff[:, None])
+            pred = (n_c + beta) / (N + beta * S_eff[:, None])
+        return pred, N
+
+    def _prior_weights(self, ii: np.ndarray, ctx: Optional[str], t: float) -> np.ndarray:
+        """手がかり ii の、存在する原因の事前の重み（正規化前。形 (m, K)）。新しい原因の重みは cfg.lc_alpha。"""
+        if self.revised:
+            pred, _ = self._ctx_pred(ii, ctx, self.BK[ii])
+            mass = np.stack([self._mass_row(int(i), t) for i in ii])
+            return self.AL[ii] * mass * pred
+        pred, N = self._ctx_pred(ii, ctx, self.cfg.lc_beta)
         rec = self._recency(np.maximum(t - self.TK[ii], 0.0))
         return self.AL[ii] * N * pred * rec
 
     def _recency(self, dt: np.ndarray) -> np.ndarray:
-        """最後に使われてからの経過 dt（経験）の重み exp(−dt/τ)（SPEC-v3.3 4.2）。診断用の変種はこれを差し替える。"""
+        """（spec_literal）最後に使われてからの経過 dt（経験）の重み exp(−dt/τ)（SPEC-v3.3 4.2）。診断用の変種はこれを差し替える。"""
         return np.exp(-dt / self.cfg.lc_tau)
+
+    # ------------------------------------------------------------------ 試行の履歴（revised）
+    def _mass_row(self, i: int, t: float) -> np.ndarray:
+        """手がかり i の、原因ごとの質量 Σ_{j∈k} (t − t_j + 1)^(−d)（形 (K,)）。"""
+        n = self.hist_n[i]
+        if n == 0:
+            return np.zeros(self.K)
+        dt = np.maximum(t - self.hist_t[i][:n], 0.0) + 1.0
+        return np.bincount(self.hist_k[i][:n], weights=dt ** (-self.cfg.lc_decay_d), minlength=self.K)[: self.K]
+
+    def _hist_add(self, i: int, k: int, t: float, c: int) -> None:
+        n = self.hist_n[i]
+        if n == len(self.hist_t[i]):
+            cap = max(8, 2 * n)
+            self.hist_t[i] = np.concatenate([self.hist_t[i], np.zeros(cap - n)])
+            self.hist_k[i] = np.concatenate([self.hist_k[i], np.zeros(cap - n, dtype=np.int64)])
+            self.hist_c[i] = np.concatenate([self.hist_c[i], np.zeros(cap - n, dtype=np.int64)])
+        self.hist_t[i][n] = t
+        self.hist_k[i][n] = k
+        self.hist_c[i][n] = c
+        self.hist_n[i] = n + 1
+
+    def _hist_drop(self, i: int, k: int) -> None:
+        """原因 k の試行を履歴から捨てる（満員のときの再利用）。"""
+        n = self.hist_n[i]
+        keep = self.hist_k[i][:n] != k
+        m = int(keep.sum())
+        self.hist_t[i] = self.hist_t[i][:n][keep].copy()
+        self.hist_k[i] = self.hist_k[i][:n][keep].copy()
+        self.hist_c[i] = self.hist_c[i][:n][keep].copy()
+        self.hist_n[i] = m
 
     # ------------------------------------------------------------------ 読み出し（学習しない）
     def value_of(self, name: str, ctx: Optional[str] = None, t: Optional[float] = None) -> float:
@@ -554,6 +618,8 @@ class Conditioning:
         ii = np.array([self.idx[c] for c in cues])
         if self.K == 1:
             return self._update_single(cues, ii, y)
+        if self.revised:
+            return self._update_revised(cues, ii, y, ctx, float(self.now if t is None else t))
         return self._update_latent(cues, ii, y, ctx, float(self.now if t is None else t))
 
     def _update_single(self, cues: List[str], ii: np.ndarray, y: float) -> Tuple[Dict[str, float], Dict[str, Any]]:
@@ -624,19 +690,104 @@ class Conditioning:
         self.last_detail = detail
         return dC, detail
 
-    def reinstate(self, skip: Sequence[str], t: float) -> List[Tuple[str, int]]:
-        """復位: 手がかりなしで嫌悪の結果が起きたとき、負の価値を持つ原因の t_k を現在に更新する（skip の手がかりは除く）。
-        戻り値は更新した (手がかり, 原因の添字)。single_cause では何もしない。"""
+    def _update_revised(self, cues: List[str], ii: np.ndarray, y: float, ctx: Optional[str],
+                        t: float) -> Tuple[Dict[str, float], Dict[str, Any]]:
+        """revised: 局所 MAP。事後が最大の原因（新しい原因を含む）だけを TD の誤差で更新し、その履歴に (t, 文脈) を加える。"""
+        cfg = self.cfg
+        n = len(cues)
+        before = self.CK[ii].copy()
+        j = self._ctx_col(ctx, create=ctx is not None)
+        w = self._prior_weights(ii, ctx, t)                      # (n, K)
+        total = w.sum(axis=1) + cfg.lc_alpha
+        resp = ((w / total[:, None]) * self.CK[ii]).sum(axis=1)  # 応答 C(x)
+        y_x = y - (resp.sum() - resp)                            # 手がかりごとの、説明すべき目標（他の手がかりの応答を引く）
+        sig = cfg.lc_sigma_r
+        detail: Dict[str, Any] = {}
+        for a, c in enumerate(cues):
+            i = int(ii[a])
+            alive = (self.AL[i] > 0.5) & (w[a] > 0.0)
+            with np.errstate(divide="ignore"):
+                logp = np.where(alive, np.log(np.maximum(w[a], 1e-300)), -np.inf)
+            la = logp - 0.5 * ((y_x[a] - self.CK[i]) / sig) ** 2     # 存在する原因の log(事前 × 尤度)
+            ln = np.log(cfg.lc_alpha) - 0.5 * (y_x[a] / sig) ** 2   # 新しい原因（価値 0）
+            m = max(float(la.max()), ln)
+            pa = np.exp(la - m); pn = float(np.exp(ln - m))
+            z = float(pa.sum()) + pn
+            post = pa / z; post_new = pn / z
+            created: Optional[int] = None
+            reused = False
+            if post_new > float(post.max()):                      # 新しい原因の事後が最大 → 作る
+                free = np.nonzero(self.AL[i] < 0.5)[0]
+                if free.size > 0:
+                    k = int(free[0])
+                else:
+                    k = int(np.argmin(self._mass_row(i, t))); reused = True
+                    self._hist_drop(i, k)
+                self.CK[i, k] = 0.0
+                self.CNT[i, k, :] = 0.0
+                self.AL[i, k] = 1.0
+                self.BK[i, k] = cfg.lc_beta_first if int(self.CRE[i]) == 0 else cfg.lc_beta_later
+                self.CRE[i] += 1
+                created = k
+            else:
+                k = int(np.argmax(post))
+            self.CK[i, k] += (cfg.alpha_c / n) * (y_x[a] - self.CK[i, k])
+            self._hist_add(i, k, t, -1 if j is None else j)
+            if j is not None:
+                self.CNT[i, k, j] += 1.0
+            self.TK[i, k] = t
+            detail[c] = {"post": [float(x) for x in post], "post_new": float(post_new), "map": k, "created": created,
+                         "reused": reused, "resp_before": float(resp[a]), "y_x": float(y_x[a])}
+        dC: Dict[str, float] = {}
+        for a, c in enumerate(cues):
+            dck = self.CK[ii[a]] - before[a]
+            detail[c]["dCk"] = [float(x) for x in dck]
+            dC[c] = float(dck.sum())
+        self.last_detail = detail
+        return dC, detail
+
+    def reinstate(self, skip: Sequence[str], t: float, ctx: Optional[str] = None,
+                  r: Optional[float] = None) -> List[Tuple[str, int]]:
+        """復位。手がかりなしで嫌悪の結果が起きたときに呼ぶ（skip の手がかりは除く）。戻り値は更新した (手がかり, 原因の添字)。single_cause では何もしない。
+        revised（r = その事象の Σ a_k Δu_k を渡したとき）: その結果がどの原因から来たかを、価値が予測する嫌悪の大きさの尤度 N(r; C_{x,k}, σ_r²) で推論し、
+        「どの原因でもない」（N(r; 0, σ_r²)）より大きい中で最大の 1 つに (t, 文脈) の試行を加える（価値は更新しない）。
+        spec_literal: 負の価値（C < −lc_neg_threshold）を持つ全ての原因の最後に使われた時刻を現在に更新する。"""
         if self.K == 1 or self.CK.shape[0] == 0:
             return []
-        mask = (self.AL > 0.5) & (self.CK < -self.cfg.lc_neg_threshold)
+        if not (self.revised and r is not None):
+            mask = (self.AL > 0.5) & (self.CK < -self.cfg.lc_neg_threshold)
+            for c in skip:
+                i = self.idx.get(c)
+                if i is not None:
+                    mask[i, :] = False
+            rows, cols = np.nonzero(mask)
+            self.TK[mask] = t
+            return [(self.names[int(r_)], int(k)) for r_, k in zip(rows, cols)]
+        sig = self.cfg.lc_sigma_r
+        cand = self.AL > 0.5
         for c in skip:
             i = self.idx.get(c)
             if i is not None:
-                mask[i, :] = False
-        rows, cols = np.nonzero(mask)
-        self.TK[mask] = t
-        return [(self.names[int(r)], int(k)) for r, k in zip(rows, cols)]
+                cand[i, :] = False
+        if not cand.any():
+            return []
+        score = np.where(cand, -0.5 * ((r - self.CK) / sig) ** 2, -np.inf)
+        null = -0.5 * (r / sig) ** 2
+        best = float(score.max())
+        if not best > null:
+            return []
+        rows, cols = np.nonzero(score >= best - 1e-12)
+        if rows.size > 1:                                      # 尤度が同じなら事前の重みが大きい方
+            pw = [float(self._prior_weights(np.array([int(i)]), ctx, t)[0, int(k)]) for i, k in zip(rows, cols)]
+            pick = int(np.argmax(pw))
+            rows, cols = rows[pick:pick + 1], cols[pick:pick + 1]
+        i, k = int(rows[0]), int(cols[0])
+        j = self._ctx_col(ctx, create=ctx is not None)
+        self._hist_add(i, k, t, -1 if j is None else j)
+        if j is not None:
+            self.CNT[i, k, j] += 1.0
+        self.TK[i, k] = t
+        return [(self.names[i], k)]
 
     # ------------------------------------------------------------------ 検査・摂動用の補助
     def set_single(self, name: str, value: float) -> None:
@@ -650,6 +801,12 @@ class Conditioning:
         self.TK[i, 0] = self.now
         if self.K > 1:
             self.CNT[i, 0, :] = 0.0
+        if self.revised:                                       # 質量 0 では応答が 0 になるので、時刻 now に文脈なしの試行を 1 つ置く
+            self.hist_t[i] = np.zeros(0); self.hist_k[i] = np.zeros(0, dtype=np.int64); self.hist_c[i] = np.zeros(0, dtype=np.int64)
+            self.hist_n[i] = 0
+            self.BK[i, :] = self.cfg.lc_beta_first
+            self.CRE[i] = 1
+            self._hist_add(i, 0, self.now, -1)
 
     def nudge(self, name: str, delta: float) -> None:
         """手がかり name の存在する原因すべての価値に delta を足す（テスト・診断用）。K = 1 で未登録なら登録する。"""
@@ -667,12 +824,22 @@ class Conditioning:
 
     # ------------------------------------------------------------------ 保存・復元
     def get_state(self) -> Tuple[Dict[str, Any], Dict[str, np.ndarray]]:
-        return ({"names": list(self.names), "ctx_names": list(self.ctx_names), "K": int(self.K)},
-                {"cond_CK": self.CK, "cond_TK": self.TK, "cond_AL": self.AL, "cond_CNT": self.CNT})
+        HI, HK, HT, HC = [], [], [], []
+        for i in range(len(self.names)):
+            n = self.hist_n[i]
+            HI.append(np.full(n, i, dtype=np.int64)); HK.append(self.hist_k[i][:n].astype(np.int64))
+            HT.append(self.hist_t[i][:n].astype(np.float64)); HC.append(self.hist_c[i][:n].astype(np.int64))
+        cat = lambda xs, dt: np.concatenate(xs) if xs else np.zeros(0, dtype=dt)
+        return ({"names": list(self.names), "ctx_names": list(self.ctx_names), "K": int(self.K), "design": self.cfg.lc_design},
+                {"cond_CK": self.CK, "cond_TK": self.TK, "cond_AL": self.AL, "cond_CNT": self.CNT,
+                 "cond_BK": self.BK, "cond_CRE": self.CRE,
+                 "cond_HI": cat(HI, np.int64), "cond_HK": cat(HK, np.int64), "cond_HT": cat(HT, np.float64), "cond_HC": cat(HC, np.int64)})
 
     def set_state(self, meta: Dict[str, Any], arrays: Dict[str, np.ndarray]) -> None:
         if int(meta["K"]) != self.K:
             raise ValueError(f"条件づけの原因数が設定と合いません: 保存 {meta['K']}, 設定 {self.K}")
+        if meta.get("design") != self.cfg.lc_design:
+            raise ValueError(f"条件づけの設計が設定と合いません: 保存 {meta.get('design')!r}, 設定 {self.cfg.lc_design!r}")
         self.names = list(meta["names"])
         self.idx = {n: i for i, n in enumerate(self.names)}
         self.ctx_names = list(meta["ctx_names"])
@@ -681,6 +848,15 @@ class Conditioning:
         self.TK = np.array(arrays["cond_TK"], dtype=np.float64)
         self.AL = np.array(arrays["cond_AL"], dtype=np.float64)
         self.CNT = np.array(arrays["cond_CNT"], dtype=np.float64)
+        self.BK = np.array(arrays["cond_BK"], dtype=np.float64)
+        self.CRE = np.array(arrays["cond_CRE"], dtype=np.int64)
+        HI, HK = np.array(arrays["cond_HI"], dtype=np.int64), np.array(arrays["cond_HK"], dtype=np.int64)
+        HT, HC = np.array(arrays["cond_HT"], dtype=np.float64), np.array(arrays["cond_HC"], dtype=np.int64)
+        self.hist_t, self.hist_k, self.hist_c, self.hist_n = [], [], [], []
+        for i in range(len(self.names)):
+            m = HI == i
+            self.hist_t.append(HT[m].copy()); self.hist_k.append(HK[m].copy()); self.hist_c.append(HC[m].copy())
+            self.hist_n.append(int(m.sum()))
 
 
 # ======================================================================

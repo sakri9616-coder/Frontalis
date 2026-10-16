@@ -1,10 +1,14 @@
 """潜在原因による条件づけ価値（SPEC-v3.3 4.2）の機構の単体検査。判定基準 E1〜E9 は test_e_extinction.py。ここは「式どおりに動くか」。
 
-  事前    p(k) ∝ N_k · (n_k(c) + β)/(N_k + β S) · exp(−(t − t_k)/τ)，新しい原因は ∝ α
-  応答    Σ_k p(k) C_k
-  事後    事前 × N(y_x; C_k, σ_r²)，新しい原因が最大なら作る（満員なら N_k exp(−(t−t_k)/τ) が最小の原因を再利用）
-  学習    ΔC_k = (α_C / 手がかりの数) 事後_k (y_x − C_k)，文脈の計数 += 事後，t_k は事後が最大の原因だけ現在に
-  復位    手がかりなしの嫌悪の結果で、負の価値を持つ原因の t_k を現在に
+設計は 2 つある（lc_design）。PriorAndResponse・StructuralLimits・UpdateRules・Reinstatement・SingleCauseIsV32 は **spec_literal**（SPEC-v3.3 4.2 のとおり。改訂前の実装）を検査する。
+Revised* は **revised**（既定。v3.3 第 1 部の設計の改訂。オーケストレーター承認、結果を見た後）を検査する。IntegrationInNPN は既定（revised）の NPN を通す。
+
+  spec_literal  事前 p(k) ∝ N_k · (n_k(c) + β)/(N_k + β S) · exp(−(t − t_k)/τ)，新しい原因は ∝ α。応答 Σ_k p(k) C_k
+                事後 事前 × N(y_x; C_k, σ_r²)，新しい原因が最大なら作る。学習 ΔC_k = (α_C / 手がかりの数) 事後_k (y_x − C_k)（柔らかい）
+                復位 手がかりなしの嫌悪の結果で、負の価値を持つ全ての原因の t_k を現在に
+  revised       事前 w_k = Σ_{i∈k} (t − t_i + 1)^(−d) · (n_k(c) + β_k)/(N_k + β_k S)，β_k = β_first（最初の原因）| β_later（2 番目以降）。新しい原因 ∝ α
+                学習は局所 MAP（事後が最大の原因だけを TD の誤差で更新し、その履歴に (t, 文脈) を加える）。満員なら質量最小の原因を再利用
+                復位は、嫌悪の結果を尤度 N(r; C_{x,k}, σ_r²) で原因に帰属し、最も確からしい 1 つの原因に (t, 文脈) の試行を加える（価値は更新しない）
   single_cause（K = 1）は v3.2 の算術と完全に同じ
 """
 import copy
@@ -19,7 +23,29 @@ from npnv3.value import Conditioning
 
 
 def cond(**kw):
+    kw.setdefault("lc_design", "spec_literal")      # このファイルの古い検査は SPEC のとおりの式（改訂前）を見る
     return Conditioning(Config(**kw))
+
+
+def rcond(**kw):
+    return Conditioning(Config(**kw))                # 既定 = revised
+
+
+def place(cd, cue, causes, ctxs=("A", "B")):
+    """revised: 手がかり cue に、原因を手で置く。causes = [(価値, β, [(時刻, 文脈), ...]), ...]（試行の履歴から文脈の計数も作る）。"""
+    i = cd._register(cue)
+    for c in ctxs:
+        cd._ctx_col(c, True)
+    for k, (v, beta, trials) in enumerate(causes):
+        cd.CK[i, k] = v
+        cd.AL[i, k] = 1.0
+        cd.BK[i, k] = beta
+        cd.CRE[i] += 1
+        for (t, c) in trials:
+            cd._hist_add(i, k, float(t), cd.ctx_idx[c])
+            cd.CNT[i, k, cd.ctx_idx[c]] += 1.0
+            cd.TK[i, k] = max(cd.TK[i, k], t)
+    return i
 
 
 def put_causes(cd, cue, values, counts, times, ctxs=("A", "B")):
@@ -273,7 +299,250 @@ class Reinstatement(unittest.TestCase):
         self.assertGreater(float(n.cond.TK[i].max()), t0)
         self.assertEqual(float(n.cond.TK[i].max()), float(n.n_experiences + n.n_avoided - 1))
         entry = n.ledger.entries[-1]
-        self.assertIn(["concept:praise_from_X", 0], entry["td"]["reinstated"])
+        self.assertIn("concept:praise_from_X", [c for c, k in entry["td"]["reinstated"]])
+
+
+class RevisedPriorAndResponse(unittest.TestCase):
+    def test_prior_weight_is_power_law_mass_times_context_prediction(self):
+        cd = rcond()
+        c = cd.cfg
+        place(cd, "x", [(-0.2, c.lc_beta_first, [(0, "A"), (2, "A"), (4, "A")]), (0.0, c.lc_beta_later, [(10, "B"), (12, "B")])])
+        for ctx, t in (("A", 14.0), ("B", 14.0), ("A", 50.0)):
+            S = 2.0
+            w = []
+            for times, n_a, n_b, beta in (([0, 2, 4], 3.0, 0.0, c.lc_beta_first), ([10, 12], 0.0, 2.0, c.lc_beta_later)):
+                mass = sum((t - ti + 1.0) ** (-c.lc_decay_d) for ti in times)
+                n_c, N = (n_a if ctx == "A" else n_b), n_a + n_b
+                w.append(mass * (n_c + beta) / (N + beta * S))
+            p = np.array(w) / (sum(w) + c.lc_alpha)
+            self.assertAlmostEqual(cd.value_of("x", ctx, t), float(p[0] * -0.2), places=14)
+
+    def test_old_cause_with_many_trials_regains_share_as_time_passes(self):
+        """冪乗則: 最近の少数の試行は急に減り、古い多数の試行はゆっくり減る。原因どうしの比は時間で動き、古い原因が戻る
+        （指数関数の spec_literal では比が動かない: StructuralLimits）。"""
+        cd = rcond()
+        c = cd.cfg
+        place(cd, "x", [(-0.2, c.lc_beta_first, [(2 * i, "A") for i in range(12)]), (0.0, c.lc_beta_later, [(24 + 2 * j, "B") for j in range(3)])])
+        def share(t):
+            w = cd._prior_weights(np.array([0]), "B", t)[0]
+            return w[0] / w[1]
+        r = [share(t) for t in (31.0, 60.0, 120.0, 400.0)]
+        self.assertTrue(r[0] < r[1] < r[2] < r[3])
+
+    def test_context_prediction_concentration_first_broad_later_narrow(self):
+        cd = rcond()
+        c = cd.cfg
+        place(cd, "x", [(-0.2, c.lc_beta_first, [(0, "A")] * 10), (0.0, c.lc_beta_later, [(5, "B")] * 10)], ctxs=("A", "B", "C"))
+        pred, N = cd._ctx_pred(np.array([0]), "C", cd.BK[[0]])
+        self.assertGreater(pred[0, 0], 10 * pred[0, 1])                  # 未見の文脈 C: 広い原因は確率を残し、狭い原因はほとんど残さない
+        pred_b, _ = cd._ctx_pred(np.array([0]), "B", cd.BK[[0]])
+        self.assertGreater(pred_b[0, 1], 0.9)                            # 狭い原因は作られた文脈 B に強く結びつく
+
+    def test_unknown_cue_and_empty_history_give_zero(self):
+        cd = rcond()
+        self.assertEqual(cd.value_of("nothing", "A", 5.0), 0.0)
+        cd._register("x")
+        self.assertEqual(cd.value_of("x", "A", 5.0), 0.0)
+
+
+class RevisedUpdateRules(unittest.TestCase):
+    def test_first_update_creates_the_first_cause_with_wide_context_concentration(self):
+        cd = rcond()
+        dC, det = cd.update(["x"], -0.3, "A", 5.0)
+        i = cd.idx["x"]
+        self.assertEqual(det["x"]["created"], 0)
+        self.assertEqual(cd.BK[i, 0], cd.cfg.lc_beta_first)
+        self.assertAlmostEqual(cd.CK[i, 0], cd.cfg.alpha_c * -0.3, places=14)               # 局所 MAP: 重み 1 で α_C (y − 0)
+        self.assertEqual(cd.hist_n[i], 1)
+        self.assertEqual((cd.hist_t[i][0], cd.hist_k[i][0], cd.hist_c[i][0]), (5.0, 0, cd.ctx_idx["A"]))
+        self.assertEqual(cd.CNT[i, 0, cd.ctx_idx["A"]], 1.0)
+        self.assertAlmostEqual(dC["x"], cd.CK[i, 0], places=14)
+
+    def test_only_the_map_cause_is_updated_and_gets_the_trial(self):
+        cd = rcond()
+        c = cd.cfg
+        place(cd, "x", [(-0.2, c.lc_beta_first, [(0, "A"), (2, "A"), (4, "A")]), (0.0, c.lc_beta_later, [(10, "B"), (11, "B"), (12, "B"), (12, "B"), (13, "B"), (13, "B")])])
+        i = cd.idx["x"]
+        before = cd.CK[i].copy()
+        t, y = 14.0, 0.0
+        w = cd._prior_weights(np.array([i]), "B", t)[0]
+        lik = np.exp(-0.5 * ((y - before) / c.lc_sigma_r) ** 2)
+        post = w[:2] * lik[:2]
+        new = c.lc_alpha * np.exp(-0.5 * (y / c.lc_sigma_r) ** 2)
+        k = int(np.argmax(post))
+        self.assertGreater(post[k], new)                                                     # この状態では既存の原因が最大
+        _, det = cd.update(["x"], y, "B", t)
+        self.assertEqual(det["x"]["map"], k)
+        self.assertIsNone(det["x"]["created"])
+        other = 1 - k
+        self.assertEqual(cd.CK[i, other], before[other])                                     # 他の原因は動かない
+        self.assertAlmostEqual(cd.CK[i, k], before[k] + c.alpha_c * (y - before[k]), places=14)
+        self.assertEqual(cd.hist_n[i], 10)
+        self.assertEqual(int((cd.hist_k[i][:10] == k).sum()), (3 if k == 0 else 6) + 1)
+        self.assertEqual(cd.TK[i, k], t)
+
+    def test_surprise_creates_a_later_cause_with_narrow_concentration(self):
+        cd = rcond()
+        c = cd.cfg
+        place(cd, "x", [(-0.5, c.lc_beta_first, [(0, "A"), (2, "A")])])
+        _, det = cd.update(["x"], 0.0, "B", 5.0)                  # 何も起きない: 古い原因（−0.5）では説明できない
+        i = cd.idx["x"]
+        self.assertEqual(det["x"]["created"], 1)
+        self.assertEqual(cd.BK[i, 1], c.lc_beta_later)
+        self.assertEqual(cd.CK[i, 0], -0.5)                                                  # 古い原因は動かない（柔らかい更新ではない）
+        self.assertEqual(int(cd.CRE[i]), 2)
+
+    def test_full_set_reuses_the_smallest_mass_cause_and_drops_its_history(self):
+        cd = rcond(lc_max_causes=2)
+        c = cd.cfg
+        place(cd, "x", [(-0.5, c.lc_beta_first, [(2 * i, "A") for i in range(10)]), (0.3, c.lc_beta_later, [(20, "A")])])
+        i = cd.idx["x"]
+        masses = cd._mass_row(i, 21.0)
+        self.assertLess(masses[1], masses[0])
+        _, det = cd.update(["x"], 0.0, "B", 21.0)                  # どちらにも説明できない目標 → 新しい原因 → 満員 → 質量最小（添字 1）を再利用
+        self.assertTrue(det["x"]["reused"])
+        self.assertEqual(det["x"]["created"], 1)
+        self.assertEqual(int(cd.AL[i].sum()), 2)
+        self.assertEqual(cd.CK[i, 0], -0.5)
+        self.assertLess(abs(cd.CK[i, 1]), 0.05)
+        self.assertEqual(int((cd.hist_k[i][:cd.hist_n[i]] == 1).sum()), 1)                   # 古い履歴は捨てられ、新しい試行だけ
+        self.assertEqual(cd.BK[i, 1], c.lc_beta_later)
+
+    def test_number_of_causes_never_exceeds_K_and_counts_match_history(self):
+        rng = np.random.default_rng(0)
+        for K in (2, 3, 5):
+            cd = rcond(lc_max_causes=K)
+            for t in range(200):
+                cd.update(["x", "y"], float(rng.choice([-0.6, -0.3, 0.0, 0.3, 0.6])), ["A", "B", "C"][t % 3], float(t))
+                for cue in ("x", "y"):
+                    i = cd.idx[cue]
+                    self.assertLessEqual(int(cd.AL[i].sum()), K)
+            for cue in ("x", "y"):
+                i = cd.idx[cue]
+                n = cd.hist_n[i]
+                for k in range(K):
+                    inh = cd.hist_c[i][:n][cd.hist_k[i][:n] == k]
+                    for j in range(len(cd.ctx_names)):
+                        self.assertEqual(float(cd.CNT[i, k, j]), float((inh == j).sum()))       # 文脈の計数 = 履歴の文脈の数
+
+    def test_multiple_cues_share_one_target_by_explaining_away(self):
+        cd = rcond()
+        c = cd.cfg
+        place(cd, "x", [(-0.2, c.lc_beta_first, [(0, "A"), (2, "A"), (4, "A")])])
+        place(cd, "z", [(0.0, c.lc_beta_first, [(0, "A")])])
+        rx, rz = cd.value_of("x", "A", 6.0), cd.value_of("z", "A", 6.0)
+        _, det = cd.update(["x", "z"], -0.3, "A", 6.0)
+        self.assertAlmostEqual(det["x"]["y_x"], -0.3 - rz, places=14)
+        self.assertAlmostEqual(det["z"]["y_x"], -0.3 - rx, places=14)
+
+    def test_dC_is_the_sum_of_cause_changes(self):
+        cd = rcond()
+        rng = np.random.default_rng(1)
+        for t in range(40):
+            before = cd.CK.copy()
+            dC, det = cd.update(["x", "y"], float(rng.normal(0, 0.3)), ["A", "B"][t % 2], float(t))
+            for c in ("x", "y"):
+                i = cd.idx[c]
+                b = before[i] if i < before.shape[0] else np.zeros(cd.K)
+                self.assertAlmostEqual(dC[c], float((cd.CK[i] - b).sum()), places=13)
+                self.assertTrue(np.allclose(det[c]["dCk"], cd.CK[i] - b, atol=1e-13))
+
+    def test_state_roundtrip_keeps_history_and_concentrations(self):
+        cd = rcond()
+        rng = np.random.default_rng(2)
+        for t in range(60):
+            cd.update(["x", "y"], float(rng.normal(0, 0.3)), ["A", "B", "C"][t % 3], float(t))
+        meta, arrays = cd.get_state()
+        cd2 = rcond()
+        cd2.set_state(meta, arrays)
+        for name in cd.names:
+            for t in (61.0, 100.0):
+                for ctx in ("A", "B", "C", "D"):
+                    self.assertEqual(cd.value_of(name, ctx, t), cd2.value_of(name, ctx, t))
+        m2, a2 = cd2.get_state()
+        self.assertTrue(deep_equal(meta, m2) and all(np.array_equal(arrays[k], a2[k]) for k in arrays))
+
+
+class RevisedReinstatement(unittest.TestCase):
+    def test_unsignaled_aversive_outcome_is_attributed_to_the_cause_whose_value_predicts_it(self):
+        cd = rcond()
+        c = cd.cfg
+        place(cd, "x", [(-0.2, c.lc_beta_first, [(0, "A"), (2, "A")]), (0.0, c.lc_beta_later, [(10, "B")] * 8)])
+        place(cd, "other", [(0.05, c.lc_beta_first, [(1, "A")] * 20)])
+        i = cd.idx["x"]
+        before = cd.CK.copy()
+        out = cd.reinstate([], 30.0, "B", -0.3)
+        self.assertEqual(out, [("x", 0)])                                    # 価値 −0.2 の原因が −0.3 に最も近い。質量の大きい価値 0 の原因（消去）や他の手がかりは選ばない
+        self.assertEqual(cd.hist_n[i], 11)
+        self.assertEqual((cd.hist_t[i][10], cd.hist_k[i][10], cd.hist_c[i][10]), (30.0, 0, cd.ctx_idx["B"]))
+        self.assertEqual(cd.CNT[i, 0, cd.ctx_idx["B"]], 1.0)
+        self.assertTrue(np.array_equal(cd.CK, before))                       # 価値は更新しない
+        self.assertEqual(cd.hist_n[cd.idx["other"]], 20)
+
+    def test_no_cause_predicts_the_outcome_so_nothing_happens(self):
+        cd = rcond()
+        c = cd.cfg
+        place(cd, "x", [(0.0, c.lc_beta_first, [(0, "A")] * 5)])
+        place(cd, "y", [(0.05, c.lc_beta_first, [(0, "A")] * 5)])            # 価値が 0 以上の原因は、「どの原因でもない」（価値 0）より嫌悪を説明しない
+        self.assertEqual(cd.reinstate([], 10.0, "B", -0.3), [])
+        place(cd, "z", [(-0.01, c.lc_beta_first, [(0, "A")] * 5)])           # わずかでも負なら、価値 0 より近い（|r − C| < |r|）ので選ばれる
+        self.assertEqual(cd.reinstate([], 10.0, "B", -0.3), [("z", 0)])
+
+    def test_present_cues_are_skipped(self):
+        cd = rcond()
+        c = cd.cfg
+        place(cd, "present", [(-0.3, c.lc_beta_first, [(0, "A")] * 5)])
+        place(cd, "absent", [(-0.2, c.lc_beta_first, [(0, "A")] * 5)])
+        self.assertEqual(cd.reinstate(["present"], 10.0, "B", -0.3), [("absent", 0)])
+
+    def test_only_one_cause_is_reinforced_not_every_cue(self):
+        cd = rcond()
+        c = cd.cfg
+        for name, v in (("a", -0.22), ("b", -0.2), ("c", -0.19)):
+            place(cd, name, [(v, c.lc_beta_first, [(0, "A")] * 3)])
+        out = cd.reinstate([], 10.0, "B", -0.3)
+        self.assertEqual(len(out), 1)
+        self.assertEqual(out[0][0], "a")                                       # 最も近い
+        self.assertEqual(sum(cd.hist_n[cd.idx[n]] for n in "abc"), 10)
+
+    def test_ties_go_to_the_larger_prior_weight(self):
+        cd = rcond()
+        c = cd.cfg
+        place(cd, "small", [(-0.2, c.lc_beta_first, [(0, "A")] * 2)])
+        place(cd, "large", [(-0.2, c.lc_beta_first, [(0, "A")] * 9)])
+        self.assertEqual(cd.reinstate([], 5.0, "A", -0.3), [("large", 0)])
+
+    def test_reinstatement_raises_the_response_in_the_test_context(self):
+        cd = rcond()
+        c = cd.cfg
+        place(cd, "x", [(-0.2, c.lc_beta_first, [(2 * i, "A") for i in range(12)]), (0.0, c.lc_beta_later, [(24 + 2 * j, "B") for j in range(20)])])
+        before = cd.value_of("x", "B", 66.0)
+        cd.reinstate([], 66.0, "B", -0.3)
+        cd.reinstate([], 67.0, "B", -0.3)
+        self.assertLess(cd.value_of("x", "B", 67.0), before - 0.0)
+
+    def test_single_cause_never_reinstates(self):
+        cd = rcond(single_cause=True)
+        cd.update(["x"], -0.5, "A", 1.0)
+        self.assertEqual(cd.reinstate([], 10.0, "A", -0.5), [])
+
+
+class SpecLiteralIsSelectable(unittest.TestCase):
+    def test_spec_literal_npn_runs_and_roundtrips(self):
+        n = make(0, lc_design="spec_literal")
+        for e in mh.generate_praise_history("H1", 3, 12):
+            n.experience(e)
+        self.assertEqual(sum(h for h in n.cond.hist_n), 0)                     # 履歴は使わない
+        with tempfile.TemporaryDirectory() as d:
+            n.save(d)
+            m = NPN.load(d)
+        self.assertEqual(m.cfg.lc_design, "spec_literal")
+        for cue in n.cond.names:
+            self.assertEqual(n.cond.value_of(cue, "studio"), m.cond.value_of(cue, "studio"))
+
+    def test_invalid_design_is_refused(self):
+        with self.assertRaises(ValueError):
+            Config(lc_design="nonsense")
 
 
 class IntegrationInNPN(unittest.TestCase):

@@ -31,8 +31,9 @@ from .lexicon import EmbeddingStore, Lexicon
 from .mlp import sigmoid
 from .schema import validate_experience, validate_probe
 
-SCHEMA_VERSION = 5          # v3.0 は 1、v3.1 は 2（a, C, 所有する埋め込み, 効果表）。改訂 2 で観測の記録（想起）、v3.2 で欲求ごとの Σ とヘッドの対数尤度が加わった(3 → 4)。
-                            # v3.3 で、類ごとの生の計数・類を除いたヘッドのモデル（leave-class-out）・潜在原因つきの条件づけ（原因の価値・文脈の計数・時刻）・pending の文脈と時刻が加わった(4 → 5)
+SCHEMA_VERSION = 6          # v3.0 は 1、v3.1 は 2（a, C, 所有する埋め込み, 効果表）。改訂 2 で観測の記録（想起）、v3.2 で欲求ごとの Σ とヘッドの対数尤度が加わった(3 → 4)。
+                            # v3.3 で、類ごとの生の計数・類を除いたヘッドのモデル（leave-class-out）・潜在原因つきの条件づけ（原因の価値・文脈の計数・時刻）・pending の文脈と時刻が加わった(4 → 5)。
+                            # v3.3 第 1 部の設計の改訂で、潜在原因の試行の履歴（時刻・原因・文脈）と、原因ごとの文脈の集中度が加わった(5 → 6)
 STATE_FILE = "state.json"
 ARRAY_FILE = "arrays.npz"
 
@@ -369,7 +370,7 @@ class NPN:
             # 復位: 手がかりなしで嫌悪の結果が起きたとき、負の価値を持つ原因の最後に使われた時刻を更新する（この事象と直前の事象の手がかりは除く）
             if r <= -cfg.lc_aversive_threshold:
                 skip = list(it["cues"]) + (list(self.pending["cues"]) if self.pending is not None else [])
-                reinst = self.cond.reinstate(skip, t_now)
+                reinst = self.cond.reinstate(skip, t_now, e["context"], r)
             self.pending = {"cues": list(it["cues"]), "session": e["session"], "context": e["context"], "t": t_now}
         # 7. 関心の重み a、欲求の状態 h、気分 m
         self.concern.update(it["du"])

@@ -119,12 +119,12 @@ def first_reaching(values: Sequence[float], target_ratio: float, ref: float) -> 
     return len(values) + 1
 
 
-def valued_cue_leak(seed: int, single_cause: bool = False) -> Dict[str, float]:
+def valued_cue_leak(seed: int, single_cause: bool = False, **kw: Any) -> Dict[str, float]:
     """E8(b) の 2 つ目の検査（v3.3 の再開後に足した）。値を持つ別の手がかり concept:other_fear を、文脈 A で害と対に 12 試行で条件づけ、
     その C（文脈 A）を、(1) x のプロトコル（獲得 12 試行 + 消去 20 試行 = 64 経験）の後、(2) 同じ経験数の無関係な経験だけの後（時間の重みだけの対照）で測る。"""
     rng = np.random.default_rng([seed, 909])
     c = Counter(f"F{seed}")
-    npn = make(seed, single_cause=single_cause)
+    npn = make(seed, single_cause=single_cause, **kw)
     for _ in range(12):
         sess = c.next("s")
         npn.experience(_ev(c.next("c"), CTX_A, ["other_fear"], [], sess))

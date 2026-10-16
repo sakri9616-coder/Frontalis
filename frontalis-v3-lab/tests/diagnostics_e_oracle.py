@@ -10,6 +10,8 @@
   B. 時間の単調性: 学習がない間、応答の絶対値は時間とともに増えない（すべての原因の重みが同じ exp(−t/τ) で縮み、新しい原因 α の質量だけが一定だから）。
      ランダムな状態で確かめ、E5（自発的回復）が SPEC の式では原理的に起きないことを示す。
   C. 未見の文脈での原因の重み N_k · (0 + β)/(N_k + β S): 計数 N_k が大きいと β に飽和し、消去の文脈の数（S）に依らない。E9（3 つの文脈での消去の般化）が式から出ない理由。
+**これは改訂前（lc_design = "spec_literal"。SPEC-v3.3 4.2 のとおり）の式の診断**で、設計の改訂（既定は revised）の後も、改訂前の数値を再現するために spec_literal を指定して動く。
+改訂後の診断は diagnostics_e_revised.py。
 実行: python3 tests/diagnostics_e_oracle.py
 """
 import sys
@@ -40,7 +42,7 @@ def place(cd, cue, causes, ctxs):
 
 
 def oracle_state(ext_counts):
-    cd = Conditioning(Config())
+    cd = Conditioning(Config(lc_design="spec_literal"))
     ctxs = [A] + list(ext_counts)
     place(cd, "x", [(-0.204, {A: 11.3}, 22.0), (0.0, dict(ext_counts), 62.0)], ctxs)
     return cd
@@ -48,7 +50,7 @@ def oracle_state(ext_counts):
 
 def parta():
     """A. oracle の状態での E3〜E6・E9 に当たる比（獲得直後の studio の応答 −0.195 を 1 とする）。"""
-    base = Conditioning(Config())
+    base = Conditioning(Config(lc_design="spec_literal"))
     place(base, "x", [(-0.204, {A: 11.3}, 22.0)], [A])
     r_acq = base.value_of("x", A, 24.0)
     out = {"response_after_acquisition_A": r_acq}
@@ -72,9 +74,9 @@ def parta():
     out["E9_difference"] = out["E9_ABC_one_context"] - out["E9_ABC_three_contexts"]
     # 時間の減衰（τ = 30）を外した（τ → 大）変種: 式のどの部分が効いているか
     for tau in (30.0, 300.0, 3000.0):
-        cdt = Conditioning(Config(lc_tau=tau))
+        cdt = Conditioning(Config(lc_tau=tau, lc_design="spec_literal"))
         place(cdt, "x", [(-0.204, {A: 11.3}, 22.0), (0.0, {B: 20.0}, 62.0)], [A, B])
-        bt = Conditioning(Config(lc_tau=tau))
+        bt = Conditioning(Config(lc_tau=tau, lc_design="spec_literal"))
         place(bt, "x", [(-0.204, {A: 11.3}, 22.0)], [A])
         ra = bt.value_of("x", A, 24.0)
         out[f"tau_{int(tau)}"] = {"E3_ABA": cdt.value_of("x", A, 64.0) / ra, "E4_ABC": cdt.value_of("x", C, 64.0) / ra,
@@ -89,7 +91,7 @@ def partb(trials=4000):
     worst = 0.0
     for _ in range(trials):
         K = int(rng.integers(1, 6))
-        cd = Conditioning(Config(lc_max_causes=5))
+        cd = Conditioning(Config(lc_max_causes=5, lc_design="spec_literal"))
         vals = -rng.uniform(0.0, 0.6, size=K) * (rng.random(K) < 0.8)
         causes = [(float(v), {A: float(rng.uniform(0, 20)), B: float(rng.uniform(0, 20))}, float(rng.uniform(0, 60))) for v in vals]
         place(cd, "x", causes, [A, B])

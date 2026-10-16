@@ -1,16 +1,16 @@
 {
- "approach_rate_K": 0.30999999999999994,
- "approach_rate_R": 0.78125,
- "difference_R_minus_K": 0.47125000000000006,
+ "approach_rate_K": 0.3025,
+ "approach_rate_R": 0.76375,
+ "difference_R_minus_K": 0.46125000000000005,
  "first20": [
-  0.325,
-  0.7700000000000001
+  0.3175,
+  0.7450000000000001
  ],
  "last20": [
-  0.29500000000000004,
-  0.7925000000000001
+  0.2875,
+  0.7825
  ],
- "avoided_offers_total": 727,
+ "avoided_offers_total": 747,
  "belief_changes_after_avoidance": 0,
  "seeds_R_minus_K_ge_0.15": 20
 }

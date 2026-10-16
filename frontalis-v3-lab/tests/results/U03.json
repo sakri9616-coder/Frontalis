@@ -1,16 +1,18 @@
 {
- "rank_agreement": 0.7,
+ "rank_agreement": 0.75,
  "sign_agreement": 1.0,
  "original_ranking_counts": {
-  "X < K < R": 5,
   "K < R < X": 1,
-  "K < X < R": 14
+  "K < X < R": 15,
+  "X < R < K": 1,
+  "X < K < R": 3
  },
  "perturbed_ranking_counts": {
-  "X < K < R": 2,
   "R < K < X": 1,
-  "K < X < R": 16,
-  "X < R < K": 1
+  "K < X < R": 15,
+  "X < R < K": 1,
+  "K < R < X": 1,
+  "X < K < R": 2
  },
  "sign_patterns_orig": {
   "(-1, 1)": 20

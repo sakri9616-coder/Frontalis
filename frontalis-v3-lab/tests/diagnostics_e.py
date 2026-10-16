@@ -8,6 +8,7 @@ E 系（SPEC-v3.3 4.4）を既定（SPEC どおりの式）で走らせた後に
        power  : 時間の重みを冪乗則 1/(1 + Δ/τ) にする（Gershman et al. 2010 の ddCRP は冪乗則。指数関数では原因どうしの比が時間で変わらない）
        ctx    : 復位で、t_k の更新に加えて、その文脈の計数を 1 足す（手がかりなしの嫌悪の結果を、嫌悪の原因に帰属する）
        all    : power + ctx + σ_r = 0.05
+**これは改訂前（lc_design = "spec_literal"）の診断**。設計の改訂後は、改訂後の診断が diagnostics_e_revised.py。
 実行: python3 tests/diagnostics_e.py
 """
 import json
@@ -57,7 +58,7 @@ def measures(rows, full=True):
 
 def job(args):
     name, seed = args
-    kw = {}
+    kw = {"lc_design": "spec_literal"}        # 改訂前（SPEC-v3.3 4.2 のとおり）の診断。設計の改訂後も、改訂前の数値を再現するために spec_literal を指定する
     post = None
     lone = None
     single = False
@@ -136,7 +137,7 @@ def run_variant_full_no_restore(seed, single, post, lone, kw):
 def anatomy(seed=0):
     """消去の後の原因の状態と、文脈 A・B・C での事前の重み。"""
     rng = np.random.default_rng([seed, 303]); c = Counter("D")
-    npn = make(seed)
+    npn = make(seed, lc_design="spec_literal")
     for _ in range(12):
         trial(npn, c, rng, "acq", CTX_A)
     snap = {}

@@ -73,6 +73,13 @@ class Config:
     lc_beta: float = 1.0           # 文脈の Dirichlet 予測の疑似計数 β（SPEC に値の指定なし。対称・一様な事前として 1 を、結果を見る前に決めた）
     lc_neg_threshold: float = 0.02      # 復位: 「負の価値を持つ原因」の閾値（C < −0.02。SPEC に指定なし。結果を見る前に決めた）
     lc_aversive_threshold: float = 0.05 # 復位: 「嫌悪の結果」の閾値（事象の Σ a_k Δu_k ≤ −0.05。同上）
+    # --- v3.3 第1部の設計の改訂（オーケストレーター承認。結果を見た後の改訂。値は固定）---
+    # "revised": 冪乗則の時間の重み・原因ごとの試行の履歴・文脈の集中度（最初の原因は広く、後の原因は狭く）・局所 MAP の学習・原因を推論する復位。
+    # "spec_literal": SPEC-v3.3 4.2 の式のとおり（lc_tau, lc_beta, lc_neg_threshold を使う。改訂前の実装。E3〜E6・E9 が不合格だったもの）。
+    lc_design: str = "revised"
+    lc_decay_d: float = 1.0        # 原因の事前 Σ_{i∈k} (t − t_i + 1)^(−d) の d（Gershman, Blei & Niv 2010 の距離依存 CRP）
+    lc_beta_first: float = 5.0     # 最初に作られた原因（獲得）の文脈の Dirichlet の集中度（広い。未見の文脈にも確率を残す）
+    lc_beta_later: float = 0.2     # 2 番目以降に作られた原因（意外さで作られる。消去など）の集中度（狭い。作られた文脈に結びつく。Bouton 2004 の簡約）
 
     # --- v3.1: 受け止め方 f（1.3）---
     lambda_c: float = 1.0
@@ -144,6 +151,8 @@ class Config:
             raise ValueError("mixture_heads には none（一般の率）が必要です")
         if self.lc_max_causes < 1:
             raise ValueError("lc_max_causes は 1 以上です")
+        if self.lc_design not in ("revised", "spec_literal"):
+            raise ValueError(f"lc_design が不正です: {self.lc_design!r}")
         if self.concern_direction not in ("sensitize", "habituate"):
             raise ValueError(f"concern_direction が不正です: {self.concern_direction!r}")
 
