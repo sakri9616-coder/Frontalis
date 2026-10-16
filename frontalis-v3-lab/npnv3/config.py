@@ -89,6 +89,17 @@ class Config:
     no_reappraisal: bool = False   # アブレーション: 訂正で価値を一切変えない（信念は訂正する）
     recall_after_correction: bool = False  # 実験設定（SPEC にない。既定 OFF）: 訂正の後に想起（帰属のやり直し）の掃引を 1 回行う。訂正が信念を直した直後は、責任 φ が逐次の推定のまま（CHANGELOG の Y1）
 
+    # --- v3.4 第4節（SPEC-v3.4 4.2〜4.3, 4.6）: 訂正の再評価の規則 ---
+    # "v33"（既定）: v3.3 の規則（w_reapp のカルマン更新 1 回）。v3.3 の挙動をビット単位で保つ。
+    # "v34": M1（含意された変化 D_i を、情報源の信用 κ̄_s ともっともらしさ LLR_i で重み付けた g_i D_i ずつ、事後共分散に沿って W に吸収する。g_i ∈ (0, 1)）と
+    #        M2（κ̄_s は、後の直接の経験での検証の出来事だけで形成される）。M3（罪悪感・後悔・τ・訂正を時計の出来事にする）は Stage 3 で、ここには無い。
+    # "v34_or": C-OR（吸収率に上限がない: g^OR = σ(·)(1 + λ_g G_e)。過剰な反省を、経験史に依存する性質として扱う。故障の検査は F1・F2・F3 だけ）。
+    reappraisal_mode: str = "v33"
+    lambda_g: float = 0.25         # C-OR の λ_g（SPEC-v3.4 4.6）
+    kappa_alpha0: float = 1.0      # 情報源の信用 Beta(α, β) の事前（SPEC-v3.4 4.2 手順 3: Beta(1, 1)）
+    kappa_beta0: float = 1.0
+    g_logit_clip: float = 30.0     # σ の引数の数値の安全のための制限（|z| > 30 では σ が 1 または 0 に丸まり (0, 1) を保てない）。台帳には制限前の z も残す
+
     # --- v3.3 第2部 3: 選択の正当化 J（二択 kind = "choice"。SPEC-v3.3 3.3, 3.4）---
     eta_j: float = 0.05            # 迷った選択での J の動き η_J
     sigma_conflict: float = 0.1    # 葛藤の強さ c = exp(−(ΔQ/σ_c)²) の σ_c
@@ -185,6 +196,8 @@ class Config:
             raise ValueError(f"justification_mode が不正です: {self.justification_mode!r}")
         if self.concern_direction not in ("sensitize", "habituate"):
             raise ValueError(f"concern_direction が不正です: {self.concern_direction!r}")
+        if self.reappraisal_mode not in ("v33", "v34", "v34_or"):
+            raise ValueError(f"reappraisal_mode が不正です: {self.reappraisal_mode!r}")
 
     def to_dict(self) -> Dict[str, Any]:
         return dataclasses.asdict(self)

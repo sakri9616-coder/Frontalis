@@ -128,6 +128,34 @@ class KalmanModel:
         self.S = S2
         return {"dW": dW, "err": err, "pred": pred, "var": float(zSz.mean())}
 
+    def absorb(self, targets: Sequence[Sequence[Feat]], delta: np.ndarray) -> Dict[str, Any]:
+        """v3.4 M1 の吸収（SPEC-v3.4 4.2 手順 5）。各対象 t の予測 z_tᵀW_k を、ちょうど delta[t, k] だけ動かす、事後共分散 Σ_k に沿った最小の変化:
+        W_k += Σ_k Zᵀ (Z Σ_k Zᵀ)⁻¹ delta[:, k]（Z の行 = 対象の特徴ベクトル z_t）。対象が 1 つなら W_k += Σ_k z (zᵀ Σ_k z)⁻¹ delta_k。
+        対象が複数（共有の特徴 people・cls・emb を持つ参加者）のときは、全対象の予測が同時にちょうど delta になるように連立で解く（逐次だと先の対象の予測が後の対象の更新でずれる）。
+        Σ は変えない（過程雑音も足さない）。観測雑音がない（R = 0）カルマン更新に当たるが、利得は 1 に固定され Σ が縮まない点が違う。"""
+        rows = [self._prepare(f) for f in targets]
+        used = sorted({int(i) for ii, _ in rows for i in ii})
+        dW = np.zeros_like(self.W)
+        if not used:
+            return {"dW": dW}
+        pos = {i: n for n, i in enumerate(used)}
+        Z = np.zeros((len(rows), len(used)))
+        for t, (ii, z) in enumerate(rows):
+            for i, v in zip(ii, z):
+                Z[t, pos[int(i)]] += float(v)
+        ua = np.array(used, dtype=int)
+        delta = np.asarray(delta, dtype=np.float64).reshape(len(rows), N_NEEDS)
+        for k in range(N_NEEDS):
+            Sa = self.S[k][:, ua]                              # Σ_k z は全特徴に対して密（共分散を通じて、対象が使わない特徴も動く）
+            A = Z @ self.S[k][np.ix_(ua, ua)] @ Z.T
+            if np.linalg.cond(A) > 1e12:
+                x = np.linalg.lstsq(A, delta[:, k], rcond=None)[0]
+            else:
+                x = np.linalg.solve(A, delta[:, k])
+            dW[:, k] = Sa @ (Z.T @ x)
+        self.W = self.W + dW
+        return {"dW": dW}
+
     def update_fixed(self, feats: Sequence[Feat], teacher: np.ndarray, target: str, rate: float) -> Dict[str, Any]:
         """3-F 型の固定教師: W[target] += rate * Δu。予測誤差も Σ も使わない。"""
         ii, z = self._prepare(feats)
@@ -277,6 +305,23 @@ class ValueNet:
             for name, row in self.person.dW_dict(r["dW"]).items():
                 dW_person[name] = dW_person[name] + row if name in dW_person else row
         return {"dW_person": dW_person}
+
+    def predict_person(self, p: Dict[str, str]) -> np.ndarray:
+        """参加者 p の 5 欲求の予測 zᵀW（学習しない。a で重み付けない）。"""
+        return self.person.predict(self.person_feats(p["id"], p["class"]))[0]
+
+    def predict_situation(self, ctx: Optional[str], concepts: Sequence[str]) -> np.ndarray:
+        return self.sit.predict(self.situation_feats(ctx, concepts))[0]
+
+    def absorb(self, participants: Sequence[Dict[str, str]], ctx: Optional[str], concepts: Sequence[str],
+               delta_person: Sequence[np.ndarray], delta_sit: np.ndarray) -> Dict[str, Any]:
+        """v3.4 M1 の吸収。人モデルは参加者の予測を delta_person[j] だけ、状況モデルは文脈・概念の予測を delta_sit だけ、同時にちょうど動かす。Σ は変えない。"""
+        dW_person: Dict[str, np.ndarray] = {}
+        if len(participants):
+            r = self.person.absorb([self.person_feats(p["id"], p["class"]) for p in participants], np.array(delta_person, dtype=np.float64))
+            dW_person = self.person.dW_dict(r["dW"])
+        rs = self.sit.absorb([self.situation_feats(ctx, concepts)], np.asarray(delta_sit, dtype=np.float64).reshape(1, N_NEEDS))
+        return {"dW_person": dW_person, "dW_situation": self.sit.dW_dict(rs["dW"])}
 
     def get_state(self) -> Tuple[Dict[str, Any], Dict[str, np.ndarray]]:
         m1, a1 = self.person.get_state("v_person_")

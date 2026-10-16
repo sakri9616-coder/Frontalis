@@ -480,8 +480,9 @@ class AgencyWeight(unittest.TestCase):
 
 class PersistenceAndCompatibility(unittest.TestCase):
     def test_schema_version_is_7_and_older_states_are_refused(self):
+        # v3.4 Stage 2: スキーマ版を 7 → 8 に上げた（SPEC-v3.4 / PLAN-v3.4 の Stage 2。7 の状態は既定で読める: tests/test_ra_mechanisms.py）。6 以前を拒否することは変わらない。
         from npnv3.npn import SCHEMA_VERSION, StateVersionError
-        self.assertEqual(SCHEMA_VERSION, 7)
+        self.assertEqual(SCHEMA_VERSION, 8)
         n = make(0)
         with tempfile.TemporaryDirectory() as d:
             n.save(d)
