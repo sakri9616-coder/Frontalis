@@ -65,3 +65,6 @@ Python: `frontalis-phase3d-lab/.venv`（torch 2.7.0+cu128、numpy）。`PYTHONUT
 
 ## P3〜P9（草案 3 の機構の開発）
 記録は `LOG-dev.md`。共通の道具は `sim.py`（束ねた GPU の模擬）と `measure.py`。開発用の種 77380〜77389 だけ。
+
+## P10（草案 3.1）
+`p10_nnrel_throughput.py` → `p10_results.json`・`p10_stdout.txt`・`p10_stderr.txt`。NN-SET と NN-REL の核の速度。記録は `LOG-dev.md`。
