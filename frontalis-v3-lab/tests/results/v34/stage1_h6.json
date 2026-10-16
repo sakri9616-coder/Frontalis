@@ -1,0 +1,1046 @@
+{
+ "python": "3.12.13",
+ "numpy": "2.5.4",
+ "frozen_made_with": "Python 3.13 (per PLAN)",
+ "n_files": 64,
+ "identical": 20,
+ "results": {
+  "B01_B03.json": {
+   "status": "mismatch",
+   "n_diffs": 205,
+   "max_abs_diff": 1.4100071110689782e-10,
+   "first": [
+    [
+     "/Z_orig/B3/J_sources_sum_max_error",
+     3.85e-16
+    ],
+    [
+     "/Z_orig/B3/ledger_C_max_error",
+     1.39e-17
+    ],
+    [
+     "/Z_orig/B2/perturbed/max_abs_J",
+     2.78e-17
+    ],
+    [
+     "/Z_orig/B2/perturbed/a_min",
+     3.79e-19
+    ]
+   ]
+  },
+  "diag_e.json": {
+   "status": "identical"
+  },
+  "diag_e_classification.json": {
+   "status": "identical"
+  },
+  "diag_e_oracle.json": {
+   "status": "identical"
+  },
+  "diag_e_revised.json": {
+   "status": "identical"
+  },
+  "diag_head.json": {
+   "status": "identical"
+  },
+  "diag_m_scale.json": {
+   "status": "identical"
+  },
+  "diag_persist.json": {
+   "status": "identical"
+  },
+  "diag_u8.json": {
+   "status": "identical"
+  },
+  "diag_u8_scope.json": {
+   "status": "identical"
+  },
+  "diag_u8_types.json": {
+   "status": "identical"
+  },
+  "diag_v32_ablations.json": {
+   "status": "identical"
+  },
+  "diag_v33_attribution.json": {
+   "status": "identical"
+  },
+  "diag_x3.json": {
+   "status": "identical"
+  },
+  "diag_yz.json": {
+   "status": "identical"
+  },
+  "E01_E09.json": {
+   "status": "mismatch",
+   "n_diffs": 59,
+   "max_abs_diff": 4.440892098500626e-16,
+   "first": [
+    [
+     "/single/E8b_reference_evening_walk_value_before",
+     4.86e-17
+    ],
+    [
+     "/single/acq_curve_ratio_mean[0]",
+     6.94e-18
+    ],
+    [
+     "/single/acq_curve_ratio_mean[1]",
+     1.39e-17
+    ],
+    [
+     "/single/acq_curve_ratio_mean[6]",
+     1.11e-16
+    ]
+   ]
+  },
+  "E08b_valued_cue.json": {
+   "status": "mismatch",
+   "n_diffs": 1,
+   "max_abs_diff": 2.7755575615628914e-17,
+   "first": [
+    [
+     "/single/value_before_mean",
+     2.78e-17
+    ]
+   ]
+  },
+  "M01_M05.json": {
+   "status": "mismatch",
+   "n_diffs": 34,
+   "max_abs_diff": 2.220446049250313e-15,
+   "first": [
+    [
+     "/M4/max_acq_cause_abs_dC_sum",
+     2.78e-17
+    ],
+    [
+     "/M1/E6/sum_weighting_term",
+     2.95e-17
+    ],
+    [
+     "/M1/E6/sum_delta_resp",
+     4.16e-17
+    ],
+    [
+     "/M1/E6/max_identity_error",
+     2.17e-19
+    ]
+   ]
+  },
+  "M01_M05_revised.json": {
+   "status": "mismatch",
+   "n_diffs": 18,
+   "max_abs_diff": 4.440892098500626e-16,
+   "first": [
+    [
+     "/M4/mean_acq_cause_abs_dC_sum",
+     1.73e-18
+    ],
+    [
+     "/M4/max_acq_cause_abs_dC_sum",
+     2.78e-17
+    ],
+    [
+     "/M1/E6/mean_resp_before",
+     1.08e-19
+    ],
+    [
+     "/M1/E5/mean_resp_after",
+     1.08e-19
+    ]
+   ]
+  },
+  "P01_P07.json": {
+   "status": "mismatch",
+   "n_diffs": 88,
+   "max_abs_diff": 5.5843239523439054e-15,
+   "first": [
+    [
+     "/P6/err_net_vs_all_events_max",
+     1.67e-16
+    ],
+    [
+     "/P6/erased_by_overwhelm_fav_mean",
+     1.11e-16
+    ],
+    [
+     "/P1/err_cue_total_vs_J_max",
+     1.39e-17
+    ],
+    [
+     "/P3/stress_2000_choices/max_abs_J_over_seeds",
+     3.33e-16
+    ]
+   ]
+  },
+  "RECALL_collinear.json": {
+   "status": "mismatch",
+   "n_diffs": 10,
+   "max_abs_diff": 4.163336342344337e-17,
+   "first": [
+    [
+     "[1]/pi_person_start",
+     4.16e-17
+    ],
+    [
+     "[1]/mean_phi_person",
+     5.2e-18
+    ],
+    [
+     "[1]/pi_person_by_sweep/1",
+     2.78e-17
+    ],
+    [
+     "[1]/pi_person_by_sweep/10",
+     6.94e-18
+    ]
+   ]
+  },
+  "RECALL_mechanism.json": {
+   "status": "mismatch",
+   "n_diffs": 1,
+   "max_abs_diff": 9.367506770274758e-17,
+   "first": [
+    [
+     "/pi_person_credit_taken_with_minus_without_recall",
+     9.37e-17
+    ]
+   ]
+  },
+  "RECALL_repeat.json": {
+   "status": "mismatch",
+   "n_diffs": 1,
+   "max_abs_diff": 1.1102230246251565e-16,
+   "first": [
+    [
+     "/max_change_last_sweep",
+     1.11e-16
+    ]
+   ]
+  },
+  "T01.json": {
+   "status": "mismatch",
+   "n_diffs": 7,
+   "max_abs_diff": 6.920686246303376e-12,
+   "first": [
+    [
+     "/situation_Q/unrelated_mean",
+     2.65e-17
+    ],
+    [
+     "/situation_Q/ratio",
+     6.11e-13
+    ],
+    [
+     "/entity_Q/related_mean",
+     5.55e-17
+    ],
+    [
+     "/entity_Q/unrelated_mean",
+     8.33e-17
+    ]
+   ]
+  },
+  "T01_state_coupling.json": {
+   "status": "mismatch",
+   "n_diffs": 8,
+   "max_abs_diff": 4.2518877307884395e-11,
+   "first": [
+    [
+     "/situation_Q/unrelated_mean",
+     3.47e-17
+    ],
+    [
+     "/situation_Q/ratio",
+     4.44e-15
+    ],
+    [
+     "/entity_Q/related_mean",
+     5.55e-17
+    ],
+    [
+     "/entity_Q/unrelated_mean",
+     4.86e-17
+    ]
+   ]
+  },
+  "T02_extra.json": {
+   "status": "mismatch",
+   "n_diffs": 7,
+   "max_abs_diff": 2.220446049250313e-16,
+   "first": [
+    [
+     "/delta_seed0/R",
+     2.22e-16
+    ],
+    [
+     "/delta_seed0/X",
+     5.55e-17
+    ],
+    [
+     "/delta_seed0/K",
+     2.22e-16
+    ],
+    [
+     "/Q_seed0/R",
+     1.11e-16
+    ]
+   ]
+  },
+  "T02a.json": {
+   "status": "mismatch",
+   "n_diffs": 16,
+   "max_abs_diff": 1.6653345369377348e-16,
+   "first": [
+    [
+     "/f_max_diff_by_seed[0]",
+     1.11e-16
+    ],
+    [
+     "/f_max_diff_by_seed[1]",
+     1.67e-16
+    ],
+    [
+     "/f_max_diff_by_seed[2]",
+     1.11e-16
+    ],
+    [
+     "/f_max_diff_by_seed[3]",
+     1.11e-16
+    ]
+   ]
+  },
+  "T02b.json": {
+   "status": "mismatch",
+   "n_diffs": 25,
+   "max_abs_diff": 1.1102230246251565e-16,
+   "first": [
+    [
+     "/min_cos_by_seed[0]",
+     7.63e-17
+    ],
+    [
+     "/min_cos_by_seed[1]",
+     7.63e-17
+    ],
+    [
+     "/min_cos_by_seed[2]",
+     7.63e-17
+    ],
+    [
+     "/min_cos_by_seed[3]",
+     7.63e-17
+    ]
+   ]
+  },
+  "T02c.json": {
+   "status": "mismatch",
+   "n_diffs": 1,
+   "max_abs_diff": 1.1102230246251565e-16,
+   "first": [
+    [
+     "/pairs_seed0/R-X",
+     1.11e-16
+    ]
+   ]
+  },
+  "T03.json": {
+   "status": "mismatch",
+   "n_diffs": 3,
+   "max_abs_diff": 5.551115123125783e-17,
+   "first": [
+    [
+     "/delta_like_friendA_seed0/R",
+     1.39e-17
+    ],
+    [
+     "/delta_like_friendA_seed0/X",
+     5.55e-17
+    ],
+    [
+     "/delta_like_friendA_seed0/K",
+     5.55e-17
+    ]
+   ]
+  },
+  "T03_subtyping.json": {
+   "status": "mismatch",
+   "n_diffs": 4,
+   "max_abs_diff": 4.85722573273506e-17,
+   "first": [
+    [
+     "/cls_before",
+     6.94e-18
+    ],
+    [
+     "/A_before",
+     1.39e-17
+    ],
+    [
+     "/cls_after",
+     3.47e-18
+    ],
+    [
+     "/A_after",
+     4.86e-17
+    ]
+   ]
+  },
+  "T04.json": {
+   "status": "mismatch",
+   "n_diffs": 11,
+   "max_abs_diff": 8.881784197001252e-16,
+   "first": [
+    [
+     "/hierarchical/m8/truth",
+     5.55e-17
+    ],
+    [
+     "/hierarchical/m8/dm",
+     5.55e-17
+    ],
+    [
+     "/hierarchical/m8/d0",
+     5.55e-17
+    ],
+    [
+     "/hierarchical/m8/persistence_Q",
+     5.55e-16
+    ]
+   ]
+  },
+  "T06a.json": {
+   "status": "mismatch",
+   "n_diffs": 6,
+   "max_abs_diff": 1.8776091792460647e-12,
+   "first": [
+    [
+     "/worst",
+     2.51e-13
+    ],
+    [
+     "/W_and_mood_map_radius/X",
+     3.09e-14
+    ],
+    [
+     "/W_and_mood_map_radius/K",
+     1.61e-12
+    ],
+    [
+     "/value_map_radius/R/max",
+     1.88e-12
+    ]
+   ]
+  },
+  "T06b.json": {
+   "status": "identical"
+  },
+  "T07.json": {
+   "status": "identical"
+  },
+  "T08.json": {
+   "status": "mismatch",
+   "n_diffs": 9,
+   "max_abs_diff": 8.881784197001252e-16,
+   "first": [
+    [
+     "/reduction",
+     8.88e-16
+    ],
+    [
+     "/gap_with_head",
+     8.33e-17
+    ],
+    [
+     "/gap_no_head",
+     6.94e-16
+    ],
+    [
+     "/seed0/band_head",
+     1.11e-16
+    ]
+   ]
+  },
+  "T09.json": {
+   "status": "mismatch",
+   "n_diffs": 2,
+   "max_abs_diff": 2.949029909160572e-17,
+   "first": [
+    [
+     "/mean/formative_Q",
+     2.95e-17
+    ],
+    [
+     "/mean/placebo_Q_mean",
+     1.08e-17
+    ]
+   ]
+  },
+  "T09_immediate.json": {
+   "status": "mismatch",
+   "n_diffs": 2,
+   "max_abs_diff": 1.5439038936193583e-16,
+   "first": [
+    [
+     "/mean/formative_Q",
+     1.54e-16
+    ],
+    [
+     "/mean/placebo_Q_mean",
+     1.08e-16
+    ]
+   ]
+  },
+  "U01a.json": {
+   "status": "mismatch",
+   "n_diffs": 38,
+   "max_abs_diff": 1.2212453270876722e-15,
+   "first": [
+    [
+     "/mean_gap",
+     2.5e-16
+    ],
+    [
+     "/gaps[0]",
+     2.22e-16
+    ],
+    [
+     "/gaps[1]",
+     5.55e-17
+    ],
+    [
+     "/gaps[2]",
+     1.11e-16
+    ]
+   ]
+  },
+  "U01b.json": {
+   "status": "mismatch",
+   "n_diffs": 4,
+   "max_abs_diff": 1.9984014443252818e-15,
+   "first": [
+    [
+     "/partial_swap_ratio_mean/a",
+     2e-15
+    ],
+    [
+     "/partial_swap_ratio_mean/belief",
+     1.22e-15
+    ],
+    [
+     "/partial_swap_ratio_mean/value",
+     1.8e-16
+    ],
+    [
+     "/partial_swap_ratio_mean/C",
+     8.88e-16
+    ]
+   ]
+  },
+  "U02.json": {
+   "status": "mismatch",
+   "n_diffs": 29,
+   "max_abs_diff": 8.326672684688674e-17,
+   "first": [
+    [
+     "/C_praise_H2[0]",
+     2.08e-17
+    ],
+    [
+     "/C_praise_H2[1]",
+     1.39e-17
+    ],
+    [
+     "/C_praise_H2[2]",
+     6.94e-18
+    ],
+    [
+     "/C_praise_H2[3]",
+     6.94e-18
+    ]
+   ]
+  },
+  "U03.json": {
+   "status": "identical"
+  },
+  "U04.json": {
+   "status": "mismatch",
+   "n_diffs": 6,
+   "max_abs_diff": 2.220446049250313e-16,
+   "first": [
+    [
+     "/relative_drop_unseen_collaborator_8_partners",
+     1.11e-16
+    ],
+    [
+     "/P_after_mean",
+     5.55e-17
+    ],
+    [
+     "/relative_drop",
+     2.22e-16
+    ],
+    [
+     "/weight_credit_taken_R",
+     2.22e-16
+    ]
+   ]
+  },
+  "U05.json": {
+   "status": "identical"
+  },
+  "U06.json": {
+   "status": "mismatch",
+   "n_diffs": 22,
+   "max_abs_diff": 1.0610401446342621e-12,
+   "first": [
+    [
+     "/median_ratio",
+     2.51e-13
+    ],
+    [
+     "/max_ratio",
+     1.06e-12
+    ],
+    [
+     "/ratios[0]",
+     1.91e-13
+    ],
+    [
+     "/ratios[1]",
+     1.74e-14
+    ]
+   ]
+  },
+  "U06b.json": {
+   "status": "mismatch",
+   "n_diffs": 23,
+   "max_abs_diff": 2.490710970803889e-10,
+   "first": [
+    [
+     "/median_ratio",
+     3.54e-11
+    ],
+    [
+     "/pi_person_range_max",
+     3.33e-16
+    ],
+    [
+     "/ratios[0]",
+     1.08e-12
+    ],
+    [
+     "/ratios[1]",
+     8.5e-12
+    ]
+   ]
+  },
+  "U07.json": {
+   "status": "mismatch",
+   "n_diffs": 17,
+   "max_abs_diff": 0.00015972546923603836,
+   "first": [
+    [
+     "/mean_gap/mlp",
+     3.22e-05
+    ],
+    [
+     "/mean_gap/mixture",
+     8.33e-17
+    ],
+    [
+     "/mean_gap/none",
+     6.94e-16
+    ],
+    [
+     "/mean_gap/linear",
+     1.55e-15
+    ]
+   ]
+  },
+  "U08.json": {
+   "status": "mismatch",
+   "n_diffs": 10,
+   "max_abs_diff": 2.220446049250313e-16,
+   "first": [
+    [
+     "/m8/persistence_median",
+     1.11e-16
+    ],
+    [
+     "/m8/persistence",
+     2.22e-16
+    ],
+    [
+     "/m8/truth",
+     5.55e-17
+    ],
+    [
+     "/m8/dm",
+     2.78e-17
+    ]
+   ]
+  },
+  "U08b.json": {
+   "status": "mismatch",
+   "n_diffs": 17,
+   "max_abs_diff": 5.551115123125783e-16,
+   "first": [
+    [
+     "/m8/V_MB_person_N",
+     2.43e-17
+    ],
+    [
+     "/m8/q_n",
+     1.39e-17
+    ],
+    [
+     "/m8/persistence_mb_part",
+     2.22e-16
+    ],
+    [
+     "/m8/persistence_median",
+     5.55e-16
+    ]
+   ]
+  },
+  "U09.json": {
+   "status": "identical"
+  },
+  "W01.json": {
+   "status": "mismatch",
+   "n_diffs": 26,
+   "max_abs_diff": 1.5681900222830336e-15,
+   "first": [
+    [
+     "/mean_relative_norm_both",
+     2.36e-16
+    ],
+    [
+     "/mean_a_only",
+     1.25e-16
+    ],
+    [
+     "/both[0]",
+     1.25e-16
+    ],
+    [
+     "/both[1]",
+     2.91e-16
+    ]
+   ]
+  },
+  "W02.json": {
+   "status": "mismatch",
+   "n_diffs": 4,
+   "max_abs_diff": 1.1102230246251565e-16,
+   "first": [
+    [
+     "/C_praise_before_offers[0]",
+     1.39e-17
+    ],
+    [
+     "/open_loop_difference",
+     1.11e-16
+    ],
+    [
+     "/Q_first_offer[1]",
+     2.08e-17
+    ],
+    [
+     "/open_loop_mean_p_approach (no learning between offers)[0]",
+     1.11e-16
+    ]
+   ]
+  },
+  "W03.json": {
+   "status": "mismatch",
+   "n_diffs": 12,
+   "max_abs_diff": 2.220446049250313e-15,
+   "first": [
+    [
+     "/within_by_type/R",
+     1.8e-16
+    ],
+    [
+     "/within_by_type/X",
+     2.36e-16
+    ],
+    [
+     "/within_by_type/K",
+     1.67e-16
+    ],
+    [
+     "/mean_within_type_gap",
+     1.94e-16
+    ]
+   ]
+  },
+  "W04.json": {
+   "status": "mismatch",
+   "n_diffs": 6,
+   "max_abs_diff": 5.551115123125783e-16,
+   "first": [
+    [
+     "/std_w_taken",
+     8.33e-17
+    ],
+    [
+     "/reference_corr_taken_over_taken_plus_shared_vs_weight",
+     4.44e-16
+    ],
+    [
+     "/mean_w_taken",
+     1.11e-16
+    ],
+    [
+     "/corr_taken_rate_vs_taken_interpretation_weight",
+     3.89e-16
+    ]
+   ]
+  },
+  "W05.json": {
+   "status": "identical"
+  },
+  "W06.json": {
+   "status": "mismatch",
+   "n_diffs": 28,
+   "max_abs_diff": 2.490710970803889e-10,
+   "first": [
+    [
+     "/head_weights_final_mean/linear",
+     1.11e-16
+    ],
+    [
+     "/median_ratio",
+     3.54e-11
+    ],
+    [
+     "/C_praise_final_by_kind/X",
+     3.47e-18
+    ],
+    [
+     "/C_praise_final_by_kind/K",
+     4.86e-17
+    ]
+   ]
+  },
+  "W07.json": {
+   "status": "mismatch",
+   "n_diffs": 4,
+   "max_abs_diff": 5.551115123125783e-17,
+   "first": [
+    [
+     "/R/mean_weight/linear",
+     6.94e-18
+    ],
+    [
+     "/K/mean_weight/linear",
+     1.39e-17
+    ],
+    [
+     "/random/mean_weight/linear",
+     3.47e-18
+    ],
+    [
+     "/random/mean_weight/knn1",
+     5.55e-17
+    ]
+   ]
+  },
+  "X01.json": {
+   "status": "mismatch",
+   "n_diffs": 108,
+   "max_abs_diff": 0.030188687031989625,
+   "first": [
+    [
+     "/jobs[0]/checkpoints[0]/mixture_prior_max_abs_diff_via_weights (reported, not judged)",
+     1.4e-06
+    ],
+    [
+     "/jobs[0]/checkpoints[0]/mixture_weights_a/mlp",
+     2.2e-05
+    ],
+    [
+     "/jobs[0]/checkpoints[0]/mixture_weights_a/none",
+     9.44e-06
+    ],
+    [
+     "/jobs[0]/checkpoints[0]/mixture_weights_a/linear",
+     2.93e-06
+    ]
+   ]
+  },
+  "X02.json": {
+   "status": "mismatch",
+   "n_diffs": 68,
+   "max_abs_diff": 0.014786633036962371,
+   "first": [
+    [
+     "/primary/cells/linear|20/ce_sem/mlp",
+     1.73e-18
+    ],
+    [
+     "/primary/cells/unrelated|20/excess_kl_mean/linear",
+     2.22e-16
+    ],
+    [
+     "/primary/cells/unrelated|20/ce_sem/linear",
+     1.73e-18
+    ],
+    [
+     "/primary/cells/unrelated|20/ce_mean/linear",
+     2.22e-16
+    ]
+   ]
+  },
+  "X03.json": {
+   "status": "mismatch",
+   "n_diffs": 6,
+   "max_abs_diff": 1.3322676295501878e-15,
+   "first": [
+    [
+     "/mlp_rows/unrelated|5/relative_gap_to_second",
+     2.78e-16
+    ],
+    [
+     "/mlp_rows/unrelated|5/ce",
+     2.22e-16
+    ],
+    [
+     "/mlp_rows/unrelated|5/relative_gap_kl_to_second",
+     1.33e-15
+    ],
+    [
+     "/mlp_rows/nonlinear|5/relative_gap_to_second",
+     1.8e-16
+    ]
+   ]
+  },
+  "X04.json": {
+   "status": "mismatch",
+   "n_diffs": 33,
+   "max_abs_diff": 0.026179173703221537,
+   "first": [
+    [
+     "/R/cv_loglik_per_observation/mlp",
+     0.00846
+    ],
+    [
+     "/R/mlp_minus_best_per_observation",
+     0.00846
+    ],
+    [
+     "/R/mixture_weight_mean/mlp",
+     6.3e-05
+    ],
+    [
+     "/R/mixture_weight_mean/none",
+     2.58e-05
+    ]
+   ]
+  },
+  "Y01_Y07.json": {
+   "status": "mismatch",
+   "n_diffs": 58,
+   "max_abs_diff": 3.1086244689504383e-15,
+   "first": [
+    [
+     "/Y3/d_10",
+     1.04e-17
+    ],
+    [
+     "/Y3/ratio",
+     2.22e-16
+    ],
+    [
+     "/Y3/like_ctrl_after_10_good",
+     6.94e-18
+    ],
+    [
+     "/Y3/like_corrected_after_10_good",
+     1.73e-17
+    ]
+   ]
+  },
+  "Z01_Z07.json": {
+   "status": "mismatch",
+   "n_diffs": 20,
+   "max_abs_diff": 6.661338147750939e-15,
+   "first": [
+    [
+     "/Z3/W_remaining_min",
+     5.55e-16
+    ],
+    [
+     "/Z4/gap_after_k_harms_mean[3]",
+     8.67e-18
+    ],
+    [
+     "/Z4/gap_after_k_harms_mean[4]",
+     3.47e-18
+    ],
+    [
+     "/Z4/gap_after_k_harms_mean[5]",
+     3.47e-18
+    ]
+   ]
+  },
+  "Z08.json": {
+   "status": "mismatch",
+   "n_diffs": 29,
+   "max_abs_diff": 1.1102230246251565e-16,
+   "first": [
+    [
+     "/persist/example_seed0_explain_preference/options[0]/justification/concept:z8_d_a/sources/spread",
+     6.94e-18
+    ],
+    [
+     "/persist/example_seed0_explain_preference/options[0]/justification/concept:z8_d_a/J",
+     2.78e-17
+    ],
+    [
+     "/persist/example_seed0_explain_preference/options[0]/Q",
+     2.78e-17
+    ],
+    [
+     "/persist/example_seed0_explain_preference/options[0]/J_Q",
+     2.78e-17
+    ]
+   ]
+  }
+ },
+ "summary": {
+  "identical": 20,
+  "mismatch": 44,
+  "n_mismatch_below_1e-9": 40,
+  "largest_max_abs_diff": [
+   [
+    0.030188687031989625,
+    "X01.json"
+   ],
+   [
+    0.026179173703221537,
+    "X04.json"
+   ],
+   [
+    0.014786633036962371,
+    "X02.json"
+   ],
+   [
+    0.00015972546923603836,
+    "U07.json"
+   ],
+   [
+    2.490710970803889e-10,
+    "W06.json"
+   ],
+   [
+    2.490710970803889e-10,
+    "U06b.json"
+   ]
+  ],
+  "test_outcomes": "failures 16, expected failures 2 (same as the v3.3 report: 16 / 2); tests counted by summing unittest Ran lines = 357 (v3.3 report says 350, difference not explained)",
+  "run_notes": "working copy outside the repo; no fork on Windows so pmap made serial (most modules) or a spawn pool (test_b_health, test_p_persist); each module in its own process. Frozen files were not written."
+ }
+}
