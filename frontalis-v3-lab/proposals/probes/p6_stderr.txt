@@ -1,0 +1,4 @@
+E_on train 70s total 97s nonfinite 0
+E_off train 65s total 80s nonfinite 0
+EA_on train 68s total 83s nonfinite 0
+EA10_on train 72s total 88s nonfinite 0

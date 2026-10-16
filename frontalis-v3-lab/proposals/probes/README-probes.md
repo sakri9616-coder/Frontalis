@@ -62,3 +62,6 @@ Python: `frontalis-phase3d-lab/.venv`（torch 2.7.0+cu128、numpy）。`PYTHONUT
 8. 計算量: 1 ステップ 0.021 秒（108 人格）、0.030 秒（432 人格）。律速は人格ごとの Python のループ。
 - 設計への反映は DESIGN 第 11 節。判定基準は変えていない。
 
+
+## P3〜P9（草案 3 の機構の開発）
+記録は `LOG-dev.md`。共通の道具は `sim.py`（束ねた GPU の模擬）と `measure.py`。開発用の種 77380〜77389 だけ。

@@ -1,0 +1,11 @@
+base_on train 44s total 61s nonfinite 0
+base_off train 46s total 57s nonfinite 0
+norm_on train 59s total 71s nonfinite 0
+norm_off train 50s total 62s nonfinite 0
+spn4_on train 160s total 172s nonfinite 0
+spn4_off train 154s total 166s nonfinite 0
+slow_on train 53s total 65s nonfinite 0
+two_on train 55s total 69s nonfinite 0
+cum_on train 56s total 68s nonfinite 0
+sep_on train 58s total 70s nonfinite 0
+sep_off train 55s total 66s nonfinite 0
