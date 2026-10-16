@@ -9,8 +9,12 @@ Stage 3 で動く条件: C-v34、C-OR、C-nocorr-v34（v34 の訂正なしの枝
 M3 の変種（A-τ-off、A-clock-off、clamp-*、τ-yoke）は **COR の直前から**効かせる（cor_overrides）。COR の直前の状態を全条件で同じにするため（SPEC 第 7.3 節）。
 動かない条件（A-g-const、A-κ-fixed、local-reattr）は、取り出すと NotImplementedError を起こす。
 
-乱数種の守り: Stage 1 で走らせてよいのは、開発 3490〜3499（phase = "dev"）と診断 3460〜3479（phase = "diag"）だけ。評価 3400〜3439、変異 3450〜3459、
-予約 3500〜3539 は、どの条件でも実行できない（guard_seeds が拒否する）。後の段階で許可を広げるときは STAGE_ALLOWED を変え、CHANGELOG-v3.4.md に書く。
+乱数種の守り: 走らせてよいのは、開発 3490〜3499（phase = "dev"）、診断 3460〜3479（phase = "diag"）、変異 3450〜3459（phase = "mut"。Stage 4 で許可）だけ。
+評価 3400〜3439 と予約 3500〜3539 は、どの条件でも実行できない（guard_seeds が拒否する）。Stage 5 が許可を広げるときは STAGE_ALLOWED と PHASES を変え、
+CHANGELOG-v3.4.md に書く（守りだけの変更。CHANGELOG-v3.4 S4-13）。
+
+Stage 4 の追加（CHANGELOG-v3.4.md の Stage 4 の節に旧・新の SHA-256 と理由を書いた）: 条件 A-g-const・A-κ-fixed・local-reattr（・local-reattr-v33）・C-none-v34、
+Shapley 分解（run_shapley、shapley_values）、run_swap の nocorr オプション（入れ替えた人格の訂正なしの枝）、phase = "mut"。
 
 SPEC に細部がなく、Stage 1 で決めたこと（CHANGELOG-v3.4.md に日付つきで記録）:
   - 空の刻み（kind = "tick"）: 時計を進める出来事の印。Stage 1 の条件はどれも「訂正は時計を進めない」（v3.3 の T.2）なので刻みを無視する。
@@ -53,8 +57,8 @@ SEEDS_MUTATION = tuple(range(3450, 3460))
 SEEDS_DIAG = tuple(range(3460, 3480))
 SEEDS_DEV = tuple(range(3490, 3500))
 SEEDS_RESERVED = tuple(range(3500, 3540))
-PHASES = {"dev": SEEDS_DEV, "diag": SEEDS_DIAG}
-STAGE_ALLOWED = frozenset(SEEDS_DEV) | frozenset(SEEDS_DIAG)           # Stage 1
+PHASES = {"dev": SEEDS_DEV, "diag": SEEDS_DIAG, "mut": SEEDS_MUTATION}
+STAGE_ALLOWED = frozenset(SEEDS_DEV) | frozenset(SEEDS_DIAG) | frozenset(SEEDS_MUTATION)           # Stage 4
 BOOTSTRAP_SEED = [34990]
 N_BOOT = 10000
 
@@ -122,9 +126,10 @@ class Condition:
     q0: bool = False                                        # 再評価の更新のときだけ過程雑音 q = 0（診断）
     cor_overrides: Tuple[Tuple[str, Any], ...] = ()         # COR の直前から人格の設定に与える（M3 の変種。通常の経験・背景・情報源の履歴には効かせない）
     yoke: bool = False                                      # τ-yoke: 他の人格の τ の軌跡が要る（run_tau_yoke）
+    local_reattr: bool = False                              # local-reattr: 各訂正の後に、参照先と参加者を共有する記録だけ φ を推定し直す（対照にも同じ処理）
 
 
-_STUB = "{} は M1〜M3（reappraisal_mode='v34'。Stage 2・3 で実装）を要する条件で、Stage 1 では実装されていない。"
+_STUB = "{} は M1〜M3（reappraisal_mode='v34'。Stage 2・3 で実装）を要する条件で、Stage 1 では実装されていない。"   # Stage 4 で全条件が動く（未使用）
 _IMPL = [
     Condition("C-v33", note="v3.3 の既定"),
     Condition("C-nocorr", skip_cor=True, note="訂正なしの枝（時計は進めない: v3.3 の T.2 と揃える）"),
@@ -144,11 +149,16 @@ _IMPL3 = [
     Condition("clamp-both", prefix_overrides=_V34, cor_overrides=(("m3_variant", "clamp_both"),), note="両方を切る"),
     Condition("τ-yoke", prefix_overrides=_V34, cor_overrides=(("m3_variant", "tau_yoke"),), yoke=True, note="別の背景の人格の τ の軌跡を与える（run_tau_yoke）"),
 ]
-_STUBS = ["A-g-const", "A-κ-fixed", "local-reattr"]
-CONDITIONS: Dict[str, Condition] = {c.name: c for c in _IMPL + _IMPL3}
-for _n in _STUBS:
-    CONDITIONS[_n] = Condition(_n, implemented=False, note=_STUB.format(_n))
+_IMPL4 = [      # Stage 4
+    Condition("A-g-const", prefix_overrides=_V34, cor_overrides=(("g_const", 0.5),), note="g_i ≡ 0.5（LLR と κ̄ を g に使わない）。COR の直前から（S3-9 と同じ読み。CHANGELOG-v3.4 S4-1）"),
+    Condition("A-κ-fixed", prefix_overrides=_V34, cor_overrides=(("kappa_fixed", True),), note="κ̄ ≡ 0.5、検証なし。COR の直前から（S4-1）"),
+    Condition("local-reattr", prefix_overrides=_V34, local_reattr=True, note="C-v34 の上で、各訂正の後に局所の φ の推定し直し。対照にも同じ処理（S4-2）"),
+    Condition("local-reattr-v33", local_reattr=True, note="C-v33 の上で、各訂正の後に局所の φ の推定し直し。対照にも同じ処理（RA7(c) の旧設計版。S4-2）"),
+    Condition("C-none-v34", prefix_overrides=_V34 + (("no_reappraisal", True),), note="v34 の上で価値を変えない対照（H7: r4・r5 が C-v34 と一致するか）"),
+]
+CONDITIONS: Dict[str, Condition] = {c.name: c for c in _IMPL + _IMPL3 + _IMPL4}
 ALIASES = {"clamp-tau": "clamp-τ", "tau-yoke": "τ-yoke", "A-tau-off": "A-τ-off", "A-kappa-fixed": "A-κ-fixed"}
+_STUBS: List[str] = []          # Stage 4 で、動かない条件はなくなった
 
 
 def get_condition(name: str) -> Condition:
@@ -174,13 +184,35 @@ def make_persona(seed: int, overrides: Tuple[Tuple[str, Any], ...] = ()) -> NPN:
     return NPN(seed=seed, **dict(overrides))
 
 
-def feed_items(npn: NPN, items: Sequence[Dict[str, Any]]) -> None:
-    """経験と訂正を与える。空の刻みは、v33 の人格では時計を進めないので無視し、v34 の人格では時計を 1 進める。"""
+def feed_items(npn: NPN, items: Sequence[Dict[str, Any]], after_correction: Optional[Callable[[NPN, Dict[str, Any]], None]] = None) -> None:
+    """経験と訂正を与える。空の刻みは、v33 の人格では時計を進めないので無視し、v34 の人格では時計を 1 進める。
+    after_correction: 訂正を与えた直後に呼ぶ関数（local-reattr）。"""
     for it in items:
         if it.get("kind") == "tick":
             advance_clock(npn, 1)
             continue
         npn.experience(copy.deepcopy(it))
+        if after_correction is not None and it.get("kind") == "correction":
+            after_correction(npn, it)
+
+
+def local_reattribute(npn: NPN, correction: Dict[str, Any]) -> None:
+    """local-reattr（SPEC 第 6 節）: 訂正の後に、参照先の経験と参加者を共有する記録（参照先の参加者が個体である観測の行）だけ、責任 φ を想起の 1 回の掃引で推定し直す。
+    他の行の φ は変えない。掃引は全行を同時に（ヤコビ型で）計算するので、選んだ行の値は全体の想起の掃引と同じになる（計算した後で、選ばなかった行を元に戻す）。
+    価値・条件づけ・関心の重みは変えない（信念の φ と計数だけ）。"""
+    bel = npn.belief
+    rec = npn.exp_log[npn._exp_pos[correction["refers_to"]]]
+    pids = {p["id"] for p in rec["participants"]}
+    R = bel.rec_n
+    if R == 0:
+        return
+    sel = np.array([bel.ind_ids[int(i)] in pids for i in bel.rec_ind[:R]], dtype=bool)
+    phi_old = bel.rec_phi[:R].copy()
+    bel.reattribute()
+    phi_new = bel.rec_phi[:R].copy()
+    phi_new[~sel] = phi_old[~sel]
+    bel.rec_phi[:R] = phi_new
+    bel._rebuild_counts()
 
 
 # ----------------------------------------------------------------------
@@ -293,9 +325,10 @@ def run_individual(seed: int, bg: str, src: str, err: str, n: int, m_extra: int,
         for k_, v_ in c.cor_overrides:
             setattr(npn.cfg, k_, v_)
         log: List[Dict[str, Any]] = []
+        hook = local_reattribute if c.local_reattr else None
         if not c.skip_cor:
             with reappraise_probe(log, q0=c.q0):
-                feed_items(npn, h["cor"])
+                feed_items(npn, h["cor"], hook)
         else:
             advance_clock(npn, len(h["cor"]))            # v34 の訂正なしの枝: 訂正の数だけ空の刻み（v33 では何もしない）
         R_cor = read_R(npn, oc)
@@ -303,6 +336,14 @@ def run_individual(seed: int, bg: str, src: str, err: str, n: int, m_extra: int,
         feed_items(npn, h["fol"])
         out["cond"][c.name] = {"R_pre": pf["R_pre"], "R_cor": R_cor, "R_fol": read_R(npn, oc), "R_ctrl_pre": pf["R_ctrl_pre"],
                                "gain": gain_summary(log), "layer_split": split}
+        if c.local_reattr:                               # 対照にも同じ時点（訂正の列の後）で同じ処理を、訂正と同じ参照先の列で行う
+            ctrl_lr = copy.deepcopy(pf["ctrl"])
+            for cor in h["cor"]:
+                if cor.get("kind") == "correction":
+                    local_reattribute(ctrl_lr, cor)
+            out["cond"][c.name]["R_ctrl_cor"] = read_R(ctrl_lr, oc)
+            feed_items(ctrl_lr, h["fol"])
+            out["cond"][c.name]["R_ctrl_fol"] = read_R(ctrl_lr, oc)
     return out
 
 
@@ -363,6 +404,13 @@ def swap_groups(target: NPN, source: NPN, groups: Sequence[str]) -> NPN:
             t.G = s.G                               # C-OR の累積（M3 の評価から作られる）
             t.last_ev = s.last_ev
             t.n_verifications = s.n_verifications
+        elif g == "G5k":                            # G5 の κ だけ（Shapley の速さ／中身の分類用の細分。S4-4）
+            t.src_beta = s.src_beta
+            t.n_verifications = s.n_verifications
+        elif g == "G5t":                            # G5 の τ だけ（τ、C-OR の累積 G、出来事の参照）
+            t.log_tau = s.log_tau
+            t.G = s.G
+            t.last_ev = s.last_ev
         elif g == "G6":
             t.h = s.h.copy()
             t.mood = float(s.mood)
@@ -372,9 +420,10 @@ def swap_groups(target: NPN, source: NPN, groups: Sequence[str]) -> NPN:
 
 
 def run_swap(seed: int, src: str, err: str, bg_target: str, bg_source: str, groups: Sequence[str], cond: str, phase: str,
-             n: int = 8, m_extra: int = 0, literal: bool = False) -> Optional[Dict[str, Any]]:
+             n: int = 8, m_extra: int = 0, literal: bool = False, nocorr: bool = False) -> Optional[Dict[str, Any]]:
     """同じ種・同じ SRC・同じ ERR の 2 個体（背景だけ違う）の間で、訂正の直前に状態の群を入れ替えて訂正を与える。並びが一致しなければ None（除く）。
     literal = True なら aligned_literal（条件づけの手がかりの並びまで一致を求める文面どおりの読み。感度分析。CHANGELOG-v3.4 A1・L1）。
+    nocorr = True なら、入れ替えた同じ人格に、訂正の代わりに空の刻みを N 進めた枝（訂正なしの枝）も実行し、R_cor_nc・R_fol_nc に返す（入れ替えた人格の CE = 訂正あり − 訂正なしの差を作る。S4-3）。
     val-swap = groups VAL_SWAP、hm-eq = HM_EQ、swap-G = 任意の群（G5 = κ・τ を含む）。cond の cor_overrides（clamp など）は入れ替えの後に効かせる。"""
     guard_seeds([seed], phase)
     c = get_condition(cond)
@@ -388,13 +437,20 @@ def run_swap(seed: int, src: str, err: str, bg_target: str, bg_source: str, grou
     sw = swap_groups(t, s, groups)
     for k_, v_ in c.cor_overrides:
         setattr(sw.cfg, k_, v_)
+    sw_nc = copy.deepcopy(sw) if nocorr else None
     log: List[Dict[str, Any]] = []
     if not c.skip_cor:
         with reappraise_probe(log, q0=c.q0):
             feed_items(sw, ht["cor"])
     R_cor = read_R(sw, oc)
     feed_items(sw, ht["fol"])
-    return {"R_cor": R_cor, "R_fol": read_R(sw, oc)}
+    out = {"R_cor": R_cor, "R_fol": read_R(sw, oc)}
+    if sw_nc is not None:
+        advance_clock(sw_nc, len(ht["cor"]))
+        out["R_cor_nc"] = read_R(sw_nc, oc)
+        feed_items(sw_nc, ht["fol"])
+        out["R_fol_nc"] = read_R(sw_nc, oc)
+    return out
 
 
 def run_val_swap(seed: int, src: str, err: str, bg_target: str, bg_source: str, phase: str, cond: str = "C-v34", n: int = 8, m_extra: int = 0,
@@ -407,6 +463,83 @@ def run_hm_eq(seed: int, src: str, err: str, bg_target: str, bg_source: str, pha
               literal: bool = False) -> Optional[Dict[str, Any]]:
     """hm-eq（SPEC 第 6 節）: 欲求の状態 h と気分 m だけを相手の値に揃える。"""
     return run_swap(seed, src, err, bg_target, bg_source, HM_EQ, cond, phase, n, m_extra, literal)
+
+
+SHAPLEY_PLAYERS = ("G1", "G2", "G3", "G4", "G5", "G6")
+SHAPLEY_PLAYERS_SPLIT_G5 = ("G1", "G2", "G3", "G4", "G5k", "G5t", "G6")
+
+
+def shapley_values(v: Dict[frozenset, float], players: Sequence[str]) -> Dict[str, float]:
+    """Shapley 値 φ_g = Σ_{S ⊆ N∖{g}} |S|! (n − |S| − 1)! / n! · (v(S ∪ {g}) − v(S))。v は全ての部分集合（frozenset）の値を持つ。効率性 Σ φ = v(N) − v(∅)。"""
+    pl = list(players)
+    n = len(pl)
+    fact = [math.factorial(i) for i in range(n + 1)]
+    out: Dict[str, float] = {}
+    for g in pl:
+        rest = [x for x in pl if x != g]
+        tot = 0.0
+        for mask in range(1 << len(rest)):
+            S = frozenset(rest[i] for i in range(len(rest)) if mask >> i & 1)
+            w = fact[len(S)] * fact[n - len(S) - 1] / fact[n]
+            tot += w * (v[S | {g}] - v[S])
+        out[g] = tot
+    return out
+
+
+def run_shapley(seed: int, src: str, err: str, bg_target: str, bg_source: str, phase: str, cond: str = "C-v34", n: int = 8, m_extra: int = 0,
+                players: Sequence[str] = SHAPLEY_PLAYERS, literal: bool = False) -> Optional[Dict[str, Any]]:
+    """RA2(b) の Shapley 分解の素材（SPEC 第 6 節 swap-G、第 7.4 節）。同じ種・同じ SRC・同じ ERR の 2 個体（背景だけ違う）で、訂正の直前に、
+    players の部分集合 S のそれぞれ（2^|players| 通り）の状態の群を target から source のものに入れ替え、入れ替えた人格に COR → FOL（訂正あり）と
+    空の刻み → FOL（訂正なし）を与える。各 S の CE_S = R_fol(訂正あり) − R_fol(訂正なし)。target・source の入れ替えなしの CE（CE_b、CE_b′）も返す。
+    プレイヤーの価値関数は呼び出し側が正規化した CE から作る（run_shapley_values）。並びが一致しなければ None（除く）。
+    prefix は 1 回だけ作る（部分集合ごとに作らない）。"""
+    guard_seeds([seed], phase)
+    c = get_condition(cond)
+    ht = H.make_history(seed, bg_target, src, err, n, m_extra)
+    hs = H.make_history(seed, bg_source, src, err, n, m_extra)
+    oc = ht["meta"]["o_class"]
+    t = _prefix(seed, ht, c.prefix_overrides, "mis")
+    s = _prefix(seed, hs, c.prefix_overrides, "mis")
+    if not (aligned_literal(t, s) if literal else aligned(t, s)):
+        return None
+    pl = list(players)
+
+    def ce_of(person_cor: NPN, hcor: Sequence[Dict[str, Any]], hfol: Sequence[Dict[str, Any]]) -> np.ndarray:
+        a = copy.deepcopy(person_cor)
+        b = copy.deepcopy(person_cor)
+        for k_, v_ in c.cor_overrides:
+            setattr(a.cfg, k_, v_)
+        feed_items(a, hcor)
+        feed_items(a, hfol)
+        advance_clock(b, len(hcor))
+        feed_items(b, hfol)
+        return read_R(a, oc) - read_R(b, oc)
+
+    ce: Dict[str, List[float]] = {}
+    for mask in range(1 << len(pl)):
+        S = [pl[i] for i in range(len(pl)) if mask >> i & 1]
+        sw = swap_groups(t, s, S) if S else copy.deepcopy(t)
+        ce["|".join(sorted(S))] = [float(x) for x in ce_of(sw, ht["cor"], ht["fol"])]
+    own_t = ce_of(t, ht["cor"], ht["fol"])
+    own_s = ce_of(s, hs["cor"], hs["fol"])
+    return {"players": pl, "CE_subsets": ce, "CE_target": [float(x) for x in own_t], "CE_source": [float(x) for x in own_s]}
+
+
+def shapley_from_run(run: Dict[str, Any], scale: np.ndarray, mask: np.ndarray) -> Dict[str, Any]:
+    """run_shapley の出力から、1 種・1 組の Shapley 分担を作る。価値関数 v(S) = 1 − ‖CE_S − CE_b′‖ / ‖CE_b − CE_b′‖（正規化した CE。
+    ギャップのうち、群 S の入れ替えで閉じた割合。v(∅) = 0）。効率性: Σ φ = v(全群) − v(∅)。ギャップが 0 なら None。"""
+    pl = run["players"]
+    ceb = normalize(np.array(run["CE_target"]), scale, mask)
+    cebp = normalize(np.array(run["CE_source"]), scale, mask)
+    gap = float(np.linalg.norm(ceb - cebp))
+    if gap < 1e-12:
+        return {"gap": gap, "phi": None, "v_all": None}
+    v: Dict[frozenset, float] = {}
+    for key, vec in run["CE_subsets"].items():
+        S = frozenset(key.split("|")) if key else frozenset()
+        v[S] = 1.0 - float(np.linalg.norm(normalize(np.array(vec), scale, mask) - cebp)) / gap
+    phi = shapley_values(v, pl)
+    return {"gap": gap, "phi": phi, "v_all": v[frozenset(pl)], "v_empty": v[frozenset()]}
 
 
 def run_tau_yoke(seed: int, src: str, err: str, bg_target: str, bg_donor: str, phase: str, n: int = 8, m_extra: int = 0) -> Dict[str, Any]:

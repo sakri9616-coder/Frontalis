@@ -1,0 +1,3331 @@
+{
+ "stage": "4",
+ "phase": "mut",
+ "seeds": [
+  3450,
+  3451,
+  3452,
+  3453,
+  3454,
+  3455,
+  3456,
+  3457,
+  3458,
+  3459
+ ],
+ "design": "full",
+ "stress_n": 100,
+ "mutants": {
+  "MU1": "吸収率を状態によらない定数にする（w_reapp 型。g ≡ 0.5。台帳の z・LLR・κ̄ は記録される）",
+  "MU2": "罪悪感・後悔・自己正当化を計算・記録するが τ に渡さない（τ の更新量が常に 0）",
+  "MU3": "v3.3 型の相対的なずらしを積み重ねる（吸収を、意図した変化 g D を観測とするカルマン更新に置き換える。Σ が縮む）",
+  "MU4": "吸収のゲインを 3 倍にし、台帳には一貫して記録する（W の和・測った予測の変化は実際の量。g・D・delta は元のまま）",
+  "MU5": "訂正で当時の f を書き換える（参照先の経験の台帳の f を訂正時の f_c で上書き）",
+  "MU6": "τ の境界を外す（tau_max = 1e6）。罪悪感の訂正を 100 回続ける stress_guilt で検査する",
+  "MU7": "気分を解釈の重みに漏らす（指数 τ·exp(m)）",
+  "MU8": "τ を下げる向きにだけ動かす（正の押しを 0 に切る。草稿 1 の設計）"
+ },
+ "not_applicable": {
+  "RA-Y4": "対照 C-retro の検査。変異体は対照の経路を変えない",
+  "H6": "既定モードでの v3.3 の全テスト（別の手順。Stage 2・3 で実行済み）",
+  "RA9": "報告のみ",
+  "RA13": "報告のみ",
+  "RA14": "報告のみ（C-OR の性質）"
+ },
+ "invariant_checks": [
+  "RA3_3",
+  "RA3_4",
+  "RA3_5",
+  "RA5_range",
+  "RA5_formula",
+  "RA5_pred",
+  "RA5_sigma",
+  "RA5_remainder",
+  "RA5_reconstruct",
+  "RA6",
+  "RA7a",
+  "RA8a",
+  "RA8b",
+  "RA8c",
+  "RA8d",
+  "H1",
+  "H2",
+  "H3",
+  "H4",
+  "H5",
+  "H7",
+  "H8",
+  "H9",
+  "RA12"
+ ],
+ "criteria_checks": [
+  "RA0",
+  "RA1",
+  "RA2",
+  "RA2_hm",
+  "RA3_1",
+  "RA3_2",
+  "RA4a",
+  "RA4b",
+  "RA4c"
+ ],
+ "baseline": {
+  "verdicts": {
+   "RA0": true,
+   "RA1": false,
+   "RA2": false,
+   "RA2_hm": true,
+   "RA3_1": true,
+   "RA3_2": true,
+   "RA4a": true,
+   "RA4b": true,
+   "RA4c": false,
+   "_detail": {
+    "RA1_by_err": {
+     "interp": true,
+     "report": true,
+     "report-x": false
+    },
+    "RA2_by_err": {
+     "interp": false,
+     "report": false,
+     "report-x": false
+    },
+    "RA2hm_by_err": {
+     "interp": true,
+     "report": true,
+     "report-x": true
+    },
+    "RA4b_mean_diff": -0.5270778630889149,
+    "RA4_range": 3.1704547604966464,
+    "RA4c_cells_over": 8
+   }
+  },
+  "invariants": {
+   "RA3_3": true,
+   "RA3_4": true,
+   "RA3_5": true,
+   "RA5_range": true,
+   "RA5_formula": true,
+   "RA5_pred": true,
+   "RA5_sigma": true,
+   "RA5_remainder": true,
+   "RA5_reconstruct": true,
+   "RA6": true,
+   "RA7a": true,
+   "RA8a": true,
+   "RA8b": true,
+   "RA8c": true,
+   "RA8d": true,
+   "H1": true,
+   "H2": true,
+   "H3": true,
+   "H4": true,
+   "H5": true,
+   "H7": true,
+   "H8": true,
+   "H9": true,
+   "RA12": true
+  }
+ },
+ "per_mutant": {
+  "baseline": {
+   "invariants": {
+    "RA3_3": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_4": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_5": {
+     "ok": true,
+     "n_run": 60,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_range": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_formula": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_pred": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_sigma": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_remainder": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_reconstruct": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA6": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA7a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8b": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8c": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8d": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H1": {
+     "ok": true,
+     "n_run": 280,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H2": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H3": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H4": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H5": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H7": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H8": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H9": {
+     "ok": true,
+     "n_run": 272,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA12": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    }
+   },
+   "verdicts": {
+    "RA0": true,
+    "RA1": false,
+    "RA2": false,
+    "RA2_hm": true,
+    "RA3_1": true,
+    "RA3_2": true,
+    "RA4a": true,
+    "RA4b": true,
+    "RA4c": false,
+    "_detail": {
+     "RA1_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": false
+     },
+     "RA2_by_err": {
+      "interp": false,
+      "report": false,
+      "report-x": false
+     },
+     "RA2hm_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": true
+     },
+     "RA4b_mean_diff": -0.5270778630889149,
+     "RA4_range": 3.1704547604966464,
+     "RA4c_cells_over": 8
+    }
+   },
+   "candidates": {
+    "C_tau_rule": {
+     "ok": true,
+     "fails": []
+    },
+    "C_D_recompute": {
+     "ok": true,
+     "fails": []
+    }
+   },
+   "ra8a_ledger_total_sign_disagreements": 12,
+   "stress": [
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    },
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    }
+   ],
+   "tau_boundary_counts": {
+    "collaborator|project_meeting": [
+     0,
+     66
+    ]
+   },
+   "wall": 435.1596963405609,
+   "cpu_seconds": 4311.085075199924
+  },
+  "MU1": {
+   "invariants": {
+    "RA3_3": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_4": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_5": {
+     "ok": true,
+     "n_run": 60,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_range": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_formula": {
+     "ok": false,
+     "n_run": 270,
+     "n_fail": 270,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU1",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "reliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "c7 g=0.5 σ=0.744174"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU1",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "unreliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "c7 g=0.5 σ=0.694984"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU1",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "none",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "c7 g=0.5 σ=0.797989"
+       ]
+      }
+     ]
+    },
+    "RA5_pred": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_sigma": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_remainder": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_reconstruct": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA6": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA7a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8b": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8c": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8d": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H1": {
+     "ok": true,
+     "n_run": 280,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H2": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H3": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H4": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H5": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H7": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H8": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H9": {
+     "ok": true,
+     "n_run": 272,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA12": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    }
+   },
+   "verdicts": {
+    "RA0": true,
+    "RA1": false,
+    "RA2": false,
+    "RA2_hm": true,
+    "RA3_1": true,
+    "RA3_2": true,
+    "RA4a": true,
+    "RA4b": true,
+    "RA4c": false,
+    "_detail": {
+     "RA1_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": false
+     },
+     "RA2_by_err": {
+      "interp": false,
+      "report": false,
+      "report-x": false
+     },
+     "RA2hm_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": true
+     },
+     "RA4b_mean_diff": -0.1720082054110162,
+     "RA4_range": 2.1056539009022934,
+     "RA4c_cells_over": 9
+    }
+   },
+   "candidates": {
+    "C_tau_rule": {
+     "ok": true,
+     "fails": []
+    },
+    "C_D_recompute": {
+     "ok": true,
+     "fails": []
+    }
+   },
+   "ra8a_ledger_total_sign_disagreements": 7,
+   "stress": [
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    },
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    }
+   ],
+   "tau_boundary_counts": {
+    "collaborator|project_meeting": [
+     0,
+     66
+    ]
+   },
+   "wall": 439.0018916130066,
+   "cpu_seconds": 4345.371773300023
+  },
+  "MU2": {
+   "invariants": {
+    "RA3_3": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_4": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_5": {
+     "ok": true,
+     "n_run": 60,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_range": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_formula": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_pred": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_sigma": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_remainder": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_reconstruct": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA6": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA7a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8b": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8c": {
+     "ok": false,
+     "n_run": 10,
+     "n_fail": 10,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU2",
+        "seed": 3450,
+        "stress_n": 100
+       },
+       "fails": [
+        "規則の両方向: 上 0.0 下 0.0"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU2",
+        "seed": 3451,
+        "stress_n": 100
+       },
+       "fails": [
+        "規則の両方向: 上 0.0 下 0.0"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU2",
+        "seed": 3452,
+        "stress_n": 0
+       },
+       "fails": [
+        "規則の両方向: 上 0.0 下 0.0"
+       ]
+      }
+     ]
+    },
+    "RA8d": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H1": {
+     "ok": true,
+     "n_run": 280,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H2": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H3": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H4": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H5": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H7": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H8": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H9": {
+     "ok": true,
+     "n_run": 272,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA12": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    }
+   },
+   "verdicts": {
+    "RA0": true,
+    "RA1": false,
+    "RA2": false,
+    "RA2_hm": true,
+    "RA3_1": false,
+    "RA3_2": false,
+    "RA4a": true,
+    "RA4b": true,
+    "RA4c": false,
+    "_detail": {
+     "RA1_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": false
+     },
+     "RA2_by_err": {
+      "interp": false,
+      "report": false,
+      "report-x": false
+     },
+     "RA2hm_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": true
+     },
+     "RA4b_mean_diff": -0.5270778630889149,
+     "RA4_range": 3.1704547604966464,
+     "RA4c_cells_over": 8
+    }
+   },
+   "candidates": {
+    "C_tau_rule": {
+     "ok": false,
+     "fails": [
+      "3450 c1 step 0.0 want 0.0011556017861387618",
+      "3450 c2 step 0.0 want 0.0001981400196300314",
+      "3450 c4 step 0.0 want -0.00014052892527946026"
+     ]
+    },
+    "C_D_recompute": {
+     "ok": true,
+     "fails": []
+    }
+   },
+   "ra8a_ledger_total_sign_disagreements": 12,
+   "stress": [
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    },
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    }
+   ],
+   "tau_boundary_counts": {},
+   "wall": 476.35795307159424,
+   "cpu_seconds": 4714.758550200058
+  },
+  "MU3": {
+   "invariants": {
+    "RA3_3": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_4": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_5": {
+     "ok": true,
+     "n_run": 60,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_range": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_formula": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_pred": {
+     "ok": false,
+     "n_run": 270,
+     "n_fail": 270,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU3",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "reliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "c0 sit err 0.000695"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU3",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "unreliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "c0 sit err 0.00399"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU3",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "none",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "c0 sit err 0.003"
+       ]
+      }
+     ]
+    },
+    "RA5_sigma": {
+     "ok": false,
+     "n_run": 270,
+     "n_fail": 270,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU3",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "reliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "Σ・C・a が訂正で変化"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU3",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "unreliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "Σ・C・a が訂正で変化"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU3",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "none",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "Σ・C・a が訂正で変化"
+       ]
+      }
+     ]
+    },
+    "RA5_remainder": {
+     "ok": false,
+     "n_run": 270,
+     "n_fail": 270,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU3",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "reliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "delta/remainder/pred_change の台帳の整合"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU3",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "unreliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "delta/remainder/pred_change の台帳の整合"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU3",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "none",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "delta/remainder/pred_change の台帳の整合"
+       ]
+      }
+     ]
+    },
+    "RA5_reconstruct": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA6": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA7a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8b": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8c": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8d": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H1": {
+     "ok": true,
+     "n_run": 280,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H2": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H3": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H4": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H5": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H7": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H8": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H9": {
+     "ok": true,
+     "n_run": 272,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA12": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    }
+   },
+   "verdicts": {
+    "RA0": true,
+    "RA1": true,
+    "RA2": false,
+    "RA2_hm": true,
+    "RA3_1": true,
+    "RA3_2": true,
+    "RA4a": true,
+    "RA4b": true,
+    "RA4c": false,
+    "_detail": {
+     "RA1_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": true
+     },
+     "RA2_by_err": {
+      "interp": false,
+      "report": false,
+      "report-x": true
+     },
+     "RA2hm_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": true
+     },
+     "RA4b_mean_diff": -0.03386792312784731,
+     "RA4_range": 0.31849362476977183,
+     "RA4c_cells_over": 4
+    }
+   },
+   "candidates": {
+    "C_tau_rule": {
+     "ok": true,
+     "fails": []
+    },
+    "C_D_recompute": {
+     "ok": true,
+     "fails": []
+    }
+   },
+   "ra8a_ledger_total_sign_disagreements": 8,
+   "stress": [
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    },
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    }
+   ],
+   "tau_boundary_counts": {
+    "collaborator|project_meeting": [
+     0,
+     66
+    ]
+   },
+   "wall": 469.78418922424316,
+   "cpu_seconds": 4651.528986300196
+  },
+  "MU4": {
+   "invariants": {
+    "RA3_3": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_4": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_5": {
+     "ok": true,
+     "n_run": 60,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_range": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_formula": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_pred": {
+     "ok": false,
+     "n_run": 270,
+     "n_fail": 270,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU4",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "reliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "c0 sit err 0.00139"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU4",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "unreliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "c0 sit err 0.00799"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU4",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "none",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "c0 sit err 0.006"
+       ]
+      }
+     ]
+    },
+    "RA5_sigma": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_remainder": {
+     "ok": false,
+     "n_run": 270,
+     "n_fail": 270,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU4",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "reliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "delta/remainder/pred_change の台帳の整合"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU4",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "unreliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "delta/remainder/pred_change の台帳の整合"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU4",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "none",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "delta/remainder/pred_change の台帳の整合"
+       ]
+      }
+     ]
+    },
+    "RA5_reconstruct": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA6": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA7a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8b": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8c": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8d": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H1": {
+     "ok": true,
+     "n_run": 280,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H2": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H3": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H4": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H5": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H7": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H8": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H9": {
+     "ok": true,
+     "n_run": 272,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA12": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    }
+   },
+   "verdicts": {
+    "RA0": true,
+    "RA1": false,
+    "RA2": false,
+    "RA2_hm": true,
+    "RA3_1": false,
+    "RA3_2": false,
+    "RA4a": true,
+    "RA4b": true,
+    "RA4c": true,
+    "_detail": {
+     "RA1_by_err": {
+      "interp": false,
+      "report": true,
+      "report-x": false
+     },
+     "RA2_by_err": {
+      "interp": false,
+      "report": false,
+      "report-x": false
+     },
+     "RA2hm_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": true
+     },
+     "RA4b_mean_diff": -1.5813349828230137,
+     "RA4_range": 9.511945770956281,
+     "RA4c_cells_over": 18
+    }
+   },
+   "candidates": {
+    "C_tau_rule": {
+     "ok": true,
+     "fails": []
+    },
+    "C_D_recompute": {
+     "ok": true,
+     "fails": []
+    }
+   },
+   "ra8a_ledger_total_sign_disagreements": 86,
+   "stress": [
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    },
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    }
+   ],
+   "tau_boundary_counts": {
+    "collaborator|project_meeting": [
+     0,
+     66
+    ]
+   },
+   "wall": 466.4764382839203,
+   "cpu_seconds": 4622.296286600089
+  },
+  "MU5": {
+   "invariants": {
+    "RA3_3": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_4": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_5": {
+     "ok": true,
+     "n_run": 60,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_range": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_formula": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_pred": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_sigma": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_remainder": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_reconstruct": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA6": {
+     "ok": false,
+     "n_run": 270,
+     "n_fail": 270,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU5",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "reliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "当時の台帳/original_outcomes の変化、または訂正の記録の数"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU5",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "unreliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "当時の台帳/original_outcomes の変化、または訂正の記録の数"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU5",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "none",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "当時の台帳/original_outcomes の変化、または訂正の記録の数"
+       ]
+      }
+     ]
+    },
+    "RA7a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8b": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8c": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8d": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H1": {
+     "ok": true,
+     "n_run": 280,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H2": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H3": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H4": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H5": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H7": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H8": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H9": {
+     "ok": true,
+     "n_run": 272,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA12": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    }
+   },
+   "verdicts": {
+    "RA0": true,
+    "RA1": false,
+    "RA2": false,
+    "RA2_hm": true,
+    "RA3_1": true,
+    "RA3_2": true,
+    "RA4a": true,
+    "RA4b": true,
+    "RA4c": false,
+    "_detail": {
+     "RA1_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": false
+     },
+     "RA2_by_err": {
+      "interp": false,
+      "report": false,
+      "report-x": false
+     },
+     "RA2hm_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": true
+     },
+     "RA4b_mean_diff": -0.5270778630889149,
+     "RA4_range": 3.1704547604966464,
+     "RA4c_cells_over": 8
+    }
+   },
+   "candidates": {
+    "C_tau_rule": {
+     "ok": true,
+     "fails": []
+    },
+    "C_D_recompute": {
+     "ok": true,
+     "fails": []
+    }
+   },
+   "ra8a_ledger_total_sign_disagreements": 12,
+   "stress": [
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    },
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    }
+   ],
+   "tau_boundary_counts": {
+    "collaborator|project_meeting": [
+     0,
+     66
+    ]
+   },
+   "wall": 463.60508275032043,
+   "cpu_seconds": 4590.4506645000365
+  },
+  "MU6": {
+   "invariants": {
+    "RA3_3": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_4": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_5": {
+     "ok": true,
+     "n_run": 60,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_range": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_formula": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_pred": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_sigma": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_remainder": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_reconstruct": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA6": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA7a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8b": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8c": {
+     "ok": false,
+     "n_run": 10,
+     "n_fail": 10,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU6",
+        "seed": 3450,
+        "stress_n": 100
+       },
+       "fails": [
+        "境界: log τ = 13.82（|·| ≤ 1.099）"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU6",
+        "seed": 3451,
+        "stress_n": 100
+       },
+       "fails": [
+        "境界: log τ = 13.82（|·| ≤ 1.099）"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU6",
+        "seed": 3452,
+        "stress_n": 0
+       },
+       "fails": [
+        "境界: log τ = 13.82（|·| ≤ 1.099）"
+       ]
+      }
+     ]
+    },
+    "RA8d": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H1": {
+     "ok": false,
+     "n_run": 280,
+     "n_fail": 10,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU6",
+        "seed": 3450,
+        "stress_n": 100
+       },
+       "fails": [
+        "τ が範囲外"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU6",
+        "seed": 3451,
+        "stress_n": 100
+       },
+       "fails": [
+        "τ が範囲外"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU6",
+        "seed": 3452,
+        "stress_n": 0
+       },
+       "fails": [
+        "τ が範囲外"
+       ]
+      }
+     ]
+    },
+    "H2": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H3": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H4": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H5": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H7": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H8": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H9": {
+     "ok": true,
+     "n_run": 272,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA12": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    }
+   },
+   "verdicts": {
+    "RA0": true,
+    "RA1": false,
+    "RA2": false,
+    "RA2_hm": true,
+    "RA3_1": true,
+    "RA3_2": true,
+    "RA4a": true,
+    "RA4b": true,
+    "RA4c": false,
+    "_detail": {
+     "RA1_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": false
+     },
+     "RA2_by_err": {
+      "interp": false,
+      "report": false,
+      "report-x": false
+     },
+     "RA2hm_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": true
+     },
+     "RA4b_mean_diff": -0.5270778630889149,
+     "RA4_range": 3.1704547604966464,
+     "RA4c_cells_over": 8
+    }
+   },
+   "candidates": {
+    "C_tau_rule": {
+     "ok": true,
+     "fails": []
+    },
+    "C_D_recompute": {
+     "ok": true,
+     "fails": []
+    }
+   },
+   "ra8a_ledger_total_sign_disagreements": 12,
+   "stress": [
+    {
+     "n": 100,
+     "log_tau_end": -3.0,
+     "tau_end": 0.049787068367863944
+    },
+    {
+     "n": 100,
+     "log_tau_end": -3.0,
+     "tau_end": 0.049787068367863944
+    }
+   ],
+   "tau_boundary_counts": {
+    "collaborator|project_meeting": [
+     0,
+     66
+    ]
+   },
+   "wall": 467.4037232398987,
+   "cpu_seconds": 4623.465389200079
+  },
+  "MU7": {
+   "invariants": {
+    "RA3_3": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_4": {
+     "ok": false,
+     "n_run": 150,
+     "n_fail": 150,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU7",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "reliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "clamp-mood が FOL の後の学習状態・R を変えた"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU7",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "unreliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "clamp-mood が FOL の後の学習状態・R を変えた"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU7",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "none",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "clamp-mood が FOL の後の学習状態・R を変えた"
+       ]
+      }
+     ]
+    },
+    "RA3_5": {
+     "ok": true,
+     "n_run": 60,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_range": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_formula": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_pred": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_sigma": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_remainder": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_reconstruct": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA6": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA7a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8b": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8c": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8d": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H1": {
+     "ok": true,
+     "n_run": 280,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H2": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H3": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H4": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H5": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H7": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H8": {
+     "ok": false,
+     "n_run": 270,
+     "n_fail": 270,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU7",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "reliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "気分の摂動の比、または学習状態の不一致"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU7",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "unreliable",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "気分の摂動の比、または学習状態の不一致"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU7",
+        "seed": 3450,
+        "bg": "trust",
+        "src": "none",
+        "err": "interp",
+        "n": 8,
+        "cross": true
+       },
+       "fails": [
+        "気分の摂動の比、または学習状態の不一致"
+       ]
+      }
+     ]
+    },
+    "H9": {
+     "ok": true,
+     "n_run": 272,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA12": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    }
+   },
+   "verdicts": {
+    "RA0": false,
+    "RA1": false,
+    "RA2": false,
+    "RA2_hm": true,
+    "RA3_1": true,
+    "RA3_2": true,
+    "RA4a": true,
+    "RA4b": true,
+    "RA4c": false,
+    "_detail": {
+     "RA1_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": false
+     },
+     "RA2_by_err": {
+      "interp": false,
+      "report": false,
+      "report-x": false
+     },
+     "RA2hm_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": true
+     },
+     "RA4b_mean_diff": -58.434363266952786,
+     "RA4_range": 525.2179222779022,
+     "RA4c_cells_over": 8
+    }
+   },
+   "candidates": {
+    "C_tau_rule": {
+     "ok": true,
+     "fails": []
+    },
+    "C_D_recompute": {
+     "ok": true,
+     "fails": []
+    }
+   },
+   "ra8a_ledger_total_sign_disagreements": 12,
+   "stress": [
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    },
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    }
+   ],
+   "tau_boundary_counts": {
+    "collaborator|project_meeting": [
+     0,
+     66
+    ]
+   },
+   "wall": 465.9427981376648,
+   "cpu_seconds": 4609.997096000123
+  },
+  "MU8": {
+   "invariants": {
+    "RA3_3": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_4": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA3_5": {
+     "ok": true,
+     "n_run": 60,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_range": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_formula": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_pred": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_sigma": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_remainder": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA5_reconstruct": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA6": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA7a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8a": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8b": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA8c": {
+     "ok": false,
+     "n_run": 10,
+     "n_fail": 10,
+     "first_fails": [
+      {
+       "meta": {
+        "mutant": "MU8",
+        "seed": 3450,
+        "stress_n": 100
+       },
+       "fails": [
+        "規則の両方向: 上 0.0 下 -0.5"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU8",
+        "seed": 3451,
+        "stress_n": 100
+       },
+       "fails": [
+        "規則の両方向: 上 0.0 下 -0.5"
+       ]
+      },
+      {
+       "meta": {
+        "mutant": "MU8",
+        "seed": 3452,
+        "stress_n": 0
+       },
+       "fails": [
+        "規則の両方向: 上 0.0 下 -0.5"
+       ]
+      }
+     ]
+    },
+    "RA8d": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H1": {
+     "ok": true,
+     "n_run": 280,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H2": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H3": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H4": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H5": {
+     "ok": true,
+     "n_run": 10,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H7": {
+     "ok": true,
+     "n_run": 150,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H8": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "H9": {
+     "ok": true,
+     "n_run": 272,
+     "n_fail": 0,
+     "first_fails": []
+    },
+    "RA12": {
+     "ok": true,
+     "n_run": 270,
+     "n_fail": 0,
+     "first_fails": []
+    }
+   },
+   "verdicts": {
+    "RA0": true,
+    "RA1": false,
+    "RA2": false,
+    "RA2_hm": true,
+    "RA3_1": true,
+    "RA3_2": false,
+    "RA4a": true,
+    "RA4b": true,
+    "RA4c": false,
+    "_detail": {
+     "RA1_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": false
+     },
+     "RA2_by_err": {
+      "interp": false,
+      "report": false,
+      "report-x": false
+     },
+     "RA2hm_by_err": {
+      "interp": true,
+      "report": true,
+      "report-x": true
+     },
+     "RA4b_mean_diff": -0.5270778630889149,
+     "RA4_range": 3.1704547604966464,
+     "RA4c_cells_over": 8
+    }
+   },
+   "candidates": {
+    "C_tau_rule": {
+     "ok": false,
+     "fails": [
+      "3450 c1 step 0.0 want 0.0011556017861387618",
+      "3450 c2 step 0.0 want 0.0001981400196300314",
+      "3450 c1 step 0.0 want 0.0011556017861387618"
+     ]
+    },
+    "C_D_recompute": {
+     "ok": true,
+     "fails": []
+    }
+   },
+   "ra8a_ledger_total_sign_disagreements": 12,
+   "stress": [
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    },
+    {
+     "n": 100,
+     "log_tau_end": -1.0986122886681098,
+     "tau_end": 0.3333333333333333
+    }
+   ],
+   "tau_boundary_counts": {
+    "collaborator|project_meeting": [
+     0,
+     31
+    ]
+   },
+   "wall": 465.1297595500946,
+   "cpu_seconds": 4603.614545400051
+  }
+ },
+ "initial_set": {
+  "matrix": {
+   "MU1": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "FAIL",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "pass",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "same",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same"
+   },
+   "MU2": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "FAIL",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "FLIP",
+    "RA3_2": "FLIP",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same"
+   },
+   "MU3": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "FAIL",
+    "RA5_sigma": "FAIL",
+    "RA5_remainder": "FAIL",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "pass",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "FLIP",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "same",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same"
+   },
+   "MU4": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "FAIL",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "FAIL",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "pass",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "FLIP",
+    "RA3_2": "FLIP",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "FLIP"
+   },
+   "MU5": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "FAIL",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "pass",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "same",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same"
+   },
+   "MU6": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "FAIL",
+    "RA8d": "pass",
+    "H1": "FAIL",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "same",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same"
+   },
+   "MU7": {
+    "RA3_3": "pass",
+    "RA3_4": "FAIL",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "pass",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "FAIL",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "FLIP",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "same",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same"
+   },
+   "MU8": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "FAIL",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "FLIP",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same"
+   }
+  },
+  "summary": {
+   "MU1": {
+    "detected": true,
+    "by_invariant": [
+     "RA5_formula"
+    ],
+    "by_verdict_flip": [],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU2": {
+    "detected": true,
+    "by_invariant": [
+     "RA8c"
+    ],
+    "by_verdict_flip": [
+     "RA3_1",
+     "RA3_2"
+    ],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU3": {
+    "detected": true,
+    "by_invariant": [
+     "RA5_pred",
+     "RA5_sigma",
+     "RA5_remainder"
+    ],
+    "by_verdict_flip": [
+     "RA1"
+    ],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU4": {
+    "detected": true,
+    "by_invariant": [
+     "RA5_pred",
+     "RA5_remainder"
+    ],
+    "by_verdict_flip": [
+     "RA3_1",
+     "RA3_2",
+     "RA4c"
+    ],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU5": {
+    "detected": true,
+    "by_invariant": [
+     "RA6"
+    ],
+    "by_verdict_flip": [],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU6": {
+    "detected": true,
+    "by_invariant": [
+     "RA8c",
+     "H1"
+    ],
+    "by_verdict_flip": [],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU7": {
+    "detected": true,
+    "by_invariant": [
+     "RA3_4",
+     "H8"
+    ],
+    "by_verdict_flip": [
+     "RA0"
+    ],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU8": {
+    "detected": true,
+    "by_invariant": [
+     "RA8c"
+    ],
+    "by_verdict_flip": [
+     "RA3_2"
+    ],
+    "by_candidate": [],
+    "kind": "invariant"
+   }
+  },
+  "n_detected": 8,
+  "must_detect": {
+   "MU2": true,
+   "MU3": true,
+   "MU4": true,
+   "MU5": true,
+   "MU7": true
+  },
+  "baseline_invariant_failures": [],
+  "rule": "MU2〜MU5 と MU7 がすべて検出され、8 体中 7 体以上が検出されれば合格",
+  "passed": true
+ },
+ "with_candidate_checks": {
+  "matrix": {
+   "MU1": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "FAIL",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "pass",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "same",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same",
+    "C_tau_rule": "pass",
+    "C_D_recompute": "pass"
+   },
+   "MU2": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "FAIL",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "FLIP",
+    "RA3_2": "FLIP",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same",
+    "C_tau_rule": "FAIL",
+    "C_D_recompute": "pass"
+   },
+   "MU3": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "FAIL",
+    "RA5_sigma": "FAIL",
+    "RA5_remainder": "FAIL",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "pass",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "FLIP",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "same",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same",
+    "C_tau_rule": "pass",
+    "C_D_recompute": "pass"
+   },
+   "MU4": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "FAIL",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "FAIL",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "pass",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "FLIP",
+    "RA3_2": "FLIP",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "FLIP",
+    "C_tau_rule": "pass",
+    "C_D_recompute": "pass"
+   },
+   "MU5": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "FAIL",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "pass",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "same",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same",
+    "C_tau_rule": "pass",
+    "C_D_recompute": "pass"
+   },
+   "MU6": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "FAIL",
+    "RA8d": "pass",
+    "H1": "FAIL",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "same",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same",
+    "C_tau_rule": "pass",
+    "C_D_recompute": "pass"
+   },
+   "MU7": {
+    "RA3_3": "pass",
+    "RA3_4": "FAIL",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "pass",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "FAIL",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "FLIP",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "same",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same",
+    "C_tau_rule": "pass",
+    "C_D_recompute": "pass"
+   },
+   "MU8": {
+    "RA3_3": "pass",
+    "RA3_4": "pass",
+    "RA3_5": "pass",
+    "RA5_range": "pass",
+    "RA5_formula": "pass",
+    "RA5_pred": "pass",
+    "RA5_sigma": "pass",
+    "RA5_remainder": "pass",
+    "RA5_reconstruct": "pass",
+    "RA6": "pass",
+    "RA7a": "pass",
+    "RA8a": "pass",
+    "RA8b": "pass",
+    "RA8c": "FAIL",
+    "RA8d": "pass",
+    "H1": "pass",
+    "H2": "pass",
+    "H3": "pass",
+    "H4": "pass",
+    "H5": "pass",
+    "H7": "pass",
+    "H8": "pass",
+    "H9": "pass",
+    "RA12": "pass",
+    "RA0": "same",
+    "RA1": "same",
+    "RA2": "same",
+    "RA2_hm": "same",
+    "RA3_1": "same",
+    "RA3_2": "FLIP",
+    "RA4a": "same",
+    "RA4b": "same",
+    "RA4c": "same",
+    "C_tau_rule": "FAIL",
+    "C_D_recompute": "pass"
+   }
+  },
+  "summary": {
+   "MU1": {
+    "detected": true,
+    "by_invariant": [
+     "RA5_formula"
+    ],
+    "by_verdict_flip": [],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU2": {
+    "detected": true,
+    "by_invariant": [
+     "RA8c"
+    ],
+    "by_verdict_flip": [
+     "RA3_1",
+     "RA3_2"
+    ],
+    "by_candidate": [
+     "C_tau_rule"
+    ],
+    "kind": "invariant"
+   },
+   "MU3": {
+    "detected": true,
+    "by_invariant": [
+     "RA5_pred",
+     "RA5_sigma",
+     "RA5_remainder"
+    ],
+    "by_verdict_flip": [
+     "RA1"
+    ],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU4": {
+    "detected": true,
+    "by_invariant": [
+     "RA5_pred",
+     "RA5_remainder"
+    ],
+    "by_verdict_flip": [
+     "RA3_1",
+     "RA3_2",
+     "RA4c"
+    ],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU5": {
+    "detected": true,
+    "by_invariant": [
+     "RA6"
+    ],
+    "by_verdict_flip": [],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU6": {
+    "detected": true,
+    "by_invariant": [
+     "RA8c",
+     "H1"
+    ],
+    "by_verdict_flip": [],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU7": {
+    "detected": true,
+    "by_invariant": [
+     "RA3_4",
+     "H8"
+    ],
+    "by_verdict_flip": [
+     "RA0"
+    ],
+    "by_candidate": [],
+    "kind": "invariant"
+   },
+   "MU8": {
+    "detected": true,
+    "by_invariant": [
+     "RA8c"
+    ],
+    "by_verdict_flip": [
+     "RA3_2"
+    ],
+    "by_candidate": [
+     "C_tau_rule"
+    ],
+    "kind": "invariant"
+   }
+  },
+  "n_detected": 8,
+  "must_detect": {
+   "MU2": true,
+   "MU3": true,
+   "MU4": true,
+   "MU5": true,
+   "MU7": true
+  },
+  "baseline_invariant_failures": [],
+  "rule": "MU2〜MU5 と MU7 がすべて検出され、8 体中 7 体以上が検出されれば合格",
+  "passed": true
+ }
+}

@@ -1156,10 +1156,10 @@ class NPN:
         D_person = [nv.predict_person(p) - prev_person[j] for j, p in enumerate(P)]
         D_sit = nv.predict_situation(rec["context"], rec["concepts"]) - prev_sit
         skey = self._src_key(c.get("source"))
-        al, be = self._kappa_ab(skey)
+        al, be = (1.0, 1.0) if cfg.kappa_fixed else self._kappa_ab(skey)       # A-κ-fixed（Stage 4）: κ̄ ≡ 0.5
         kbar = al / (al + be)
         z = math.log(al / be) + float(llr)
-        g = self._sigma(z)
+        g = self._sigma(z) if cfg.g_const is None else float(cfg.g_const)         # A-g-const（Stage 4）: g_i ≡ g_const。z と LLR は記録する
         or_mode = cfg.reappraisal_mode == "v34_or"
         pids = [p["id"] for p in P]
         G_before = {pid: float(self.G.get(pid, 0.0)) for pid in pids}
@@ -1172,10 +1172,11 @@ class NPN:
         after_p = [self.value.predict_person(p) for p in P]
         after_s = self.value.predict_situation(rec["context"], rec["concepts"])
         # G_e の累積（受け入れた訂正の罪悪感と後悔）は、like_後が要るので _m3_evaluate が吸収の後に足す（Stage 3）
-        self.ver_pending.append({"correction": c["id"], "source": skey, "refers_to": c["refers_to"], "serial": int(rec["serial"]),
-                                 "targets": list(pids), "prev_outcomes": prev_outcomes,
-                                 "correction_eid": "corr:" + str(c["id"]), "log_tau": dict(self.log_tau),           # 当時の読み（この訂正の τ の更新の前）
-                                 "tau_refs": {k: self.last_ev["tau:" + k] for k in sorted(self.log_tau) if ("tau:" + k) in self.last_ev}})
+        if not cfg.kappa_fixed:                                                  # A-κ-fixed: 検証なし
+            self.ver_pending.append({"correction": c["id"], "source": skey, "refers_to": c["refers_to"], "serial": int(rec["serial"]),
+                                     "targets": list(pids), "prev_outcomes": prev_outcomes,
+                                     "correction_eid": "corr:" + str(c["id"]), "log_tau": dict(self.log_tau),           # 当時の読み（この訂正の τ の更新の前）
+                                     "tau_refs": {k: self.last_ev["tau:" + k] for k in sorted(self.log_tau) if ("tau:" + k) in self.last_ev}})
         m1 = _py({
             "source": skey, "kappa_bar": kbar, "kappa_alpha_beta": [al, be], "llr": float(llr), "z": z, "z_clipped": abs(z) > cfg.g_logit_clip,
             "g": g, "g_e": {pid: g_e[j] for j, pid in enumerate(pids)}, "G_e": G_before, "or": or_mode,

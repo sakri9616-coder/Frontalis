@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "frozen_on": "2026-10-17",
+  "stage": "4 (after the mutation test on seeds 3450-3459, before the evaluation seeds 3400-3439)",
+  "files": {
+    "frontalis-v3-lab/tests/ra_protocol.py": "a8fc4a79193d03a43ec60e15063929d3f930ab0651a4879fd7262a36962dc820",
+    "frontalis-v3-lab/data/make_histories_v34.py": "33bb0934640d2d46c64adf5edeacc0bab92a95ed3af919559d965fd76146cd71",
+    "frontalis-v3-lab/tests/mutants_v34.py": "1cb328eb0fb088007f88300047e6f977c99af7c2e154425c711e9be86fcbece9",
+    "frontalis-v3-lab/tests/ra_parallel.py": "d99b107a3fc2998b0971f10652e1ca9c49da7c8bff929a85218e268d4d0e0428",
+    "frontalis-v3-lab/tests/ra_checks_v34.py": "2a0930f7a7160ef3885d9395c0990aeaa10939bf58824e22ba12880ef4dc2b08",
+    "frontalis-v3-lab/tests/stage4_mutation.py": "61262ba768b9279ed82fb7eaaa490f85623ec3e7674f1ff116ebfdf4fa84d1ef"
+  },
+  "hash_note": "SHA-256 of the file bytes with CRLF normalised to LF (git autocrlf=true on the authoring machine).",
+  "supersedes": "freeze-protocol.json (version 1, left untouched)",
+  "ra_protocol_history": {
+    "stage1_v1": "d21ec5b0f2f26b68b292793cf4cdf195eed040c8ff4d443ef49de9248a96f30c",
+    "stage3": "4302646543152cbe39c68f59b218f816a7e2663c38e46e08e61cca1f9f99c4d7",
+    "stage4_v2": "a8fc4a79193d03a43ec60e15063929d3f930ab0651a4879fd7262a36962dc820"
+  },
+  "make_histories_v34_unchanged_since_v1": true,
+  "system_files_changed_in_stage4_informational": {
+    "frontalis-v3-lab/npnv3/config.py": "e7ee1700f06465bccb63ea9ea623bff6ca583a8a9f80e73d7b887a1b6ab3faf0",
+    "frontalis-v3-lab/npnv3/npn.py": "4c79f25b46ea0efd6472ec7a481a0f9b1e728d08ce328a2535497957f13781b7"
+  },
+  "informational_not_frozen": {
+    "frontalis-v3-lab/tests/stage4_timing.py": "b86321ed62322a952d9fe28d354b64b93100b8b005e20978bf22948b916c9a1f",
+    "frontalis-v3-lab/tests/test_ra_stage4.py": "27a6366e81433b4437142bf7981a044fc605084d14b44daf3a3460846f0827be",
+    "frontalis-v3-lab/tests/results/v34/stage4_mutation.json": "766888ec6b5292bad21a556cb2813dbbeb3fcd7945e26e60162f6123e9f15cc4"
+  },
+  "mutation_seeds_run": "3450-3459 (Stage 4 only). Evaluation 3400-3439 and reserved 3500-3539 were never run.",
+  "spec_sha256_at_freeze": "9b93bea98ce37cf2122b1f79eccbb4f72b6cbded2861a52badfe9be67dc44b90",
+  "note": "After this file the protocol must not change before Stage 5. Stage 5 must widen PHASES/STAGE_ALLOWED in ra_protocol.py to run the evaluation seeds (guard-only change); record it in CHANGELOG-v3.4.md (S4-13)."
+}

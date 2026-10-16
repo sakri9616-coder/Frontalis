@@ -783,8 +783,9 @@ class ProtocolEntrances(unittest.TestCase):
         self.assertTrue(np.array_equal(out["cond"]["clamp-τ"]["R_cor"][idx], out["cond"]["C-v34"]["R_cor"][idx]))      # RA3(3): COR の直後、τ 以外は同じ
         for alias in ("clamp-tau", "A-tau-off", "tau-yoke"):
             RP.get_condition(alias)
-        with self.assertRaises(NotImplementedError):
-            RP.get_condition("A-g-const")
+        RP.get_condition("A-g-const")                                              # Stage 4 で実装された（Stage 3 までは NotImplementedError）。実装後の検査は test_ra_stage4.py
+        with self.assertRaises(KeyError):
+            RP.get_condition("no-such-condition")
 
     def test_val_swap_hm_eq_swap_G_and_the_literal_sensitivity(self):
         r = RP.run_val_swap(3490, "none", "interp", "betray", "trust", "dev", n=3)

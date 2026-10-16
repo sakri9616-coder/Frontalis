@@ -5,8 +5,9 @@ SPEC の第4〜6節（v3.0）と SPEC-v3.1 で固定された係数をここに�
 from __future__ import annotations
 
 import dataclasses
+import math
 from dataclasses import dataclass, field
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 
 def _person_var() -> Dict[str, float]:
@@ -105,6 +106,9 @@ class Config:
     #   "tau_off"（A-τ-off: τ ≡ 1）| "clock_off"（A-clock-off: 訂正が時計と気分を進めない）| "tau_yoke"（τ-yoke: 他の人格の τ の軌跡を与える。set_tau_yoke）
     m3_variant: str = "none"
     g_logit_clip: float = 30.0     # σ の引数の数値の安全のための制限（|z| > 30 では σ が 1 または 0 に丸まり (0, 1) を保てない）。台帳には制限前の z も残す
+    # --- v3.4 Stage 4（SPEC-v3.4 第 6 節 A-g-const・A-κ-fixed。既定は無効で、既定の挙動はビット単位で変わらない。COR の直前から cfg に与えて使う）---
+    g_const: Optional[float] = None   # A-g-const: M1 の吸収率を g_i ≡ g_const にする（LLR と κ̄ を g に使わない。台帳には z・LLR・κ̄ を記録する）
+    kappa_fixed: bool = False         # A-κ-fixed: κ̄ ≡ 0.5（Beta(1, 1) のまま）、検証待ちを登録しない（検証なし）
 
     # --- v3.3 第2部 3: 選択の正当化 J（二択 kind = "choice"。SPEC-v3.3 3.3, 3.4）---
     eta_j: float = 0.05            # 迷った選択での J の動き η_J
@@ -204,6 +208,8 @@ class Config:
             raise ValueError(f"concern_direction が不正です: {self.concern_direction!r}")
         if self.reappraisal_mode not in ("v33", "v34", "v34_or"):
             raise ValueError(f"reappraisal_mode が不正です: {self.reappraisal_mode!r}")
+        if self.g_const is not None and not (math.isfinite(self.g_const) and 0.0 < self.g_const < 1.0):
+            raise ValueError(f"g_const は (0, 1) の有限な値か None です: {self.g_const!r}")
         if self.m3_variant not in ("none", "clamp_tau", "clamp_mood", "clamp_both", "tau_off", "clock_off", "tau_yoke"):
             raise ValueError(f"m3_variant が不正です: {self.m3_variant!r}")
 
