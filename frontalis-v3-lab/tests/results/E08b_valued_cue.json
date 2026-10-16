@@ -1,0 +1,14 @@
+{
+ "latent": {
+  "value_before_mean": -0.1955178248662929,
+  "max_abs_change_protocol": 0.02152357212839609,
+  "max_abs_change_time_matched_unrelated_control (reported, not judged)": 0.05032658783965421,
+  "max_abs_protocol_minus_control (reported)": 0.028803015711258123
+ },
+ "single": {
+  "value_before_mean": -0.21272644200983531,
+  "max_abs_change_protocol": 0.0,
+  "max_abs_change_time_matched_unrelated_control (reported, not judged)": 0.0,
+  "max_abs_protocol_minus_control (reported)": 0.0
+ }
+}

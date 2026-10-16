@@ -6,13 +6,13 @@
  "n_distinct_rankings_orig": 3,
  "ranking_counts_orig": {
   "X < K < R": 5,
-  "K < X < R": 14,
-  "K < R < X": 1
+  "K < R < X": 1,
+  "K < X < R": 14
  },
  "ranking_counts_pert": {
-  "X < R < K": 1,
-  "R < K < X": 1,
   "X < K < R": 2,
-  "K < X < R": 16
+  "R < K < X": 1,
+  "K < X < R": 16,
+  "X < R < K": 1
  }
 }

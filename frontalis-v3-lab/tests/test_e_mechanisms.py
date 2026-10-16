@@ -86,6 +86,36 @@ class PriorAndResponse(unittest.TestCase):
         self.assertAlmostEqual(cd.value(["x", "y", "z"], "A", 12.0), cd.value_of("x", "A", 12.0) + cd.value_of("y", "A", 12.0), places=14)
 
 
+class StructuralLimits(unittest.TestCase):
+    """SPEC-v3.3 4.2 の式そのものの性質（判定ではない）。E5・E9 が不合格になる原因の一つを、式の性質として固定する（tests/diagnostics_e_oracle.py）。"""
+
+    def test_without_learning_the_response_magnitude_never_grows_with_time(self):
+        """すべての原因の重みは同じ exp(−t/τ) で縮み、新しい原因 α の質量だけが一定なので、学習のない間の |応答| は増えない（価値がすべて ≤ 0 のとき）。
+        したがって E5（自発的回復: 消去の後、無関係な経験だけを与えると応答が戻る）は、この式では原理的に起きない。"""
+        rng = np.random.default_rng(7)
+        for _ in range(300):
+            cd = cond()
+            K = int(rng.integers(1, 6))
+            vals = -rng.uniform(0.0, 0.6, size=K) * (rng.random(K) < 0.8)
+            put_causes(cd, "x", list(vals), [[float(rng.uniform(0, 20)), float(rng.uniform(0, 20))] for _ in range(K)],
+                       [float(rng.uniform(0, 60)) for _ in range(K)])
+            ctx = ["A", "B", "C"][int(rng.integers(3))]
+            prev = abs(cd.value_of("x", ctx, 60.0))
+            for dt in (1, 5, 20, 50, 200):
+                cur = abs(cd.value_of("x", ctx, 60.0 + dt))
+                self.assertLessEqual(cur, prev + 1e-15)
+                prev = cur
+
+    def test_weight_in_an_unseen_context_saturates_so_it_barely_depends_on_how_counts_are_spread(self):
+        """未見の文脈での原因の重み N_k (0 + β)/(N_k + β S) は、N_k が大きいと β に飽和する。消去の計数を 1 つの文脈に集めても 3 つの文脈に散らしても
+        （S が 3 → 5）、N_k = 20 で 0.87 → 0.80 の違いしかない。E9（3 つの文脈で消去すると ABC の復元が小さい）がこの式から出にくい理由。"""
+        beta = Config().lc_beta
+        w1 = 20.0 * beta / (20.0 + beta * 3.0)
+        w3 = 20.0 * beta / (20.0 + beta * 5.0)
+        self.assertGreater(w3, 0.75)
+        self.assertLess(w1 - w3, 0.1)
+
+
 class UpdateRules(unittest.TestCase):
     def test_first_update_creates_a_cause_and_learns_with_alpha_c(self):
         cd = cond()

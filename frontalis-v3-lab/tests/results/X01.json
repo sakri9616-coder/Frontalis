@@ -3,8 +3,10 @@
   {
    "seed": 0,
    "kind": "mixture",
+   "twin": "swap",
    "checkpoints": [
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": 0.02023189471183251,
      "n": 20,
      "head_outputs_equal": {
       "mlp": true,
@@ -46,6 +48,7 @@
      }
     },
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": 0.022500774137280133,
      "n": 40,
      "head_outputs_equal": {
       "mlp": true,
@@ -87,6 +90,7 @@
      }
     },
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": 0.004832786071824635,
      "n": 60,
      "head_outputs_equal": {
       "mlp": true,
@@ -131,9 +135,144 @@
   },
   {
    "seed": 0,
-   "kind": "mlp",
+   "kind": "mixture",
+   "twin": "erase",
    "checkpoints": [
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": 0.018614773409975527,
+     "n": 20,
+     "head_outputs_equal": {
+      "mlp": true,
+      "linear": true,
+      "knn1": true,
+      "knnk": true,
+      "none": true
+     },
+     "head_output_max_abs_diff": {
+      "mlp": 0.0,
+      "linear": 0.0,
+      "knn1": 0.0,
+      "knnk": 0.0,
+      "none": 0.0
+     },
+     "loo_models_equal": true,
+     "full_models_equal (expected False: they include collaborator)": false,
+     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.05586735078919999,
+     "mentor_output_max_abs_diff": {
+      "mlp": 0.35774087643203334,
+      "linear": 0.10772734393052838,
+      "knn1": 0.02849002849002852,
+      "knnk": 0.24912985412113464,
+      "none": 0.1851851851851852
+     },
+     "mixture_weights_a": {
+      "mlp": 0.048128762354606835,
+      "linear": 0.12720948445264385,
+      "knn1": 0.15303708581792758,
+      "knnk": 0.26210720391206466,
+      "none": 0.4095174634627572
+     },
+     "mixture_weights_b": {
+      "mlp": 0.06703146893012236,
+      "linear": 0.1364874275904848,
+      "knn1": 0.16781925808803413,
+      "knnk": 0.30593322821413366,
+      "none": 0.32272861717722506
+     }
+    },
+    {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": 0.011844948289678026,
+     "n": 40,
+     "head_outputs_equal": {
+      "mlp": true,
+      "linear": true,
+      "knn1": true,
+      "knnk": true,
+      "none": true
+     },
+     "head_output_max_abs_diff": {
+      "mlp": 0.0,
+      "linear": 0.0,
+      "knn1": 0.0,
+      "knnk": 0.0,
+      "none": 0.0
+     },
+     "loo_models_equal": true,
+     "full_models_equal (expected False: they include collaborator)": false,
+     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.11082464386534324,
+     "mentor_output_max_abs_diff": {
+      "mlp": 0.2250337844951703,
+      "linear": 0.20137527358346174,
+      "knn1": 0.02696078431372545,
+      "knnk": 0.2914545164217489,
+      "none": 0.22916666666666666
+     },
+     "mixture_weights_a": {
+      "mlp": 0.04484374202405155,
+      "linear": 0.13295385818557937,
+      "knn1": 0.14338845002814427,
+      "knnk": 0.21152902455763342,
+      "none": 0.4672849252045914
+     },
+     "mixture_weights_b": {
+      "mlp": 0.06831054131977154,
+      "linear": 0.1413149147553358,
+      "knn1": 0.10648970008364085,
+      "knnk": 0.23390811099727205,
+      "none": 0.4499767328439797
+     }
+    },
+    {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": 0.006753829634444736,
+     "n": 60,
+     "head_outputs_equal": {
+      "mlp": true,
+      "linear": true,
+      "knn1": true,
+      "knnk": true,
+      "none": true
+     },
+     "head_output_max_abs_diff": {
+      "mlp": 0.0,
+      "linear": 0.0,
+      "knn1": 0.0,
+      "knnk": 0.0,
+      "none": 0.0
+     },
+     "loo_models_equal": true,
+     "full_models_equal (expected False: they include collaborator)": false,
+     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.11407402301737138,
+     "mentor_output_max_abs_diff": {
+      "mlp": 0.1456678325556545,
+      "linear": 0.11242184002863831,
+      "knn1": 0.019021739130434756,
+      "knnk": 0.254625962130967,
+      "none": 0.21875
+     },
+     "mixture_weights_a": {
+      "mlp": 0.06439582135097903,
+      "linear": 0.13486088861074896,
+      "knn1": 0.07903093720351385,
+      "knnk": 0.14832202174676706,
+      "none": 0.573390331087991
+     },
+     "mixture_weights_b": {
+      "mlp": 0.07389017791066009,
+      "linear": 0.15878378809426894,
+      "knn1": 0.08084268737577843,
+      "knnk": 0.18747729654011702,
+      "none": 0.49900605007917553
+     }
+    }
+   ]
+  },
+  {
+   "seed": 0,
+   "kind": "mlp",
+   "twin": "swap",
+   "checkpoints": [
+    {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
      "n": 20,
      "head_outputs_equal": {
       "mlp": true
@@ -163,6 +302,7 @@
      }
     },
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
      "n": 40,
      "head_outputs_equal": {
       "mlp": true
@@ -192,6 +332,7 @@
      }
     },
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
      "n": 60,
      "head_outputs_equal": {
       "mlp": true
@@ -224,9 +365,108 @@
   },
   {
    "seed": 0,
-   "kind": "linear",
+   "kind": "mlp",
+   "twin": "erase",
    "checkpoints": [
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
+     "n": 20,
+     "head_outputs_equal": {
+      "mlp": true
+     },
+     "head_output_max_abs_diff": {
+      "mlp": 0.0
+     },
+     "loo_models_equal": true,
+     "full_models_equal (expected False: they include collaborator)": false,
+     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.08535857859345564,
+     "mentor_output_max_abs_diff": {
+      "mlp": 0.35774087643203334
+     },
+     "mixture_weights_a": {
+      "mlp": 1.0,
+      "linear": 0.0,
+      "knn1": 0.0,
+      "knnk": 0.0,
+      "none": 0.0
+     },
+     "mixture_weights_b": {
+      "mlp": 1.0,
+      "linear": 0.0,
+      "knn1": 0.0,
+      "knnk": 0.0,
+      "none": 0.0
+     }
+    },
+    {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
+     "n": 40,
+     "head_outputs_equal": {
+      "mlp": true
+     },
+     "head_output_max_abs_diff": {
+      "mlp": 0.0
+     },
+     "loo_models_equal": true,
+     "full_models_equal (expected False: they include collaborator)": false,
+     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.09496851251420436,
+     "mentor_output_max_abs_diff": {
+      "mlp": 0.2250337844951703
+     },
+     "mixture_weights_a": {
+      "mlp": 1.0,
+      "linear": 0.0,
+      "knn1": 0.0,
+      "knnk": 0.0,
+      "none": 0.0
+     },
+     "mixture_weights_b": {
+      "mlp": 1.0,
+      "linear": 0.0,
+      "knn1": 0.0,
+      "knnk": 0.0,
+      "none": 0.0
+     }
+    },
+    {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
+     "n": 60,
+     "head_outputs_equal": {
+      "mlp": true
+     },
+     "head_output_max_abs_diff": {
+      "mlp": 0.0
+     },
+     "loo_models_equal": true,
+     "full_models_equal (expected False: they include collaborator)": false,
+     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.1264672365100506,
+     "mentor_output_max_abs_diff": {
+      "mlp": 0.1456678325556545
+     },
+     "mixture_weights_a": {
+      "mlp": 1.0,
+      "linear": 0.0,
+      "knn1": 0.0,
+      "knnk": 0.0,
+      "none": 0.0
+     },
+     "mixture_weights_b": {
+      "mlp": 1.0,
+      "linear": 0.0,
+      "knn1": 0.0,
+      "knnk": 0.0,
+      "none": 0.0
+     }
+    }
+   ]
+  },
+  {
+   "seed": 0,
+   "kind": "linear",
+   "twin": "swap",
+   "checkpoints": [
+    {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
      "n": 20,
      "head_outputs_equal": {
       "linear": true
@@ -256,6 +496,7 @@
      }
     },
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
      "n": 40,
      "head_outputs_equal": {
       "linear": true
@@ -285,6 +526,7 @@
      }
     },
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
      "n": 60,
      "head_outputs_equal": {
       "linear": true
@@ -317,185 +559,96 @@
   },
   {
    "seed": 0,
-   "kind": "knn1",
+   "kind": "linear",
+   "twin": "erase",
    "checkpoints": [
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
      "n": 20,
      "head_outputs_equal": {
-      "knn1": true
+      "linear": true
      },
      "head_output_max_abs_diff": {
-      "knn1": 0.0
+      "linear": 0.0
      },
      "loo_models_equal": true,
-     "full_models_equal (expected False: they include collaborator)": true,
-     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.01738251460249944,
+     "full_models_equal (expected False: they include collaborator)": false,
+     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.08475899917455154,
      "mentor_output_max_abs_diff": {
-      "knn1": 0.01139601139601143
+      "linear": 0.10772734393052838
      },
      "mixture_weights_a": {
       "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 1.0,
+      "linear": 1.0,
+      "knn1": 0.0,
       "knnk": 0.0,
       "none": 0.0
      },
      "mixture_weights_b": {
       "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 1.0,
+      "linear": 1.0,
+      "knn1": 0.0,
       "knnk": 0.0,
       "none": 0.0
      }
     },
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
      "n": 40,
      "head_outputs_equal": {
-      "knn1": true
+      "linear": true
      },
      "head_output_max_abs_diff": {
-      "knn1": 0.0
+      "linear": 0.0
      },
      "loo_models_equal": true,
-     "full_models_equal (expected False: they include collaborator)": true,
-     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.049349109302571637,
+     "full_models_equal (expected False: they include collaborator)": false,
+     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.10292014357031797,
      "mentor_output_max_abs_diff": {
-      "knn1": 0.01715686274509804
+      "linear": 0.20137527358346174
      },
      "mixture_weights_a": {
       "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 1.0,
+      "linear": 1.0,
+      "knn1": 0.0,
       "knnk": 0.0,
       "none": 0.0
      },
      "mixture_weights_b": {
       "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 1.0,
+      "linear": 1.0,
+      "knn1": 0.0,
       "knnk": 0.0,
       "none": 0.0
      }
     },
     {
+     "mixture_prior_max_abs_diff_via_weights (reported, not judged)": null,
      "n": 60,
      "head_outputs_equal": {
-      "knn1": true
+      "linear": true
      },
      "head_output_max_abs_diff": {
-      "knn1": 0.0
+      "linear": 0.0
      },
      "loo_models_equal": true,
-     "full_models_equal (expected False: they include collaborator)": true,
-     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.05270073605822151,
+     "full_models_equal (expected False: they include collaborator)": false,
+     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.13107485723211837,
      "mentor_output_max_abs_diff": {
-      "knn1": 0.010869565217391306
+      "linear": 0.11242184002863831
      },
      "mixture_weights_a": {
       "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 1.0,
+      "linear": 1.0,
+      "knn1": 0.0,
       "knnk": 0.0,
       "none": 0.0
      },
      "mixture_weights_b": {
       "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 1.0,
+      "linear": 1.0,
+      "knn1": 0.0,
       "knnk": 0.0,
-      "none": 0.0
-     }
-    }
-   ]
-  },
-  {
-   "seed": 0,
-   "kind": "knnk",
-   "checkpoints": [
-    {
-     "n": 20,
-     "head_outputs_equal": {
-      "knnk": true
-     },
-     "head_output_max_abs_diff": {
-      "knnk": 0.0
-     },
-     "loo_models_equal": true,
-     "full_models_equal (expected False: they include collaborator)": true,
-     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.017399335653820305,
-     "mentor_output_max_abs_diff": {
-      "knnk": 0.09965194164845387
-     },
-     "mixture_weights_a": {
-      "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 0.0,
-      "knnk": 1.0,
-      "none": 0.0
-     },
-     "mixture_weights_b": {
-      "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 0.0,
-      "knnk": 1.0,
-      "none": 0.0
-     }
-    },
-    {
-     "n": 40,
-     "head_outputs_equal": {
-      "knnk": true
-     },
-     "head_output_max_abs_diff": {
-      "knnk": 0.0
-     },
-     "loo_models_equal": true,
-     "full_models_equal (expected False: they include collaborator)": true,
-     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.04426263926613459,
-     "mentor_output_max_abs_diff": {
-      "knnk": 0.18547105590474938
-     },
-     "mixture_weights_a": {
-      "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 0.0,
-      "knnk": 1.0,
-      "none": 0.0
-     },
-     "mixture_weights_b": {
-      "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 0.0,
-      "knnk": 1.0,
-      "none": 0.0
-     }
-    },
-    {
-     "n": 60,
-     "head_outputs_equal": {
-      "knnk": true
-     },
-     "head_output_max_abs_diff": {
-      "knnk": 0.0
-     },
-     "loo_models_equal": true,
-     "full_models_equal (expected False: they include collaborator)": true,
-     "class_rate_m_cls_max_abs_diff (hierarchy uses own data)": 0.0484383079872351,
-     "mentor_output_max_abs_diff": {
-      "knnk": 0.14550054978912408
-     },
-     "mixture_weights_a": {
-      "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 0.0,
-      "knnk": 1.0,
-      "none": 0.0
-     },
-     "mixture_weights_b": {
-      "mlp": 0.0,
-      "linear": 0.0,
-      "knn1": 0.0,
-      "knnk": 1.0,
       "none": 0.0
      }
     }
@@ -503,5 +656,9 @@
   }
  ],
  "max_abs_diff_over_all_heads_and_checkpoints": 0.0,
- "n_jobs": 25
+ "mixture_prior_via_weights_max_abs_diff (reported, not judged)": {
+  "max": 0.04129987793612011,
+  "mean": 0.011734051945047222
+ },
+ "n_jobs": 50
 }

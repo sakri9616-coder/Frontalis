@@ -50,8 +50,9 @@
   "E8a_max_abs_response": 0.4961611545641576,
   "E8a_max_causes": 5.0,
   "E8b_tea_time_max_change": 0.0,
-  "E8b_reference_evening_walk_max_change (not judged)": 0.00391343611271721,
+  "E8b_reference_evening_walk_max_change (not judged; C is only ~0.01)": 0.00391343611271721,
   "E8b_reference_evening_walk_after_50_unrelated (not judged)": 0.007550252035373267,
+  "E8b_reference_evening_walk_value_before": 0.009330129566168636,
   "E8c_all_equal": true
  },
  "single": {
@@ -105,8 +106,9 @@
   "E8a_max_abs_response": 0.5020577125753296,
   "E8a_max_causes": 1.0,
   "E8b_tea_time_max_change": 0.0,
-  "E8b_reference_evening_walk_max_change (not judged)": 0.0,
+  "E8b_reference_evening_walk_max_change (not judged; C is only ~0.01)": 0.0,
   "E8b_reference_evening_walk_after_50_unrelated (not judged)": 0.0,
+  "E8b_reference_evening_walk_value_before": 0.011976614348134686,
   "E8c_all_equal": true
  },
  "E9": {

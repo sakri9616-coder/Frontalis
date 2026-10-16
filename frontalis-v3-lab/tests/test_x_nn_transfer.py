@@ -7,7 +7,9 @@
 
 測り方（実装前に決めた細部）:
   X1  履歴 = 4 つの類（collaborator, mentor, friend, stranger）の個体が繰り返し現れる 60 経験（種ごとに生成）。双子 = 同じ履歴で、類 c = collaborator が
-      行為者の結果の型だけを入れ替えたもの（connection ↔ credit_taken、support ↔ harm）。他の類の観測・経験の順序・文脈は同じ。
+      行為者の結果の型だけを入れ替えたもの（connection ↔ credit_taken、support ↔ harm。swap）。他の類の観測・経験の順序・文脈は同じ。
+      （v3.3 の再開後に足した 2 つ目の双子 erase: c が行為者の結果をすべて消したもの。観測は残り、y が全部 0 になる。判定は同じ: 変化 = 0。
+      swap の結果を見る前に足したのではなく、swap が合格した後に、検査が弱くないことを確かめるために足した。）
       全ヘッド（mlp, linear, knn1, knnk, none）を mixture に入れ、20・40・60 経験の後に c の事前（head_outputs）を比べる。差は 0（np.array_equal）。
       c を除いて学び直したモデルの重みも完全に同じ。対照（検査が空でないことの確認）: 双子の間で c の階層の類の率 m_cls は違い、
       他の類（mentor）の事前は（c のデータを使うヘッドで）違う。単一ヘッド（mlp, linear, knn1, knnk）でも同じ。種 0〜4。
@@ -71,13 +73,22 @@ def rewrite_class(rows, cls):
     return twin
 
 
+def erase_class(rows, cls):
+    """類 cls が行為者の結果をすべて消した双子（観測は残り、その類の y が全部 0 になる）。"""
+    twin = copy.deepcopy(rows)
+    pid_cls = {p["id"]: p["class"] for e in twin for p in e["participants"]}
+    for e in twin:
+        e["outcomes"] = [o for o in e["outcomes"] if pid_cls.get(o["actor"]) != cls]
+    return twin
+
+
 def x1_worker(args):
-    seed, kind = args
+    seed, kind, twin_kind = args
     kw = {"head_kind": "mixture", "mixture_heads": ALL_HEADS} if kind == "mixture" else {"head_kind": kind}
     rows = x1_history(seed)
-    twin = rewrite_class(rows, "collaborator")
+    twin = rewrite_class(rows, "collaborator") if twin_kind == "swap" else erase_class(rows, "collaborator")
     a, b = make(seed, **kw), make(seed, **kw)
-    out = {"seed": seed, "kind": kind, "checkpoints": []}
+    out = {"seed": seed, "kind": kind, "twin": twin_kind, "checkpoints": []}
     ctx = "music_session"
     names = ALL_HEADS if kind == "mixture" else (kind,)
     for upto in (20, 40, 60):
@@ -96,7 +107,16 @@ def x1_worker(args):
                          for nm in a.belief.trained_names())
         pa = a.belief.predict(ctx, [{"id": "x1-new", "class": "collaborator"}]).m_cls
         pb = b.belief.predict(ctx, [{"id": "x1-new", "class": "collaborator"}]).m_cls
+        mix = None
+        if kind == "mixture":                        # 報告のみ: 混合した事前 Σ_h w_h prior_h(c) は、重み w を通じて c の観測に依る（SPEC-v3.3 1.2 の交差検証による選択）
+            mp = []
+            for bel in (a.belief, b.belief):
+                agg = bel._class_agg()
+                mg, _ = bel._gen_mean(agg)
+                mp.append(bel._priors(["collaborator"], ctx, mg, agg)[0])
+            mix = float(np.abs(mp[0] - mp[1]).max())
         out["checkpoints"].append({
+            "mixture_prior_max_abs_diff_via_weights (reported, not judged)": mix,
             "n": upto,
             "head_outputs_equal": {nm: bool(np.array_equal(ha[nm], hb[nm])) for nm in names},
             "head_output_max_abs_diff": {nm: float(np.abs(ha[nm] - hb[nm]).max()) for nm in names},
@@ -115,16 +135,18 @@ def _arrs(model):
 
 class X1SelfReferenceEliminated(unittest.TestCase):
     def test_rewriting_a_class_does_not_change_its_head_outputs(self):
-        jobs = [(s, k) for s in range(5) for k in ("mixture", "mlp", "linear", "knn1", "knnk")]
+        jobs = [(s, k, tw) for s in range(5) for k in ("mixture", "mlp", "linear", "knn1", "knnk") for tw in ("swap", "erase")]
         rows = pmap(x1_worker, jobs)
-        res = {"jobs": [{"seed": r["seed"], "kind": r["kind"], "checkpoints": r["checkpoints"]} for r in rows[:5]],
+        mixd = [c["mixture_prior_max_abs_diff_via_weights (reported, not judged)"] for r in rows if r["kind"] == "mixture" for c in r["checkpoints"]]
+        res = {"jobs": [{"seed": r["seed"], "kind": r["kind"], "twin": r["twin"], "checkpoints": r["checkpoints"]} for r in rows[:6]],
                "max_abs_diff_over_all_heads_and_checkpoints": max(
                    max(c["head_output_max_abs_diff"].values()) for r in rows for c in r["checkpoints"]),
+               "mixture_prior_via_weights_max_abs_diff (reported, not judged)": {"max": float(max(mixd)), "mean": float(np.mean(mixd))},
                "n_jobs": len(rows)}
         dump("X01", res)
         for r in rows:
             for c in r["checkpoints"]:
-                tag = (r["seed"], r["kind"], c["n"])
+                tag = (r["seed"], r["kind"], r["twin"], c["n"])
                 for nm, ok in c["head_outputs_equal"].items():
                     self.assertTrue(ok, (tag, nm, c["head_output_max_abs_diff"][nm]))         # 変化 = 0（厳密）
                 self.assertTrue(c["loo_models_equal"], tag)
@@ -337,6 +359,24 @@ class XMechanisms(unittest.TestCase):
         self.assertTrue(deep_equal(feed(n, copy.deepcopy(rest)), feed(m, copy.deepcopy(rest))))
         ma, aa = n.get_state(); mb, ab = m.get_state()
         self.assertTrue(deep_equal(ma, mb) and all(np.array_equal(aa[k], ab[k]) for k in aa))
+
+    def test_save_restore_all_configurations(self):
+        """保存 → 復元の状態が完全一致し、同じ経験を続けた結果（返り値と状態）も完全一致する。前任は mixture（全ヘッド）と既定しか検査していなかったので、
+        単一ヘッド 5 種、single_cause、no_conditioning も加えた（v3.3 の再開後。判定ではなく機構の検査）。"""
+        rows = x1_history(3)
+        configs = [{"head_kind": k} for k in ALL_HEADS] + [{"single_cause": True}, {"mixture_heads": ALL_HEADS},
+                                                            {"mixture_heads": ALL_HEADS, "single_cause": True}, {"no_conditioning": True}, {}]
+        for kw in configs:
+            n = make(1, **kw)
+            feed(n, rows[:33])
+            with tempfile.TemporaryDirectory() as d:
+                n.save(d)
+                m = NPN.load(d)
+            ma, aa = n.get_state(); mb, ab = m.get_state()
+            self.assertTrue(deep_equal(ma, mb) and aa.keys() == ab.keys() and all(np.array_equal(aa[k], ab[k]) for k in aa), kw)
+            self.assertTrue(deep_equal(feed(n, copy.deepcopy(rows[33:55])), feed(m, copy.deepcopy(rows[33:55]))), kw)
+            ma, aa = n.get_state(); mb, ab = m.get_state()
+            self.assertTrue(deep_equal(ma, mb) and all(np.array_equal(aa[k], ab[k]) for k in aa), kw)
 
     def test_ledger_records_every_head_retrain(self):
         """台帳（v3.3）: 学び直しごとに、使った類・観測の数・学習するヘッド・混合の重みを kind = "head_retrain" で残す。実行は経験の台帳の前に入る。"""

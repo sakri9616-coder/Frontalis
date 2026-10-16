@@ -20,13 +20,17 @@
   E7 の試行数 = 比が 0.7 に初めて達する試行の番号（達しなければ打ち切りの値 41）。初めての獲得は文脈 A の 12 試行の間（0.7 に達しなければ 13）、
   再獲得は文脈 B で最大 40 試行。判定は 20 本の試行数の平均どうしの比。
   E8(b) の別の手がかりは「一度も x と対にならない中立の手がかり tea_time」（e_protocol.py 冒頭）。
+  （v3.3 の再開後に足した E8(b) の 2 つ目の検査: tea_time は C = 0 で、変化が自明に 0 になる（最大の変化 0.0 ちょうど）。前任が参考にしていた evening_walk（comfort と対）も、
+  C が 0.009 しかなく、閾値 0.05 より小さいので空に近い。そこで、値を持つ別の手がかり「別の嫌悪の手がかり concept:other_fear」（文脈 A で害と対に 12 試行、獲得直後の C ≈ −0.2）を、
+  x のプロトコル全体（獲得 12 試行 + 消去 20 試行、64 経験）の前後で比べる別の実行にした（`e_protocol.valued_cue_leak`）。判定は閾値 0.05 のまま（変化の絶対値）。
+  参考: 同じ経験数の無関係な経験だけを与えた対照も報告する（時間の重みだけによる変化）。この検査を足したのは、E 系の結果を見た後。主プロトコルの数値は変えていない。）
   すべて 20 本の平均。single_cause の対照も同じ種で走らせる。
 """
 import unittest
 
 import numpy as np
 
-from e_protocol import EXT_CONTEXTS_3, CTX_B, run_variant
+from e_protocol import EXT_CONTEXTS_3, CTX_B, run_variant, valued_cue_leak
 from helpers import SEEDS, dump, pmap
 
 
@@ -36,6 +40,11 @@ def worker(seed):
             "single": run_variant(seed, single_cause=True),
             "e9_one": run_variant(seed, ext_contexts=(CTX_B,), full=False),
             "e9_three": run_variant(seed, ext_contexts=EXT_CONTEXTS_3, full=False)}
+
+
+def valued_worker(args):
+    seed, single = args
+    return valued_cue_leak(seed, single)
 
 
 _ROWS = None
@@ -87,10 +96,11 @@ class EExtinction(unittest.TestCase):
                 "E8a_max_abs_response": max(r[which]["bounds"]["max_abs_response"] for r in rs),
                 "E8a_max_causes": max(r[which]["bounds"]["max_causes"] for r in rs),
                 "E8b_tea_time_max_change": max(abs(r[which]["ctl_after"]["tea_time"] - r[which]["ctl_before"]["tea_time"]) for r in rs),
-                "E8b_reference_evening_walk_max_change (not judged)": max(
+                "E8b_reference_evening_walk_max_change (not judged; C is only ~0.01)": max(
                     abs(r[which]["ctl_after"]["evening_walk"] - r[which]["ctl_before"]["evening_walk"]) for r in rs),
                 "E8b_reference_evening_walk_after_50_unrelated (not judged)": max(
                     abs(r[which]["ctl_after_unrelated"]["evening_walk"] - r[which]["ctl_before"]["evening_walk"]) for r in rs),
+                "E8b_reference_evening_walk_value_before": float(np.mean([r[which]["ctl_before"]["evening_walk"] for r in rs])),
                 "E8c_all_equal": all(r[which]["E8c_restore_state_equal_at_save"] and r[which]["E8c_restore_continue_equal"] for r in rs),
             }
         res["E9"] = {"ABC_one_context": mean([r["e9_one"]["ABC"] for r in rs]),
@@ -152,6 +162,20 @@ class EExtinction(unittest.TestCase):
         for w in ("latent", "single"):
             for r in rows():
                 self.assertLessEqual(abs(r[w]["ctl_after"]["tea_time"] - r[w]["ctl_before"]["tea_time"]), 0.05, (w, r["seed"]))
+
+    def test_E8b_valued_other_cue_unchanged(self):
+        """値を持つ別の手がかり（別の嫌悪の手がかり other_fear。C ≈ −0.2）が、x のプロトコル全体の前後で変わる量 ≤ 0.05（v3.3 の再開後に足した。冒頭の注）。"""
+        out = {}
+        for w, single in (("latent", False), ("single", True)):
+            rs = pmap(valued_worker, [(s, single) for s in SEEDS])
+            out[w] = {"value_before_mean": mean([r["before"] for r in rs]),
+                      "max_abs_change_protocol": max(abs(r["after_protocol"] - r["before"]) for r in rs),
+                      "max_abs_change_time_matched_unrelated_control (reported, not judged)": max(abs(r["after_control"] - r["before"]) for r in rs),
+                      "max_abs_protocol_minus_control (reported)": max(abs(r["after_protocol"] - r["after_control"]) for r in rs)}
+        dump("E08b_valued_cue", out)
+        for w in out:
+            self.assertGreater(abs(out[w]["value_before_mean"]), 0.1)                          # 検査が空でない
+            self.assertLessEqual(out[w]["max_abs_change_protocol"], 0.05, w)
 
     def test_E8c_save_restore_exact(self):
         for w in ("latent", "single"):

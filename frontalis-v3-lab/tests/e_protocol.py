@@ -14,7 +14,9 @@
 
   E8 の別の手がかり: 一度も x と対にならない手がかり concept:tea_time を、文脈 A で 6 回（結果なしの経験と対にして）提示してから（C = 0）、
   プロトコルの間は提示しない。判定するのはその C の変化（漏れ）。値を持つ別の手がかり（concept:evening_walk を comfort と対に条件づけたもの）の変化は
-  参考として報告する（時間減衰と区別できないので判定しない）。
+  参考として報告する（時間減衰と区別できないので判定しない。C が 0.009 しかなく、閾値 0.05 より小さいので検査として空に近い）。
+  v3.3 の再開後に足した 2 つ目の検査: 値を持つ別の嫌悪の手がかり concept:other_fear（文脈 A で害と対に 12 試行。C ≈ −0.2）の A での C を、
+  x のプロトコル全体の前後で比べる（`valued_cue_leak`。主プロトコルとは別の実行で、主プロトコルの数値は変えていない）。CHANGELOG の C 節。
 """
 from __future__ import annotations
 
@@ -115,6 +117,29 @@ def first_reaching(values: Sequence[float], target_ratio: float, ref: float) -> 
         if v / ref >= target_ratio:
             return i + 1
     return len(values) + 1
+
+
+def valued_cue_leak(seed: int, single_cause: bool = False) -> Dict[str, float]:
+    """E8(b) の 2 つ目の検査（v3.3 の再開後に足した）。値を持つ別の手がかり concept:other_fear を、文脈 A で害と対に 12 試行で条件づけ、
+    その C（文脈 A）を、(1) x のプロトコル（獲得 12 試行 + 消去 20 試行 = 64 経験）の後、(2) 同じ経験数の無関係な経験だけの後（時間の重みだけの対照）で測る。"""
+    rng = np.random.default_rng([seed, 909])
+    c = Counter(f"F{seed}")
+    npn = make(seed, single_cause=single_cause)
+    for _ in range(12):
+        sess = c.next("s")
+        npn.experience(_ev(c.next("c"), CTX_A, ["other_fear"], [], sess))
+        m = round(float(rng.uniform(0.6, 1.0)), 2)
+        npn.experience(_ev(c.next("u"), CTX_A, [], [{"type": "harm", "actor": "world", "magnitude": m}], sess))
+    before = read(npn, CTX_A, "concept:other_fear")
+    a = copy.deepcopy(npn)
+    for _ in range(N_ACQ):
+        trial(a, c, rng, "acq", CTX_A)
+    for _ in range(N_EXT):
+        trial(a, c, rng, "ext", CTX_B)
+    k = copy.deepcopy(npn)
+    unrelated(k, c, np.random.default_rng([seed, 910]), 2 * (N_ACQ + N_EXT))
+    return {"seed": seed, "before": before, "after_protocol": read(a, CTX_A, "concept:other_fear"),
+            "after_control": read(k, CTX_A, "concept:other_fear")}
 
 
 def run_variant(seed: int, single_cause: bool = False, ext_contexts: Sequence[str] = (CTX_B,), full: bool = True,
