@@ -1,4 +1,5 @@
-"""診断（テストではない）: 設計の改訂後（lc_design = "revised"。既定）の E 系の結果の原因の切り分け。判定には使わず、**採用もしていない**。結果は tests/results/diag_e_revised.json。
+"""診断（テストではない）: 設計の改訂後（lc_design = "revised"。v3.3 第 2 部で既定から外した実験設定。この診断は明示的に revised を指定する）の E 系の結果の原因の切り分け。
+判定には使わず、**採用もしていない**。結果は tests/results/diag_e_revised.json。
 
 背景: v3.3 第 1 部の設計の改訂（オーケストレーター承認。結果を見た後。固定した値: d = 1、α = 0.5、β_first = 5、β_later = 0.2、σ_r = 0.15、K = 5）を実装し、E 系を走らせると、
 E6 は通ったが、E1・E3・E4・E5・E7・E9 と E8(b)（値を持つ別の手がかり）が通らなかった（E01_E09.json）。次の 3 つで原因を調べる。
@@ -49,6 +50,9 @@ VARIANTS = {
     "alpha 0.05 + sigma_r 0.05": ({"lc_alpha": 0.05, "lc_sigma_r": 0.05}, None),
     "alpha 0.05 + sigma_r 0.05 + time unit 2": ({"lc_alpha": 0.05, "lc_sigma_r": 0.05}, use_half_time),
 }
+
+
+VARIANTS = {k: ({"lc_design": "revised", **v[0]}, v[1]) for k, v in VARIANTS.items()}      # 既定は spec_literal に戻したので、revised を明示する
 
 
 def job(args):
@@ -116,7 +120,7 @@ def summarize(rows):
 def anatomy(seed=0):
     rng = np.random.default_rng([seed, 303])
     c = Counter("D")
-    npn = make(seed)
+    npn = make(seed, lc_design="revised")
     snap = {}
 
     def dump_state(tag):

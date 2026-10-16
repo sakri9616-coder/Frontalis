@@ -47,6 +47,39 @@ class CLITests(unittest.TestCase):
             self.assertIn("MAP", r.stdout)
             r = run("probe", st, os.path.join(d, "none.json")); self.assertNotEqual(r.returncode, 0)
 
+    def test_feed_correction_and_choice_kinds(self):
+        """v3.3 第 2 部: 行ごとに kind = "correction"（訂正）| "choice"（二択）を受ける。要約・show・probe に J が出る。"""
+        import yz_protocol as Y
+        with tempfile.TemporaryDirectory() as d:
+            st = os.path.join(d, "state")
+            run("init", st)
+            lines = list(Y.y_history(0, True)[:4]) + [Y.y_corrections(0)[0], Y.hesitant_choice("hc1", "x_a", "x_b"), Y.hesitant_choice("hc2", "x_a", "x_b")]
+            fp = os.path.join(d, "e.jsonl")
+            with open(fp, "w", encoding="utf-8") as f:
+                f.write("\n".join(json.dumps(e) for e in lines) + "\n")
+            r = run("feed", st, fp); self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn("訂正: j0 の結果を訂正", r.stdout)
+            self.assertIn("当時の記録", r.stdout)
+            self.assertIn("二択:", r.stdout)
+            self.assertIn("葛藤の強さ", r.stdout)
+            self.assertIn("7 件を処理", r.stdout)                   # 入力 7 行 = 経験 4 + 訂正 1 + 二択 2
+            self.assertIn("経験 6 件", r.stdout)                   # 学習した経験は 6（訂正は経験の数に入らない）
+            r = run("show", st); self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn("選択の正当化 J", r.stdout)
+            self.assertIn("concept:x_", r.stdout)
+            self.assertIn("訂正を受けた回数: 1", r.stdout)
+            pr = os.path.join(d, "p.json")
+            with open(pr, "w", encoding="utf-8") as f:
+                json.dump([{"cue": "concept:x_a"}, {"context": "studio", "concepts": ["x_a"], "participants": []}], f)
+            r = run("probe", st, pr); self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn("正当化 J=", r.stdout)
+            self.assertIn("J_Q=", r.stdout)
+            bad = os.path.join(d, "bad.jsonl")
+            with open(bad, "w", encoding="utf-8") as f:
+                f.write(json.dumps({"id": "c", "kind": "correction", "refers_to": "nope", "corrected_outcomes": []}) + "\n")
+            r = run("feed", st, bad); self.assertEqual(r.returncode, 2)
+            self.assertIn("参照先が見つかりません", r.stderr)
+
     def test_bad_input_reports_error(self):
         with tempfile.TemporaryDirectory() as d:
             st = os.path.join(d, "state")

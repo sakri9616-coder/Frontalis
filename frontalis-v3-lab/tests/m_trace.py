@@ -17,6 +17,12 @@
               M3: E3・E4 は (1) の割合、E5 は (2) の割合、E6 は (3) の割合が 50% 以上（Δρ > 0 のとき）。
   M4          消去 20 試行のうち、割当の記録で獲得の原因が MAP に選ばれた試行の数、と、消去中の獲得の原因の |ΔC| の和（記録の学習前後の C_k から）。
   M5          同じ種で 2 回走らせた割当の記録の完全一致、と、消去直後の保存 → 復元で assignment_trace と explain_response が完全一致。
+
+【v3.3 第2部: 既定の設計を spec_literal に戻したことへの対応】
+  m_worker(seed, design) は設計（lc_design）を指定できる。既定（design = None）の判定は既定の設計（spec_literal）で行い、revised は報告用に同じ測定をする。
+  spec_literal は柔らかい事後（post_used）で全ての原因を更新するので、「MAP に選ばれた試行」(M4) は、更新に使った重みが最大の原因（台帳の map_uid）で数える。
+  それに加えて、消去中に獲得の原因が受けた更新の重みの総和（acq_post_mass）も報告する（柔らかい事後で学習の分離が壊れる度合い。B.1 の「消去の学習が古い原因を壊す」）。
+  獲得の原因 = 獲得 12 試行の割当の記録で map_uid が最も多い原因（同数なら添字が小さい方。revised の試行の履歴の数え方と同じ結果）。
 """
 from __future__ import annotations
 
@@ -37,15 +43,19 @@ def table(cd, ctx: Optional[str], t: float) -> Dict[int, Dict[str, Any]]:
 
 
 def acq_uid_of(npn: NPN) -> int:
+    """獲得の原因の通し番号。獲得 12 試行の割当の記録（手がかり x の最後の 12 件）で map_uid が最も多い原因（同数なら添字が小さい方）。"""
     cd = npn.cond
     i = cd.idx[CUE_NAME]
-    n = cd.hist_n[i]
+    recs = [e for e in npn.ledger.entries if e["kind"] == "assignment" and e["cue"] == CUE_NAME][-12:]
+    cnt = {}
+    for r in recs:
+        cnt[r["map_uid"]] = cnt.get(r["map_uid"], 0) + 1
     best = None
     for k in range(cd.K):
         if cd.AL[i, k] > 0.5:
-            cnt = int((cd.hist_k[i][:n] == k).sum())
-            if best is None or cnt > best[0]:
-                best = (cnt, k)
+            c = cnt.get(int(cd.UID[i, k]), 0)
+            if best is None or c > best[0]:
+                best = (c, k)
     return int(cd.UID[i, best[1]])
 
 
@@ -76,6 +86,8 @@ def rho(cd, ctx: str, t: float, uid: int) -> Tuple[Optional[float], Dict[str, fl
     if not mine:
         return None, {}
     c = mine[0]
+    if not c["weight"] > 0.0:
+        return None, {}
     others = sum(x["weight"] for x in ex["causes"] if x["uid"] != uid) + ex["alpha"]
     parts = {"log_time": float(np.log(c["time_term"])), "log_context": float(np.log(c["context_term"])), "log_others": float(np.log(others))}
     return float(np.log(c["weight"]) - np.log(others)), parts
@@ -100,8 +112,9 @@ def assignments(npn: NPN, start: int = 0, end: Optional[int] = None) -> List[Dic
     return [e for e in npn.ledger.entries[start:end] if e["kind"] == "assignment" and e["cue"] == CUE_NAME]
 
 
-def m_worker(seed: int) -> Dict[str, Any]:
-    """1 つの人格（潜在原因、既定の設計）について、E 系のプロトコルを走らせ、M1〜M5 の測定をする。"""
+def m_worker(seed: int, design: Optional[str] = None) -> Dict[str, Any]:
+    """1 つの人格（潜在原因。design = None なら既定の設計、"revised" / "spec_literal" で指定）について、E 系のプロトコルを走らせ、M1〜M5 の測定をする。"""
+    kw = {} if design is None else {"lc_design": design}
     box: Dict[str, Any] = {}
     e7_series: List[float] = []
 
@@ -117,7 +130,7 @@ def m_worker(seed: int) -> Dict[str, Any]:
                 super().__setitem__("uid", acq_uid_of(v))
     box = Box()
     box["cb_E7"] = cb_e7
-    out = run_variant(seed, collect=box)
+    out = run_variant(seed, collect=box, **kw)
     uid = box["uid"]
     acq, ext = box["acq"], box["ext"]
     c_post = c_of_uid(acq, uid)
@@ -142,7 +155,11 @@ def m_worker(seed: int) -> Dict[str, Any]:
         if uid in r["uid_before"]:
             k = r["uid_before"].index(uid)
             dsum += abs(r["C_after"][k] - r["C_before"][k])
-    res["M4"] = {"n_extinction_updates": len(recs), "acq_cause_selected": len(picked), "acq_cause_abs_dC_sum": dsum,
+    mass = 0.0                                  # 消去中に獲得の原因が受けた更新の重み（post_used）の総和
+    for r in recs:
+        if uid in r["uid_before"]:
+            mass += r["post_used"][r["uid_before"].index(uid)]
+    res["M4"] = {"n_extinction_updates": len(recs), "acq_cause_selected": len(picked), "acq_cause_abs_dC_sum": dsum, "acq_post_mass": mass,
                  "assigned_to_new_cause": int(sum(1 for r in recs if r["created"] is not None)),
                  "reuse_events": int(sum(1 for r in recs if r["reused"])), "replaced_acq_cause": bool(any(r["replaced_uid"] == uid for r in recs))}
     # --- M1・M3: 応答の変化の分解（消去直後を B で読んだ状態 S0 から）
@@ -153,7 +170,7 @@ def m_worker(seed: int) -> Dict[str, Any]:
         res["M3"][nm] = rho_steps(ext.cond, CTX_B, T, st1.cond, ctx1, t1, uid)
     # --- M5: 決定性と保存・復元
     box2: Dict[str, Any] = {}
-    run_variant(seed, collect=box2)
+    run_variant(seed, collect=box2, **kw)
     same = deep_equal([e for e in box["ext"].ledger.entries if e["kind"] in ("assignment", "reinstate")],
                       [e for e in box2["ext"].ledger.entries if e["kind"] in ("assignment", "reinstate")])
     same &= deep_equal([e for e in box["E6"].ledger.entries if e["kind"] in ("assignment", "reinstate")],
@@ -167,6 +184,7 @@ def m_worker(seed: int) -> Dict[str, Any]:
     res["M5"] = {"deterministic": bool(same), "restored_equal": bool(restored),
                  "n_records": int(sum(1 for e in box["E6"].ledger.entries if e["kind"] in ("assignment", "reinstate")))}
     res["narrative"] = narrative(box, uid, out) if seed == 0 else None
+    res["design"] = ext.cfg.lc_design
     return res
 
 
@@ -175,15 +193,17 @@ def narrative(box: Dict[str, Any], uid: int, out: Dict[str, Any]) -> Dict[str, L
     acq, ext = box["acq"], box["ext"]
     lines: Dict[str, List[str]] = {}
     ra = assignments(acq)[-12:]                                  # 獲得の 12 試行（手がかり x の更新 12 件）
-    lines["acquisition"] = [f"獲得 {len(ra)} 試行の割当: " + ", ".join(f"#{r['map_uid']}{'(新)' if r['created'] is not None else ''}" for r in ra),
+    rev = acq.cfg.lc_design == "revised"
+    lines["acquisition"] = [f"獲得 {len(ra)} 試行の割当（MAP）: " + ", ".join(f"#{r['map_uid']}{'(新)' if r['created'] is not None else ''}" for r in ra),
                             f"獲得の原因 = #{uid}（C = {c_of_uid(acq, uid):+.3f}）。他の原因: " + ", ".join(
-                                f"#{int(acq.cond.UID[acq.cond.idx[CUE_NAME], k])}（C = {acq.cond.CK[acq.cond.idx[CUE_NAME], k]:+.3f}、β_k = {acq.cond.BK[acq.cond.idx[CUE_NAME], k]:g}）"
+                                f"#{int(acq.cond.UID[acq.cond.idx[CUE_NAME], k])}（C = {acq.cond.CK[acq.cond.idx[CUE_NAME], k]:+.3f}" + (f"、β_k = {acq.cond.BK[acq.cond.idx[CUE_NAME], k]:g}）" if rev else "）")
                                 for k in range(acq.cond.K) if acq.cond.AL[acq.cond.idx[CUE_NAME], k] > 0.5 and int(acq.cond.UID[acq.cond.idx[CUE_NAME], k]) != uid)]
     n0, n1 = len(acq.ledger.entries), len(ext.ledger.entries)
     re_ = assignments(ext, n0, n1)
-    lines["extinction"] = [f"消去 {len(re_)} 試行の割当: " + ", ".join(f"#{r['map_uid']}{'(新)' if r['created'] is not None else ''}{'(再利用)' if r['reused'] else ''}" for r in re_),
+    lines["extinction"] = [f"消去 {len(re_)} 試行の割当（MAP）: " + ", ".join(f"#{r['map_uid']}{'(新)' if r['created'] is not None else ''}{'(再利用)' if r['reused'] else ''}" for r in re_),
                            f"獲得の原因 #{uid} が選ばれた試行 {sum(1 for r in re_ if r['map_uid'] == uid)} 件、|ΔC| の和 "
-                           f"{sum(abs(r['C_after'][r['uid_before'].index(uid)] - r['C_before'][r['uid_before'].index(uid)]) for r in re_ if uid in r['uid_before']):.4f}"]
+                           f"{sum(abs(r['C_after'][r['uid_before'].index(uid)] - r['C_before'][r['uid_before'].index(uid)]) for r in re_ if uid in r['uid_before']):.4f}、"
+                           f"更新に使われた重み（柔らかい事後）の和 {sum(r['post_used'][r['uid_before'].index(uid)] for r in re_ if uid in r['uid_before']):.3f}"]
     first = re_[0]
     lines["extinction_first_trial"] = [
         f"消去の最初の試行（文脈 {first['context']}、目標 y = {first['y_x']:+.3f}）: 事前 p(k) = " + ", ".join(
@@ -206,6 +226,11 @@ def narrative(box: Dict[str, Any], uid: int, out: Dict[str, Any]) -> Dict[str, L
             lines[nm].append(f"  獲得の原因の事前の対数比 ρ {rs['rho0']:+.3f} → {rs['rho1']:+.3f}（文脈 {rs['step_context']:+.3f}、時間 {rs['step_time']:+.3f}、試行・計数 {rs['step_trials']:+.3f}）")
     rein = [e for e in box["E6"].ledger.entries[len(ext.ledger.entries):] if e["kind"] == "reinstate"]
     for r in rein:
+        if r.get("design") == "spec_literal":
+            ref = [x for x in r.get("refreshed", []) if x["cue"] == CUE_NAME]
+            lines["E6"].append(f"  復位 (t = {r['t']:.0f}, 文脈 {r['context']}): 負の価値を持つ原因の最後に使われた時刻を現在に更新した: " + (
+                ", ".join(f"#{x['uid']}（C = {x['C']:+.3f}、t_k {x['t_before']:.0f} → {x['t_after']:.0f}）" for x in ref) if ref else "この手がかりの原因は対象外"))
+            continue
         ch = r.get("chosen")
         lines["E6"].append(f"  復位の推論 (t = {r['t']:.0f}, 文脈 {r['context']}, 嫌悪 r = {r['r']:+.3f}): " + (
             f"原因 #{ch['uid']}（C = {ch['C']:+.3f}）に (t, 文脈 {r['context']}) の試行を加えた。事後 {ch['posterior']:.2f}（どの原因でもない: {r['null_posterior']:.2f}）" if ch else "どの原因でもない"))

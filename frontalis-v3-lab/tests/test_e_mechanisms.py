@@ -1,7 +1,8 @@
 """潜在原因による条件づけ価値（SPEC-v3.3 4.2）の機構の単体検査。判定基準 E1〜E9 は test_e_extinction.py。ここは「式どおりに動くか」。
 
 設計は 2 つある（lc_design）。PriorAndResponse・StructuralLimits・UpdateRules・Reinstatement・SingleCauseIsV32 は **spec_literal**（SPEC-v3.3 4.2 のとおり。改訂前の実装）を検査する。
-Revised* は **revised**（既定。v3.3 第 1 部の設計の改訂。オーケストレーター承認、結果を見た後）を検査する。IntegrationInNPN は既定（revised）の NPN を通す。
+Revised* は **revised**（実験設定。v3.3 第 1 部の設計の改訂。オーケストレーター承認、結果を見た後。第 2 部で既定から外した）を検査する。
+IntegrationInNPN と ExplainAndTraceSpecLiteral は既定（spec_literal）の NPN を通す。
 
   spec_literal  事前 p(k) ∝ N_k · (n_k(c) + β)/(N_k + β S) · exp(−(t − t_k)/τ)，新しい原因は ∝ α。応答 Σ_k p(k) C_k
                 事後 事前 × N(y_x; C_k, σ_r²)，新しい原因が最大なら作る。学習 ΔC_k = (α_C / 手がかりの数) 事後_k (y_x − C_k)（柔らかい）
@@ -28,7 +29,8 @@ def cond(**kw):
 
 
 def rcond(**kw):
-    return Conditioning(Config(**kw))                # 既定 = revised
+    kw.setdefault("lc_design", "revised")            # 既定は spec_literal（v3.3 第 2 部）。revised は実験設定
+    return Conditioning(Config(**kw))
 
 
 def place(cd, cue, causes, ctxs=("A", "B")):
@@ -528,10 +530,13 @@ class RevisedReinstatement(unittest.TestCase):
 
 
 class ExplainAndTrace(unittest.TestCase):
-    """割当の記録（台帳の kind = "assignment" / "reinstate"）と、応答の内訳（explain / explain_response / cue プローブの breakdown）。SPEC-v3.3 6.2。"""
+    """revised の割当の記録（台帳の kind = "assignment" / "reinstate"）と、応答の内訳（explain / explain_response / cue プローブの breakdown）。SPEC-v3.3 6.2。
+    spec_literal（既定）の割当の記録は ExplainAndTraceSpecLiteral。"""
+
+    design = "revised"
 
     def _history(self, n_acq=6, n_ext=6):
-        n = make(0)
+        n = make(0, lc_design=self.design)
         for k in range(n_acq):
             s = f"a{k}"
             n.experience({"id": f"ac{k}", "context": "studio", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": s})
@@ -665,14 +670,14 @@ class ExplainAndTrace(unittest.TestCase):
         self.assertEqual(float(cd.CK[i, k]), ch["C"])
 
     def test_no_records_without_the_ledger(self):
-        n = make(0, record_ledger=False)
+        n = make(0, record_ledger=False, lc_design="revised")
         for k in range(3):
             n.experience({"id": f"c{k}", "context": "studio", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": f"s{k}"})
             n.experience({"id": f"u{k}", "context": "studio", "concepts": [], "participants": [],
                           "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": f"s{k}"})
         self.assertEqual(len(n.ledger.entries), 0)
         self.assertLess(n.cond.value_of("concept:praise_from_X", "studio"), 0.0)       # 学習は同じ（記録だけ省く）
-        m = make(0)
+        m = make(0, lc_design="revised")
         for k in range(3):
             m.experience({"id": f"c{k}", "context": "studio", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": f"s{k}"})
             m.experience({"id": f"u{k}", "context": "studio", "concepts": [], "participants": [],
@@ -709,6 +714,169 @@ class ExplainAndTrace(unittest.TestCase):
         self.assertTrue(np.array_equal(n.cond.UID, m.cond.UID))
 
 
+class ExplainAndTraceSpecLiteral(unittest.TestCase):
+    """spec_literal（既定）の割当の記録（台帳の kind = "assignment" / "reinstate"）。v3.3 第 2 部で、既定を spec_literal に戻したときに、revised と同じ追跡ができるようにした
+    （ユーザーの要求: 柔らかい事後の重みと、各原因の ΔC を記録する）。"""
+
+    def _history(self, n_acq=6, n_ext=6):
+        n = make(0)
+        self.assertEqual(n.cfg.lc_design, "spec_literal")
+        for k in range(n_acq):
+            s = f"a{k}"
+            n.experience({"id": f"ac{k}", "context": "studio", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": s})
+            n.experience({"id": f"au{k}", "context": "studio", "concepts": [], "participants": [],
+                          "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": s})
+        for k in range(n_ext):
+            s = f"x{k}"
+            n.experience({"id": f"xc{k}", "context": "cafe_chat", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": s})
+            n.experience({"id": f"xn{k}", "context": "cafe_chat", "concepts": [], "participants": [], "outcomes": [], "session": s})
+        return n
+
+    def test_one_record_per_cue_event_and_ordered_before_the_experience_entry(self):
+        n = self._history()
+        recs = n.assignment_trace("concept:praise_from_X")
+        self.assertEqual(len([r for r in recs if r["kind"] == "assignment"]), 12)
+        ent = n.ledger.entries
+        for i, e in enumerate(ent):
+            if e["kind"] == "assignment":
+                nxt = next(x for x in ent[i + 1:] if x["kind"] == "experience")
+                self.assertEqual(nxt["id"], e["after"])
+                self.assertEqual(e["design"], "spec_literal")
+
+    def test_prior_breakdown_and_soft_posterior_follow_the_stated_formulas(self):
+        n = self._history()
+        for r in [x for x in n.assignment_trace("concept:praise_from_X") if x["kind"] == "assignment"]:
+            K = len(r["weight"])
+            alive = [u >= 0 for u in r["uid_before"]]
+            tot = sum(r["weight"]) + r["alpha"]
+            for q in range(K):
+                self.assertAlmostEqual(r["p_prior"][q], r["weight"][q] / tot, places=12)
+                if alive[q]:
+                    self.assertAlmostEqual(r["weight"][q], r["time_term"][q] * r["context_term"][q] * r["count_term"][q], places=12)
+            self.assertAlmostEqual(r["p_prior_new"], r["alpha"] / tot, places=12)
+            z = sum(r["weight"][q] * r["likelihood"][q] for q in range(K)) + r["alpha"] * r["likelihood_new"]
+            for q in range(K):
+                self.assertAlmostEqual(r["post_raw"][q], r["weight"][q] * r["likelihood"][q] / z, places=10)
+            self.assertAlmostEqual(r["post_new"], r["alpha"] * r["likelihood_new"] / z, places=10)
+            self.assertAlmostEqual(sum(r["post_raw"]) + r["post_new"], 1.0, places=12)
+
+    def test_update_weights_are_the_soft_posterior_and_every_cause_moves_by_its_own_share(self):
+        n = self._history()
+        cfg = n.cfg
+        created_seen = 0
+        for r in [x for x in n.assignment_trace("concept:praise_from_X") if x["kind"] == "assignment"]:
+            K = len(r["weight"])
+            used = list(r["post_raw"])
+            c0 = list(r["C_before"])
+            if r["created"] is not None:                                  # 新しい原因の事後が最大 → その場所の事後を新しい原因のものに置き換えて正規化
+                used[r["created"]] = r["post_new"]
+                c0[r["created"]] = 0.0
+                created_seen += 1
+                tot = sum(used)
+                used = [u / tot for u in used]
+            else:                                                         # 作らないときは、新しい原因の事後の分（post_new）を除いた柔らかい事後のまま更新に使う
+                self.assertAlmostEqual(sum(used) + r["post_new"], 1.0, places=12)
+            for q in range(K):
+                self.assertAlmostEqual(r["post_used"][q], used[q], places=12)
+            for q in range(K):
+                alive_after = r["uid_before"][q] >= 0 or q == r["created"]
+                expect = c0[q] + (cfg.alpha_c * used[q] * (r["y_x"] - c0[q]) if alive_after else 0.0)
+                self.assertAlmostEqual(r["C_after"][q], expect, places=12)
+                self.assertAlmostEqual(r["dC_k"][q], r["C_after"][q] - c0[q], places=12)        # 各原因の ΔC（新しい原因は 0 から）
+            self.assertEqual(r["map"], int(np.argmax(r["post_used"])))
+        self.assertGreaterEqual(created_seen, 1)
+
+    def test_the_last_record_gives_the_current_cause_values_and_uids_are_distinct(self):
+        n = self._history()
+        cd = n.cond
+        i = cd.idx["concept:praise_from_X"]
+        last = [x for x in n.assignment_trace("concept:praise_from_X") if x["kind"] == "assignment"][-1]
+        self.assertTrue(np.allclose(last["C_after"], cd.CK[i], atol=1e-14))
+        uids = [int(cd.UID[i, k]) for k in range(cd.K) if cd.AL[i, k] > 0.5]
+        self.assertEqual(len(uids), len(set(uids)))
+        self.assertTrue(all(u >= 0 for u in uids))
+        self.assertEqual(cd.next_uid, max(int(cd.UID.max()) + 1, cd.next_uid))
+
+    def test_extinction_updates_move_the_acquisition_cause_which_is_the_known_failure_of_the_literal_formula(self):
+        """B.1 の切り分け（消去の学習が古い原因を壊す）を、記録で確かめる: 消去中に獲得の原因が受けた更新の重みの総和が大きく、C が 0 へ動く。"""
+        n = self._history(n_acq=12, n_ext=20)
+        recs = [x for x in n.assignment_trace("concept:praise_from_X") if x["kind"] == "assignment"]
+        acq, ext = recs[:12], recs[12:]
+        cnt = {}
+        for r in acq:
+            cnt[r["map_uid"]] = cnt.get(r["map_uid"], 0) + 1
+        uid = max(cnt, key=lambda u: cnt[u])
+        mass = sum(r["post_used"][r["uid_before"].index(uid)] for r in ext if uid in r["uid_before"])
+        dc = sum(r["dC_k"][r["uid_before"].index(uid)] for r in ext if uid in r["uid_before"])
+        self.assertGreater(mass, 5.0)                           # 20 試行のうち大半の重みを獲得の原因が受けている
+        self.assertGreater(dc, 0.05)                            # 負の価値が 0 へ戻る方向に動く（獲得の記憶が削られる）
+
+    def test_reinstate_record_lists_the_refreshed_causes(self):
+        n = self._history()
+        n.experience({"id": "h1", "context": "cafe_chat", "concepts": [], "participants": [],
+                      "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": "h"})
+        rr = [e for e in n.ledger.entries if e["kind"] == "reinstate"][-1]
+        self.assertEqual(rr["design"], "spec_literal")
+        self.assertEqual(rr["after"], "h1")
+        self.assertEqual(rr["context"], "cafe_chat")
+        self.assertIsNone(rr["chosen"])
+        hit = [x for x in rr["refreshed"] if x["cue"] == "concept:praise_from_X"]
+        self.assertTrue(hit)
+        cd = n.cond
+        i = cd.idx["concept:praise_from_X"]
+        for x in hit:
+            self.assertLess(x["C"], -cd.cfg.lc_neg_threshold)
+            self.assertEqual(x["t_after"], rr["t"])
+            self.assertEqual(float(cd.TK[i, x["k"]]), rr["t"])           # 時刻が現在に更新された
+            self.assertLess(x["t_before"], rr["t"])
+        self.assertTrue(n.assignment_trace("concept:praise_from_X")[-1] is rr)       # assignment_trace が復位の記録も返す
+
+    def test_explain_response_and_cue_probe_breakdown_work_and_decompose_exactly(self):
+        n = self._history()
+        for ctx in ("studio", "cafe_chat", "garden", None):
+            ex = n.explain_response("concept:praise_from_X", ctx)
+            self.assertEqual(ex["design"], "spec_literal")
+            self.assertAlmostEqual(ex["response"], sum(c["contribution"] for c in ex["causes"]), places=14)
+            self.assertAlmostEqual(sum(c["p"] for c in ex["causes"]) + ex["p_new"], 1.0, places=14)
+            for c in ex["causes"]:
+                self.assertAlmostEqual(c["weight"], c["time_term"] * c["context_term"] * c["count_term"], places=14)
+                self.assertGreaterEqual(c["uid"], 0)
+            r = n.probe({"cue": "concept:praise_from_X", "context": ctx} if ctx else {"cue": "concept:praise_from_X"})
+            self.assertAlmostEqual(r["breakdown"]["response"], r["C"], places=14)
+
+    def test_formatting_handles_every_record(self):
+        from npnv3.explain import format_assignment, format_explanation
+        n = self._history()
+        n.experience({"id": "h1", "context": "cafe_chat", "concepts": [], "participants": [],
+                      "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": "h"})
+        for r in n.assignment_trace("concept:praise_from_X"):
+            self.assertIsInstance(format_assignment(r), str)
+        self.assertTrue(format_explanation(n.explain_response("concept:praise_from_X", "studio")))
+
+    def test_records_are_deterministic_and_survive_save_and_restore(self):
+        a, b = self._history(), self._history()
+        self.assertTrue(deep_equal(a.assignment_trace("concept:praise_from_X"), b.assignment_trace("concept:praise_from_X")))
+        with tempfile.TemporaryDirectory() as d:
+            a.save(d)
+            m = NPN.load(d)
+        self.assertTrue(deep_equal(a.assignment_trace("concept:praise_from_X"), m.assignment_trace("concept:praise_from_X")))
+        for ctx in ("studio", "cafe_chat", "garden"):
+            self.assertTrue(deep_equal(a.explain_response("concept:praise_from_X", ctx), m.explain_response("concept:praise_from_X", ctx)))
+
+    def test_recording_does_not_change_learning(self):
+        a = make(0, record_ledger=False)
+        b = self._history()
+        for k in range(6):
+            a.experience({"id": f"ac{k}", "context": "studio", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": f"a{k}"})
+            a.experience({"id": f"au{k}", "context": "studio", "concepts": [], "participants": [], "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": f"a{k}"})
+        for k in range(6):
+            a.experience({"id": f"xc{k}", "context": "cafe_chat", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": f"x{k}"})
+            a.experience({"id": f"xn{k}", "context": "cafe_chat", "concepts": [], "participants": [], "outcomes": [], "session": f"x{k}"})
+        self.assertEqual(len(a.ledger.entries), 0)
+        for ctx in ("studio", "cafe_chat"):
+            self.assertEqual(a.cond.value_of("concept:praise_from_X", ctx), b.cond.value_of("concept:praise_from_X", ctx))
+
+
 class SpecLiteralIsSelectable(unittest.TestCase):
     def test_spec_literal_npn_runs_and_roundtrips(self):
         n = make(0, lc_design="spec_literal")
@@ -721,6 +889,18 @@ class SpecLiteralIsSelectable(unittest.TestCase):
         self.assertEqual(m.cfg.lc_design, "spec_literal")
         for cue in n.cond.names:
             self.assertEqual(n.cond.value_of(cue, "studio"), m.cond.value_of(cue, "studio"))
+
+    def test_spec_literal_is_the_default_and_revised_is_selectable(self):
+        self.assertEqual(Config().lc_design, "spec_literal")
+        self.assertEqual(make(0).cond.cfg.lc_design, "spec_literal")
+        n = make(0, lc_design="revised")
+        for e in mh.generate_praise_history("H1", 3, 12):
+            n.experience(e)
+        self.assertGreater(sum(h for h in n.cond.hist_n), 0)                   # revised は試行の履歴を使う
+        with tempfile.TemporaryDirectory() as d:
+            n.save(d)
+            m = NPN.load(d)
+        self.assertEqual(m.cfg.lc_design, "revised")
 
     def test_invalid_design_is_refused(self):
         with self.assertRaises(ValueError):

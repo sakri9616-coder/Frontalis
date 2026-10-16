@@ -1,171 +1,174 @@
 {
+ "design": "spec_literal",
  "E_passed (SPEC 4.4 thresholds)": {
   "E3": false,
   "E4": false,
   "E5": false,
-  "E6": true
+  "E6": false
  },
  "M1": {
   "E3": {
    "judged": false,
-   "sum_delta_resp": -0.8863845438423853,
-   "sum_weighting_term": -0.8863845438423853,
+   "sum_delta_resp": -0.09845482754806215,
+   "sum_weighting_term": -0.09845482754806215,
    "sum_value_term": 0.0,
    "weighting_share": 1.0,
-   "max_identity_error": 6.938893903907228e-18,
-   "mean_resp_before": -0.0005929715148371486,
-   "mean_resp_after": -0.04491219870695641
+   "max_identity_error": 5.204170427930421e-18,
+   "mean_resp_before": -0.05097210041011886,
+   "mean_resp_after": -0.055894841787521965
   },
   "E4": {
    "judged": false,
-   "sum_delta_resp": -0.010923415387688816,
-   "sum_weighting_term": -0.010923415387688816,
-   "sum_value_term": 0.0,
-   "weighting_share": 1.0,
-   "max_identity_error": 1.0842021724855044e-19,
-   "mean_resp_before": -0.0005929715148371486,
-   "mean_resp_after": -0.0011391422842215895
-  },
-  "E5": {
-   "judged": false,
-   "sum_delta_resp": -0.0006921011205925899,
-   "sum_weighting_term": -0.00069210112059259,
-   "sum_value_term": 0.0,
-   "weighting_share": 1.0000000000000002,
-   "max_identity_error": 9.486769009248164e-20,
-   "mean_resp_before": -0.0005929715148371486,
-   "mean_resp_after": -0.000627576570866778
-  },
-  "E6": {
-   "judged": true,
-   "sum_delta_resp": -0.5731997040265152,
-   "sum_weighting_term": -0.5731997040265152,
+   "sum_delta_resp": 0.3951845287716343,
+   "sum_weighting_term": 0.3951845287716343,
    "sum_value_term": 0.0,
    "weighting_share": 1.0,
    "max_identity_error": 3.469446951953614e-18,
-   "mean_resp_before": -0.0005929715148371486,
-   "mean_resp_after": -0.029252956716162903
+   "mean_resp_before": -0.05097210041011886,
+   "mean_resp_after": -0.03121287397153715
+  },
+  "E5": {
+   "judged": false,
+   "sum_delta_resp": 0.14834076221457404,
+   "sum_weighting_term": 0.14834076221457404,
+   "sum_value_term": 0.0,
+   "weighting_share": 1.0,
+   "max_identity_error": 5.204170427930421e-18,
+   "mean_resp_before": -0.05097210041011886,
+   "mean_resp_after": -0.043555062299390164
+  },
+  "E6": {
+   "judged": false,
+   "sum_delta_resp": -0.012640871982311563,
+   "sum_weighting_term": -0.012640871982311574,
+   "sum_value_term": 0.0,
+   "weighting_share": 1.0000000000000009,
+   "max_identity_error": 5.7462715141731735e-18,
+   "mean_resp_before": -0.05097210041011886,
+   "mean_resp_after": -0.051604144009234444
   }
  },
  "M3": {
   "E3": {
    "judged": false,
    "factor": "context",
-   "n_defined": 19,
-   "sum_delta_rho": 87.36140944321593,
-   "sum_step_context": 87.36140944321593,
+   "n_defined": 20,
+   "sum_delta_rho": 16.812815236111984,
+   "sum_step_context": 16.812815236111984,
    "sum_step_time": 0.0,
    "sum_step_trials": 0.0,
    "expected_factor_share": 1.0,
-   "mean_rho_before": -5.750749108171069,
-   "mean_rho_after": -1.1527801901070727
+   "mean_rho_before": 1.6996200085598718,
+   "mean_rho_after": 2.5402607703654714
   },
   "E4": {
    "judged": false,
    "factor": "context",
-   "n_defined": 19,
-   "sum_delta_rho": 12.460416228251098,
-   "sum_step_context": 12.460416228251098,
+   "n_defined": 20,
+   "sum_delta_rho": -32.58029960247165,
+   "sum_step_context": -32.58029960247165,
    "sum_step_time": 0.0,
    "sum_step_trials": 0.0,
-   "expected_factor_share": 1.0,
-   "mean_rho_before": -5.750749108171069,
-   "mean_rho_after": -5.0949377277368
+   "expected_factor_share": null,
+   "mean_rho_before": 1.6996200085598718,
+   "mean_rho_after": 0.0706050284362895
   },
   "E5": {
    "judged": false,
    "factor": "time",
-   "n_defined": 19,
-   "sum_delta_rho": 1.0805358936762364,
+   "n_defined": 20,
+   "sum_delta_rho": -14.857858940237406,
    "sum_step_context": 0.0,
-   "sum_step_time": 1.0805358936762364,
+   "sum_step_time": -14.857858940237406,
    "sum_step_trials": 0.0,
-   "expected_factor_share": 1.0,
-   "mean_rho_before": -5.750749108171069,
-   "mean_rho_after": -5.693878797977583
+   "expected_factor_share": null,
+   "mean_rho_before": 1.6996200085598718,
+   "mean_rho_after": 0.9567270615480016
   },
   "E6": {
-   "judged": true,
+   "judged": false,
    "factor": "trials",
-   "n_defined": 19,
-   "sum_delta_rho": 77.24622633173422,
+   "n_defined": 20,
+   "sum_delta_rho": 1.6492451287905205,
    "sum_step_context": 0.0,
-   "sum_step_time": 2.965415394142404,
-   "sum_step_trials": 74.28081093759182,
-   "expected_factor_share": 0.961610870395048,
-   "mean_rho_before": -5.750749108171069,
-   "mean_rho_after": -1.6851582486061103
+   "sum_step_time": -0.3507548712094777,
+   "sum_step_trials": 1.9999999999999982,
+   "expected_factor_share": 1.2126760086092871,
+   "mean_rho_before": 1.6996200085598718,
+   "mean_rho_after": 1.782082264999398
   }
  },
  "M2": {
-  "max_increase_over_seeds_and_protocols": 0.09131002842666777,
+  "max_increase_over_seeds_and_protocols": 0.0,
   "max_increase_without_E7 (protocols that do not learn x)": 0.0,
-  "max_increase_E7 (re-acquisition)": 0.09131002842666777,
-  "seeds_violating_M2": 1,
-  "mean_C_acq_post_abs": 0.19129460401521134,
+  "max_increase_E7 (re-acquisition)": -0.029851397326795398,
+  "seeds_violating_M2": 0,
+  "mean_C_acq_post_abs": 0.19571546638930504,
   "mean_abs_C_at_test": {
-   "after_extinction (E2, E3, E4)": 0.18705079699391652,
-   "E1": 0.19129460401521134,
-   "E5": 0.18705079699391652,
-   "E6": 0.18705079699391652,
-   "E7 (at the trial reaching 70%)": 0.1916162984152499
+   "after_extinction (E2, E3, E4)": 0.06030230564426672,
+   "E1": 0.19571546638930504,
+   "E5": 0.06030230564426672,
+   "E6": 0.06030230564426672,
+   "E7 (at the trial reaching 70%)": 0.15769631178490962
   },
-  "seeds_acq_cause_alive_after_extinction": 19
+  "seeds_acq_cause_alive_after_extinction": 20
  },
  "M4": {
-  "seeds_violating_selected_le_5": 0,
-  "seeds_violating_dC_sum_le_0.05": 1,
-  "seeds_violating_either": 1,
+  "seeds_violating_selected_le_5": 20,
+  "seeds_violating_dC_sum_le_0.05": 20,
+  "seeds_violating_either": 20,
   "acq_cause_selected_by_seed": [
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18,
+   18
   ],
   "acq_cause_abs_dC_sum_by_seed": [
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0849,
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0,
-   0.0
+   0.135,
+   0.1351,
+   0.1355,
+   0.1349,
+   0.136,
+   0.1352,
+   0.136,
+   0.1357,
+   0.135,
+   0.1354,
+   0.135,
+   0.1353,
+   0.1354,
+   0.1349,
+   0.1358,
+   0.1353,
+   0.1356,
+   0.1358,
+   0.1353,
+   0.1359
   ],
-  "max_acq_cause_selected_in_20_extinction_trials": 0,
-  "mean_acq_cause_selected": 0.0,
-  "max_acq_cause_abs_dC_sum": 0.08487614042589624,
-  "mean_extinction_updates_assigned_to_new_cause": 20.0,
-  "mean_reuse_events": 17.95,
-  "seeds_where_acq_cause_was_replaced_by_reuse (reported)": 1,
+  "max_acq_cause_selected_in_20_extinction_trials": 18,
+  "mean_acq_cause_selected": 18.0,
+  "max_acq_cause_abs_dC_sum": 0.13602833362041208,
+  "mean_acq_cause_abs_dC_sum": 0.13541316074503834,
+  "mean_acq_post_mass_in_20_extinction_updates (soft posterior mass the acquisition cause received)": 11.411147214198033,
+  "mean_extinction_updates_assigned_to_new_cause": 2.0,
+  "mean_reuse_events": 0.0,
+  "seeds_where_acq_cause_was_replaced_by_reuse (reported)": 0,
   "n_extinction_updates_per_seed": [
    20
   ]
@@ -177,60 +180,60 @@
  },
  "narrative_seed0": {
   "acquisition": [
-   "獲得 12 試行の割当: #18(新), #20(新), #22(新), #22, #22, #22, #22, #22, #22, #22, #22, #22",
-   "獲得の原因 = #22（C = -0.194）。他の原因: #18（C = -0.008、β_k = 5）, #20（C = -0.014、β_k = 0.2）"
+   "獲得 12 試行の割当（MAP）: #3(新), #3, #3, #3, #3, #3, #3, #3, #3, #3, #3, #3",
+   "獲得の原因 = #3（C = -0.193）。他の原因: "
   ],
   "extinction": [
-   "消去 20 試行の割当: #33(新), #34(新), #35(新)(再利用), #36(新)(再利用), #37(新)(再利用), #38(新)(再利用), #39(新)(再利用), #40(新)(再利用), #41(新)(再利用), #42(新)(再利用), #43(新)(再利用), #44(新)(再利用), #45(新)(再利用), #46(新)(再利用), #47(新)(再利用), #48(新)(再利用), #49(新)(再利用), #50(新)(再利用), #51(新)(再利用), #52(新)(再利用)",
-   "獲得の原因 #22 が選ばれた試行 0 件、|ΔC| の和 0.0000"
+   "消去 20 試行の割当（MAP）: #5(新), #6(新), #3, #3, #3, #3, #3, #3, #3, #3, #3, #3, #3, #3, #3, #3, #3, #3, #3, #3",
+   "獲得の原因 #3 が選ばれた試行 18 件、|ΔC| の和 0.1350、更新に使われた重み（柔らかい事後）の和 11.612"
   ],
   "extinction_first_trial": [
-   "消去の最初の試行（文脈 cafe_chat、目標 y = +0.000）: 事前 p(k) = #18: 0.033, #20: 0.011, #22: 0.042, 新 α: 0.914（時間の項 0.040, 0.043, 1.181、文脈の項 0.455, 0.143, 0.019）",
-   "  尤度 #18: 0.998, #20: 0.996, #22: 0.434, 新: 1.000 → 事後 #18: 0.034, #20: 0.012, #22: 0.018, 新: 0.936 → MAP = #33（新しい原因）"
+   "消去の最初の試行（文脈 cafe_chat、目標 y = +0.000）: 事前 p(k) = #3: 0.613, 新 α: 0.387（時間の項 0.936、文脈の項 0.076）",
+   "  尤度 #3: 0.436, 新: 1.000 → 事後 #3: 0.409, 新: 0.591 → MAP = #5（新しい原因）"
   ],
   "E3": [
-   "E3: 読む前 (B, t = 88) 応答 -0.0006  →  テスト (studio, t = 88) 応答 -0.0461",
-   "  重み p(k): #22*: 0.003 → 0.238, #49: 0.081 → 0.020, #50: 0.104 → 0.025, #51: 0.145 → 0.036, #52: 0.242 → 0.059, 新: 0.424 → 0.622（* = 獲得の原因 C = -0.194）",
-   "  獲得の原因の事前の対数比 ρ -5.749 → -1.165（文脈 +4.583、時間 +0.000、試行・計数 +0.000）"
+   "E3: 読む前 (B, t = 88) 応答 -0.0496  →  テスト (studio, t = 88) 応答 -0.0540",
+   "  重み p(k): #3*: 0.851 → 0.927, #5: 0.080 → 0.016, #6: 0.030 → 0.012, 新: 0.039 → 0.045（* = 獲得の原因 C = -0.058）",
+   "  獲得の原因の事前の対数比 ρ +1.740 → +2.544（文脈 +0.804、時間 +0.000、試行・計数 +0.000）"
   ],
   "E4": [
-   "E4: 読む前 (B, t = 88) 応答 -0.0006  →  テスト (garden, t = 88) 応答 -0.0012",
-   "  重み p(k): #22*: 0.003 → 0.006, #49: 0.081 → 0.023, #50: 0.104 → 0.030, #51: 0.145 → 0.042, #52: 0.242 → 0.069, 新: 0.424 → 0.830（* = 獲得の原因 C = -0.194）",
-   "  獲得の原因の事前の対数比 ρ -5.749 → -5.093（文脈 +0.656、時間 +0.000、試行・計数 +0.000）"
+   "E4: 読む前 (B, t = 88) 応答 -0.0496  →  テスト (garden, t = 88) 応答 -0.0302",
+   "  重み p(k): #3*: 0.851 → 0.519, #5: 0.080 → 0.100, #6: 0.030 → 0.067, 新: 0.039 → 0.314（* = 獲得の原因 C = -0.058）",
+   "  獲得の原因の事前の対数比 ρ +1.740 → +0.076（文脈 -1.664、時間 +0.000、試行・計数 +0.000）"
   ],
   "E5": [
-   "E5: 読む前 (B, t = 88) 応答 -0.0006  →  テスト (cafe_chat, t = 138) 応答 -0.0007",
-   "  重み p(k): #22*: 0.003 → 0.003, #49: 0.081 → 0.026, #50: 0.104 → 0.027, #51: 0.145 → 0.028, #52: 0.242 → 0.029, 新: 0.424 → 0.888（* = 獲得の原因 C = -0.194）",
-   "  獲得の原因の事前の対数比 ρ -5.749 → -5.693（文脈 +0.000、時間 +0.056、試行・計数 +0.000）"
+   "E5: 読む前 (B, t = 88) 応答 -0.0496  →  テスト (cafe_chat, t = 138) 応答 -0.0424",
+   "  重み p(k): #3*: 0.851 → 0.728, #5: 0.080 → 0.069, #6: 0.030 → 0.026, 新: 0.039 → 0.178（* = 獲得の原因 C = -0.058）",
+   "  獲得の原因の事前の対数比 ρ +1.740 → +0.985（文脈 +0.000、時間 -0.755、試行・計数 +0.000）"
   ],
   "E6": [
-   "E6: 読む前 (B, t = 88) 応答 -0.0006  →  テスト (cafe_chat, t = 90) 応答 -0.0306",
-   "  重み p(k): #22*: 0.003 → 0.158, #49: 0.081 → 0.068, #50: 0.104 → 0.083, #51: 0.145 → 0.107, #52: 0.242 → 0.149, 新: 0.424 → 0.435（* = 獲得の原因 C = -0.194）",
-   "  獲得の原因の事前の対数比 ρ -5.749 → -1.675（文脈 +0.000、時間 +0.156、試行・計数 +3.917）",
-   "  復位の推論 (t = 88, 文脈 cafe_chat, 嫌悪 r = -0.174): 原因 #22（C = -0.194）に (t, 文脈 cafe_chat) の試行を加えた。事後 0.09（どの原因でもない: 0.05）",
-   "  復位の推論 (t = 89, 文脈 cafe_chat, 嫌悪 r = -0.592): 原因 #22（C = -0.194）に (t, 文脈 cafe_chat) の試行を加えた。事後 0.78（どの原因でもない: 0.01）"
+   "E6: 読む前 (B, t = 88) 応答 -0.0496  →  テスト (cafe_chat, t = 90) 応答 -0.0502",
+   "  重み p(k): #3*: 0.851 → 0.861, #5: 0.080 → 0.073, #6: 0.030 → 0.027, 新: 0.039 → 0.038（* = 獲得の原因 C = -0.058）",
+   "  獲得の原因の事前の対数比 ρ +1.740 → +1.822（文脈 +0.000、時間 -0.018、試行・計数 +0.100）",
+   "  復位 (t = 88, 文脈 cafe_chat): 負の価値を持つ原因の最後に使われた時刻を現在に更新した: #3（C = -0.058、t_k 86 → 88）",
+   "  復位 (t = 89, 文脈 cafe_chat): 負の価値を持つ原因の最後に使われた時刻を現在に更新した: #3（C = -0.058、t_k 88 → 89）"
   ]
  },
  "per_seed_acq_uid": [
-  22,
-  22,
-  22,
-  22,
-  20,
-  22,
-  22,
-  22,
-  22,
-  22,
-  22,
-  22,
-  36,
-  22,
-  22,
-  22,
-  20,
-  20,
-  22,
-  22
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3
  ]
 }

@@ -25,8 +25,36 @@ def format_explanation(ex: Dict[str, Any]) -> List[str]:
     return lines
 
 
+def _format_assignment_soft(rec: Dict[str, Any]) -> str:
+    """spec_literal の割当の記録 1 件。事前（内訳）→ 柔らかい事後 → 更新に使った重み → 各原因の ΔC。MAP の原因は報告用（t_k の更新先）。"""
+    uid_before = rec["uid_before"]
+    K = len(uid_before)
+    # 作られた原因は、更新後の番号（map_uid か、再利用した場所の新しい番号）で表す。更新前に存在した原因は uid_before で表す
+    alive = [i for i in range(K) if uid_before[i] >= 0]
+    pri = " ".join(f"#{uid_before[i]}:{rec['p_prior'][i]:.3f}" for i in alive)
+    tm = " ".join(f"{rec['time_term'][i]:.3f}" for i in alive)
+    cx = " ".join(f"{rec['context_term'][i]:.3f}" for i in alive)
+    cn = " ".join(f"{rec['count_term'][i]:.2f}" for i in alive)
+    post = " ".join(f"#{uid_before[i]}:{rec['post_raw'][i]:.3f}" for i in alive)
+    k = rec["map"]
+    created = rec["created"] is not None
+    mapn = f"#{rec['map_uid']}" + (("（新しい原因" + ("。満員なので #%d を再利用" % rec["replaced_uid"] if rec["reused"] else "") + "）") if created else "")
+    used = " ".join(f"{('#%d' % rec['map_uid']) if (created and i == rec['created']) else ('#%d' % uid_before[i])}:{rec['post_used'][i]:.3f}"
+                    for i in range(K) if rec["post_used"][i] > 1e-9)
+    dck = " ".join(f"{('#%d' % rec['map_uid']) if (created and i == rec['created']) else ('#%d' % uid_before[i])}:{rec['dC_k'][i]:+.4f}"
+                   for i in range(K) if abs(rec["dC_k"][i]) > 1e-9)
+    return (f"t={rec['t']:.0f} 文脈 {rec['context']} 目標 y={rec['y_x']:+.3f}: 事前 {pri} 新(α):{rec['p_prior_new']:.3f} [時間の項 {tm} | 文脈の項 {cx} | 計数の項 {cn}]"
+            f" → 柔らかい事後 {post} 新:{rec['post_new']:.3f} → 更新に使った重み {used} → ΔC_k {dck}（MAP {mapn}）")
+
+
 def format_assignment(rec: Dict[str, Any]) -> str:
-    """割当の記録 1 件（kind = "assignment"）。事前（内訳）→ 事後 → MAP の原因 → 学習前後の C。"""
+    """割当の記録 1 件（kind = "assignment" か "reinstate"）。事前（内訳）→ 事後 → MAP の原因（revised）／柔らかい事後と各原因の ΔC（spec_literal）→ 学習前後の C。"""
+    if rec["kind"] == "reinstate" and rec.get("design") == "spec_literal":
+        ref = rec.get("refreshed", [])
+        body = ", ".join(f"{x['cue']} #{x['uid']}（C={x['C']:+.3f}、t_k {x['t_before']:.0f}→{x['t_after']:.0f}）" for x in ref) or "（負の価値の原因なし）"
+        return f"t={rec['t']:.0f} 復位（文脈 {rec['context']}）: 負の価値を持つ全ての原因の最後に使われた時刻を現在に更新した: {body}。価値は更新しない"
+    if rec["kind"] == "assignment" and rec.get("design") == "spec_literal":
+        return _format_assignment_soft(rec)
     if rec["kind"] == "reinstate":
         ch = rec.get("chosen")
         if ch is None:

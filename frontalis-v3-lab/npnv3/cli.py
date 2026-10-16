@@ -1,7 +1,7 @@
 """コマンドライン。
 
 python -m npnv3 init  STATE_DIR [--seed 0]
-python -m npnv3 feed  STATE_DIR experiences.jsonl      学習し、各経験の要約を表示し、保存
+python -m npnv3 feed  STATE_DIR experiences.jsonl      学習し、各経験の要約を表示し、保存（行ごとに kind = "experience"（省略可）| "correction"（訂正）| "choice"（二択））
 python -m npnv3 probe STATE_DIR probes.json            学習せずに評価
 python -m npnv3 show  STATE_DIR                         価値の上位・信念の要約
 python -m npnv3 explain STATE_DIR CUE [--context C] [--time T] [--trace N]   条件づけられた価値の応答の内訳（原因ごとの重み・価値・寄与と要因）と、割当の記録の最後の N 件
@@ -28,8 +28,41 @@ def _top_emotions(emo: Dict[str, float], k: int = 3) -> str:
     return ", ".join(f"{n} {v:.2f}" for n, v in items if v > 0.01) or "なし"
 
 
+def _summarize_correction(ap: Dict[str, Any]) -> str:
+    """訂正（kind = "correction"）の要約: 当時の結果 → 訂正後の結果、参加者ごとの教師の差 Δ_e、好悪の変化、安堵・罪悪感の手がかり、信念の変化。"""
+    def outs(os_):
+        return ", ".join(f"{o.get('type', 'ambiguous')}({o['actor']} {o['magnitude']:.2f})" for o in os_) or "なし"
+    lines = [f"[{ap['id']}] 訂正: {ap['refers_to']} の結果を訂正（source = {ap['source']}、価値の再評価 = {ap['reappraisal']}）",
+             f"    当時の結果: {outs(ap['original_outcomes'])}",
+             f"    訂正後の結果: {outs(ap['corrected_outcomes'])}",
+             "    当時の記録（受け止め方 f、責任 φ、効用変化 Δu、感情）は台帳に残したまま。"]
+    for pid, d in ap["shifts"].items():
+        l0, l1 = ap["like"][pid]
+        lines.append(f"    {pid}: 教師の差 Δ_e {_fmt_needs(d)}  好悪 like {l0:+.3f} → {l1:+.3f}")
+    for pid, ch in ap["belief_change"].items():
+        lines.append(f"    {pid} の信念 P: " + ", ".join(f"{t} {v[0]:.2f}→{v[1]:.2f}" for t, v in ch.items()))
+    lines.append(f"    状況の予期 Q {ap['Q'][0]:+.3f} → {ap['Q'][1]:+.3f}  訂正の感じた価値 f={ap['f']:+.3f}  安堵 {ap['emotions']['relief']:.2f}  罪悪感 {ap['emotions']['guilt']:.2f}")
+    return "\n".join(lines)
+
+
+def _summarize_choice(ap: Dict[str, Any]) -> str:
+    ch = ap["choice"]
+    o = ch["options"]
+    return (f"[{ap['id']}] 二択: 選択肢 0 の Q={o[0]['Q']:+.3f}（J {o[0]['J_Q']:+.3f}）, 選択肢 1 の Q={o[1]['Q']:+.3f}（J {o[1]['J_Q']:+.3f}）  "
+            f"P(選ぶ) = {ch['p_choose'][0]:.2f} / {ch['p_choose'][1]:.2f} → 選択肢 {ch['chosen']} を選んだ\n"
+            f"    ΔQ={ch['dQ']:+.3f}  葛藤の強さ c={ch['conflict']:.3f}  正当化 J の動き: "
+            + (", ".join(f"{k} {v:+.3f}" for k, v in ch["dJ"].items()) or "なし"))
+
+
 def _summarize(ap: Dict[str, Any]) -> str:
-    head = (f"[{ap['id']}] 予期 Q={ap['Q']:+.3f} (U_val={ap['Q_val']:+.3f} + 条件づけ C_Q={ap['C_Q']:+.3f}; "
+    if ap.get("kind") == "correction":
+        return _summarize_correction(ap)
+    pre = _summarize_choice(ap) + "\n" if ap.get("kind") == "choice" else ""
+    return pre + _summarize_experience(ap)
+
+
+def _summarize_experience(ap: Dict[str, Any]) -> str:
+    head = (f"[{ap['id']}] 予期 Q={ap['Q']:+.3f} (U_val={ap['Q_val']:+.3f} + 条件づけ C_Q={ap['C_Q']:+.3f} + 正当化 J_Q={ap['J_Q']:+.3f}; "
             f"V_MB={ap['V_MB']:+.3f}, V_MF={ap['V_MF']:+.3f}, ω={ap['omega']:.2f})")
     if ap.get("optional"):
         head += f"  接近確率 {ap['p_approach']:.2f} → " + ("接近" if ap["approached"] else "回避（学習しない）")
@@ -84,7 +117,7 @@ def cmd_feed(args: argparse.Namespace) -> int:
 def _probe_line(p: Dict[str, Any]) -> str:
     k = p["kind"]
     if k == "situation":
-        return (f"状況: Q={p['Q']:+.3f} (V_MB={p['V_MB']:+.3f}, V_MF={p['V_MF']:+.3f}, ω={p['omega']:.2f}); "
+        return (f"状況: Q={p['Q']:+.3f} (正当化 J_Q={p['J_Q']:+.3f}; V_MB={p['V_MB']:+.3f}, V_MF={p['V_MF']:+.3f}, ω={p['omega']:.2f}); "
                 f"参加者 " + ", ".join(f"{x['id']} {x['value']:+.3f}" for x in p["persons"]))
     if k == "entity":
         return (f"エンティティ {p['entity']}（{p['class']}）: like={p['like']:+.3f} "
@@ -92,7 +125,7 @@ def _probe_line(p: Dict[str, Any]) -> str:
                 f"P(手柄を取る)={p['p_person']['credit_taken']:.2f}; 条件づけ C={p['conditioned']:+.3f}")
     if k == "cue":
         ctx = f"（文脈 {p['context']}）" if p.get("context") else "（文脈を問わない）"
-        return f"手がかり {p['cue']}{ctx}: 条件づけられた価値 C={p['C']:+.3f} 原因の数={p['n_causes']} 既知={p['known']}"
+        return f"手がかり {p['cue']}{ctx}: 条件づけられた価値 C={p['C']:+.3f} 正当化 J={p['J']:+.3f} 原因の数={p['n_causes']} 既知={p['known']}"
     return (f"概念 {p['concept']}: like={p['like']:+.3f} ({_fmt_needs(p['like_by_need'])}) 既知={p['known']}"
             f" 条件づけ C={p['conditioned']:+.3f}")
 
@@ -127,6 +160,13 @@ def cmd_show(args: argparse.Namespace) -> int:
     print("\n条件づけられた価値 C（手がかり。|C| の大きい順。C は潜在原因の価値の、計数による加重平均。読み出しの応答は文脈と時刻に依存する）")
     for r in s["conditioned_top"]:
         print(f"  {r['cue']:<28s} {r['C']:+.3f}  （原因 {r['n_causes']} 個）")
+    print("\n選択の正当化 J（二択で迷った選択から生じる。経験の教師ではなく、予期 Q に加わる。|J| の大きい順）")
+    for r in s["justification_top"]:
+        print(f"  {r['cue']:<28s} {r['J']:+.3f}")
+    if not s["justification_top"]:
+        print("  （なし）")
+    if s["n_corrections"]:
+        print(f"  訂正を受けた回数: {s['n_corrections']}")
     b = s["belief"]
     print(f"\n信念: 個体 {b['n_individuals']}、文脈 {b['n_contexts']}、観測 {b['n_obs']}、事前ヘッド {b['head_kind']}（ヘッドの寄与 ρ_h={b['rho_h']:.2f}）")
     if b["head_kind"] == "mixture":

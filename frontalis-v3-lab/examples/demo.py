@@ -16,6 +16,11 @@ v3.3 で見せること（第 1 部: NN の再検証と消去。4f は設計の�
   - 事前ヘッドは、予測する類自身の観測を使わない（leave-class-out）。重みは、類を除いたモデルの転移性能（対数尤度の softmax、温度 1）で決まる。
     差は穏やか（転移できる世界でも、ヘッドの重みはほぼ一様に近い）。mlp は X3 の結論（ベンチマークで最良の条件がなかった）で既定の mixture から外した
   - 条件づけ価値 C は潜在原因を持つ。文脈 A で獲得し、文脈 B で消去すると、元の嫌悪が文脈 A に戻るか（single_cause と比べる）
+  - 既定の設計は SPEC-v3.3 4.2 のとおり（spec_literal。柔らかい事後で更新）。割当の記録（柔らかい事後の重みと各原因の ΔC）で、なぜ戻らなかったかを追える。
+    第 1 部の設計の改訂（revised。局所 MAP）は実験設定（lc_design = "revised"）
+v3.3 で見せること（第 2 部: 価値の再帰属と、選択の正当化）:
+  - 訂正（kind = "correction"）: 事実（信念）は訂正され、当時の主観的な記録は残り、価値は自動では消えずに一部残り、その後の良い経験で薄れる
+  - 二択（kind = "choice"）: 迷った選択でだけ選んだものへの正当化 J が生じ、有界で、経験の裏付けがなければ減衰し、反する経験に負ける。J は経験の教師にならない
 """
 from __future__ import annotations
 
@@ -45,6 +50,29 @@ AMBIGUOUS = {"id": "ambiguous-idea-unused", "context": "project_meeting", "conce
              "participants": [{"id": "partnerQ", "class": "collaborator"}],
              "outcomes": [{"interpretations": {"credit_taken": 0.5, "credit_shared": 0.5}, "actor": "partnerQ",
                            "magnitude": 0.8}], "optional": False}
+
+
+def _yz_helpers():
+    """第 2 部のデモ用: テストと同じプロトコル（tests/yz_protocol.py）の部品を使う。"""
+    sys.path.insert(0, str(ROOT / "tests"))
+    import yz_protocol as Yp
+
+    class YD:
+        feed = staticmethod(Yp.feed)
+        history = staticmethod(lambda mis: Yp.y_history(0, mis))
+        corrections = staticmethod(lambda: Yp.y_corrections(0))
+        like = staticmethod(Yp.like_A)
+        belief = staticmethod(Yp.belief_A)
+        cond = staticmethod(Yp.cond_A)
+        taken = staticmethod(Yp.taken_weight)
+        good_with_A = staticmethod(Yp.good_with_A)
+        unrelated = staticmethod(lambda n, tag="u": Yp.unrelated_to_A(0, n, tag))
+        warm = staticmethod(lambda: Yp.warm_persona(0))
+        easy_choice = staticmethod(Yp.easy_choice)
+        hesitant = staticmethod(Yp.hesitant_choice)
+        forced_R = staticmethod(Yp.forced_history)
+        z4 = staticmethod(Yp.z4_worker)
+    return YD
 
 
 def load_jsonl(name: str):
@@ -284,60 +312,73 @@ def main() -> None:
         return c0, {ctx: rd(ctx) / c0 for ctx in ("cafe_chat", "studio", "garden")}, m.cond.n_causes("concept:praise_from_X")
     print("  獲得: 文脈 studio で『手がかり → 害』を 12 回。消去: 文脈 cafe_chat で『手がかり → 何も起きない』を 20 回。比 = C / 獲得直後の C。")
     print(f"  {'':<28}{'獲得直後 C':>11}{'消去した B':>12}{'元の A (ABA)':>14}{'未見の C (ABC)':>16}{'原因の数':>10}")
-    for single, label in ((False, "潜在原因（既定）"), (True, "single_cause（K = 1）")):
+    for single, label in ((False, "潜在原因（spec_literal）"), (True, "single_cause（K = 1）")):
         c0, r, k = _run(single)
         print(f"  {label:<26}{c0:>11.3f}{r['cafe_chat']:>12.2f}{r['studio']:>14.2f}{r['garden']:>16.2f}{k:>10d}")
-    print("  single_cause は消去で C が下がり、どの文脈でも同じ値（元に戻らない）。潜在原因では文脈 A でわずかに戻るが、SPEC の閾値（ABA ≥ 0.5、ABC ≥ 0.4）には届かない（E3・E4 は不合格。CHANGELOG の原因の切り分けを参照）。")
+    print("  single_cause は消去で C が下がり、どの文脈でも同じ値（元に戻らない）。潜在原因では文脈 A でわずかに戻るが、SPEC の閾値（ABA ≥ 0.5、ABC ≥ 0.4）には届かない（E3・E4 は不合格。CHANGELOG の B.1・M 節の切り分けを参照）。")
 
-    # --- 4f. なぜ戻ったのか（割当の記録と応答の内訳。v3.3 第 1 部の設計の改訂）---
+    # --- 4f. なぜ戻らなかったのか／戻ったのか（割当の記録と応答の内訳）---
     from npnv3.explain import format_assignment, format_explanation
-    hr("4f. なぜ嫌悪が戻ったのか: 割当の記録と応答の内訳（潜在原因。数値が合格したかではなく、機構として戻ったのかを見る）")
-    m = NPN(seed=0)
-    tr = 0
-    def trial2(kind, ctx):
-        nonlocal tr
-        tr += 1
-        m.experience(_ev(f"e4f-{tr}c", ctx, ["praise_from_X"], [], f"e4fs{tr}"))
-        m.experience(_ev(f"e4f-{tr}u", ctx, [], [{"type": "harm", "actor": "world", "magnitude": 0.8}] if kind == "acq" else [], f"e4fs{tr}"))
     X = "concept:praise_from_X"
-    for _ in range(12): trial2("acq", "studio")
-    c_acq_resp = m.explain_response("concept:praise_from_X", "studio")["response"]
-    for _ in range(20): trial2("ext", "cafe_chat")
-    recs = [r for r in m.assignment_trace(X)]
+    def _build(design):
+        m = NPN(seed=0, lc_design=design)
+        tr = 0
+        def trial2(kind, ctx):
+            nonlocal tr
+            tr += 1
+            m.experience(_ev(f"e4f-{tr}c", ctx, ["praise_from_X"], [], f"e4fs{tr}"))
+            m.experience(_ev(f"e4f-{tr}u", ctx, [], [{"type": "harm", "actor": "world", "magnitude": 0.8}] if kind == "acq" else [], f"e4fs{tr}"))
+        for _ in range(12): trial2("acq", "studio")
+        c_acq = m.explain_response(X, "studio")["response"]
+        for _ in range(20): trial2("ext", "cafe_chat")
+        return m, c_acq
+    hr("4f. なぜ嫌悪が戻らなかったのか: 割当の記録と応答の内訳（既定 = spec_literal。柔らかい事後の重みと、各原因の ΔC）")
+    m, c_acq_resp = _build("spec_literal")
+    recs = [r for r in m.assignment_trace(X) if r["kind"] == "assignment"]
     acq_rec, ext_rec = recs[:12], recs[12:]
-    print("  割当（#番号 = 原因の通し番号。(新) = そのとき作られた原因、(再利用) = 満員で捨てた原因の場所に入った）:")
+    cnt = {}
+    for r in acq_rec:
+        cnt[r["map_uid"]] = cnt.get(r["map_uid"], 0) + 1
+    uid_acq = max(cnt, key=lambda u: cnt[u])
+    print("  割当（#番号 = 原因の通し番号。MAP = 更新に使った重みが最大の原因。(新) = そのとき作られた原因）:")
     print("   獲得 12 試行: " + ", ".join(f"#{r['map_uid']}{'(新)' if r['created'] is not None else ''}" for r in acq_rec))
     print("   消去 20 試行: " + ", ".join(f"#{r['map_uid']}{'(新)' if r['created'] is not None else ''}{'(再利用)' if r['reused'] else ''}" for r in ext_rec))
-    uid_acq = acq_rec[-1]["map_uid"]
-    print(f"   → 獲得の原因 #{uid_acq} は消去の 20 試行で一度も選ばれていない（消去は新しい原因に入る）。その価値 C は消去の前後で動かない。")
+    mass = sum(r["post_used"][r["uid_before"].index(uid_acq)] for r in ext_rec if uid_acq in r["uid_before"])
+    dcs = sum(r["dC_k"][r["uid_before"].index(uid_acq)] for r in ext_rec if uid_acq in r["uid_before"])
+    c_k_end = [c for c in m.explain_response(X, "studio")["causes"] if c["uid"] == uid_acq][0]["value"]
+    print(f"   → 獲得の原因 #{uid_acq} は、消去の 20 試行のうち {sum(1 for r in ext_rec if r['map_uid'] == uid_acq)} 試行で MAP のまま。柔らかい事後で受けた更新の重みの和は {mass:.1f}、"
+          f"その価値 C_k は消去で {dcs:+.3f} 動いて {c_k_end:+.3f}。**消去の学習が獲得の原因を削っている**（獲得の記憶が残らないので、戻る元がない。M4 が破れる理由。CHANGELOG の B.1）。")
     print("\n  消去の最初の試行の割当:\n   " + format_assignment(ext_rec[0]))
-    t0 = m._clock()
     print("\n  消去の直後に、文脈ごとに読む（元の文脈 studio、消去した cafe_chat、未見の garden）:")
     for ctx in ("studio", "cafe_chat", "garden"):
         print("\n".join("   " + l for l in format_explanation(m.explain_response(X, ctx))))
-    def _tab(ctx, state):
-        return {c["uid"]: (c["p"], c["value"]) for c in state.explain_response(X, ctx)["causes"]}
-    ex_b = m.explain_response(X, "cafe_chat")
-    ex_a = m.explain_response(X, "studio")
-    pa = {c["uid"]: c for c in ex_a["causes"]}; pb = {c["uid"]: c for c in ex_b["causes"]}
-    dresp = ex_a["response"] - ex_b["response"]
-    wt = sum((pa.get(u, {"p": 0.0})["p"] - pb.get(u, {"p": 0.0})["p"]) * pb.get(u, {"value": 0.0})["value"] for u in set(pa) | set(pb))
-    print(f"\n  元の文脈 studio に戻ると、応答は {ex_b['response']:+.4f}（cafe_chat）→ {ex_a['response']:+.4f}。Δresp = {dresp:+.4f}、"
-          f"そのうち原因の重みの移り変わり Σ Δp·C = {wt:+.4f}、価値の変化 Σ p·ΔC = {dresp - wt:+.4f}。獲得の原因の重み p: "
-          f"{pb[uid_acq]['p']:.3f} → {pa[uid_acq]['p']:.3f}（文脈の項 {pb[uid_acq]['context_term']:.3f} → {pa[uid_acq]['context_term']:.3f}）。")
-    print("  → 価値 C_k は変えずに、どの原因が出番を持つかが文脈で入れ替わった。これは係数を強めたのではなく、原因の重み付けの移り変わりによる復活（獲得の原因の C は "
-          f"{pa[uid_acq]['value']:+.3f} のまま）。ただし戻る量は小さい: 獲得直後の応答 {c_acq_resp:+.4f} の {ex_a['response'] / c_acq_resp:.2f} 倍で、E3 の基準（≥ 0.5）には届かない。"
-          "理由も上の表に出ている: 新しい原因 α の重み（0.61）と、時間とともに縮んだ獲得の原因の質量（時間の項 0.211）。")
+    ex_a, ex_b = m.explain_response(X, "studio"), m.explain_response(X, "cafe_chat")
+    print(f"\n  応答は studio {ex_a['response']:+.4f}、cafe_chat {ex_b['response']:+.4f}。獲得直後の応答 {c_acq_resp:+.4f} に対する比は studio {ex_a['response'] / c_acq_resp:.2f}。"
+          "文脈で重みは入れ替わるが、獲得の原因の価値そのものが消去で 0 へ引かれているので、戻る量は E3 の基準（≥ 0.5）に届かない。")
     n_before = len(m.ledger.entries)
     for k in range(2):
         m.experience(_ev(f"e4f-h{k}", "cafe_chat", [], [{"type": "harm", "actor": "world", "magnitude": 0.8}], f"e4fh{k}"))
     rein = [e for e in m.ledger.entries[n_before:] if e["kind"] == "reinstate"]
-    print("\n  消去した文脈 cafe_chat で、手がかりなしの害が 2 回:")
+    print("\n  消去した文脈 cafe_chat で、手がかりなしの害が 2 回（復位: spec_literal は負の価値を持つ全ての原因の最後に使われた時刻を現在に更新する）:")
     for r in rein:
         print("   " + format_assignment(r))
-    ex_b2 = m.explain_response(X, "cafe_chat")
-    print(f"  応答（cafe_chat）: {ex_b['response']:+.4f} → {ex_b2['response']:+.4f}。獲得の原因の重み p: "
-          f"{pb[uid_acq]['p']:.3f} → {[c for c in ex_b2['causes'] if c['uid'] == uid_acq][0]['p']:.3f}（試行が加わり、文脈の項・時間の項が上がった）。C_k は復位の前後で同じ。")
+    print(f"  応答（cafe_chat）: {ex_b['response']:+.4f} → {m.explain_response(X, 'cafe_chat')['response']:+.4f}（時刻の更新だけでは、ほとんど戻らない: E6 の不合格）。")
+    # revised（実験設定）との比較
+    hr("4g. 実験設定 revised（局所 MAP。第 1 部の設計の改訂）との比較: 数値は合格しても、機構として戻ったのかを割当の記録で確かめる")
+    mr, c_acq_r = _build("revised")
+    rr = [r for r in mr.assignment_trace(X) if r["kind"] == "assignment"]
+    cr = {}
+    for r in rr[:12]:
+        cr[r["map_uid"]] = cr.get(r["map_uid"], 0) + 1
+    uid_r = max(cr, key=lambda u: cr[u])
+    sel = sum(1 for r in rr[12:] if r["map_uid"] == uid_r)
+    rows = []
+    for label, mm, c0 in (("spec_literal（既定）", m, c_acq_resp), ("revised（実験設定）", mr, c_acq_r)):
+        rows.append((label, {ctx: mm.explain_response(X, ctx)["response"] / c0 for ctx in ("cafe_chat", "studio", "garden")}))
+    for label, r in rows:
+        print(f"  {label:<22} 消去した B {r['cafe_chat']:+.2f}   元の A {r['studio']:+.2f}   未見の C {r['garden']:+.2f}")
+    print(f"  revised は消去の 20 試行で獲得の原因 #{uid_r} を一度も更新しない（MAP に選ばれた試行 {sel}）。消去は毎回、新しい原因に入る。")
+    print("  ただし revised は E1（嫌悪の維持）を破り（理由なく縮む）、1e-3 の摂動で選択が分岐し、条件づけ価値が行動に効かなくなった。それで既定から外した（CHANGELOG の M 節）。")
 
     # --- 5. 曖昧な出来事の解釈 ---
     hr("5. 曖昧な出来事の解釈は人格の信念で違い、その解釈のまま学ぶ（v3.1）")
@@ -369,8 +410,87 @@ def main() -> None:
         print(f"{LABEL[k]:<14}like={p['like']:+.3f}  Q={p['Q']:+.3f}  P(手柄を取る)={p['p_person']['credit_taken']:.2f}")
     print("  A 個人への評価は大きく動いても、未見の共同作業者への評価は、形成期の経験史の違いを残している。")
 
-    # --- 7. 保存 → 復元 → 継続 ---
-    hr("7. 保存 → 復元 → 継続（K）")
+    # --- 7. 訂正（v3.3 第 2 部 2: 価値の再帰属）---
+    YD = _yz_helpers()
+    hr("7. 訂正: 事実は直り、当時の記録は残り、価値は一部残り、その後の良い経験で薄れる（v3.3 第 2 部）")
+    print("履歴: 共同制作の会議 8 回で、手柄を取ったのは A だと受け止めた（実際は organizer）。A と organizer は同じ類（collaborator）。")
+    mis, ctrl = NPN(seed=0), NPN(seed=0)
+    YD.feed(mis, YD.history(True)); YD.feed(ctrl, YD.history(False))
+    snap = copy.deepcopy(mis)
+    first = YD.corrections()[0]
+    print("\n訂正の入力（8 回のうちの最初）:")
+    print("  " + json.dumps(first, ensure_ascii=False))
+    ap = mis.experience(copy.deepcopy(first))
+    from npnv3.cli import _summarize_correction
+    print("\n".join("  " + l for l in _summarize_correction(ap).split("\n")))
+    for c in YD.corrections()[1:]:
+        mis.experience(copy.deepcopy(c))
+    retro, nore = NPN(seed=0, retroactive_value=True), NPN(seed=0, no_reappraisal=True)
+    for q in (retro, nore):
+        YD.feed(q, YD.history(True)); YD.feed(q, YD.corrections())
+    print("\n  A への評価（A の人モデルの価値 like、信念 P(手柄を取る | A)、条件づけ C(ind:A)、曖昧な出来事の『取られた』の解釈の重み）:")
+    print(f"  {'':<34}{'like':>9}{'P(取る)':>9}{'C(ind:A)':>10}{'『取られた』':>12}")
+    for label, q in (("誤帰属のまま（訂正なし）", snap), ("8 回の訂正の後（既定）", mis), ("対照（最初から誤帰属なし）", ctrl),
+                     ("retroactive_value（自動消去の対照）", retro), ("no_reappraisal（価値を変えない）", nore)):
+        print(f"  {label:<30}{YD.like(q):>+9.3f}{YD.belief(q):>9.2f}{YD.cond(q):>+10.3f}{YD.taken(q):>12.2f}")
+    d_pre, d_post = YD.like(snap) - YD.like(ctrl), YD.like(mis) - YD.like(ctrl)
+    print(f"  → 事実（信念）は直った。価値は自動では消えない: 対照との差 {d_pre:+.3f} → {d_post:+.3f}（{d_post / d_pre:.0%} が残る）。"
+          "確信の高い古い価値ほど動きにくい（カルマン更新 R/(a_k w_reapp)）。retroactive_value は差をほぼ全部消す（最初から再生するため）。")
+    print(f"  条件づけ価値 C(ind:A) は訂正で動かない（{YD.cond(snap):+.3f} → {YD.cond(mis):+.3f}）: 感情的な痕跡は新しい随伴でしか変わらない。")
+    same = all(a == b for a, b in zip(snap.ledger.entries, mis.ledger.entries[:len(snap.ledger.entries)]))
+    print(f"  当時の記録（台帳の f・φ・Δu・感情）は訂正の前後で完全に同じ: {same}。台帳には訂正の記録（kind = correction）が 8 件増える。")
+    print("  ただし信念の P は、オンラインで学んだ対照の値ほどは戻らない（Y1 は不合格: 責任 φ が逐次の推定のまま。CHANGELOG の「v3.3 第2部」）。")
+    good = YD.good_with_A(10)
+    for q in (mis, ctrl):
+        YD.feed(q, good)
+    print(f"\n  訂正の後に A と良い経験を 10 回（対照にも同じ 10 回）: 対照との差 {d_post:+.3f} → {YD.like(mis) - YD.like(ctrl):+.3f}（{abs(YD.like(mis) - YD.like(ctrl)) / abs(d_post):.0%} が残る）。残った差は新しい経験で薄れる。")
+    m2, k2 = copy.deepcopy(snap), copy.deepcopy(ctrl)
+    u = YD.unrelated(8)
+    YD.feed(m2, u); YD.feed(k2, u)
+    print(f"  訂正を与えず、A と無関係な経験を 8 回: 対照との差 {d_pre:+.3f} → {YD.like(m2) - YD.like(k2):+.3f}。誤解は誤解のまま残る（研究思想 §7: 誤解が解かれないこともある）。")
+
+    # --- 8. 選択の正当化（v3.3 第 2 部 3）---
+    hr("8. 迷った選択でだけ正当化 J が生じ、有界で、経験の裏付けがなければ減衰し、反する経験に負ける（v3.3 第 2 部）")
+    n = YD.warm()
+    print("人格: 友人 ally（connection・support）と敵 foe（harm・betrayal）の経験を 6 回ずつ。二択は softmax(β Q) で選び、選んだ側の結果だけを観測して学ぶ。")
+    r = n.experience(YD.easy_choice(0))
+    c = r["choice"]
+    print(f"\n  易しい選択（ally か foe か）: ΔQ={c['dQ']:+.3f} → 葛藤の強さ c = exp(−(ΔQ/0.1)²) = {c['conflict']:.1e}。J の動き {max(abs(v) for v in c['dJ'].values()):.1e}（ほぼ 0）。")
+    print("  迷う選択（同じ二択を繰り返す。どちらも新しい概念で、信念が同じなので ΔQ = 0）:")
+    for i in range(6):
+        r = n.experience(YD.hesitant("dm%d" % i, "novel_a", "novel_b"))
+        c = r["choice"]
+        print(f"    {i + 1} 回目: ΔQ={c['dQ']:+.3f}  c={c['conflict']:.2f}  選んだ側 {'novel_' + 'ab'[c['chosen']]}  J(novel_a)={n.just.get('concept:novel_a', 0.0):+.3f}  J(novel_b)={n.just.get('concept:novel_b', 0.0):+.3f}")
+    print("  選んだものを好きになり、選ばなかったものを嫌う。J が選択肢を引き離すほど ΔQ が大きくなり c が小さくなるので、更新は自分で弱まる（自己制限）。")
+    pa = n.probe({"context": "studio", "concepts": ["novel_a"]}); pb = n.probe({"context": "studio", "concepts": ["novel_b"]})
+    print(f"  予期 Q: novel_a {pa['Q']:+.3f}（J_Q {pa['J_Q']:+.3f}）、novel_b {pb['Q']:+.3f}（J_Q {pb['J_Q']:+.3f}）。経験に根拠のある部分 Q_val は同じ {pa['Q_val']:+.3f} / {pb['Q_val']:+.3f}。")
+    print("\n  J で好むようになった選択肢に、反する結果（害）を与える。Q の差 = 好む側 − 他方（負になれば選好が反転）。種ごとに J の大きさが違う（迷った選択の順序と乱数）:")
+    rows = [YD.z4(s) for s in range(20)]
+    for s_ in (0, 1, 3):
+        r_ = rows[s_]
+        print(f"    種 {s_}: 好む側への J {r_['J_pref']:+.3f}、最初の Q の差 {r_['gap_before']:+.3f} → 害の後 " + " ".join(f"{g:+.3f}" for g in r_["gaps"][:6])
+              + ("  （反転: 害 %d 回目）" % r_["reversed_at"] if r_["reversed_at"] else "  （10 回でも反転しない）"))
+    ra = [r_["reversed_at"] for r_ in rows]
+    print(f"    20 種: 5 回以内に反転 {sum(1 for x in ra if x is not None and x <= 5)} 種、6〜10 回で反転 {sum(1 for x in ra if x is not None and x > 5)} 種、10 回でも反転しない {sum(1 for x in ra if x is None)} 種"
+          "（Z4 の基準は全種で 5 回以内。不合格。害は文脈・世界の特徴にも分配されるので、概念だけの二択では好む側と他方の差にあまり効かない。CHANGELOG の「v3.3 第2部」）")
+    z = copy.deepcopy(YD.warm())
+    for i in range(6):
+        z.experience(YD.hesitant("dz%d" % i, "novel_c", "novel_d"))
+    j0 = abs(z.just["concept:novel_c"]) + abs(z.just["concept:novel_d"])
+    for e in YD.unrelated(100, tag="decay"):
+        z.experience(e)
+    j1 = abs(z.just["concept:novel_c"]) + abs(z.just["concept:novel_d"])
+    print(f"\n  迷った選択で J を作った後、その選択肢が現れない経験を 100 回: |J| の和 {j0:.3f} → {j1:.3f}（{j1 / j0:.0%} が残る。毎経験 2% の減衰）。")
+    f1, f2 = YD.warm(), YD.warm()
+    f1.just = {"concept:music": 0.15, "cls:collaborator": -0.1}
+    for e in YD.forced_R():
+        f1.experience(copy.deepcopy(e)); f2.experience(copy.deepcopy(e))
+    same = bool(np.array_equal(f1.value.person.W, f2.value.person.W) and np.array_equal(f1.value.sit.W, f2.value.sit.W) and np.array_equal(f1.cond.CK, f2.cond.CK))
+    print(f"  J を入れ替えて同じ強制の経験列を与えても、W と C の学習はビット単位で同じ: {same}（J は経験の教師にならない。予期 Q と、そこから出る f にだけ入る）。")
+    print("  主体性の重み: 同じ結果の経験を『自分で選んだ（optional を受けた）』場合は、強制された場合より a が速く動く（η_a (1 + κ_ag chosen)、κ_ag = 1）。効用の変化がなければ a は動かない。")
+
+    # --- 9. 保存 → 復元 → 継続 ---
+    hr("9. 保存 → 復元 → 継続（K）")
     follow = copy.deepcopy(new)
     follow["id"] = "new-song-with-friendA-2"
     follow["outcomes"] = [{"type": "connection", "actor": "friendA", "magnitude": 1.0},

@@ -106,9 +106,11 @@ class KalmanModel:
         z = np.array([v for _, _, v in feats if v != 0.0])
         return ii, z
 
-    def update(self, feats: Sequence[Feat], teacher: np.ndarray, a: Optional[np.ndarray] = None) -> Dict[str, Any]:
+    def update(self, feats: Sequence[Feat], teacher: np.ndarray, a: Optional[np.ndarray] = None,
+               shift: Optional[np.ndarray] = None) -> Dict[str, Any]:
         """1 観測のカルマン更新（欲求ごと）。K_k = Σ_k z / (zᵀΣ_k z + R/a_k)、W_k += K_k (Δu_k − zᵀW_k)、
-        Σ_k ← Σ_k − K_k zᵀΣ_k、続いて関与した対角に q。K は全特徴に対して密（共分散を通じて関与しない特徴も動く）。"""
+        Σ_k ← Σ_k − K_k zᵀΣ_k、続いて関与した対角に q。K は全特徴に対して密（共分散を通じて関与しない特徴も動く）。
+        shift（v3.3 第2部の再評価）: 観測を「現在の予測 + shift」とする（誤差 = shift そのもの。teacher は使わない）。"""
         ii, z = self._prepare(feats)
         prec = np.ones(N_NEEDS) if a is None else np.maximum(np.asarray(a, dtype=np.float64), A_FLOOR)
         Sz = np.einsum("kij,j->ki", self.S[:, :, ii], z)       # Σ_k z（欲求 k、全特徴）
@@ -116,7 +118,7 @@ class KalmanModel:
         den = zSz + self.R / prec
         K = Sz / den[:, None]                                    # (5, n)
         pred = z @ self.W[ii]
-        err = np.asarray(teacher, dtype=np.float64) - pred
+        err = (np.asarray(teacher, dtype=np.float64) - pred) if shift is None else np.asarray(shift, dtype=np.float64)
         dW = (K * err[:, None]).T                                # (n, 5)
         self.W = self.W + dW
         S2 = self.S - K[:, :, None] * Sz[:, None, :]            # Σ_k − K_k zᵀ Σ_k
@@ -264,6 +266,18 @@ class ValueNet:
         return {"dW_person": dW_person, "dW_situation": self.sit.dW_dict(rs["dW"]),
                 "err_person": err_person, "err_situation": rs["err"]}
 
+    def reappraise(self, participants: Sequence[Dict[str, str]], shifts: Sequence[np.ndarray], prec: np.ndarray) -> Dict[str, Any]:
+        """再評価（v3.3 第2部 2.3 手順 3）。参加者 e ごとに、人モデルの e の特徴について、観測を「現在の予測 + Δ_e」とするカルマン更新を 1 回。
+        観測雑音は R / prec_k（呼び出し側が prec = a w_reapp を渡す）。確信の高い（分散の小さい）価値ほど動きにくい。状況モデルには触れない。Δ_e = 0 の参加者は更新しない。"""
+        dW_person: Dict[str, np.ndarray] = {}
+        for p, d in zip(participants, shifts):
+            if not np.any(np.abs(d) > 1e-12):
+                continue
+            r = self.person.update(self.person_feats(p["id"], p["class"]), np.zeros(N_NEEDS), prec, shift=d)
+            for name, row in self.person.dW_dict(r["dW"]).items():
+                dW_person[name] = dW_person[name] + row if name in dW_person else row
+        return {"dW_person": dW_person}
+
     def get_state(self) -> Tuple[Dict[str, Any], Dict[str, np.ndarray]]:
         m1, a1 = self.person.get_state("v_person_")
         m2, a2 = self.sit.get_state("v_sit_")
@@ -354,8 +368,9 @@ class Concern:
         self.run = 0.0        # mean_k |Δu_k| の移動平均
         self.n = 0
 
-    def update(self, du: np.ndarray) -> np.ndarray:
-        """a を更新して、更新前の a を返す。効用変化が全欲求で 0 の経験（何も起きない）では更新しない。"""
+    def update(self, du: np.ndarray, chosen: bool = False) -> np.ndarray:
+        """a を更新して、更新前の a を返す。効用変化が全欲求で 0 の経験（何も起きない）では更新しない。
+        v3.3 第2部 3.4（主体性の重み）: 更新の速さは η_a (1 + κ_ag · chosen)。chosen = 自分で選んだ経験（optional を受けた、または二択で選んだ）。目標は |Δu| のまま。"""
         before = self.a.copy()
         if self.cfg.no_concern:
             return before
@@ -371,7 +386,7 @@ class Concern:
             target = np.clip(run / np.maximum(mag, run / cfg.habituate_floor), 0.0, float(N_NEEDS))
         else:
             target = np.clip(mag / run, 0.0, float(N_NEEDS))
-        a = self.a + cfg.eta_a * (target - self.a)
+        a = self.a + cfg.eta_a * (1.0 + cfg.kappa_ag * (1.0 if chosen else 0.0)) * (target - self.a)
         self.a = N_NEEDS * a / a.sum()
         return before
 
@@ -405,7 +420,8 @@ class Conditioning:
       事後         事前 × N(y_x; C_{x,k}, σ_r²)。y_x は他の手がかりの応答を引いた、この手がかりが説明すべき目標（手がかりが 1 つなら TD の目標 y そのもの）
     事前の重み w_k と、学習・復位の規則は、設計 lc_design で二通りある。
 
-    ◆ lc_design = "revised"（既定。v3.3 第 1 部の設計の改訂。オーケストレーター承認、結果を見た後。固定した値: d = 1、α = 0.5、β_first = 5、β_later = 0.2、σ_r = 0.15、K = 5）
+    ◆ lc_design = "revised"（実験設定。v3.3 第 1 部の設計の改訂。オーケストレーター承認、結果を見た後。第 2 部で既定から外した: 嫌悪の維持 E1 が崩れ、1e-3 の摂動で選択が分岐し、
+      条件づけの価値が行動に効かなくなったため。固定した値: d = 1、α = 0.5、β_first = 5、β_later = 0.2、σ_r = 0.15、K = 5）
       原因 k は、割り当てられた試行 i の履歴（時刻 t_i と文脈）を持つ。
       事前    w_k = Σ_{i∈k} (t − t_i + 1)^(−d) · Dir予測(文脈 | n_{x,k}, β_k)
               Dir予測 = (n_{x,k}(c) + β_k)/(N_k + β_k S)（N_k = Σ_c n_{x,k}(c)、S = 手がかり x が見た文脈の数 ＋ （c が新しければ 1））。
@@ -418,7 +434,7 @@ class Conditioning:
               全ての（手がかり, 原因）について尤度 N(r; C_{x,k}, σ_r²) を求め、「どの原因でもない」（価値 0 の尤度 N(r; 0, σ_r²)）より大きい中で最大のもの 1 つに、
               (t, 文脈) の試行として加える（価値は更新しない）。尤度が同じなら事前の重みが大きい方。事前の重みを選択に使わないのは、価値 0 の消去の原因（質量が大きい）が
               嫌悪の結果を吸収して、嫌悪の原因に帰属されなくなるのを避けるため（実装前の解析による判断。事前も掛けた版は試していない）。
-    ◆ lc_design = "spec_literal"（SPEC-v3.3 4.2 のとおり。改訂前の実装。K > 1 のときの対照・再現用）
+    ◆ lc_design = "spec_literal"（**既定**。SPEC-v3.3 4.2 のとおり。第 1 部の改訂前の実装。第 2 部で割当の記録（柔らかい事後・更新に使った重み・各原因の ΔC・復位で更新した原因）を足した）
       事前    w_k = N_k · Dir予測(文脈 | n_{x,k}, β = lc_beta) · exp(−(t − t_k)/τ)（t_k = 最後に使われた時刻）
       学習    ΔC_{x,k} = (α_C / 手がかりの数) · 事後_k · (y_x − C_{x,k})（事後に比例した柔らかい更新）、n_{x,k}(c) += 事後_k、t_k は事後が最大の原因だけ更新。
               新しい原因の事後が最大なら作る（満員なら N_k exp(−(t−t_k)/τ) が最小の原因を再利用）。
@@ -647,6 +663,7 @@ class Conditioning:
 
     def _update_latent(self, cues: List[str], ii: np.ndarray, y: float, ctx: Optional[str],
                        t: float) -> Tuple[Dict[str, float], Dict[str, Any]]:
+        """spec_literal（SPEC-v3.3 4.2 のとおり）: 柔らかい事後に比例した更新。割当の記録（trace）には、事前の内訳・柔らかい事後・更新に使った重み・各原因の ΔC を残す。"""
         cfg = self.cfg
         n = len(cues)
         K = self.K
@@ -657,6 +674,7 @@ class Conditioning:
         resp = ((w / total[:, None]) * self.CK[ii]).sum(axis=1)  # 応答 C(x)
         y_x = y - (resp.sum() - resp)                            # 手がかりごとの、説明すべき目標（他の手がかりの応答を引く）
         sig = cfg.lc_sigma_r
+        parts = self._prior_parts(ii, ctx, t) if self.trace else None
         detail: Dict[str, Any] = {}
         for a, c in enumerate(cues):
             i = int(ii[a])
@@ -671,8 +689,12 @@ class Conditioning:
             pa = np.exp(la - m); pn = float(np.exp(ln - m))
             z = float(pa.sum()) + pn
             post = pa / z; post_new = pn / z
+            post_raw = post.copy()
+            uid_before = self.UID[i].copy()
+            c_before = self.CK[i].copy()
             created: Optional[int] = None
             reused = False
+            replaced_uid = -1
             if post_new > float(post.max()):                      # 新しい原因の事後が最大 → 作る
                 free = np.nonzero(~alive)[0]
                 if free.size > 0:
@@ -681,10 +703,13 @@ class Conditioning:
                     N_k = self.CNT[i].sum(axis=1)
                     score = N_k * self._recency(np.maximum(t - self.TK[i], 0.0))
                     created = int(np.argmin(score)); reused = True
+                    replaced_uid = int(self.UID[i, created])
                 self.CK[i, created] = 0.0
                 self.CNT[i, created, :] = 0.0
                 self.AL[i, created] = 1.0
                 self.TK[i, created] = t
+                self.UID[i, created] = self.next_uid               # 原因の通し番号（割当の記録で追う。数値には影響しない）
+                self.next_uid += 1
                 post = post.copy()
                 post[created] = post_new                           # 再利用なら古い原因の事後を、新しい原因のものに置き換える
                 post = post / post.sum()
@@ -696,6 +721,21 @@ class Conditioning:
             self.TK[i, kmap] = t
             detail[c] = {"post": [float(x) for x in post], "post_new": float(post_new), "map": kmap, "created": created,
                          "reused": reused, "resp_before": float(resp[a]), "y_x": float(y_x[a])}
+            if parts is not None:
+                # 割当の記録（台帳用）。柔らかい事後（post_raw = 新しい原因を置く前、post_used = 更新に使った重み）と、各原因の ΔC を残す。
+                tt, cc, nn = parts[0][a], parts[1][a], parts[2][a]
+                detail[c]["trace"] = {
+                    "design": "spec_literal",
+                    "uid_before": [int(x) for x in uid_before], "map_uid": int(self.UID[i, kmap]), "replaced_uid": replaced_uid,
+                    "alpha": float(cfg.lc_alpha), "time_term": [float(x) for x in tt], "context_term": [float(x) for x in cc],
+                    "count_term": [float(x) for x in nn], "weight": [float(x) for x in w[a]],
+                    "p_prior": [float(x) for x in (w[a] / total[a])], "p_prior_new": float(cfg.lc_alpha / total[a]),
+                    "likelihood": [float(np.exp(-0.5 * ((y_x[a] - c_before[q]) / sig) ** 2)) if alive[q] else 0.0 for q in range(K)],
+                    "likelihood_new": float(np.exp(-0.5 * (y_x[a] / sig) ** 2)),
+                    "post_raw": [float(x) for x in post_raw], "post_used": [float(x) for x in post],
+                    "C_before": [float(x) for x in c_before], "C_after": [float(x) for x in self.CK[i]],
+                    "dC_k": [float(x) for x in (self.CK[i] - np.where(np.arange(K) == (-1 if created is None else created), 0.0, c_before))],
+                    "soft_counts_after": [float(x) for x in self.CNT[i].sum(axis=1)]}
         dC: Dict[str, float] = {}
         for a, c in enumerate(cues):
             dck = self.CK[ii[a]] - before[a]
@@ -763,13 +803,16 @@ class Conditioning:
                 # 割当の記録（台帳用）: 事前とその内訳（時間・文脈・計数・新しい原因 α）、事後、MAP、学習前後の C_k
                 tt, cc, nn = parts[0][a], parts[1][a], parts[2][a]
                 detail[c]["trace"] = {
+                    "design": "revised",
                     "uid_before": [int(x) for x in uid_before], "map_uid": int(self.UID[i, k]), "replaced_uid": replaced_uid,
                     "alpha": float(cfg.lc_alpha), "time_term": [float(x) for x in tt], "context_term": [float(x) for x in cc],
                     "count_term": [float(x) for x in nn], "weight": [float(x) for x in w[a]],
                     "p_prior": [float(x) for x in (w[a] / total[a])], "p_prior_new": float(cfg.lc_alpha / total[a]),
                     "likelihood": [float(np.exp(-0.5 * ((y_x[a] - c_before[q]) / sig) ** 2)) if alive[q] else 0.0 for q in range(self.K)],
                     "likelihood_new": float(np.exp(-0.5 * (y_x[a] / sig) ** 2)),
+                    "post_raw": [float(x) for x in post], "post_used": [float(1.0 if q == k else 0.0) for q in range(self.K)],
                     "C_before": [float(x) for x in c_before], "C_after": [float(x) for x in self.CK[i]],
+                    "dC_k": [float(x) for x in (self.CK[i] - np.where(np.arange(self.K) == (k if created is not None else -1), 0.0, c_before))],
                     "n_trials_after": [int((self.hist_k[i][:self.hist_n[i]] == q).sum()) for q in range(self.K)]}
         dC: Dict[str, float] = {}
         for a, c in enumerate(cues):
@@ -785,6 +828,7 @@ class Conditioning:
         revised（r = その事象の Σ a_k Δu_k を渡したとき）: その結果がどの原因から来たかを、価値が予測する嫌悪の大きさの尤度 N(r; C_{x,k}, σ_r²) で推論し、
         「どの原因でもない」（N(r; 0, σ_r²)）より大きい中で最大の 1 つに (t, 文脈) の試行を加える（価値は更新しない）。
         spec_literal: 負の価値（C < −lc_neg_threshold）を持つ全ての原因の最後に使われた時刻を現在に更新する。"""
+        self.last_reinstate = {}
         if self.K == 1 or self.CK.shape[0] == 0:
             return []
         if not (self.revised and r is not None):
@@ -794,6 +838,11 @@ class Conditioning:
                 if i is not None:
                     mask[i, :] = False
             rows, cols = np.nonzero(mask)
+            if self.trace and not self.revised:
+                # 割当の記録（spec_literal）: 時刻を更新した（手がかり, 原因）と、更新前の最後に使われた時刻。価値は動かさない
+                self.last_reinstate = {"design": "spec_literal", "r": None if r is None else float(r), "context": ctx, "t": float(t), "chosen": None,
+                                       "refreshed": [{"cue": self.names[int(r_)], "k": int(k), "uid": int(self.UID[int(r_), int(k)]), "C": float(self.CK[int(r_), int(k)]),
+                                                      "t_before": float(self.TK[int(r_), int(k)]), "t_after": float(t)} for r_, k in zip(rows, cols)]}
             self.TK[mask] = t
             return [(self.names[int(r_)], int(k)) for r_, k in zip(rows, cols)]
         sig = self.cfg.lc_sigma_r
@@ -821,7 +870,7 @@ class Conditioning:
                     continue
                 top.append({"cue": self.names[int(ri)], "k": int(ci), "uid": int(self.UID[ri, ci]), "C": float(self.CK[ri, ci]),
                             "loglik": float(score[ri, ci]), "posterior": float(np.exp(score[ri, ci] - m) / z)})
-            self.last_reinstate = {"r": float(r), "context": ctx, "t": float(t), "null_loglik": float(null), "null_posterior": float(np.exp(null - m) / z),
+            self.last_reinstate = {"design": "revised", "r": float(r), "context": ctx, "t": float(t), "null_loglik": float(null), "null_posterior": float(np.exp(null - m) / z),
                                    "n_candidates": int(cand.sum()), "top": top, "chosen": None}
         if not best > null:
             return []

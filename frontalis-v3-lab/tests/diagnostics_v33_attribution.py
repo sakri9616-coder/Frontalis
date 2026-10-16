@@ -21,8 +21,9 @@ from npnv3 import innate  # noqa: E402
 
 V32 = {"T4_plasticity": {"default": [1.045, 1.008], "head_none": [0.699, 0.644]},
        "U3_rank_agreement": {"default": 0.90, "head_none": 0.85}}
-# default = 既定（lc_design = "revised"。設計の改訂後）。spec_literal = SPEC-v3.3 4.2 のとおりの条件づけ（改訂前の既定。CHANGELOG の B.2 の数値はこの行）
-CONFIGS = {"default": {}, "spec_literal": {"lc_design": "spec_literal"}, "single_cause": {"single_cause": True}, "head_none": {"head_kind": "none"},
+# default = 既定（v3.3 第 2 部で spec_literal に戻した）。spec_literal = SPEC-v3.3 4.2 のとおりの条件づけ（第 1 部の改訂前の既定。CHANGELOG の B.2 の数値はこの行）。
+# revised = 第 1 部の設計の改訂（実験設定）。
+CONFIGS = {"default": {}, "spec_literal": {"lc_design": "spec_literal"}, "revised": {"lc_design": "revised"}, "single_cause": {"single_cause": True}, "head_none": {"head_kind": "none"},
            "head_none+single_cause": {"head_kind": "none", "single_cause": True}}
 NEW = load_json("new_event.json")
 COLLAB = {"entity": "u7_new_collab", "class": "collaborator", "context": "music_session"}

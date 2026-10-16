@@ -1,0 +1,17 @@
+{
+ "mean": {
+  "formative_Q": 0.008632232232698638,
+  "placebo_Q_mean": 0.004456944416027146,
+  "formative_like": 0.003644799411157404,
+  "placebo_like_mean": 0.0003344872781226166,
+  "formative_p_credit": 0.055585296715032095,
+  "placebo_p_credit_mean": 0.03927666526698437
+ },
+ "seeds_formative_larger": {
+  "Q": 13,
+  "like": 20,
+  "p_credit": 20
+ },
+ "n_seeds": 20,
+ "rest_events": 0
+}

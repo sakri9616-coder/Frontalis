@@ -181,6 +181,14 @@ class BeliefNet:
         self.rec_y = np.zeros((0, K))
         self.rec_m = np.zeros((0, K))
         self.rec_phi = np.zeros((0, K))
+        self.rec_exp = np.zeros(0, dtype=np.int64)          # v3.3 第2部: 記録の行が属する経験の通し番号（学習した経験の順。訂正が参照先の観測を見つける）
+        self.rec_ser = np.zeros(0, dtype=np.int64)          # 同: 観測の通し番号（n_obs。リプレイ緩衝の行を見つける）
+        self.rb_ser = np.full(cfg.replay_size, -1, dtype=np.int64)    # リプレイ緩衝の各行の観測の通し番号
+        self.sw_n = 0                                       # 自分・世界が起こす結果の観測の記録（経験ごとに 1 行。訂正で取り消す）
+        self.sw_exp = np.zeros(0, dtype=np.int64)
+        self.sw_ctx = np.zeros(0, dtype=np.int64)
+        self.sw_y = np.zeros((0, K))
+        self.sw_m = np.zeros((0, K))
         self._kcache: Dict[str, Any] = {}          # κ_e の記憶（純粋な関数の記憶。状態ではない）
         self._agg_cache: Optional[Dict[str, Tuple[np.ndarray, np.ndarray, np.ndarray]]] = None   # 類の集計の記憶（同上。計数が変わるたびに捨てる）
         self._grid = np.exp(np.linspace(np.log(cfg.kappa_grid_lo), np.log(cfg.kappa_grid_hi), cfg.kappa_grid_n))
@@ -567,10 +575,11 @@ class BeliefNet:
     # ------------------------------------------------------------------ 更新
     def update(self, ctx: str, participants: List[Dict[str, str]], y_person: np.ndarray, y_mask: np.ndarray,
                y_sw: np.ndarray, sw_mask: np.ndarray, phi: np.ndarray, outcomes: List[Dict[str, Any]],
-               rng: np.random.Generator) -> Dict[str, Any]:
+               rng: np.random.Generator, exp_serial: int = -1) -> Dict[str, Any]:
         """計数 → π → 型の大きさ → リプレイ緩衝・類ごとの生の計数 → （周期ごとに）類を除いたヘッドの学び直し。
         y_mask = 0 のセル（曖昧な結果の型）は観測なしとして、計数にも π にもヘッドの学習にも入れない。"""
         cfg = self.cfg
+        n_obs0 = self.n_obs                                            # この経験の観測の通し番号は n_obs0 + j（参加者 j）
         self._update_head_ll(ctx, participants, y_person, y_mask)      # 前向き評価: 更新の前の状態で
         self._agg_cache = None
         ci = self.ctx_idx.get(ctx)
@@ -582,7 +591,7 @@ class BeliefNet:
                 i = self._add_individual(p["id"], p["class"])
             m = y_mask[j]
             if not (cfg.no_scope or cfg.no_reattribution):
-                self._rec_append(i, ci, y_person[j], m, phi[j])
+                self._rec_append(i, ci, y_person[j], m, phi[j], exp_serial, n_obs0 + j)
             self.N1[i] += m * phi[j] * y_person[j]
             self.N0[i] += m * phi[j] * (1.0 - y_person[j])
             self.CP1[ci] += m * (1.0 - phi[j]) * y_person[j]
@@ -593,6 +602,7 @@ class BeliefNet:
             self._kcache.pop(p["class"], None)
         self.CS1[ci] += sw_mask * y_sw
         self.CS0[ci] += sw_mask * (1.0 - y_sw)
+        self._sw_append(exp_serial, ci, y_sw, sw_mask)
         for o in outcomes:                       # 型の大きさ: 明確な結果だけ
             if "type" not in o:
                 continue
@@ -610,6 +620,7 @@ class BeliefNet:
             self.rb_m[self.rb_ptr] = y_mask[j]
             self.rb_cls[self.rb_ptr] = rc
             self.rb_ctxi[self.rb_ptr] = ci
+            self.rb_ser[self.rb_ptr] = self.n_obs
             self.rb_ptr = (self.rb_ptr + 1) % cfg.replay_size
             self.rb_len = min(self.rb_len + 1, cfg.replay_size)
             self.n_obs += 1
@@ -625,18 +636,85 @@ class BeliefNet:
         return {"head_loss": None, "recall": recall, "retrained": retrained}
 
     # ------------------------------------------------------------------ 想起・再帰属（設計の改訂 2）
-    def _rec_append(self, i: int, c: int, y: np.ndarray, m: np.ndarray, phi: np.ndarray) -> None:
+    def _rec_append(self, i: int, c: int, y: np.ndarray, m: np.ndarray, phi: np.ndarray, exp_serial: int = -1, ser: int = -1) -> None:
         n = self.rec_n
         if n == self.rec_ind.shape[0]:
             cap = max(64, 2 * n)
             K = N_TYPES
             self.rec_ind = np.concatenate([self.rec_ind, np.zeros(cap - n, dtype=np.int64)])
             self.rec_ctx = np.concatenate([self.rec_ctx, np.zeros(cap - n, dtype=np.int64)])
+            self.rec_exp = np.concatenate([self.rec_exp, np.zeros(cap - n, dtype=np.int64)])
+            self.rec_ser = np.concatenate([self.rec_ser, np.zeros(cap - n, dtype=np.int64)])
             for name in ("rec_y", "rec_m", "rec_phi"):
                 setattr(self, name, np.vstack([getattr(self, name), np.zeros((cap - n, K))]))
         self.rec_ind[n], self.rec_ctx[n] = i, c
+        self.rec_exp[n], self.rec_ser[n] = exp_serial, ser
         self.rec_y[n], self.rec_m[n], self.rec_phi[n] = y, m, phi
         self.rec_n = n + 1
+
+    def _sw_append(self, exp_serial: int, c: int, y: np.ndarray, m: np.ndarray) -> None:
+        n = self.sw_n
+        if n == self.sw_exp.shape[0]:
+            cap = max(64, 2 * n)
+            self.sw_exp = np.concatenate([self.sw_exp, np.zeros(cap - n, dtype=np.int64)])
+            self.sw_ctx = np.concatenate([self.sw_ctx, np.zeros(cap - n, dtype=np.int64)])
+            for name in ("sw_y", "sw_m"):
+                setattr(self, name, np.vstack([getattr(self, name), np.zeros((cap - n, N_TYPES))]))
+        self.sw_exp[n], self.sw_ctx[n] = exp_serial, c
+        self.sw_y[n], self.sw_m[n] = y, m
+        self.sw_n = n + 1
+
+    # ------------------------------------------------------------------ 訂正（v3.3 第2部 2.3 手順 1）: 参照先の経験の観測を取り消し、訂正後の観測を加える
+    def can_correct(self) -> bool:
+        """訂正は、観測の記録（想起の記録）を使う。スコープ帰属なし・想起なしの設定では記録がない。"""
+        return not (self.cfg.no_scope or self.cfg.no_reattribution)
+
+    def withdraw_experience(self, serial: int) -> Dict[str, Any]:
+        """経験 serial の観測（参加者が行為者の観測、自分・世界が起こす結果の観測、類ごとの生の計数）を取り消す。
+        取り消した行の古い値を返す（install_experience に渡す）。信念は「その経験がなかった」状態になる（計数は記録から作り直す）。"""
+        R = self.rec_n
+        rows = np.nonzero(self.rec_exp[:R] == serial)[0]
+        old = {"rows": rows, "ind": self.rec_ind[rows].copy(), "y": self.rec_y[rows].copy(), "m": self.rec_m[rows].copy(), "phi": self.rec_phi[rows].copy()}
+        for r in range(rows.size):
+            rc = self._raw_class(self.ind_cls[int(old["ind"][r])])
+            self.raw_n1[rc] -= old["m"][r] * old["y"][r]
+            self.raw_n0[rc] -= old["m"][r] * (1.0 - old["y"][r])
+        sw = np.nonzero(self.sw_exp[: self.sw_n] == serial)[0]
+        old["sw_rows"] = sw
+        old["sw_y"], old["sw_m"], old["sw_ctx"] = self.sw_y[sw].copy(), self.sw_m[sw].copy(), self.sw_ctx[sw].copy()
+        for q in range(sw.size):
+            ci = int(old["sw_ctx"][q])
+            self.CS1[ci] -= old["sw_m"][q] * old["sw_y"][q]
+            self.CS0[ci] -= old["sw_m"][q] * (1.0 - old["sw_y"][q])
+        self.sw_m[sw] = 0.0
+        self.rec_m[rows] = 0.0
+        self._rebuild_counts()
+        return old
+
+    def install_experience(self, old: Dict[str, Any], y_person: np.ndarray, y_mask: np.ndarray, phi: np.ndarray,
+                           y_sw: np.ndarray, sw_mask: np.ndarray) -> None:
+        """withdraw_experience で取り消した行に、訂正後の観測 y・マスク・責任 φ を入れる（記録・生の計数・リプレイ緩衝・計数）。
+        φ は、取り消した後の信念で呼び出し側が求める。mag（型ごとの大きさの移動平均）は取り消せないので触れない。"""
+        rows = old["rows"]
+        for r in range(rows.size):
+            row = int(rows[r])
+            self.rec_y[row], self.rec_m[row], self.rec_phi[row] = y_person[r], y_mask[r], phi[r]
+            rc = self._raw_class(self.ind_cls[int(old["ind"][r])])
+            self.raw_n1[rc] += y_mask[r] * y_person[r]
+            self.raw_n0[rc] += y_mask[r] * (1.0 - y_person[r])
+            slot = np.nonzero(self.rb_ser == self.rec_ser[row])[0]
+            if slot.size:
+                self.rb_y[slot[0]] = y_person[r]
+                self.rb_m[slot[0]] = y_mask[r]
+        for q in range(old["sw_rows"].size):
+            row = int(old["sw_rows"][q])
+            ci = int(old["sw_ctx"][q])
+            self.sw_y[row], self.sw_m[row] = y_sw, sw_mask
+            self.CS1[ci] += sw_mask * y_sw
+            self.CS0[ci] += sw_mask * (1.0 - y_sw)
+        self._rebuild_counts()
+        if self.trained_names():
+            self.retrain_heads()          # 以後の予測は訂正後の信念（リプレイ緩衝・生の計数を直したので、類を除いたモデルを学び直す）
 
     def _rebuild_counts(self) -> None:
         """計数と π を、記録（観測 y・マスク・φ）から作り直す。引いて足す更新の浮動小数点の誤差を残さない。"""
@@ -733,7 +811,7 @@ class BeliefNet:
         meta = {"ind_ids": list(self.ind_ids), "ind_cls": list(self.ind_cls), "ctx_names": list(self.ctx_names),
                 "n_obs": int(self.n_obs), "rb_len": int(self.rb_len), "rb_ptr": int(self.rb_ptr),
                 "head_kind": self.cfg.head_kind, "exp_count": int(self.exp_count), "rec_n": int(self.rec_n),
-                "ll_cnt": int(self.ll_cnt), "rawcls": list(self.rawcls),
+                "ll_cnt": int(self.ll_cnt), "rawcls": list(self.rawcls), "sw_n": int(self.sw_n),
                 "loo_n": {nm: len(ms) for nm, ms in self.loo.items()}}
         arrays = {"b_N1": self.N1, "b_N0": self.N0, "b_CP1": self.CP1, "b_CP0": self.CP0, "b_CS1": self.CS1,
                   "b_CS0": self.CS0, "b_pi": self.pi, "b_mag": self.mag, "b_mag_n": self.mag_n,
@@ -741,6 +819,9 @@ class BeliefNet:
                   "b_rec_ind": self.rec_ind[: self.rec_n], "b_rec_ctx": self.rec_ctx[: self.rec_n],
                   "b_rec_y": self.rec_y[: self.rec_n], "b_rec_m": self.rec_m[: self.rec_n],
                   "b_rec_phi": self.rec_phi[: self.rec_n], "b_ll_ema": self.ll_ema,
+                  "b_rec_exp": self.rec_exp[: self.rec_n], "b_rec_ser": self.rec_ser[: self.rec_n], "b_rb_ser": self.rb_ser,
+                  "b_sw_exp": self.sw_exp[: self.sw_n], "b_sw_ctx": self.sw_ctx[: self.sw_n],
+                  "b_sw_y": self.sw_y[: self.sw_n], "b_sw_m": self.sw_m[: self.sw_n],
                   "b_rb_cls": self.rb_cls, "b_rb_ctxi": self.rb_ctxi, "b_raw_n1": self.raw_n1, "b_raw_n0": self.raw_n0}
         for nm, hd in self.heads.items():
             arrays.update(hd.get_arrays(f"b_head_{nm}_"))
@@ -762,6 +843,11 @@ class BeliefNet:
         self.exp_count = int(meta["exp_count"]); self.rec_n = int(meta["rec_n"])
         self.rec_ind = np.array(arrays["b_rec_ind"], dtype=np.int64); self.rec_ctx = np.array(arrays["b_rec_ctx"], dtype=np.int64)
         self.rec_y, self.rec_m, self.rec_phi = g("b_rec_y"), g("b_rec_m"), g("b_rec_phi")
+        self.rec_exp = np.array(arrays["b_rec_exp"], dtype=np.int64); self.rec_ser = np.array(arrays["b_rec_ser"], dtype=np.int64)
+        self.rb_ser = np.array(arrays["b_rb_ser"], dtype=np.int64)
+        self.sw_n = int(meta["sw_n"])
+        self.sw_exp = np.array(arrays["b_sw_exp"], dtype=np.int64); self.sw_ctx = np.array(arrays["b_sw_ctx"], dtype=np.int64)
+        self.sw_y, self.sw_m = g("b_sw_y"), g("b_sw_m")
         self.rb_cls = np.array(arrays["b_rb_cls"], dtype=np.int64); self.rb_ctxi = np.array(arrays["b_rb_ctxi"], dtype=np.int64)
         self.rawcls = list(meta["rawcls"]); self.rawcls_idx = {c: i for i, c in enumerate(self.rawcls)}
         self.raw_n1, self.raw_n0 = g("b_raw_n1"), g("b_raw_n0")
