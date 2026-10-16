@@ -1,0 +1,6 @@
+77390 False 127s
+77390 True 219s
+77391 False 325s
+77391 True 425s
+77392 False 500s
+77392 True 550s
