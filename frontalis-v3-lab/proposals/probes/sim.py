@@ -136,7 +136,7 @@ class Pop:
 
 
 DEFAULT = dict(cycle=1, w_mode="ema", w_rate=0.01, ref=0.5, attrib=1, salience=1, sal_max=2.0, norm_targets=0,
-               separate=0, lr=1e-3, bs=32, spn=1, n_steps=3000, n_early=1200, clip=0.0, wd=0.0, aff=0.0, mask_id=0, mc=0, ebot=0, history="HC-E")
+               separate=0, lr=1e-3, bs=32, spn=1, n_steps=3000, n_early=1200, clip=0.0, wd=0.0, aff=0.0, mask_id=0, mc=0, ebot=0, history="HC-E", amp=0)
 
 
 def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any]) -> Dict[str, Any]:
@@ -178,7 +178,9 @@ def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any]) -> Dict[s
         actor = torch.where(UU[:, t] < p1, e1, e2)
         db = MM[wid, actor, cc] + 0.1 * NZ[:, t]
         with torch.no_grad():
-            pb = pop.belief(x); vvec = pop.value_vec(x); v = vvec.sum(-1)
+            with torch.autocast("cuda", dtype=torch.bfloat16, enabled=bool(c["amp"])):   # amp=1: bf16 in training only (P12)
+                pb = pop.belief(x); vvec = pop.value_vec(x)
+            pb = pb.float(); vvec = vvec.float(); v = vvec.sum(-1)
             b = DECAY * b + db
             d = torch.clamp(b.abs() - TOL, min=0) ** 2
             if cyc:
@@ -225,7 +227,9 @@ def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any]) -> Dict[s
             xb = X[ar[:, None], idx].reshape(P, BS * 2, D_OBS)
             tv = TV[ar[:, None], idx].reshape(P, BS, 2, VD)
             dbb = DB[ar[:, None], idx]; sb = SAL[ar[:, None], idx]
-            pbb = pop.belief(xb).reshape(P, BS, 2, K); vv = pop.value_vec(xb).reshape(P, BS, 2, VD)
+            with torch.autocast("cuda", dtype=torch.bfloat16, enabled=bool(c["amp"])):
+                pbb = pop.belief(xb).reshape(P, BS, 2, K); vv = pop.value_vec(xb).reshape(P, BS, 2, VD)
+            pbb = pbb.float(); vv = vv.float()
             mix = -torch.logsumexp(-((dbb[:, :, None, :] - pbb) ** 2).sum(-1) / 0.2, dim=2).mean(1)
             lv = (sb[:, :, None, None] * (vv - tv) ** 2).sum(-1).mean((1, 2))
             loss = (0.1 * mix + lv).sum()
