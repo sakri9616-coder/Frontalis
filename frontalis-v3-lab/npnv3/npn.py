@@ -367,11 +367,19 @@ class NPN:
                 else:
                     td_y = 0.0                                  # 文脈が途切れたら、次の価値は 0
                 dC, cdet = self.cond.update(self.pending["cues"], td_y, self.pending["context"], self.pending["t"])
+                if cfg.record_ledger and self.cond.revised:                # 割当の記録: 手がかりの経験ごとに、事前の内訳・事後・MAP の原因・学習前後の C_k
+                    for cue_name, d in cdet.items():
+                        self.ledger.add({"kind": "assignment", "after": e["id"], "cue_event": self.pending.get("id"), "cue": cue_name,
+                                         "t": float(self.pending["t"]), "context": self.pending["context"], "td_target": float(td_y),
+                                         "y_x": d["y_x"], "post": d["post"], "post_new": d["post_new"], "map": d["map"],
+                                         "created": d["created"], "reused": d["reused"], **d["trace"]})
             # 復位: 手がかりなしで嫌悪の結果が起きたとき、負の価値を持つ原因の最後に使われた時刻を更新する（この事象と直前の事象の手がかりは除く）
             if r <= -cfg.lc_aversive_threshold:
                 skip = list(it["cues"]) + (list(self.pending["cues"]) if self.pending is not None else [])
                 reinst = self.cond.reinstate(skip, t_now, e["context"], r)
-            self.pending = {"cues": list(it["cues"]), "session": e["session"], "context": e["context"], "t": t_now}
+                if cfg.record_ledger and self.cond.revised and self.cond.last_reinstate:      # 復位: 推論した原因とその事後
+                    self.ledger.add({"kind": "reinstate", "after": e["id"], **self.cond.last_reinstate})
+            self.pending = {"cues": list(it["cues"]), "session": e["session"], "context": e["context"], "t": t_now, "id": e["id"]}
         # 7. 関心の重み a、欲求の状態 h、気分 m
         self.concern.update(it["du"])
         mood_before = self.mood
@@ -464,11 +472,29 @@ class NPN:
         if kind == "cue":
             return _py({"kind": kind, "cue": q["cue"], "context": q["context"],
                         "C": self.cond.value_of(q["cue"], q["context"], self._clock()),
-                        "n_causes": self.cond.n_causes(q["cue"]), "known": q["cue"] in self.cond.idx})
+                        "n_causes": self.cond.n_causes(q["cue"]), "known": q["cue"] in self.cond.idx,
+                        "breakdown": self.cond.explain(q["cue"], q["context"], self._clock())})
         like, var_mf, pred5, known = self.value.like_concept(q["concept"], a)
         return _py({"kind": kind, "concept": q["concept"], "like": like, "like_by_need": _need_dict(pred5),
                     "known": known, "sigma2_MF": var_mf,
                     "conditioned": self.cond.value_of(f"concept:{q['concept']}", None, self._clock())})
+
+    def explain_response(self, cue: str, context: Optional[str] = None, t: Optional[float] = None) -> Dict[str, Any]:
+        """条件づけられた価値の応答 C(cue | 文脈, t) が、なぜその値なのかの内訳（学習しない。状態は変えない）。
+        原因ごとの重み p(k)・価値 C_k・寄与 p(k)·C_k と、p(k) の要因（時間の項・文脈の項・計数の項と、試行数・文脈での計数）。t を省くと現在の時刻。
+        「なぜ嫌悪が戻ったか」は、消去の前後や文脈・時間を変えて呼び、原因の重み p(k) の移り変わり（と価値 C_k が動いていないこと）を見る。
+        割当の記録（どの試行がどの原因に入ったか）は assignment_trace(cue)。"""
+        return _py(self.cond.explain(cue, context, self._clock() if t is None else float(t)))
+
+    def assignment_trace(self, cue: str) -> List[Dict[str, Any]]:
+        """手がかり cue の割当の記録（台帳の kind = "assignment"、および cue に試行を加えた kind = "reinstate"）を時間順に返す。"""
+        out = []
+        for en in self.ledger.entries:
+            if en["kind"] == "assignment" and en["cue"] == cue:
+                out.append(en)
+            elif en["kind"] == "reinstate" and en.get("chosen") and en["chosen"]["cue"] == cue:
+                out.append(en)
+        return out
 
     # ==================================================================
     # 保存・復元

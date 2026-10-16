@@ -4,6 +4,7 @@ python -m npnv3 init  STATE_DIR [--seed 0]
 python -m npnv3 feed  STATE_DIR experiences.jsonl      学習し、各経験の要約を表示し、保存
 python -m npnv3 probe STATE_DIR probes.json            学習せずに評価
 python -m npnv3 show  STATE_DIR                         価値の上位・信念の要約
+python -m npnv3 explain STATE_DIR CUE [--context C] [--time T] [--trace N]   条件づけられた価値の応答の内訳（原因ごとの重み・価値・寄与と要因）と、割当の記録の最後の N 件
 """
 from __future__ import annotations
 
@@ -14,6 +15,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from .innate import NEED_LABELS, NEEDS
+from .explain import format_assignment, format_explanation
 from .npn import NPN
 
 
@@ -140,6 +142,18 @@ def cmd_show(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_explain(args: argparse.Namespace) -> int:
+    npn = NPN.load(args.state_dir)
+    ex = npn.explain_response(args.cue, args.context, args.time)
+    print("\n".join(format_explanation(ex)))
+    if args.trace > 0:
+        recs = npn.assignment_trace(args.cue)[-args.trace:]
+        print(f"\n割当の記録（{args.cue}。最後の {len(recs)} 件）")
+        for r in recs:
+            print("  " + format_assignment(r))
+    return 0
+
+
 def main(argv: List[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="python -m npnv3", description="NPN v3 最小実装")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -150,6 +164,9 @@ def main(argv: List[str] | None = None) -> int:
     p = sub.add_parser("probe", help="学習せずに評価"); p.add_argument("state_dir"); p.add_argument("probes")
     p.add_argument("--json", action="store_true", help="詳細を JSON で出力"); p.set_defaults(fn=cmd_probe)
     p = sub.add_parser("show", help="価値の上位と信念の要約"); p.add_argument("state_dir"); p.set_defaults(fn=cmd_show)
+    p = sub.add_parser("explain", help="条件づけられた価値の応答の内訳と割当の記録"); p.add_argument("state_dir"); p.add_argument("cue")
+    p.add_argument("--context", default=None); p.add_argument("--time", type=float, default=None); p.add_argument("--trace", type=int, default=5)
+    p.set_defaults(fn=cmd_explain)
     args = ap.parse_args(argv)
     try:
         return args.fn(args)

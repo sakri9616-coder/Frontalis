@@ -12,7 +12,7 @@ v3.2 で見せること（評価基準が、学習と行動を変える）:
   - 褒められた後に害を受けた人格は、褒め言葉を伴う申し出を避ける（条件づけられた価値 C が予期 Q に入る）
   - 関心の重み a が違うと、同じ経験から学ぶ量が変わる（欲求ごとの観測雑音 R/a_k）。a の方向（sensitize / habituate）は実験条件
   - 事前ヘッドの重みは予測性能で決まる（前向きの対数尤度）
-v3.3 で見せること（第 1 部: NN の再検証と消去）:
+v3.3 で見せること（第 1 部: NN の再検証と消去。4f は設計の改訂後の「なぜ戻ったか」: 割当の記録と応答の内訳）:
   - 事前ヘッドは、予測する類自身の観測を使わない（leave-class-out）。重みは、類を除いたモデルの転移性能（対数尤度の softmax、温度 1）で決まる。
     差は穏やか（転移できる世界でも、ヘッドの重みはほぼ一様に近い）。mlp は X3 の結論（ベンチマークで最良の条件がなかった）で既定の mixture から外した
   - 条件づけ価値 C は潜在原因を持つ。文脈 A で獲得し、文脈 B で消去すると、元の嫌悪が文脈 A に戻るか（single_cause と比べる）
@@ -288,6 +288,56 @@ def main() -> None:
         c0, r, k = _run(single)
         print(f"  {label:<26}{c0:>11.3f}{r['cafe_chat']:>12.2f}{r['studio']:>14.2f}{r['garden']:>16.2f}{k:>10d}")
     print("  single_cause は消去で C が下がり、どの文脈でも同じ値（元に戻らない）。潜在原因では文脈 A でわずかに戻るが、SPEC の閾値（ABA ≥ 0.5、ABC ≥ 0.4）には届かない（E3・E4 は不合格。CHANGELOG の原因の切り分けを参照）。")
+
+    # --- 4f. なぜ戻ったのか（割当の記録と応答の内訳。v3.3 第 1 部の設計の改訂）---
+    from npnv3.explain import format_assignment, format_explanation
+    hr("4f. なぜ嫌悪が戻ったのか: 割当の記録と応答の内訳（潜在原因。数値が合格したかではなく、機構として戻ったのかを見る）")
+    m = NPN(seed=0)
+    tr = 0
+    def trial2(kind, ctx):
+        nonlocal tr
+        tr += 1
+        m.experience(_ev(f"e4f-{tr}c", ctx, ["praise_from_X"], [], f"e4fs{tr}"))
+        m.experience(_ev(f"e4f-{tr}u", ctx, [], [{"type": "harm", "actor": "world", "magnitude": 0.8}] if kind == "acq" else [], f"e4fs{tr}"))
+    X = "concept:praise_from_X"
+    for _ in range(12): trial2("acq", "studio")
+    c_acq_resp = m.explain_response("concept:praise_from_X", "studio")["response"]
+    for _ in range(20): trial2("ext", "cafe_chat")
+    recs = [r for r in m.assignment_trace(X)]
+    acq_rec, ext_rec = recs[:12], recs[12:]
+    print("  割当（#番号 = 原因の通し番号。(新) = そのとき作られた原因、(再利用) = 満員で捨てた原因の場所に入った）:")
+    print("   獲得 12 試行: " + ", ".join(f"#{r['map_uid']}{'(新)' if r['created'] is not None else ''}" for r in acq_rec))
+    print("   消去 20 試行: " + ", ".join(f"#{r['map_uid']}{'(新)' if r['created'] is not None else ''}{'(再利用)' if r['reused'] else ''}" for r in ext_rec))
+    uid_acq = acq_rec[-1]["map_uid"]
+    print(f"   → 獲得の原因 #{uid_acq} は消去の 20 試行で一度も選ばれていない（消去は新しい原因に入る）。その価値 C は消去の前後で動かない。")
+    print("\n  消去の最初の試行の割当:\n   " + format_assignment(ext_rec[0]))
+    t0 = m._clock()
+    print("\n  消去の直後に、文脈ごとに読む（元の文脈 studio、消去した cafe_chat、未見の garden）:")
+    for ctx in ("studio", "cafe_chat", "garden"):
+        print("\n".join("   " + l for l in format_explanation(m.explain_response(X, ctx))))
+    def _tab(ctx, state):
+        return {c["uid"]: (c["p"], c["value"]) for c in state.explain_response(X, ctx)["causes"]}
+    ex_b = m.explain_response(X, "cafe_chat")
+    ex_a = m.explain_response(X, "studio")
+    pa = {c["uid"]: c for c in ex_a["causes"]}; pb = {c["uid"]: c for c in ex_b["causes"]}
+    dresp = ex_a["response"] - ex_b["response"]
+    wt = sum((pa.get(u, {"p": 0.0})["p"] - pb.get(u, {"p": 0.0})["p"]) * pb.get(u, {"value": 0.0})["value"] for u in set(pa) | set(pb))
+    print(f"\n  元の文脈 studio に戻ると、応答は {ex_b['response']:+.4f}（cafe_chat）→ {ex_a['response']:+.4f}。Δresp = {dresp:+.4f}、"
+          f"そのうち原因の重みの移り変わり Σ Δp·C = {wt:+.4f}、価値の変化 Σ p·ΔC = {dresp - wt:+.4f}。獲得の原因の重み p: "
+          f"{pb[uid_acq]['p']:.3f} → {pa[uid_acq]['p']:.3f}（文脈の項 {pb[uid_acq]['context_term']:.3f} → {pa[uid_acq]['context_term']:.3f}）。")
+    print("  → 価値 C_k は変えずに、どの原因が出番を持つかが文脈で入れ替わった。これは係数を強めたのではなく、原因の重み付けの移り変わりによる復活（獲得の原因の C は "
+          f"{pa[uid_acq]['value']:+.3f} のまま）。ただし戻る量は小さい: 獲得直後の応答 {c_acq_resp:+.4f} の {ex_a['response'] / c_acq_resp:.2f} 倍で、E3 の基準（≥ 0.5）には届かない。"
+          "理由も上の表に出ている: 新しい原因 α の重み（0.61）と、時間とともに縮んだ獲得の原因の質量（時間の項 0.211）。")
+    n_before = len(m.ledger.entries)
+    for k in range(2):
+        m.experience(_ev(f"e4f-h{k}", "cafe_chat", [], [{"type": "harm", "actor": "world", "magnitude": 0.8}], f"e4fh{k}"))
+    rein = [e for e in m.ledger.entries[n_before:] if e["kind"] == "reinstate"]
+    print("\n  消去した文脈 cafe_chat で、手がかりなしの害が 2 回:")
+    for r in rein:
+        print("   " + format_assignment(r))
+    ex_b2 = m.explain_response(X, "cafe_chat")
+    print(f"  応答（cafe_chat）: {ex_b['response']:+.4f} → {ex_b2['response']:+.4f}。獲得の原因の重み p: "
+          f"{pb[uid_acq]['p']:.3f} → {[c for c in ex_b2['causes'] if c['uid'] == uid_acq][0]['p']:.3f}（試行が加わり、文脈の項・時間の項が上がった）。C_k は復位の前後で同じ。")
 
     # --- 5. 曖昧な出来事の解釈 ---
     hr("5. 曖昧な出来事の解釈は人格の信念で違い、その解釈のまま学ぶ（v3.1）")

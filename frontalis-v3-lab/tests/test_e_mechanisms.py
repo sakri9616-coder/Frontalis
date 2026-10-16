@@ -527,6 +527,188 @@ class RevisedReinstatement(unittest.TestCase):
         self.assertEqual(cd.reinstate([], 10.0, "A", -0.5), [])
 
 
+class ExplainAndTrace(unittest.TestCase):
+    """割当の記録（台帳の kind = "assignment" / "reinstate"）と、応答の内訳（explain / explain_response / cue プローブの breakdown）。SPEC-v3.3 6.2。"""
+
+    def _history(self, n_acq=6, n_ext=6):
+        n = make(0)
+        for k in range(n_acq):
+            s = f"a{k}"
+            n.experience({"id": f"ac{k}", "context": "studio", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": s})
+            n.experience({"id": f"au{k}", "context": "studio", "concepts": [], "participants": [],
+                          "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": s})
+        for k in range(n_ext):
+            s = f"x{k}"
+            n.experience({"id": f"xc{k}", "context": "cafe_chat", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": s})
+            n.experience({"id": f"xn{k}", "context": "cafe_chat", "concepts": [], "participants": [], "outcomes": [], "session": s})
+        return n
+
+    def test_explain_decomposes_the_response_exactly(self):
+        n = self._history()
+        for ctx in ("studio", "cafe_chat", "garden", None):
+            for t in (None, 30.0, 200.0):
+                ex = n.explain_response("concept:praise_from_X", ctx, t)
+                self.assertAlmostEqual(ex["response"], sum(c["contribution"] for c in ex["causes"]), places=14)
+                self.assertAlmostEqual(sum(c["p"] for c in ex["causes"]) + ex["p_new"], 1.0, places=14)
+                for c in ex["causes"]:
+                    self.assertAlmostEqual(c["contribution"], c["p"] * c["value"], places=14)
+                    self.assertAlmostEqual(c["weight"], c["time_term"] * c["context_term"] * c["count_term"], places=14)
+                    self.assertAlmostEqual(c["p"], c["weight"] / (ex["total_weight"] + ex["alpha"]), places=14)
+                self.assertAlmostEqual(ex["response"], n.cond.value_of("concept:praise_from_X", ctx, n._clock() if t is None else t), places=14)
+
+    def test_explain_factors_are_the_stated_formulas(self):
+        n = self._history()
+        cd = n.cond
+        i = cd.idx["concept:praise_from_X"]
+        t = n._clock()
+        ex = n.explain_response("concept:praise_from_X", "studio")
+        for c in ex["causes"]:
+            k = c["k"]
+            times = cd.hist_t[i][:cd.hist_n[i]][cd.hist_k[i][:cd.hist_n[i]] == k]
+            self.assertAlmostEqual(c["time_term"], float(((t - times + 1.0) ** (-cd.cfg.lc_decay_d)).sum()), places=12)
+            self.assertEqual(c["n_trials"], times.size)
+            j = cd.ctx_idx["studio"]
+            S = ex["causes"][0]["n_contexts"]
+            self.assertAlmostEqual(c["context_term"], (cd.CNT[i, k, j] + cd.BK[i, k]) / (cd.CNT[i, k].sum() + cd.BK[i, k] * S), places=12)
+            self.assertEqual(c["n_in_context"], float(cd.CNT[i, k, j]))
+
+    def test_explain_does_not_change_state(self):
+        n = self._history()
+        before = copy.deepcopy(n)
+        n.explain_response("concept:praise_from_X", "garden", 99.0)
+        n.probe({"cue": "concept:praise_from_X", "context": "studio"})
+        ma, aa = n.get_state(); mb, ab = before.get_state()
+        self.assertTrue(deep_equal(ma, mb) and all(np.array_equal(aa[k], ab[k]) for k in aa))
+
+    def test_cue_probe_returns_the_breakdown(self):
+        n = self._history()
+        r = n.probe({"cue": "concept:praise_from_X", "context": "studio"})
+        self.assertAlmostEqual(r["breakdown"]["response"], r["C"], places=14)
+        self.assertGreaterEqual(len(r["breakdown"]["causes"]), 2)
+        self.assertEqual(n.probe({"cue": "concept:never_seen"})["breakdown"]["causes"], [])
+
+    def test_assignment_records_follow_the_update_rule(self):
+        n = self._history()
+        recs = n.assignment_trace("concept:praise_from_X")
+        self.assertEqual(len(recs), 12)                                           # 手がかりの経験ごとに 1 件（獲得 6 + 消去 6）
+        cfg = n.cfg
+        seen_uids = set()
+        for r in recs:
+            K = len(r["weight"])
+            alive = [u >= 0 for u in r["uid_before"]]
+            tot = sum(r["weight"]) + r["alpha"]
+            for q in range(K):
+                self.assertAlmostEqual(r["p_prior"][q], r["weight"][q] / tot, places=12)
+                if alive[q]:
+                    self.assertAlmostEqual(r["weight"][q], r["time_term"][q] * r["context_term"][q] * r["count_term"][q], places=12)
+            self.assertAlmostEqual(r["p_prior_new"], r["alpha"] / tot, places=12)
+            # 事後 ∝ 事前 × 尤度（新しい原因は α × 尤度_新）
+            z = sum(r["weight"][q] * r["likelihood"][q] for q in range(K)) + r["alpha"] * r["likelihood_new"]
+            for q in range(K):
+                self.assertAlmostEqual(r["post"][q], r["weight"][q] * r["likelihood"][q] / z, places=10)
+            self.assertAlmostEqual(r["post_new"], r["alpha"] * r["likelihood_new"] / z, places=10)
+            # MAP: 事後が最大（新しい原因を含む）
+            best_old = max(r["post"])
+            if r["created"] is not None:
+                self.assertGreater(r["post_new"], best_old)
+                self.assertNotIn(r["map_uid"], seen_uids)                         # 新しい原因の通し番号は初めて
+                seen_uids.add(r["map_uid"])
+            else:
+                self.assertEqual(r["map"], int(np.argmax(r["post"])))
+                self.assertGreaterEqual(best_old, r["post_new"])
+            # 学習: MAP の原因だけが動く。ΔC = α_C (y_x − C_before)（新しい原因は C_before が 0 から）
+            k = r["map"]
+            c0 = 0.0 if r["created"] is not None else r["C_before"][k]
+            self.assertAlmostEqual(r["C_after"][k], c0 + cfg.alpha_c * (r["y_x"] - c0), places=12)
+            for q in range(K):
+                if q != k:
+                    self.assertEqual(r["C_after"][q], r["C_before"][q])
+
+    def test_assignment_records_precede_the_experience_entry_and_reconstruct_the_values(self):
+        n = self._history()
+        self.assertEqual(n.ledger.entries[-1]["kind"], "experience")
+        ent = n.ledger.entries
+        for i, e in enumerate(ent):
+            if e["kind"] == "assignment":
+                nxt = next(x for x in ent[i + 1:] if x["kind"] == "experience")
+                self.assertEqual(nxt["id"], e["after"])                           # 記録は、その更新を起こした経験の台帳の直前
+        # 記録の学習後の C_k から、現在の原因の価値が復元できる（uid で追う）
+        cd = n.cond
+        i = cd.idx["concept:praise_from_X"]
+        last = {}
+        for r in n.assignment_trace("concept:praise_from_X"):
+            last[r["map_uid"]] = r["C_after"][r["map"]]
+        for k in range(cd.K):
+            if cd.AL[i, k] > 0.5:
+                self.assertAlmostEqual(cd.CK[i, k], last[int(cd.UID[i, k])], places=12)
+
+    def test_reinstate_record_names_the_inferred_cause_and_its_posterior(self):
+        n = self._history()
+        n.experience({"id": "h1", "context": "cafe_chat", "concepts": [], "participants": [],
+                      "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": "h"})
+        rr = [e for e in n.ledger.entries if e["kind"] == "reinstate"][-1]
+        self.assertEqual(rr["after"], "h1")
+        self.assertLess(rr["r"], -0.05)
+        self.assertEqual(rr["context"], "cafe_chat")
+        ch = rr["chosen"]
+        self.assertIsNotNone(ch)
+        self.assertEqual(ch["cue"], "concept:praise_from_X")
+        self.assertGreater(ch["C"], -1.0)
+        self.assertTrue(0.0 < ch["posterior"] <= 1.0)
+        self.assertEqual(ch["added_trial"], {"t": rr["t"], "context": "cafe_chat"})
+        post_sum = rr["null_posterior"] + sum(x["posterior"] for x in rr["top"])
+        self.assertLessEqual(post_sum, 1.0 + 1e-12)
+        # 価値は更新されない（記録された原因の C は復位の前後で同じ）
+        cd = n.cond
+        i = cd.idx["concept:praise_from_X"]
+        k = int(np.nonzero(cd.UID[i] == ch["uid"])[0][0])
+        self.assertEqual(float(cd.CK[i, k]), ch["C"])
+
+    def test_no_records_without_the_ledger(self):
+        n = make(0, record_ledger=False)
+        for k in range(3):
+            n.experience({"id": f"c{k}", "context": "studio", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": f"s{k}"})
+            n.experience({"id": f"u{k}", "context": "studio", "concepts": [], "participants": [],
+                          "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": f"s{k}"})
+        self.assertEqual(len(n.ledger.entries), 0)
+        self.assertLess(n.cond.value_of("concept:praise_from_X", "studio"), 0.0)       # 学習は同じ（記録だけ省く）
+        m = make(0)
+        for k in range(3):
+            m.experience({"id": f"c{k}", "context": "studio", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": f"s{k}"})
+            m.experience({"id": f"u{k}", "context": "studio", "concepts": [], "participants": [],
+                          "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": f"s{k}"})
+        self.assertEqual(n.cond.value_of("concept:praise_from_X", "studio"), m.cond.value_of("concept:praise_from_X", "studio"))
+
+    def test_explain_for_spec_literal_and_single_cause(self):
+        n = make(0, lc_design="spec_literal")
+        for k in range(4):
+            n.experience({"id": f"c{k}", "context": "studio", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": f"s{k}"})
+            n.experience({"id": f"u{k}", "context": "studio", "concepts": [], "participants": [],
+                          "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": f"s{k}"})
+        ex = n.explain_response("concept:praise_from_X", "studio")
+        self.assertEqual(ex["design"], "spec_literal")
+        self.assertAlmostEqual(ex["response"], n.cond.value_of("concept:praise_from_X", "studio", n._clock()), places=14)
+        self.assertAlmostEqual(sum(c["p"] for c in ex["causes"]) + ex["p_new"], 1.0, places=14)
+        s = make(0, single_cause=True)
+        s.experience({"id": "c", "context": "studio", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": "s"})
+        s.experience({"id": "u", "context": "studio", "concepts": [], "participants": [], "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": "s"})
+        ex = s.explain_response("concept:praise_from_X", "studio")
+        self.assertEqual(ex["design"], "single_cause")
+        self.assertEqual(len(ex["causes"]), 1)
+        self.assertEqual(ex["response"], s.cond.value_of("concept:praise_from_X", "studio"))
+
+    def test_records_survive_save_and_restore(self):
+        n = self._history()
+        with tempfile.TemporaryDirectory() as d:
+            n.save(d)
+            m = NPN.load(d)
+        self.assertTrue(deep_equal(n.assignment_trace("concept:praise_from_X"), m.assignment_trace("concept:praise_from_X")))
+        for ctx in ("studio", "cafe_chat", "garden"):
+            self.assertTrue(deep_equal(n.explain_response("concept:praise_from_X", ctx), m.explain_response("concept:praise_from_X", ctx)))
+        self.assertEqual(n.cond.next_uid, m.cond.next_uid)
+        self.assertTrue(np.array_equal(n.cond.UID, m.cond.UID))
+
+
 class SpecLiteralIsSelectable(unittest.TestCase):
     def test_spec_literal_npn_runs_and_roundtrips(self):
         n = make(0, lc_design="spec_literal")

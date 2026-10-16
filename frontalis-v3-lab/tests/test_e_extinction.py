@@ -153,6 +153,9 @@ class EExtinction(unittest.TestCase):
 
     # --- E7 -------------------------------------------------------------
     def test_E7_savings(self):
+        """E7。**single_cause の基準（試行数の比 ≥ 0.9）は、基準の想定の誤り**: delta 則は消去しきらない（α_C = 0.1 の 20 試行で C が 0.9^20 = 12% 残る）ので、
+        再獲得は初めての獲得より必ず速く、原理的に満たせない（関心の重み a の感作が、さらに速くする: no_concern で比 0.494 → 0.779、それでも 0.9 に届かない）。
+        オーケストレーターの判断で、閾値は変えず、不合格のまま「基準の想定の誤り」として報告する。潜在原因の側（≤ 0.6）は別に判定される。"""
         ratio = lambda w: mean(col(w, "E7_re")) / mean(col(w, "E7_first"))
         self.assertLessEqual(ratio("latent"), 0.6)
         self.assertGreaterEqual(ratio("single"), 0.9)

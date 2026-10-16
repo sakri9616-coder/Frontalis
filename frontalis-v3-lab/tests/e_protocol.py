@@ -143,11 +143,13 @@ def valued_cue_leak(seed: int, single_cause: bool = False, **kw: Any) -> Dict[st
 
 
 def run_variant(seed: int, single_cause: bool = False, ext_contexts: Sequence[str] = (CTX_B,), full: bool = True,
-                post_make: Any = None, lone_harm_fn: Any = None, **kw: Any) -> Dict[str, Any]:
+                post_make: Any = None, lone_harm_fn: Any = None, collect: Any = None, **kw: Any) -> Dict[str, Any]:
     """1 つの人格（種 seed、single_cause かどうか）について、E1〜E8 の測定を一通り行う。
     full=False のときは、獲得 → 消去 → ABC の測定だけ（E9 用）。
     post_make（NPN を受け取る）と lone_harm_fn（lone_harm と同じ引数）は診断用の差し替え（判定のテストでは使わない）。
-    post_make を使うときは、保存・復元（E8c）の検査は意味を持たないので full=False で使う。"""
+    post_make を使うときは、保存・復元（E8c）の検査は意味を持たないので full=False で使う。
+    collect（辞書）を渡すと、機構の追跡（M1〜M5。tests/m_trace.py）のために、獲得直後 "acq"・消去直後 "ext"・E1 "E1"・E5 "E5"・E6 "E6"・E6 の対照 "E6c"・E7 "E7" の
+    NPN の写しと、"c_acq" を入れる。"cb_E7"（関数）があれば、E7 の再獲得の試行ごとに cb_E7(試行数, NPN) を呼ぶ。数値は変わらない（乱数を使わない写しと読み出しだけ）。"""
     rng = np.random.default_rng([seed, 303])
     c = Counter(f"E{seed}")
     npn = make(seed, single_cause=single_cause, **kw)
@@ -168,11 +170,16 @@ def run_variant(seed: int, single_cause: bool = False, ext_contexts: Sequence[st
     out["acq_curve_ratio"] = [v / c_acq for v in acq_curve]
     out["n_causes_after_acq"] = npn.cond.n_causes(CUE_NAME)
     check_bounds(npn, acc)
+    if collect is not None:
+        collect["acq"] = copy.deepcopy(npn)
+        collect["c_acq"] = c_acq
     if full:
         # E1: 消去なしで無関係な経験 50 回
         m1 = copy.deepcopy(npn)
         unrelated(m1, c, np.random.default_rng([seed, 304]), N_UNRELATED)
         out["E1"] = read(m1, CTX_A) / c_acq
+        if collect is not None:
+            collect["E1"] = m1
         check_bounds(m1, acc)
     # --- 消去（途中で保存・復元の検査 E8(c)）---
     per_ctx = [N_EXT] if len(ext_contexts) == 1 else [7, 7, 6]
@@ -198,6 +205,8 @@ def run_variant(seed: int, single_cause: bool = False, ext_contexts: Sequence[st
     out["ABA"] = read(npn, CTX_A) / c_acq
     out["ABC"] = read(npn, CTX_C) / c_acq
     out["n_causes_after_ext"] = npn.cond.n_causes(CUE_NAME)
+    if collect is not None:
+        collect["ext"] = copy.deepcopy(npn)
     if full:
         out["E8c_restore_continue_equal"] = states_equal(npn, saved) and read(npn, CTX_B) == read(saved, CTX_B)
         # E5: 消去の後、無関係な経験 50 回、その後 B でテスト
@@ -205,6 +214,8 @@ def run_variant(seed: int, single_cause: bool = False, ext_contexts: Sequence[st
         unrelated(m5, c, np.random.default_rng([seed, 306]), N_UNRELATED)
         out["E5_after"] = read(m5, CTX_B) / c_acq
         check_bounds(m5, acc)
+        if collect is not None:
+            collect["E5"] = m5
         # E6: 手がかりなしの害 2 回 → B でテスト。対照は同じ経験数の無関係な経験
         m6 = copy.deepcopy(npn)
         (lone_harm_fn or lone_harm)(m6, c, np.random.default_rng([seed, 307]), CTX_B, N_REINSTATE)
@@ -213,16 +224,22 @@ def run_variant(seed: int, single_cause: bool = False, ext_contexts: Sequence[st
         unrelated(m6c, c, np.random.default_rng([seed, 308]), N_REINSTATE)
         out["E6_control"] = read(m6c, CTX_B) / c_acq
         check_bounds(m6, acc)
+        if collect is not None:
+            collect["E6"], collect["E6c"] = m6, m6c
         # E7: 消去の後、B で再獲得（手がかり → 害）。獲得直後の 70% に達するまでの試行数
         m7 = copy.deepcopy(npn)
         re_curve: List[float] = []
         for _ in range(RE_ACQ_MAX):
             trial(m7, c, rng, "acq", CTX_B)
             re_curve.append(read(m7, CTX_B))
+            if collect is not None and "cb_E7" in collect:
+                collect["cb_E7"](len(re_curve), m7)
         out["E7_first"] = first_reaching(acq_curve, 0.7, c_acq)
         out["E7_re"] = first_reaching(re_curve, 0.7, c_acq)
         out["re_curve_ratio"] = [v / c_acq for v in re_curve[:12]]
         check_bounds(m7, acc)
+        if collect is not None:
+            collect["E7"] = m7
         # E8(b): 別の手がかり
         out["ctl_after"] = {"tea_time": read(npn, CTX_A, "concept:tea_time"), "evening_walk": read(npn, CTX_A, "concept:evening_walk")}
         out["ctl_after_unrelated"] = {"evening_walk": read(m5, CTX_A, "concept:evening_walk")}

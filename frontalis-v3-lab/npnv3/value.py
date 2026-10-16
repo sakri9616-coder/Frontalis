@@ -443,6 +443,10 @@ class Conditioning:
         self.revised = (self.K > 1 and cfg.lc_design == "revised")
         self.BK = np.zeros((0, self.K))                 # revised: 原因ごとの文脈の Dirichlet の集中度 β_k（作られた順序で決まる）
         self.CRE = np.zeros(0, dtype=np.int64)          # revised: 手がかりごとに、これまでに作られた原因の数
+        self.UID = np.full((0, self.K), -1, dtype=np.int64)   # 原因の通し番号（作られた順。-1 = 存在しない）。再利用されて別の原因になっても番号で見分けられる
+        self.next_uid = 0
+        self.trace = bool(cfg.record_ledger)            # True のとき update / reinstate が割当の内訳（事前・事後・MAP・学習前後の C_k）を返す
+        self.last_reinstate: Dict[str, Any] = {}        # 直前の reinstate の推論の内訳（台帳用。状態ではない）
         self.hist_t: List[np.ndarray] = []              # revised: 手がかりごとの試行の履歴（時刻・原因・文脈。容量を倍にして伸ばす）
         self.hist_k: List[np.ndarray] = []
         self.hist_c: List[np.ndarray] = []
@@ -487,6 +491,7 @@ class Conditioning:
         self.CNT = np.concatenate([self.CNT, np.zeros((add, self.K, self.CNT.shape[2]))], axis=0)
         self.BK = np.vstack([self.BK, np.full((add, self.K), self.cfg.lc_beta_first)])
         self.CRE = np.concatenate([self.CRE, np.zeros(add, dtype=np.int64)])
+        self.UID = np.vstack([self.UID, np.full((add, self.K), -1, dtype=np.int64)])
         for _ in range(add):
             self.hist_t.append(np.zeros(0)); self.hist_k.append(np.zeros(0, dtype=np.int64)); self.hist_c.append(np.zeros(0, dtype=np.int64))
             self.hist_n.append(0)
@@ -530,15 +535,24 @@ class Conditioning:
             pred = (n_c + beta) / (N + beta * S_eff[:, None])
         return pred, N
 
-    def _prior_weights(self, ii: np.ndarray, ctx: Optional[str], t: float) -> np.ndarray:
-        """手がかり ii の、存在する原因の事前の重み（正規化前。形 (m, K)）。新しい原因の重みは cfg.lc_alpha。"""
+    def _prior_parts(self, ii: np.ndarray, ctx: Optional[str], t: float) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """事前の重みの要因 (時間の項, 文脈の項, 計数の項)（形 (m, K)）。w_k = AL × 時間 × 文脈 × 計数。
+        revised: 時間 = Σ_{i∈k} (t − t_i + 1)^(−d)、文脈 = (n_k(c) + β_k)/(N_k + β_k S)、計数 = 1。
+        spec_literal: 時間 = exp(−(t − t_k)/τ)、文脈 = 同上（β = lc_beta）、計数 = N_k。"""
         if self.revised:
             pred, _ = self._ctx_pred(ii, ctx, self.BK[ii])
             mass = np.stack([self._mass_row(int(i), t) for i in ii])
-            return self.AL[ii] * mass * pred
+            return mass, pred, np.ones_like(mass)
         pred, N = self._ctx_pred(ii, ctx, self.cfg.lc_beta)
         rec = self._recency(np.maximum(t - self.TK[ii], 0.0))
-        return self.AL[ii] * N * pred * rec
+        return rec, pred, N
+
+    def _prior_weights(self, ii: np.ndarray, ctx: Optional[str], t: float) -> np.ndarray:
+        """手がかり ii の、存在する原因の事前の重み（正規化前。形 (m, K)）。新しい原因の重みは cfg.lc_alpha。"""
+        time_t, ctx_t, cnt_t = self._prior_parts(ii, ctx, t)
+        if self.revised:
+            return self.AL[ii] * time_t * ctx_t
+        return self.AL[ii] * cnt_t * ctx_t * time_t           # spec_literal: 改訂前と同じ掛け算の順（浮動小数点まで同じ値）
 
     def _recency(self, dt: np.ndarray) -> np.ndarray:
         """（spec_literal）最後に使われてからの経過 dt（経験）の重み exp(−dt/τ)（SPEC-v3.3 4.2）。診断用の変種はこれを差し替える。"""
@@ -703,6 +717,7 @@ class Conditioning:
         y_x = y - (resp.sum() - resp)                            # 手がかりごとの、説明すべき目標（他の手がかりの応答を引く）
         sig = cfg.lc_sigma_r
         detail: Dict[str, Any] = {}
+        parts = self._prior_parts(ii, ctx, t) if self.trace else None
         for a, c in enumerate(cues):
             i = int(ii[a])
             alive = (self.AL[i] > 0.5) & (w[a] > 0.0)
@@ -716,18 +731,24 @@ class Conditioning:
             post = pa / z; post_new = pn / z
             created: Optional[int] = None
             reused = False
+            uid_before = self.UID[i].copy()
+            c_before = self.CK[i].copy()
+            replaced_uid = -1
             if post_new > float(post.max()):                      # 新しい原因の事後が最大 → 作る
                 free = np.nonzero(self.AL[i] < 0.5)[0]
                 if free.size > 0:
                     k = int(free[0])
                 else:
                     k = int(np.argmin(self._mass_row(i, t))); reused = True
+                    replaced_uid = int(self.UID[i, k])
                     self._hist_drop(i, k)
                 self.CK[i, k] = 0.0
                 self.CNT[i, k, :] = 0.0
                 self.AL[i, k] = 1.0
                 self.BK[i, k] = cfg.lc_beta_first if int(self.CRE[i]) == 0 else cfg.lc_beta_later
                 self.CRE[i] += 1
+                self.UID[i, k] = self.next_uid
+                self.next_uid += 1
                 created = k
             else:
                 k = int(np.argmax(post))
@@ -738,6 +759,18 @@ class Conditioning:
             self.TK[i, k] = t
             detail[c] = {"post": [float(x) for x in post], "post_new": float(post_new), "map": k, "created": created,
                          "reused": reused, "resp_before": float(resp[a]), "y_x": float(y_x[a])}
+            if parts is not None:
+                # 割当の記録（台帳用）: 事前とその内訳（時間・文脈・計数・新しい原因 α）、事後、MAP、学習前後の C_k
+                tt, cc, nn = parts[0][a], parts[1][a], parts[2][a]
+                detail[c]["trace"] = {
+                    "uid_before": [int(x) for x in uid_before], "map_uid": int(self.UID[i, k]), "replaced_uid": replaced_uid,
+                    "alpha": float(cfg.lc_alpha), "time_term": [float(x) for x in tt], "context_term": [float(x) for x in cc],
+                    "count_term": [float(x) for x in nn], "weight": [float(x) for x in w[a]],
+                    "p_prior": [float(x) for x in (w[a] / total[a])], "p_prior_new": float(cfg.lc_alpha / total[a]),
+                    "likelihood": [float(np.exp(-0.5 * ((y_x[a] - c_before[q]) / sig) ** 2)) if alive[q] else 0.0 for q in range(self.K)],
+                    "likelihood_new": float(np.exp(-0.5 * (y_x[a] / sig) ** 2)),
+                    "C_before": [float(x) for x in c_before], "C_after": [float(x) for x in self.CK[i]],
+                    "n_trials_after": [int((self.hist_k[i][:self.hist_n[i]] == q).sum()) for q in range(self.K)]}
         dC: Dict[str, float] = {}
         for a, c in enumerate(cues):
             dck = self.CK[ii[a]] - before[a]
@@ -769,25 +802,88 @@ class Conditioning:
             i = self.idx.get(c)
             if i is not None:
                 cand[i, :] = False
+        self.last_reinstate = {}
         if not cand.any():
             return []
         score = np.where(cand, -0.5 * ((r - self.CK) / sig) ** 2, -np.inf)
         null = -0.5 * (r / sig) ** 2
         best = float(score.max())
+        if self.trace:
+            # 推論の内訳: 候補（手がかり, 原因）の対数尤度と、一様な事前での事後（候補 + 「どの原因でもない」の softmax）。上位 5 件だけ残す
+            flat = score[cand]
+            m = max(float(flat.max()), null)
+            z = float(np.exp(flat - m).sum() + np.exp(null - m))
+            order = np.argsort(-score, axis=None, kind="stable")[:5]
+            top = []
+            for o in order:
+                ri, ci = np.unravel_index(int(o), score.shape)
+                if not cand[ri, ci]:
+                    continue
+                top.append({"cue": self.names[int(ri)], "k": int(ci), "uid": int(self.UID[ri, ci]), "C": float(self.CK[ri, ci]),
+                            "loglik": float(score[ri, ci]), "posterior": float(np.exp(score[ri, ci] - m) / z)})
+            self.last_reinstate = {"r": float(r), "context": ctx, "t": float(t), "null_loglik": float(null), "null_posterior": float(np.exp(null - m) / z),
+                                   "n_candidates": int(cand.sum()), "top": top, "chosen": None}
         if not best > null:
             return []
         rows, cols = np.nonzero(score >= best - 1e-12)
+        n_tied = int(rows.size)
         if rows.size > 1:                                      # 尤度が同じなら事前の重みが大きい方
             pw = [float(self._prior_weights(np.array([int(i)]), ctx, t)[0, int(k)]) for i, k in zip(rows, cols)]
             pick = int(np.argmax(pw))
             rows, cols = rows[pick:pick + 1], cols[pick:pick + 1]
         i, k = int(rows[0]), int(cols[0])
         j = self._ctx_col(ctx, create=ctx is not None)
+        if self.trace:
+            self.last_reinstate["chosen"] = {"cue": self.names[i], "k": k, "uid": int(self.UID[i, k]), "C": float(self.CK[i, k]),
+                                             "posterior": float(np.exp(float(score[i, k]) - m) / z), "n_tied": n_tied,
+                                             "added_trial": {"t": float(t), "context": ctx}}
         self._hist_add(i, k, t, -1 if j is None else j)
         if j is not None:
             self.CNT[i, k, j] += 1.0
         self.TK[i, k] = t
         return [(self.names[i], k)]
+
+    # ------------------------------------------------------------------ 応答の説明（学習しない）
+    def explain(self, name: str, ctx: Optional[str] = None, t: Optional[float] = None) -> Dict[str, Any]:
+        """手がかり name の応答 C(name | 文脈, t) の内訳。応答 = Σ_k p(k) C_k、p(k) = w_k / (Σ w + α)。
+        原因ごと: 価値 C_k、重み p(k)、寄与 p(k)·C_k、p(k) の要因（時間の項、文脈の項、計数の項）と、その元の数（試行数、文脈での計数）。状態は変えない。
+        revised: 時間の項 = Σ_{i∈k} (t − t_i + 1)^(−d)、文脈の項 = (n_k(c) + β_k)/(N_k + β_k S)、計数の項 = 1。
+        spec_literal: 時間の項 = exp(−(t − t_k)/τ)、文脈の項 = 同上（β = lc_beta）、計数の項 = N_k。K = 1 は原因 1 つ（重み 1、文脈・時刻に依存しない）。"""
+        t = float(self.now if t is None else t)
+        out: Dict[str, Any] = {"cue": name, "context": ctx, "t": t, "design": "single_cause" if self.K == 1 else self.cfg.lc_design,
+                               "known": name in self.idx, "alpha": float(self.cfg.lc_alpha), "causes": []}
+        i = self.idx.get(name)
+        if i is None:
+            out.update({"response": 0.0, "p_new": 1.0, "total_weight": 0.0})
+            return out
+        if self.K == 1:
+            out.update({"response": float(self.CK[i, 0]), "p_new": 0.0, "total_weight": 1.0})
+            out["causes"].append({"k": 0, "uid": -1, "value": float(self.CK[i, 0]), "p": 1.0, "contribution": float(self.CK[i, 0]), "weight": 1.0,
+                                  "time_term": 1.0, "context_term": 1.0, "count_term": 1.0, "n_trials": None, "n_in_context": None})
+            return out
+        ii = np.array([i])
+        time_t, ctx_t, cnt_t = self._prior_parts(ii, ctx, t)
+        w = (self.AL[ii] * time_t * ctx_t * cnt_t)[0]
+        total = float(w.sum()) + self.cfg.lc_alpha
+        j = self.ctx_idx.get(ctx) if ctx is not None else None
+        seen = (self.CNT[i].sum(axis=0) > 0)
+        s_eff = float(seen.sum()) + (1.0 if (ctx is not None and (j is None or not seen[j])) else 0.0)
+        n = self.hist_n[i]
+        resp = 0.0
+        for k in range(self.K):
+            if self.AL[i, k] < 0.5:
+                continue
+            p = float(w[k] / total)
+            resp += p * float(self.CK[i, k])
+            tr = self.hist_t[i][:n][self.hist_k[i][:n] == k] if self.revised else np.zeros(0)
+            out["causes"].append({"k": k, "uid": int(self.UID[i, k]), "value": float(self.CK[i, k]), "p": p, "contribution": p * float(self.CK[i, k]),
+                                  "weight": float(w[k]), "time_term": float(time_t[0, k]), "context_term": float(ctx_t[0, k]), "count_term": float(cnt_t[0, k]),
+                                  "n_trials": int(tr.size) if self.revised else float(self.CNT[i, k].sum()),
+                                  "n_in_context": (float(self.CNT[i, k, j]) if j is not None else 0.0) if ctx is not None else None,
+                                  "n_contexts": s_eff, "beta": float(self.BK[i, k]) if self.revised else float(self.cfg.lc_beta),
+                                  "last_trial_t": float(tr.max()) if tr.size else float(self.TK[i, k])})
+        out.update({"response": float(resp), "p_new": float(self.cfg.lc_alpha / total), "total_weight": float(w.sum())})
+        return out
 
     # ------------------------------------------------------------------ 検査・摂動用の補助
     def set_single(self, name: str, value: float) -> None:
@@ -807,6 +903,10 @@ class Conditioning:
             self.BK[i, :] = self.cfg.lc_beta_first
             self.CRE[i] = 1
             self._hist_add(i, 0, self.now, -1)
+        if self.K > 1:
+            self.UID[i, :] = -1
+            self.UID[i, 0] = self.next_uid
+            self.next_uid += 1
 
     def nudge(self, name: str, delta: float) -> None:
         """手がかり name の存在する原因すべての価値に delta を足す（テスト・診断用）。K = 1 で未登録なら登録する。"""
@@ -830,9 +930,10 @@ class Conditioning:
             HI.append(np.full(n, i, dtype=np.int64)); HK.append(self.hist_k[i][:n].astype(np.int64))
             HT.append(self.hist_t[i][:n].astype(np.float64)); HC.append(self.hist_c[i][:n].astype(np.int64))
         cat = lambda xs, dt: np.concatenate(xs) if xs else np.zeros(0, dtype=dt)
-        return ({"names": list(self.names), "ctx_names": list(self.ctx_names), "K": int(self.K), "design": self.cfg.lc_design},
+        return ({"names": list(self.names), "ctx_names": list(self.ctx_names), "K": int(self.K), "design": self.cfg.lc_design,
+                 "next_uid": int(self.next_uid)},
                 {"cond_CK": self.CK, "cond_TK": self.TK, "cond_AL": self.AL, "cond_CNT": self.CNT,
-                 "cond_BK": self.BK, "cond_CRE": self.CRE,
+                 "cond_BK": self.BK, "cond_CRE": self.CRE, "cond_UID": self.UID,
                  "cond_HI": cat(HI, np.int64), "cond_HK": cat(HK, np.int64), "cond_HT": cat(HT, np.float64), "cond_HC": cat(HC, np.int64)})
 
     def set_state(self, meta: Dict[str, Any], arrays: Dict[str, np.ndarray]) -> None:
@@ -850,6 +951,8 @@ class Conditioning:
         self.CNT = np.array(arrays["cond_CNT"], dtype=np.float64)
         self.BK = np.array(arrays["cond_BK"], dtype=np.float64)
         self.CRE = np.array(arrays["cond_CRE"], dtype=np.int64)
+        self.UID = np.array(arrays["cond_UID"], dtype=np.int64)
+        self.next_uid = int(meta["next_uid"])
         HI, HK = np.array(arrays["cond_HI"], dtype=np.int64), np.array(arrays["cond_HK"], dtype=np.int64)
         HT, HC = np.array(arrays["cond_HT"], dtype=np.float64), np.array(arrays["cond_HC"], dtype=np.int64)
         self.hist_t, self.hist_k, self.hist_c, self.hist_n = [], [], [], []

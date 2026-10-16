@@ -28,6 +28,25 @@ class CLITests(unittest.TestCase):
             r = run("show", st); self.assertEqual(r.returncode, 0, r.stderr)
             self.assertIn("人モデルの価値", r.stdout)
 
+    def test_explain_prints_the_breakdown_and_the_assignment_records(self):
+        with tempfile.TemporaryDirectory() as d:
+            st = os.path.join(d, "state")
+            run("init", st)
+            ev = []
+            for k in range(4):
+                ev.append({"id": f"c{k}", "context": "studio", "concepts": ["praise_from_X"], "participants": [], "outcomes": [], "session": f"s{k}"})
+                ev.append({"id": f"u{k}", "context": "studio", "concepts": [], "participants": [],
+                           "outcomes": [{"type": "harm", "actor": "world", "magnitude": 0.8}], "session": f"s{k}"})
+            fp = os.path.join(d, "e.jsonl")
+            with open(fp, "w", encoding="utf-8") as f:
+                f.write("\n".join(json.dumps(e) for e in ev) + "\n")
+            r = run("feed", st, fp); self.assertEqual(r.returncode, 0, r.stderr)
+            r = run("explain", st, "concept:praise_from_X", "--context", "cafe_chat", "--trace", "2"); self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertIn("応答 C = Σ p(k)·C_k", r.stdout)
+            self.assertIn("割当の記録", r.stdout)
+            self.assertIn("MAP", r.stdout)
+            r = run("probe", st, os.path.join(d, "none.json")); self.assertNotEqual(r.returncode, 0)
+
     def test_bad_input_reports_error(self):
         with tempfile.TemporaryDirectory() as d:
             st = os.path.join(d, "state")
