@@ -91,5 +91,20 @@ def krrself():
     print(json.dumps(meta), flush=True)
 
 
+def krrcheck():
+    """Platform check, not a v5 quantity: the frozen draft-4 KRR path (sim4, partner scale 0, C-SLp, role A) on two dev
+    seeds at production scale, to see whether batched Cholesky solves run on this machine (Colab's torch cu130 build
+    failed in magma_spotrs_batched on 2026-10-18)."""
+    ps = json.loads((HERE / "p16_pscale.json").read_text(encoding="utf-8"))
+    worlds = {(s, "F1"): sim4.make_world(s, "F1") for s in SEEDS[:2]}
+    pers = pers_list(SEEDS[:2], ("F1",), (("A", 0, 1, 3),), "", ["C-SLp"])
+    t0 = time.time()
+    st = sim4.run(pers, worlds, dict(learner="krr", innate="IH", **SCALE[SC], partner_scale=ps.get("krr", 1.0)))
+    rows = [dict(seed=s, r2_nc=m4.own_r2(vw["A"], "nc")) for (s, f, cond), vw in m4.views(st, pers, worlds).items()]
+    meta = dict(secs=time.time() - t0, device=torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu", torch=torch.__version__)
+    (HERE / "p32_krrcheck.json").write_text(json.dumps(dict(meta=meta, rows=rows), indent=1, default=float), encoding="utf-8")
+    print(json.dumps(meta), rows, flush=True)
+
+
 if __name__ == "__main__":
-    {"setwg": setwg, "krrself": krrself}[sys.argv[1]]()
+    {"setwg": setwg, "krrself": krrself, "krrcheck": krrcheck}[sys.argv[1]]()
