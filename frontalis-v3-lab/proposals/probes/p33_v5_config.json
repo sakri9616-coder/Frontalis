@@ -1,1 +1,1 @@
-{"v2": true, "_note": "V2 cells (KRR with krr_self_b, NN-0) are part of the evaluation. Set before the freeze by the user decision, then hashed."}
+{"v2": true, "_note": "NN-0 cells (V2) and KRR cells (report only, J5-c_krrM) run in the evaluation. Fixed 2026-10-18 at the freeze."}

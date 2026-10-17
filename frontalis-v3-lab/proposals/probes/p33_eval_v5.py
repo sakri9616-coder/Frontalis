@@ -15,7 +15,10 @@ for a dry run of the job (writes p33_dev_<learner>_<first>.json; no hash check).
 - An evaluation job checks the SHA-256 of every file listed in FREEZE-v5.md (LF) and refuses to run on a mismatch (exit 3).
 - The merge refuses to judge unless all 24 files exist, each with its 5 seeds x 2 conditions, all on one machine type, and
   every commit the jobs ran holds byte-identical frozen files.
-- The cell list follows p33_v5_config.json ("v2": true -> the KRR and NN-0 cells for V2 are part of the evaluation).
+- The cell list follows p33_v5_config.json ("v2": true -> the NN-0 cells (V2) and the KRR cells (report only) run).
+- V2 (rev. b, 2026-10-18, user decision after the dev results): learned expectations transfer to unseen contexts =
+  J5-a (draft-4 rule: R2_nc > 0 on >= 30 of 40 seeds, median >= 0.05) AND J5-c_nn0 (NN-SET beats NN-0 on R2_nc, paired,
+  >= 30 of 40, median >= 0.02), both in C-SLp. J5-c_krrM (KRR with the matched attribution rule) is reported, not judged.
 - The judge re-derives the constants from the hashed p32_setwg_modal.json and refuses to judge if they differ from
   p33_v5_constants.json.
 - Results are reported to the leader first and are not committed (local git exclude)."""
@@ -176,7 +179,7 @@ def judge_all():
         rs = sorted([r for r in rows["set"] if r["cond"] == cond], key=lambda r: r["seed"])
         d = [r["v5_swapd_AB"] - r["v5_swapd_AA"] for r in rs]
         floor = max(0.25 * float(np.median([r["v5_swapd_AA"] for r in rs])), K["m_abs"])
-        o = dict(J3v5=judge(d, floor, 0.75))
+        o = dict(J3v5=judge(d, floor, 0.75), **{"J5-a": judge([r["r2_nc"] for r in rs], 0.05, 0.75)})
         c = judge4.contrasts([dict(r, r2_nc=r["r2_nc"]) for r in rs])
         o["secondary"] = {j: c[j] for j in ("J1-a", "J2-a", "J2-b", "J4-a", "J4-b", "J5-a")}
         for ctl in [L for L in ("krr", "nn0") if L in EVAL_LEARNERS]:
@@ -191,7 +194,8 @@ def judge_all():
     # construction. If it passes anyway, the computation is broken (reported as a failure of the run, not as a result).
     out["C-off_sanity_ok"] = not off["J3v5"]["passed"]
     out["V1"] = bool(K["J3v5_usable"] and slp["J3v5"]["passed"]) if out["C-off_sanity_ok"] else None
-    out["V2"] = bool(slp["J5-c_krrM"]["passed"] and slp["J5-c_nn0"]["passed"]) if CONFIG["v2"] else "not in the frozen cell list"
+    out["V2"] = bool(slp["J5-a"]["passed"] and slp["J5-c_nn0"]["passed"]) if CONFIG["v2"] else "not in the frozen cell list"
+    out["report_only"] = {c: out[c].get("J5-c_krrM") for c in CONDS}
     (HERE / "p33_judgment.json").write_text(json.dumps(out, indent=1, default=float), encoding="utf-8")
     print("V1", out["V1"], "V2", out["V2"])
     return 0
@@ -199,7 +203,8 @@ def judge_all():
 
 HASHED = ["PREREG-v5-DRAFT.md", "probes/sim4.py", "probes/measure4.py", "probes/cells.py", "probes/judge4.py", "probes/measure5.py",
           "probes/diag5/make_sim5.py", "probes/diag5/sim5.py", "probes/p32_v5_dev.py", "probes/p33_eval_v5.py", "probes/p32_setwg_modal.json",
-          "probes/p33_v5_constants.json", "probes/p33_v5_config.json", "probes/p15_lr.json", "probes/p16_pscale.json"]
+          "probes/p33_v5_constants.json", "probes/p33_v5_config.json", "probes/p15_lr.json", "probes/p16_pscale.json",
+          "probes/sched/sched.py", "probes/sched/modal_runner.py"]
 
 
 def hashes():

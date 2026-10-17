@@ -12,7 +12,7 @@ jobs automatically:  p15_prod.py cells {set,krr} {IH,I0} {C-off,C-SLp}  ->  8 jo
 Providers live in providers.json. A new service needs no code: give it a "cmd" template that runs one job line on it and
 leaves the result files in the probes directory (see modal_runner.py). Money rule: a job goes to a provider on its own only
 if its worst-case cost (price_per_hour * max_job_hours) fits in that provider's remaining free budget; otherwise the job
-waits as BLOCKED until `approve` grants the excess. Evaluation seeds (77100-77139) are refused without --allow-eval."""
+waits as BLOCKED until `approve` grants the excess. Evaluation seeds (77100-77139 draft 4; 77300-77339 v5) are refused without --allow-eval."""
 import atexit, json, os, re, subprocess, sys, threading, time, uuid
 from pathlib import Path
 
@@ -38,7 +38,7 @@ def load_queue(path, allow_eval=False):
         for line in expand(raw):
             if re.search(r"[;&|<>$`\"'\\%^()!:]", line) or ".." in line or re.search(r"(^| )/", line) or not re.match(r"^[\w.-]+\.py( |$)", line) or not (PROBES / line.split()[0]).exists():
                 sys.exit(f"refused (unsafe or unknown script): {line}")
-            if not allow_eval and re.search(r"\b771[0-3]\d\b", line):
+            if not allow_eval and re.search(r"\b77(1[0-3]|3[0-3])\d\b", line):   # 77100-77139 (draft 4) and 77300-77339 (v5; added 2026-10-18 after the draft-4 evaluation ended)
                 sys.exit(f"refused (evaluation seed; use --allow-eval only for the one-time evaluation): {line}")
             if line not in jobs:
                 jobs.append(line)
