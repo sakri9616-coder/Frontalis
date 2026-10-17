@@ -1,7 +1,7 @@
 """Run ONE job line on a free Colab GPU through the official Colab CLI (sched/colab.cmd), copy the files it wrote back into the
 probes directory, and always release the VM. Used by sched.py (providers.json "colab"):  python sched/colab_runner.py "<job line>"
 Like modal_runner.py it runs a fresh clone of the pushed branch, so only committed and pushed code runs there."""
-import subprocess, sys, tarfile, tempfile, time
+import re, subprocess, sys, tarfile, tempfile, time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -41,9 +41,10 @@ def main(line):
     try:
         tmp = Path(tempfile.mkdtemp())
         (tmp / "boot.py").write_text(BOOT % dict(branch=BRANCH, line=line), encoding="utf-8")
-        r = colab("exec", "-s", name, "--timeout", "10800", "-f", str(tmp / "boot.py"))
+        r = colab("exec", "-s", name, "--timeout", "10200", "-f", str(tmp / "boot.py"))
         print(r.stdout[-3000:], r.stderr[-1000:])
-        rc = int(r.stdout.rsplit("RC", 1)[1].split()[0]) if "RC " in r.stdout else 1
+        m = re.findall(r"^RC (-?\d+)\s*$", r.stdout, re.M)
+        rc = int(m[-1]) if m else 1
         d = colab("download", "-s", name, "/content/out.tar.gz", str(tmp / "out.tar.gz"))
         if (tmp / "out.tar.gz").exists():
             with tarfile.open(tmp / "out.tar.gz") as t:

@@ -12,7 +12,7 @@ Providers live in providers.json. A new service needs no code: give it a "cmd" t
 leaves the result files in the probes directory (see modal_runner.py). Money rule: a job goes to a provider on its own only
 if its worst-case cost (price_per_hour * max_job_hours) fits in that provider's remaining free budget; otherwise the job
 waits as BLOCKED until `approve` grants the excess. Evaluation seeds (77100-77139) are refused without --allow-eval."""
-import itertools, json, re, subprocess, sys, threading, time
+import atexit, json, os, re, subprocess, sys, threading, time, uuid
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -35,7 +35,7 @@ def load_queue(path, allow_eval=False):
         if not raw or raw.startswith("#"):
             continue
         for line in expand(raw):
-            if re.search(r"[;&|<>$`\"'\\]", line) or not re.match(r"^[\w.-]+\.py( |$)", line) or not (PROBES / line.split()[0]).exists():
+            if re.search(r"[;&|<>$`\"'\\%^()!:]", line) or ".." in line or re.search(r"(^| )/", line) or not re.match(r"^[\w.-]+\.py( |$)", line) or not (PROBES / line.split()[0]).exists():
                 sys.exit(f"refused (unsafe or unknown script): {line}")
             if not allow_eval and re.search(r"\b771[0-3]\d\b", line):
                 sys.exit(f"refused (evaluation seed; use --allow-eval only for the one-time evaluation): {line}")
@@ -47,16 +47,18 @@ def load_queue(path, allow_eval=False):
 def load():
     cfg = json.loads(CFG.read_text(encoding="utf-8"))
     st = json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {}
-    st.setdefault("jobs", {}); st.setdefault("spend", {}); st.setdefault("approved", {})
+    st.setdefault("jobs", {}); st.setdefault("spend", {}); st.setdefault("approved", {}); st.setdefault("reserved", {})
     return cfg["providers"], st
 
 
 def save(st):
-    STATE.write_text(json.dumps(st, indent=1), encoding="utf-8")
+    tmp = STATE.with_suffix(".tmp")
+    tmp.write_text(json.dumps(st, indent=1), encoding="utf-8")
+    os.replace(tmp, STATE)  # atomic: a crash cannot leave half a file
 
 
 def free_left(p, st):
-    return max(0.0, p.get("free_usd", 0.0) - st["spend"].get(p["name"], 0.0))
+    return max(0.0, p.get("free_usd", 0.0) - st["spend"].get(p["name"], 0.0) - st["reserved"].get(p["name"], 0.0))
 
 
 def gate(p, st):
@@ -97,9 +99,8 @@ def pick(providers, st):
 
 
 def run_job(p, line, st):
-    n = len(list(LOGS.glob("*.log"))) if LOGS.exists() else 0
     LOGS.mkdir(exist_ok=True)
-    log = LOGS / f"{n:04d}_{p['name']}.log"
+    log = LOGS / f"{time.strftime('%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}_{p['name']}.log"
     cmd = p["cmd"].replace("{python}", sys.executable).replace("{line}", line)
     t0 = time.time()
     with open(log, "w", encoding="utf-8") as f:
@@ -109,6 +110,8 @@ def run_job(p, line, st):
                                 env={**__import__("os").environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"}).returncode
         except subprocess.TimeoutExpired:
             rc = -9
+        except Exception as e:  # never leave the job 'running' with its reservation held
+            f.write(f"runner error: {e!r}\n"); rc = -1
     secs = time.time() - t0
     cost = p.get("price_per_hour", 0.0) * secs / 3600
     with LOCK:
@@ -117,18 +120,37 @@ def run_job(p, line, st):
         st2["spend"][p["name"]] = new
         over = max(0.0, new - p.get("free_usd", 0.0)) - max(0.0, old - p.get("free_usd", 0.0))
         st2["approved"][p["name"]] = max(0.0, st2["approved"].get(p["name"], 0.0) - over)
+        st2["reserved"][p["name"]] = max(0.0, st2["reserved"].get(p["name"], 0.0) - p.get("price_per_hour", 0.0) * p.get("max_job_hours", 1.0))
         st2["jobs"][line].update(status="done" if rc == 0 else "failed", rc=rc, secs=round(secs), cost=round(cost, 4), log=log.name)
         save(st2)
     print(f"{time.strftime('%T')} {'DONE' if rc == 0 else 'FAIL'} rc={rc} {round(secs)}s ${cost:.3f} [{p['name']}] {line}")
 
 
+def single_instance():
+    """One scheduler at a time: an OS file lock that disappears with the process (no stale lock after a crash)."""
+    f = open(HERE / ".run.lock", "w")
+    try:
+        if os.name == "nt":
+            import msvcrt
+            msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        sys.exit("another sched.py run is already active; wait for it or stop it first")
+    return f
+
+
 def cmd_run(queue, dry=False, allow_eval=False):
+    lock = single_instance()  # keep the reference alive for the whole run
     providers, st = load()
     jobs = load_queue(queue, allow_eval)
-    for line in jobs:
-        j = st["jobs"].setdefault(line, {"status": "pending"})
+    for j in st["jobs"].values():  # leftovers of a crashed run, from any queue: nothing is running now
         if j["status"] in ("running", "blocked"):
             j["status"] = "pending"
+    st["reserved"] = {}
+    for line in jobs:
+        st["jobs"].setdefault(line, {"status": "pending"})
     save(st)
     threads, warned = [], set()
     while True:
@@ -144,10 +166,12 @@ def cmd_run(queue, dry=False, allow_eval=False):
                         print(f"BLOCKED needs approval: `python sched/sched.py approve {blocked[0]} {blocked[1]:.2f}`  ({line})")
                     continue
                 st["jobs"][line].update(status="running", provider=p["name"])
+                st["reserved"][p["name"]] = st["reserved"].get(p["name"], 0.0) + p.get("price_per_hour", 0.0) * p.get("max_job_hours", 1.0)
                 save(st)
                 started += 1
                 print(f"{time.strftime('%T')} START [{p['name']}] {line}")
                 if dry:
+                    st["reserved"][p["name"]] = 0.0
                     st["jobs"][line].update(status="done", rc=0, secs=0, cost=0); save(st)
                 else:
                     t = threading.Thread(target=run_job, args=(p, line, st), daemon=True); t.start(); threads.append(t)

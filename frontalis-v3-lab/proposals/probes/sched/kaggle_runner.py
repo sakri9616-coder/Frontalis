@@ -3,7 +3,7 @@ probes directory. Used by sched.py (providers.json "kaggle"):  python sched/kagg
 Needs KAGGLE_API_TOKEN (user environment variable; never printed or stored here) and a phone-verified Kaggle account for
 internet access inside the kernel (git clone). Free quota is about 30 GPU-hours per week; sched.py does not track it.
 Like modal_runner.py it runs a fresh clone of the pushed branch, so only committed and pushed code runs there."""
-import json, os, subprocess, sys, tarfile, tempfile, time
+import json, os, re, subprocess, sys, tarfile, tempfile, time
 from pathlib import Path
 
 PROBES = Path(__file__).resolve().parent.parent
@@ -34,43 +34,53 @@ def kg(*a):
         import winreg
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment") as k:
             env["KAGGLE_API_TOKEN"] = winreg.QueryValueEx(k, "KAGGLE_API_TOKEN")[0]
-    return subprocess.run(["uvx", "kaggle", *a], capture_output=True, text=True, encoding="utf-8", errors="replace", env=env)
+    try:
+        return subprocess.run(["uvx", "kaggle", *a], capture_output=True, text=True, encoding="utf-8", errors="replace", env=env, timeout=300)
+    except subprocess.TimeoutExpired:  # a hung network call must not block the job forever
+        return subprocess.CompletedProcess(a, 124, "", "timeout")
+
+
+def status(ref):
+    m = re.search(r'kernelworkerstatus\.(\w+)', kg("kernels", "status", ref).stdout.lower())
+    return m.group(1) if m else "unknown"
 
 
 def main(line):
     slug = f"frontalis-sched-{int(time.time()) % 1000000}"
+    ref = f"{USER}/{slug}"
     d = Path(tempfile.mkdtemp())
     (d / "run.py").write_text(SCRIPT % dict(branch=BRANCH, line=line), encoding="utf-8")
     (d / "kernel-metadata.json").write_text(json.dumps(dict(
-        id=f"{USER}/{slug}", title=slug, code_file="run.py", language="python", kernel_type="script",
+        id=ref, title=slug, code_file="run.py", language="python", kernel_type="script",
         is_private="true", enable_gpu="true", enable_internet="true", dataset_sources=[], competition_sources=[], kernel_sources=[])), encoding="utf-8")
     r = kg("kernels", "push", "-p", str(d))
     print(r.stdout[-500:], r.stderr[-500:])
     if r.returncode != 0:
         sys.exit(75)
-    t0 = time.time()
-    while time.time() - t0 < 3 * 3600:
-        time.sleep(20)
-        s = kg("kernels", "status", f"{USER}/{slug}").stdout.lower()
-        if "complete" in s or "error" in s or "cancel" in s:
-            break
-    print("status:", s.strip()[-200:])
-    out = Path(tempfile.mkdtemp())
-    kg("kernels", "output", f"{USER}/{slug}", "-p", str(out))
-    log = next(iter(out.glob("*.log")), None)
-    if log:
-        txt = log.read_text(encoding="utf-8", errors="replace")
-        print(txt[-1500:])
-    tar = out / "out.tar.gz"
     rc = 1
-    if tar.exists():
-        with tarfile.open(tar) as t:
-            for m in t.getmembers():
-                if m.isfile() and "/" not in m.name and "\\" not in m.name and not m.name.startswith("."):
-                    (PROBES / m.name).write_bytes(t.extractfile(m).read())
-            print("files:", [m.name for m in t.getmembers()])
-        rc = 0 if "complete" in s else 1
-    kg("kernels", "delete", f"{USER}/{slug}", "-y")  # may not exist in every CLI version; the kernel is private either way
+    try:
+        t0, s = time.time(), "unknown"
+        while time.time() - t0 < 3 * 3600:
+            time.sleep(20)
+            s = status(ref)
+            if s in ("complete", "error", "cancelacknowledged"):
+                break
+        print("status:", s)
+        out = Path(tempfile.mkdtemp())
+        kg("kernels", "output", ref, "-p", str(out))
+        log = next(iter(out.glob("*.log")), None)
+        if log:
+            print(log.read_text(encoding="utf-8", errors="replace")[-1500:])
+        tar = out / "out.tar.gz"
+        if tar.exists():
+            with tarfile.open(tar) as t:
+                for m in t.getmembers():
+                    if m.isfile() and "/" not in m.name and "\\" not in m.name and not m.name.startswith("."):
+                        (PROBES / m.name).write_bytes(t.extractfile(m).read())
+                print("files:", [m.name for m in t.getmembers()])
+            rc = 0 if s == "complete" else 1
+    finally:
+        kg("kernels", "delete", ref, "-y")  # the kernel is private either way; delete is best effort
     sys.exit(rc)
 
 
