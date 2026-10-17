@@ -7,15 +7,32 @@ p30_eval_main.py judge. Runs locally on the returned files (no GPU).
 Rules (fixed with the job split, before any evaluation job ran):
 - Complete = every expected job (set x {F1, F6m} x 8 seed groups, krr x F1 x 8, nn0 x F1 x 8) has exactly one result file, and
   each file holds exactly its 5 seeds x 2 cycle conditions. Otherwise: no judgement.
-- One place = all files report the same GPU name, torch, CUDA, numpy and Python version and the same git commit, and every
-  file passed the frozen-hash check. Otherwise: no judgement; report to the leader (offload_note.md sections 1 and 4).
+- One place = all files report the same GPU name, torch, CUDA, numpy and Python version, every file passed the frozen-hash
+  check, and every git commit the jobs ran contains byte-identical frozen files and p31_eval_job.py (checked here with
+  `git show <commit>:<path>`; amended 2026-10-17 before any merge, because the runners clone the branch tip and the tip moved
+  while the jobs ran). Otherwise: no judgement; report to the leader (offload_note.md sections 1 and 4).
 - Results are reported to the leader first and are not committed or pushed."""
-import json, subprocess, sys
+import hashlib, json, subprocess, sys
 from pathlib import Path
 
 HERE = Path(__file__).parent
 FIRSTS = list(range(77100, 77140, 5))
 EXPECTED = [("set", f, s) for f in ("F1", "F6m") for s in FIRSTS] + [(L, "F1", s) for L in ("krr", "nn0") for s in FIRSTS]
+
+
+def same_code(commits):
+    """True iff every commit holds the same frozen files (FREEZE.md list) and the same p31_eval_job.py."""
+    block = (HERE.parent / "FREEZE.md").read_text(encoding="utf-8").split("```")[1]
+    paths = ["frontalis-v3-lab/proposals/" + l.split(None, 1)[1].strip() for l in block.strip().splitlines()]
+    paths.append("frontalis-v3-lab/proposals/probes/p31_eval_job.py")
+    seen = set()
+    for c in commits:
+        h = []
+        for p in paths:
+            b = subprocess.run(["git", "show", f"{c}:{p}"], cwd=HERE, capture_output=True).stdout.replace(b"\r\n", b"\n")
+            h.append(hashlib.sha256(b).hexdigest() if b else "MISSING")
+        seen.add(tuple(h))
+    return len(seen) == 1 and "MISSING" not in next(iter(seen), ("MISSING",))
 
 
 def check():
@@ -36,7 +53,7 @@ def check():
     extra = sorted(q.name for q in HERE.glob("p31_eval_*.json") if q.name not in {f"p31_eval_{L}_{f}_{s}.json" for L, f, s in EXPECTED})
     rep = dict(n_expected=len(EXPECTED), n_found=len(files), missing=missing, unexpected=extra, machines=sorted(envs),
                commits=sorted(commits), problems=problems,
-               complete=not missing and not extra and not problems, one_place=len(envs) == 1 and len(commits) == 1)
+               complete=not missing and not extra and not problems, one_place=len(envs) == 1 and same_code(commits))
     print(json.dumps(rep, indent=1))
     return rep, files
 

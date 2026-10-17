@@ -54,3 +54,7 @@ b0a243319cdad973f3d7ad5395367a108c8799ebc57839050720b7cca1065346  probes/sched/s
 651c4f538decd276b6423a36c3bd3eb22d47a9ea0a53f0381f667f01bdfe5fa5  probes/sched/modal_runner.py
 86f68d366aaca12da71c9809b8024cb4cfc65a21890c3772798d23d4e737150a  probes/.gitignore
 ```
+
+## 追記（2026-10-17 22:55。実行の道具の訂正。判定の規則は変えていない。評価の結果はまだ誰も見ていない）
+- 実行器は、仕事を始めるときにブランチの先端を clone する。評価の途中で先端が進んだ（記録の commit）ので、仕事ごとに commit が違いうる。`p31_eval_merge.py` の「1 か所」の条件のうち「commit が 1 つ」を、「すべての commit で、凍結したファイルと `p31_eval_job.py` が同じバイト列」（`git show` で照合）に直した。機械（GPU・torch・CUDA・numpy・Python）が 1 種類という条件はそのまま。
+- 直した `p31_eval_merge.py` の SHA-256（LF）: `748637c4290843f7b1018001f8572ac5c4827f29d208530d32f9557734c3405e`
