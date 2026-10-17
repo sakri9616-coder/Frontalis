@@ -1,0 +1,91 @@
+{
+ "cost_s_per_pers": {
+  "set": {
+   "total": 23.63642060508331,
+   "train": 22.051026176909605,
+   "meas": 1.585394428173701,
+   "source": "production cells (2)"
+  },
+  "krr": {
+   "total": 6.605764944354693,
+   "train": 6.567061347762744,
+   "meas": 0.03870359659194946,
+   "source": "production cells (1)"
+  },
+  "nn0": {
+   "total": 14.11340088401387,
+   "train": 11.974081286706348,
+   "meas": 2.139319597307522,
+   "source": "rehearsal x ratio (estimate)"
+  },
+  "pre": {
+   "total": 24.617895578831984,
+   "train": 24.617895578831984,
+   "meas": 0.0,
+   "source": "rehearsal x ratio (estimate)"
+  },
+  "fixk": {
+   "total": 4.025773700170183,
+   "train": 3.977265417427748,
+   "meas": 0.04850828274243555,
+   "source": "rehearsal x ratio (estimate)"
+  },
+  "lin": {
+   "total": 2.8584104073934564,
+   "train": 2.8095545335142944,
+   "meas": 0.048855873879161904,
+   "source": "rehearsal x ratio (estimate)"
+  },
+  "rf": {
+   "total": 17.57321747151003,
+   "train": 16.099052670890252,
+   "meas": 1.4741648006197785,
+   "source": "rehearsal x ratio (estimate)"
+  },
+  "hb": {
+   "total": 4.065221143890137,
+   "train": 4.0235898295113195,
+   "meas": 0.04163131437881755,
+   "source": "rehearsal x ratio (estimate)"
+  },
+  "rel": {
+   "total": 367.01272077535594,
+   "train": 363.8419319190085,
+   "meas": 3.170788856347402,
+   "source": "set x 16.5 (P10/P13 estimate)"
+  }
+ },
+ "full_prereg_gpu_h": {
+  "set": 85.09111417829992,
+  "rel": 1321.2457947912815,
+  "krr": 23.780753799676894,
+  "hb": 14.634796118004493,
+  "rf": 63.26358289743611,
+  "fixk": 14.492785320612661,
+  "lin": 10.290277466616443,
+  "nn0": 50.808243182449935,
+  "pre": 88.62442408379515,
+  "secondary (set, rel)": 719.6995444328697
+ },
+ "staged_gpu_h": {
+  "S0 dev: NN-REL learnability gate (F1 F6m F2, C-off, role A, 10 dev seeds)": 3.418803418803419,
+  "S0 dev: NN-REL calibration (F1, C-off/C-S0, 6 roles) + reduced sec. 9 pass (I-H, F1 F6m, C-off C-SLp), if gate passes": 28.545433838083238,
+  "S0 dev: remaining production cells (queue A)": 8.05279359936033,
+  "S1a eval seeds 1-10: NN-SET + KRR + HB, 2 innates": 29.73308580088439,
+  "S1a' other controls (RF NN-0 FIX-K LIN PRE), only non-futile blocks": 54.76353830299692,
+  "S1b eval seeds 11-20: NN-SET + KRR + HB (non-futile blocks)": 22.871604462218762,
+  "S1b' other controls seeds 11-20 (non-futile)": 42.12579869461302,
+  "S2 eval seeds 21-40: NN-SET + all controls (non-futile)": 129.99480631366356,
+  "R1a NN-REL F1 F2 seeds 1-10, 2 innates": 97.87005887342825,
+  "R1b NN-REL F1 F2 seeds 11-20 (non-futile)": 97.87005887342825,
+  "R2 NN-REL F6m F5 seeds 1-20 + F7 1-20 (only if R1 not futile)": 293.6101766202848,
+  "R3 NN-REL seeds 21-40, all families + F7 (non-futile)": 489.35029436714126,
+  "S4 optional by budget rule: F6, secondary conds, I-HE (set + rel)": 928.0457531691042
+ },
+ "scenarios": {
+  "A: REL gate fails; every NN-SET block futile at 10 seeds": 41.20468281904814,
+  "B: REL gate passes; everything futile at the first look": 167.62017553055964,
+  "C: REL gate passes; nothing futile (all main stages, no S4)": 1298.2064531649062,
+  "D: C + S4": 2226.25220633401
+ }
+}

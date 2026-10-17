@@ -24,6 +24,7 @@ p23_rel_speedup.py equiv tf32
 p23_rel_speedup.py compare tf32
 p23_rel_speedup.py equiv batch2
 p23_rel_speedup.py compare batch2
+p16_nn_learnability.py gate_rel_prod
 p17_rehearsal.py krr lr
 p17_rehearsal.py rf lr
 p17_rehearsal.py hb lr

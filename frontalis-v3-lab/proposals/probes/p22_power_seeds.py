@@ -33,8 +33,7 @@ def sign_fp(n, p=0.5):
 def boot(d, base, n, B=20000):
     idx = rng.integers(0, len(d), size=(B, n))
     dd = d[idx]; fl = 0.25 * np.median(base[idx], axis=1)
-    return float(((dd > 0).sum(1) >= need(n)) & (np.median(dd, axis=1) >= fl)).mean() if False else \
-        float((((dd > 0).sum(1) >= need(n)) & (np.median(dd, axis=1) >= fl)).mean())
+    return float((((dd > 0).sum(1) >= need(n)) & (np.median(dd, axis=1) >= fl)).mean())
 
 
 def main():
