@@ -27,7 +27,7 @@ AI コンパニオン「ネフィア」のための、人格の学習済み状�
 - **人格形成と人格表現は別です。** LLM が人格らしく語れたことは、NPN が人格を形成した証拠になりません。同じ LLM・同じプロンプトで NPN の状態だけを入れ替えたとき、判断が変わるかで切り分けます。
 - **人格の個性と、学習機構の故障は別です。** 固執、嫌悪の持続、反証への抵抗は故障ではありません。故障と数えるのは、数値の発散、学習の飽和、無関係な価値の崩壊のような、計算機構の破綻だけです。
 
-正本は研究思想 `FRONTALIS_PHILOSOPHY.md` です（ブランチ `claude/project-thread-1vq8ai`、固定コミット `4fecbad`）。
+正本は研究思想 [`FRONTALIS_PHILOSOPHY.md`](https://github.com/sakri9616-coder/Frontalis/blob/4fecbad/FRONTALIS_PHILOSOPHY.md) です（ブランチ `claude/project-thread-1vq8ai`、固定コミット `4fecbad`）。
 
 ## 2. 現在の方針（2026-10-17 の再定義）
 
@@ -58,9 +58,9 @@ AI コンパニオン「ネフィア」のための、人格の学習済み状�
 | 世代 | 場所 | 内容 | 扱い |
 | --- | --- | --- | --- |
 | Phase 3-D / 3-E / 3-F | `main` の `frontalis-phase3*-lab/` | 旧実装。時間・短期感情・気分・忘却・定着・LLM 連携など | 再利用できる技術成果。結果は現行研究の前提にしない |
-| v3.0〜v3.3 | ブランチ `claude/charming-galileo-wawr7u`（PR #2）の `frontalis-v3-lab/` | NPN の最小実装。5 欲求、効果表、階層ベイズの信念、カルマン型の価値ネット | 機構の確認であり、実験結果ではない |
-| v3.4 Y 系 | ブランチ `claude/v3.4-prereg` | 訂正の再評価と再学習（M1〜M3） | 比較対象 |
-| 価値表現の獲得 | 設計草案を作業中（未公開） | 本来の中心課題 | 事前登録の前 |
+| v3.0〜v3.3 | ブランチ [`claude/charming-galileo-wawr7u`](https://github.com/sakri9616-coder/Frontalis/tree/claude/charming-galileo-wawr7u/frontalis-v3-lab)（[PR #2](https://github.com/sakri9616-coder/Frontalis/pull/2)）の `frontalis-v3-lab/` | NPN の最小実装。5 欲求、効果表、階層ベイズの信念、カルマン型の価値ネット | 機構の確認であり、実験結果ではない |
+| v3.4 Y 系 | ブランチ [`claude/v3.4-prereg`](https://github.com/sakri9616-coder/Frontalis/tree/claude/v3.4-prereg/frontalis-v3-lab) | 訂正の再評価と再学習（M1〜M3） | 比較対象 |
+| 価値表現の獲得 | ブランチ [`claude/value-representation-design`](https://github.com/sakri9616-coder/Frontalis/tree/claude/value-representation-design/frontalis-v3-lab/proposals) の `proposals/`（設計草案と予備検査。作業中） | 本来の中心課題 | 事前登録の前 |
 
 ### 3.2 v3.4 Y 系（比較対象）
 
@@ -145,10 +145,11 @@ AI コンパニオン「ネフィア」のための、人格の学習済み状�
 
 | ブランチ | 内容 |
 | --- | --- |
-| `main` | 旧 Phase 3-D/3-E/3-F、アーカイブ、引き継ぎ資料 |
-| `claude/project-thread-1vq8ai` | 研究思想 `FRONTALIS_PHILOSOPHY.md`（固定コミット `4fecbad`） |
-| `claude/charming-galileo-wawr7u` | v3.0〜v3.3 の NPN 最小実装（PR #2） |
-| `claude/v3.4-prereg` | v3.4 Y 系の事前登録、実装、検出力の検査、評価 |
+| `main` | 旧 Phase 3-D/3-E/3-F のコードとアーカイブ、引き継ぎ資料（**旧実装。現行の実装は下の別ブランチ**） |
+| [`claude/project-thread-1vq8ai`](https://github.com/sakri9616-coder/Frontalis/blob/4fecbad/FRONTALIS_PHILOSOPHY.md) | 研究思想 `FRONTALIS_PHILOSOPHY.md`（固定コミット `4fecbad`） |
+| [`claude/charming-galileo-wawr7u`](https://github.com/sakri9616-coder/Frontalis/tree/claude/charming-galileo-wawr7u/frontalis-v3-lab) | v3.0〜v3.3 の NPN 最小実装（PR #2） |
+| [`claude/v3.4-prereg`](https://github.com/sakri9616-coder/Frontalis/tree/claude/v3.4-prereg/frontalis-v3-lab) | v3.4 Y 系の事前登録、実装、検出力の検査、評価 |
+| [`claude/value-representation-design`](https://github.com/sakri9616-coder/Frontalis/tree/claude/value-representation-design/frontalis-v3-lab/proposals) | 価値表現の獲得の設計草案、独立批評、開発用の予備検査、GPU の学習器（作業中。草案段階のファイルを含む） |
 
 ## 9. 再現
 
