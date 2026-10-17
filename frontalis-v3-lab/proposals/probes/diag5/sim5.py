@@ -331,7 +331,7 @@ DEFAULT = dict(learner="set", innate="IH", cycle=1, pw="S", kmode="zero", kfix=0
                beta=3.0, ceps=0.1, ref=0.5, salience=1, sal_max=2.0, lr=3e-4, bs=32, spn=1, n_steps=3000, n_early=1200,
                clip=1.0, hidden=128, d=64, solve_every=25, krr_ls=4.0, lam=1.0, amp=0, phase="main", eta_kp=0.02,
                blk=200, eta_kh=0.5, sig_kn=0.3, kmax=10.0, ckpt_every=0, ckpt_path=None, stop_at=None, wd=0.0, mask_partner=0,
-               partner_scale=1.0, chunk=1000, sdpa=0, tf32=0, fused_opt=0, bel_r=0, krr_flat_b=0, wgate=0)
+               partner_scale=1.0, chunk=1000, sdpa=0, tf32=0, fused_opt=0, bel_r=0, krr_flat_b=0, wgate=0, krr_self_b=0)
 
 
 def _stack(arrs, dtype=None):
@@ -562,7 +562,7 @@ def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any], state: Op
             buf["s"][:, t] = S2.int(); buf["c"][:, t] = cc.int(); buf["TV"][:, t] = TVt; buf["DB"][:, t] = db; buf["SAL"][:, t] = sal; buf["R"][:, t] = r
             if ridge:
                 phi = net.feats(x, m2)
-                net.add(phi, db[:, None, :].expand(-1, 2, -1), torch.full_like(r, 0.5) if c["krr_flat_b"] else r, TVt, sal[:, None].expand(-1, 2))
+                net.add(phi, db[:, None, :].expand(-1, 2, -1), torch.full_like(r, 0.5) if c["krr_flat_b"] else (torch.softmax(ll, 1) if c["krr_self_b"] else r), TVt, sal[:, None].expand(-1, 2))
                 if (t + 1) % c["solve_every"] == 0 or t == N - 1:
                     net.solve()
         n = t + 1

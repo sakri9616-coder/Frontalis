@@ -6,6 +6,9 @@ cfg is sim4). sim4.py itself is never modified.
   wgate      candidate mechanism: the CURRENT evaluative state w_use gates the plasticity of every replayed value update
              per channel (loss weight w_k), so a change of state changes how the whole record is (re)learned from then on,
              not only the targets of new experiences. w_use is 1 in C-off, so C-off is unchanged.
+  krr_self_b ridge learners: belief rows weighted by the learner's OWN likelihood posterior softmax(ll) in every condition
+             (the analogue of the NN's own soft-min attribution), so KRR and NN-SET get the same kind of attribution rule
+             and the cycle no longer changes KRR's belief input.
 """
 from pathlib import Path
 HERE = Path(__file__).resolve().parent
@@ -31,7 +34,8 @@ rep('                mix = -torch.logsumexp(-((dbb[:, :, None, :] - pbb) ** 2).s
     '                    mix = (rb * ((dbb[:, :, None, :] - pbb) ** 2).sum(-1)).sum(-1).mean(1) / 0.2\n'
     '                else:\n'
     '                    mix = -torch.logsumexp(-((dbb[:, :, None, :] - pbb) ** 2).sum(-1) / 0.2, dim=2).mean(1)\n')
-rep('bel_r=0, krr_flat_b=0)', 'bel_r=0, krr_flat_b=0, wgate=0)')
+rep('bel_r=0, krr_flat_b=0)', 'bel_r=0, krr_flat_b=0, wgate=0, krr_self_b=0)')
+rep('torch.full_like(r, 0.5) if c["krr_flat_b"] else r, TVt,', 'torch.full_like(r, 0.5) if c["krr_flat_b"] else (torch.softmax(ll, 1) if c["krr_self_b"] else r), TVt,')
 rep('                lv = (sw[:, :, None, None] * (vv - tv) ** 2).sum(-1).mean((1, 2))\n',
     '                gw = state["w_use"][:, None, None, :] if c["wgate"] else 1.0\n'
     '                lv = (sw[:, :, None, None] * gw * (vv - tv) ** 2).sum(-1).mean((1, 2))\n')
