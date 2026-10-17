@@ -117,6 +117,16 @@ def main():
     opt["O-controls: RF HB PRE-NN FIX-K LIN in the main cells (trigger: J5-c passes vs KRR and NN-0)"] = sum(H(L, cell) for L in ("rf", "hb", "pre", "fixk", "lin"))
     opt["O-REL: gate + dev calibration + F1 F2 C-off/C-SLp 20 seeds (trigger: L2 signal AND relational reason)"] = 3.4 + H("rel", 120) + H("rel", 2 * cell)
     out["minimum"] = dict(main=mn, optional=opt, main_total=sum(mn.values()))
+    # REVISED minimum (after the four critique-3 reviews, PREREG 10d rev. b2): 40 evaluation seeds 77100-77139 once;
+    # NN-SET in F1 and F6m (structural control for J4-d), roles A A' B B' + A_env A_sgd (all seeds) + A_exact (first 5 seeds);
+    # KRR and NN-0 in F1 (J5-c); optional stages on fresh reserved seeds 77300-77339
+    set_p = 40 * 2 * 2 * 6
+    ctl_p = 40 * 1 * 2 * 4
+    mn2 = {}
+    mn2["dev before freeze: C-SLp calibration at m=1 and 1.5 + NN-0 dev cell + KRR C-SLp dev cell"] = mn[list(mn)[0]]
+    mn2["EVAL NN-SET, I-H, F1+F6m, C-off/C-SLp, 40 seeds, 6 roles (+A_exact in 5)"] = H("set", set_p)
+    mn2["EVAL KRR + NN-0, F1, C-off/C-SLp, 40 seeds, 4 roles"] = H("krr", ctl_p) + H("nn0", ctl_p)
+    out["minimum_rev"] = dict(main=mn2, total=sum(mn2.values()), personas=dict(set=set_p, krr=ctl_p, nn0=ctl_p))
     (HERE / "p24_results.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
     for k, v in out["cost_s_per_pers"].items():
         print(f"{k:5s} {v['total']:7.1f} s/pers (train {v['train']:.1f}, meas {v['meas']:.1f})  {v['source']}")
@@ -129,6 +139,10 @@ def main():
     for k, v in out["minimum"]["main"].items():
         print(f"  {v:6.2f} h  {k}")
     print(f"  {out['minimum']['main_total']:6.2f} h  total")
+    print("REVISED minimum:")
+    for k, v in out["minimum_rev"]["main"].items():
+        print(f"  {v:6.2f} h  {k}")
+    print(f"  {out['minimum_rev']['total']:6.2f} h  total", out["minimum_rev"]["personas"])
     print("optional stages (each only by its trigger):")
     for k, v in out["minimum"]["optional"].items():
         print(f"  {v:6.2f} h  {k}")

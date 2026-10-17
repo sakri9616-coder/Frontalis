@@ -79,5 +79,32 @@
   "pers_steps_per_s": 113.78569764808624,
   "peak_MiB": 2332.0615234375,
   "rep": 0
+ },
+ {
+  "learner": "rel",
+  "var": "exact",
+  "P": 256,
+  "secs": 859.1592280864716,
+  "pers_steps_per_s": 29.79657223378324,
+  "peak_MiB": 3170.51220703125,
+  "rep": 0
+ },
+ {
+  "learner": "set",
+  "var": "base",
+  "P": 128,
+  "secs": 14.502209186553955,
+  "pers_steps_per_s": 882.6241461106356,
+  "peak_MiB": 675.546875,
+  "rep": 0
+ },
+ {
+  "learner": "set",
+  "var": "base",
+  "P": 128,
+  "secs": 10.790302991867065,
+  "pers_steps_per_s": 1186.2502850612902,
+  "peak_MiB": 675.546875,
+  "rep": 1
  }
 ]

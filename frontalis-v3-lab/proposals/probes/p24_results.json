@@ -101,5 +101,18 @@
    "O-REL: gate + dev calibration + F1 F2 C-off/C-SLp 20 seeds (trigger: L2 signal AND relational reason)": 51.329481349729086
   },
   "main_total": 3.545340355033261
+ },
+ "minimum_rev": {
+  "main": {
+   "dev before freeze: C-SLp calibration at m=1 and 1.5 + NN-0 dev cell + KRR C-SLp dev cell": 1.2582300498301662,
+   "EVAL NN-SET, I-H, F1+F6m, C-off/C-SLp, 40 seeds, 6 roles (+A_exact in 5)": 7.374988300069984,
+   "EVAL KRR + NN-0, F1, C-off/C-SLp, 40 seeds, 4 roles": 2.1660611654853787
+  },
+  "total": 10.799279515385528,
+  "personas": {
+   "set": 980,
+   "krr": 320,
+   "nn0": 320
+  }
  }
 }

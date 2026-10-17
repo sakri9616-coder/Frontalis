@@ -81,7 +81,7 @@ def planted_views(vw, w, seed, mult=1.0):
 
 
 def run_cell(learner, innate, conds, fams, seeds, roles, scale, out_path, calib_conds=(), tag="", extra_cfg=None, remap=True,
-             ckpt_dir=None, log=sys.stderr, resume=True):
+             ckpt_dir=None, log=sys.stderr, resume=True, extra_fn=None):
     """One batched run: one learner and innate condition, several cycle conditions (per personality), families, seeds."""
     worlds = {(s, f): sim4.make_world(s, f) for s in seeds for f in fams}
     pers = pers_list(seeds, fams, roles, tag, conds)
@@ -109,6 +109,8 @@ def run_cell(learner, innate, conds, fams, seeds, roles, scale, out_path, calib_
         cyc = COND[cond]["cycle"]
         r = m4.measure_group(v, worlds[(s, f)], s, innate, cyc)
         r.update(learner=learner, innate=innate, cond=cond, seed=s, fam=f, scale=scale, tag=tag)
+        if extra_fn is not None:   # extra descriptive quantities per group (P30: path individuality)
+            r.update(extra_fn(v))
         if cond in calib_conds and f == "F1" and v["A"].nn and "A3" in v:
             r["calib"] = {name_: m4.measure_group(pv, worlds[(s, f)], s, innate, cyc) for name_, pv in planted_views(v, worlds[(s, f)], s).items()}
         rows.append(r)

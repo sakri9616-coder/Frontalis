@@ -34,10 +34,13 @@ def calib_slp():
             continue
         for name, pv in planted_views(v, worlds[(s, f)], s).items():
             rows.setdefault(name, []).append(m4.measure_group(pv, worlds[(s, f)], s, "IH", COND[cond]["cycle"], das=False))
+        for name, pv in planted_views(v, worlds[(s, f)], s, mult=1.5).items():   # PREREG 10d: J2 calibration amplitude 1.5
+            if name in ("PL-struct", "PL-rand"):
+                rows.setdefault(name + "@1.5", []).append(m4.measure_group(pv, worlds[(s, f)], s, "IH", COND[cond]["cycle"], das=False))
     out = {}
     for name, rs in rows.items():
         c = judge4.contrasts(rs)
-        exp = judge4.EXPECT.get(name, {})
+        exp = judge4.EXPECT.get(name.split("@")[0], {})
         out[name] = {j: dict(passed=c[j]["passed"], expected=e, ok=c[j]["passed"] == e, n_pos=c[j]["n_pos"], median=c[j]["median"],
                              floor=c[j]["floor"]) for j, e in exp.items() if j in c}
     out["_hash"] = sim4.state_hash(st); out["_ckpt"] = os.path.basename(ck)
