@@ -160,3 +160,13 @@ python -B -m unittest discover -s tests -p "test_ra_mechanisms.py"
 ```
 
 注意: Windows には `fork` がないため、並列実行は `spawn` 方式です。v3.3 の結果ファイルは Python 3.13 で作られており、Python 3.12 では、一部（NN 系）で数値が一致しません（最大差 0.030。版の違いの影響として記録）。
+
+## 10. ライセンス
+
+成果物の種類ごとに、次のライセンスで公開します（詳細とパスの目安は [LICENSING.md](LICENSING.md)）。
+
+| 種類 | ライセンス |
+| --- | --- |
+| ソースコード、学習済み NN の重み | [Apache License 2.0](LICENSE) |
+| 研究文書・実験結果 | [CC BY 4.0](LICENSE-CC-BY-4.0) |
+| 学習データ | 未指定（権利関係を確認してから別途指定。それまで再利用の許可は与えていません） |
