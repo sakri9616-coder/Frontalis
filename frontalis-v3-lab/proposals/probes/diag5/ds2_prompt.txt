@@ -1,0 +1,10 @@
+You are auditing code. Work only inside frontalis-v3-lab/proposals/probes/. HARD RULES: never open, read or list the contents of any file whose name starts with p31_eval_ or p30_cells or p30_judgment. Do not modify any existing file. Write only diag5/ds2_audit.md.
+
+Read sim4.py (function run, lines ~395-598, and classes NNPop, RidgePop) and measure4.py (swap_update, own_r2, measure_group) and cells.py (planted_views).
+Answer precisely with line numbers, no speculation beyond the code:
+A) In sim4.run, list every quantity of the per-personality evaluative state (w_use, cum, kappa, fscale, sig2, Ef, Es, sat, b) and, for each, every path by which it reaches (1) the stored value targets TV, (2) the salience weight SAL, (3) the BELIEF learning of NN learners (set/nn0), (4) the belief learning of ridge learners (krr), (5) choice. State explicitly whether the NN belief loss uses the attribution posterior r at all.
+B) List every difference between how a value target is formed in sim4.run (around lines 506-562) and in measure4.swap_update. For each difference, say which direction it pushes the magnitude of the dependence of the target on the donor's channel weights w (e.g. is the hinge d computed on the body state bnew = 0.7*b + db in run but on db alone in swap_update?).
+C) In swap_update, which donor quantities enter the target (w, kappa, fscale, the donor's value V), and which receiver quantities.
+D) In planted_views, what differs between donor PL-state and donor PL-state0 (exactly).
+E) Any bug or inconsistency you find (index errors, wrong axis in sums, e.g. vvec.sum(1) summing over the two candidates vs channels), with line numbers.
+Write diag5/ds2_audit.md, concise, as a numbered list.
