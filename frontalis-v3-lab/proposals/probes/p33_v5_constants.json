@@ -1,0 +1,19 @@
+{
+ "m_abs": 0.016,
+ "source": "p32_setwg.json",
+ "PL-state": {
+  "n_pos": 10,
+  "n": 10,
+  "median": 0.29778851894661784,
+  "floor": 0.016,
+  "passed": true
+ },
+ "PL-state0": {
+  "n_pos": 3,
+  "n": 10,
+  "median": -0.003740187268704176,
+  "floor": 0.016,
+  "passed": false
+ },
+ "J3v5_usable": true
+}

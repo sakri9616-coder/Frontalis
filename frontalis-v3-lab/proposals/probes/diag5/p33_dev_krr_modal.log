@@ -1,0 +1,16 @@
+C:\Users\sakur\AppData\Local\uv\cache\archive-v0\OcLPXSGodnu0sNpb\Lib\site-packages\modal\_utils\async_utils.py:43: DeprecationWarning: 'asyncio.WindowsSelectorEventLoopPolicy' is deprecated and slated for removal in Python 3.16
+  asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+C:\Users\sakur\AppData\Local\uv\cache\archive-v0\OcLPXSGodnu0sNpb\Lib\site-packages\modal\_utils\async_utils.py:43: DeprecationWarning: 'asyncio.set_event_loop_policy' is deprecated and slated for removal in Python 3.16
+  asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+✓ Initialized. View run at 
+https://modal.com/apps/sakri9616/main/ap-kkx81KwSjeobQkoAdC68Xk
+✓ Created objects.
+├── ✓ Uploaded 
+│   C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis
+│   -v3-lab\proposals\probes\sched\modal_runner.py
+└── ✓ Created Function run.
+
+commit 25b2325 rc=0 files=['p33_dev_krr_77380.json']
+wrote p33_dev_krr_77380.json {'gpu': 'Tesla T4', 'torch': '2.14.1+cu130', 'cuda': '13.0', 'numpy': '2.5.4', 'python': '3.12.10'} 164 s
+
+Stopping app - uncaught exception raised locally: SystemExit(0).

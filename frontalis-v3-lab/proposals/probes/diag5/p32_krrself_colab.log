@@ -1,0 +1,32 @@
+[colab] Creating session 'sched50960'...
+[colab] Session READY.
+ 
+COMMIT 9a37b92
+
+CUDA runtime error: an illegal memory access was encountered (700) in magma_spotrs_batched at /builder/magma/magma-cuda130/magma-2.6.1/src/spotrs_batched.cpp:193
+CUDA runtime error: an illegal memory access was encountered (700) in magma_queue_destroy_internal at /builder/magma/magma-cuda130/magma-2.6.1/interface_cuda/interface.cpp:1205
+Traceback (most recent call last):
+  File "/content/F/frontalis-v3-lab/proposals/probes/p32_v5_dev.py", line 95, in <module>
+    {"setwg": setwg, "krrself": krrself}[sys.argv[1]]()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/content/F/frontalis-v3-lab/proposals/probes/p32_v5_dev.py", line 86, in krrself
+    st = sim5.run(pers, worlds, cfg)
+  File "/content/F/frontalis-v3-lab/proposals/probes/diag5/sim5.py", line 567, in run
+    net.solve()
+    ~~~~~~~~~^^
+  File "/content/F/frontalis-v3-lab/proposals/probes/diag5/sim5.py", line 325, in solve
+    self.W = torch.cat([torch.cholesky_solve(self.R[..., :KB], torch.linalg.cholesky(self.Gb)),
+                        ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.AcceleratorError: CUDA error: an illegal memory access was encountered
+Search for `cudaErrorIllegalAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+RC 1
+ 
+files: []
+[colab] Stopping session 'sched50960'...
+[colab] Session terminated.
+

@@ -453,3 +453,16 @@ PREREG 草案 4 の基準は、以下の実行の前に commit した（0e75f3f�
   - 費用: R²_nc 0.648 → 0.627、J1・J2 はわずかに下がる。凍結した実の J3 は依然 6/10 で不合格。
   - bel_r を足す（S2）と C-off の信念が壊れる（R²_nc 0.17）。退けた。
 - 注: DeepSeek の集計の作業が、システムの Python 3.14 に numpy を PyPI から入れた（私の指示ではない）。
+
+## v5 の開発用の較正（2026-10-18。開発用の種 77380〜77389。手元の GPU は使っていない。評価の結果は見ていない）
+- 外部での実行: sched.py は草案 4 の評価が排他の錠を持っているので、各提供元の実行の道具（`sched/kaggle_runner.py`、`sched/modal_runner.py`）を直接呼んだ。どれも push 済みのコードの複製で動く。
+- `p32_v5_dev.py setwg`（Kaggle の T4、torch 2.11.0+cu128、1,261 秒）: wgate の本番規模の較正。
+  - J3v5: PL-state 10/10（0.298）、PL-state0 3/10（最大 0.0153）。→ 規則で m_abs = 0.016、使える（`p33_v5_constants.json`）。
+  - 実の C-SLp は 9/10（0.044）、C-off は 0/10。
+  - 草案 4 の J3 の較正は、wgate を入れても 7/10 で通らない。
+  - 状態の時間経過は PREREG-v5 第 6 節。
+- `p32_v5_dev.py krrself`（手元の CPU、583 秒）: 帰属を揃えた KRR の R²_nc は、C-off・C-SLp とも 0.640。NN-SET（wgate）は 0.578 ／ 0.572 で、上回るのは 2/10 ／ 3/10。→ V2 は開発用の種の見込みで通らない。
+- Colab の torch（cu130 の magma）は、KRR のバッチの Cholesky で不正なメモリ参照を起こして落ちた。
+  - Modal（torch 2.14.1+cu130）では、同じ経路（`p32_v5_dev.py krrcheck`、草案 4 の KRR の設定、種 2）が通った。R²_nc は手元の P15 と 4 桁まで一致（0.6511、0.5755）。草案 4 の評価の KRR のジョブに、この障害は及ばない見込み。
+- `p33_eval_v5.py` の試運転（Modal の T4、開発用の種 77380〜77384、commit 25b2325）: NN-SET 988 秒、NN-0 574 秒、KRR 164 秒。すべて rc 0、非有限 0。
+- DeepSeek が入れた numpy（2026-10-17 23:10〜23:11）: `C:\Users\sakur\AppData\Local\Python\pythoncore-3.14-64` の `Lib\site-packages\numpy\`、`numpy.libs\`、`numpy-2.5.4.dist-info\`、`Scripts\f2py.exe`、`Scripts\numpy-config.exe`。消していない（ユーザーが判断する）。
