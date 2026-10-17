@@ -1,0 +1,286 @@
+{
+ "status": "pass",
+ "python": "3.12.13",
+ "numpy": "2.5.4",
+ "note": "作業用の写し（リポジトリ外）で、現在の npnv3（reappraisal_mode 既定 'v33'）に対し v3.3 の全 42 モジュール 350 件を実行（Windows に fork がないので pmap を spawn 2 本に）。結果 JSON 64 件のうち 62 件が stage2_h6.json の同じ環境の基準（v3.3 のコード）とバイト単位で一致、残り 2 件（U03・W05）は Stage 2・3 と同じ辞書のキーの並びだけの差（Counter とプロセスごとの文字列ハッシュ）。全モジュールの実行件数と合否（OK / FAILED の別）が基準と同じ。凍結済みファイル（Python 3.13）との差は環境の影響（L2）。",
+ "summary": {
+  "n_result_files": 64,
+  "n_bit_identical_to_baseline": 62,
+  "not_bit_identical": [
+   "U03.json",
+   "W05.json"
+  ],
+  "missing": [],
+  "modules_with_different_outcome_vs_baseline": [
+   "test_e_extinction",
+   "test_m_trace",
+   "test_t01_loop",
+   "test_t02_history_difference",
+   "test_t04_continual",
+   "test_u03_effect_table_robustness",
+   "test_u07_nn_contribution",
+   "test_u08_total_evaluation_persistence",
+   "test_u08b_person_attributed_persistence",
+   "test_w02_conditioning_to_action",
+   "test_w04_random_worlds",
+   "test_y_correction",
+   "test_z_choice"
+  ],
+  "modules_total_ran": 350,
+  "elapsed_s": 6719.934616804123
+ },
+ "modules": {
+  "test_b_health": {
+   "ran": 12,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_cli": {
+   "ran": 5,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_e_extinction": {
+   "ran": 12,
+   "result_line": [
+    "FAILED (failures=6)"
+   ]
+  },
+  "test_e_mechanisms": {
+   "ran": 71,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_innate": {
+   "ran": 6,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_ledger_and_purity": {
+   "ran": 8,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_m_trace": {
+   "ran": 6,
+   "result_line": [
+    "FAILED (failures=1)"
+   ]
+  },
+  "test_p_mechanisms": {
+   "ran": 24,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_p_persist": {
+   "ran": 7,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_recall": {
+   "ran": 9,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_schema": {
+   "ran": 10,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_structure": {
+   "ran": 12,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_t01_loop": {
+   "ran": 2,
+   "result_line": [
+    "OK (expected failures=1)"
+   ]
+  },
+  "test_t02_history_difference": {
+   "ran": 6,
+   "result_line": [
+    "OK (expected failures=1)"
+   ]
+  },
+  "test_t04_continual": {
+   "ran": 1,
+   "result_line": [
+    "FAILED (failures=1)"
+   ]
+  },
+  "test_t05_persistence": {
+   "ran": 2,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_t06_no_amplification": {
+   "ran": 2,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_t07_generalization": {
+   "ran": 1,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_t08_transfer": {
+   "ran": 1,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_t09_counterfactual": {
+   "ran": 2,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_t10_determinism": {
+   "ran": 3,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_u01_learned_state_appraisal": {
+   "ran": 2,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_u02_conditioning": {
+   "ran": 1,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_u03_effect_table_robustness": {
+   "ran": 2,
+   "result_line": [
+    "FAILED (failures=1)"
+   ]
+  },
+  "test_u04_interpretation": {
+   "ran": 1,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_u05_closed_loop": {
+   "ran": 1,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_u06_no_amplification_extended": {
+   "ran": 3,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_u07_nn_contribution": {
+   "ran": 1,
+   "result_line": [
+    "FAILED (failures=1)"
+   ]
+  },
+  "test_u08_total_evaluation_persistence": {
+   "ran": 1,
+   "result_line": [
+    "FAILED (failures=1)"
+   ]
+  },
+  "test_u08b_person_attributed_persistence": {
+   "ran": 1,
+   "result_line": [
+    "FAILED (failures=1)"
+   ]
+  },
+  "test_u09_llm_independence": {
+   "ran": 2,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_v31_mechanisms": {
+   "ran": 36,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_v32_mechanisms": {
+   "ran": 23,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_w01_criteria_to_learning": {
+   "ran": 1,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_w02_conditioning_to_action": {
+   "ran": 1,
+   "result_line": [
+    "FAILED (failures=1)"
+   ]
+  },
+  "test_w03_within_between": {
+   "ran": 1,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_w04_random_worlds": {
+   "ran": 1,
+   "result_line": [
+    "FAILED (failures=1)"
+   ]
+  },
+  "test_w07_head_weights": {
+   "ran": 1,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_x_nn_transfer": {
+   "ran": 14,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_y_correction": {
+   "ran": 7,
+   "result_line": [
+    "FAILED (failures=1)"
+   ]
+  },
+  "test_yz_mechanisms": {
+   "ran": 39,
+   "result_line": [
+    "OK"
+   ]
+  },
+  "test_z_choice": {
+   "ran": 9,
+   "result_line": [
+    "FAILED (failures=1)"
+   ]
+  }
+ }
+}

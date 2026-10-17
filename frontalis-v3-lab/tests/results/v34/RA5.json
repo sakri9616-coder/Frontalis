@@ -1,0 +1,336 @@
+{
+ "id": "RA5",
+ "verdict": "pass",
+ "label": "比較対象（Y 系）。ユーザーの 2026-10-17 の再定義の下では、本来の NPN 研究の達成ではない。",
+ "invariants": {
+  "RA5_range": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "RA5_formula": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "RA5_pred": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "RA5_sigma": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "RA5_remainder": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "RA5_reconstruct": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  }
+ },
+ "sweep_overshoot_reconstruction": {
+  "n_expected_c_v34_c_or": 822,
+  "n_reconstructed": 822,
+  "n_missing": 0,
+  "all_within_1e-9": true,
+  "max_err_dW": 4.163336342344337e-17,
+  "max_err_gD": 3.7470027081099033e-16
+ },
+ "r_of_N_pooled_all_cells(report)": {
+  "C-v34": {
+   "2": {
+    "ratio": 0.44837008766123854,
+    "lo": 0.44467259581562024,
+    "hi": 0.45203855420145206,
+    "n": 40
+   },
+   "4": {
+    "ratio": 0.37819281690417383,
+    "lo": 0.37432582515931345,
+    "hi": 0.38216868375980545,
+    "n": 40
+   },
+   "8": {
+    "ratio": 0.3427666701430108,
+    "lo": 0.3369283829026222,
+    "hi": 0.34846994955363203,
+    "n": 40
+   },
+   "12": {
+    "ratio": 0.4263244955831756,
+    "lo": 0.41995796593848406,
+    "hi": 0.4326183497507219,
+    "n": 40
+   },
+   "16": {
+    "ratio": 0.5070127886389332,
+    "lo": 0.5022092371413966,
+    "hi": 0.5117387089179434,
+    "n": 40
+   }
+  },
+  "C-OR": {
+   "2": {
+    "ratio": 0.447724609255953,
+    "lo": 0.44401151007813217,
+    "hi": 0.451398104763282,
+    "n": 40
+   },
+   "4": {
+    "ratio": 0.3771710960141021,
+    "lo": 0.373324486895587,
+    "hi": 0.38114939209536036,
+    "n": 40
+   },
+   "8": {
+    "ratio": 0.3421092480780209,
+    "lo": 0.33625290455593426,
+    "hi": 0.34783257593591976,
+    "n": 40
+   },
+   "12": {
+    "ratio": 0.426174949083109,
+    "lo": 0.419791966043279,
+    "hi": 0.43249905690525975,
+    "n": 40
+   },
+   "16": {
+    "ratio": 0.5068598927939402,
+    "lo": 0.5020425485190866,
+    "hi": 0.5115972351961662,
+    "n": 40
+   }
+  },
+  "C-v33": {
+   "2": {
+    "ratio": 0.42639024798048525,
+    "lo": 0.42165924514431646,
+    "hi": 0.43090219249889383,
+    "n": 40
+   },
+   "4": {
+    "ratio": 0.21924968275579285,
+    "lo": 0.21217244759689655,
+    "hi": 0.2260243150903033,
+    "n": 40
+   },
+   "8": {
+    "ratio": -0.17918646142887829,
+    "lo": -0.19165347509107805,
+    "hi": -0.16607147832318297,
+    "n": 40
+   },
+   "12": {
+    "ratio": -0.38160768497352815,
+    "lo": -0.39600451284458893,
+    "hi": -0.36722545806029483,
+    "n": 40
+   },
+   "16": {
+    "ratio": -0.5443305768235597,
+    "lo": -0.5604569392799683,
+    "hi": -0.5286256265943937,
+    "n": 40
+   }
+  },
+  "C-retro": {
+   "2": {
+    "ratio": -0.11922242463472194,
+    "lo": -0.12786984347469876,
+    "hi": -0.11063288195343352,
+    "n": 40
+   },
+   "4": {
+    "ratio": -0.17205175521609561,
+    "lo": -0.18148264179222537,
+    "hi": -0.16312497919332203,
+    "n": 40
+   },
+   "8": {
+    "ratio": -0.13442207537030731,
+    "lo": -0.14541958918588202,
+    "hi": -0.12347447302155992,
+    "n": 40
+   },
+   "12": {
+    "ratio": 0.05563491399514273,
+    "lo": 0.047108438809486904,
+    "hi": 0.06414385765051835,
+    "n": 40
+   },
+   "16": {
+    "ratio": 0.1826929039093924,
+    "lo": 0.17631874731990982,
+    "hi": 0.18878631862868234,
+    "n": 40
+   }
+  }
+ },
+ "overshoot_counts_sweep(report)": {
+  "C-v34": {
+   "2": {
+    "overshoot": 9,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.0125
+   },
+   "4": {
+    "overshoot": 57,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.07916666666666666
+   },
+   "8": {
+    "overshoot": 144,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.2
+   },
+   "12": {
+    "overshoot": 109,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.15138888888888888
+   },
+   "16": {
+    "overshoot": 92,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.12777777777777777
+   }
+  },
+  "C-OR": {
+   "2": {
+    "overshoot": 9,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.0125
+   },
+   "4": {
+    "overshoot": 57,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.07916666666666666
+   },
+   "8": {
+    "overshoot": 144,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.2
+   },
+   "12": {
+    "overshoot": 109,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.15138888888888888
+   },
+   "16": {
+    "overshoot": 92,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.12777777777777777
+   }
+  },
+  "C-v33": {
+   "2": {
+    "overshoot": 5,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.006944444444444444
+   },
+   "4": {
+    "overshoot": 79,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.10972222222222222
+   },
+   "8": {
+    "overshoot": 305,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.4236111111111111
+   },
+   "12": {
+    "overshoot": 409,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.5680555555555555
+   },
+   "16": {
+    "overshoot": 546,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.7583333333333333
+   }
+  },
+  "C-retro": {
+   "2": {
+    "overshoot": 91,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.12638888888888888
+   },
+   "4": {
+    "overshoot": 167,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.23194444444444445
+   },
+   "8": {
+    "overshoot": 270,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.375
+   },
+   "12": {
+    "overshoot": 161,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.22361111111111112
+   },
+   "16": {
+    "overshoot": 120,
+    "n_with_defined_r": 720,
+    "n_excluded_small_d_pre": 0,
+    "fraction": 0.16666666666666666
+   }
+  }
+ },
+ "overshoot_main_design_N8(report)": {
+  "C-v34": {
+   "k": 154,
+   "n": 1080,
+   "p": 0.1425925925925926,
+   "wilson_lo": 0.12300436291216306,
+   "wilson_hi": 0.16471434011660147
+  },
+  "C-OR": {
+   "k": 154,
+   "n": 1080,
+   "p": 0.1425925925925926,
+   "wilson_lo": 0.12300436291216306,
+   "wilson_hi": 0.16471434011660147
+  },
+  "C-v33": {
+   "k": 215,
+   "n": 1080,
+   "p": 0.19907407407407407,
+   "wilson_lo": 0.17634456592531159,
+   "wilson_hi": 0.22393672548491758
+  }
+ },
+ "conclusion_notes": [],
+ "rule": "各訂正で g ∈ (0, 1)（C-v34）、C-OR の g^OR の式、吸収の後の予測の変化 = g D（1e-9）、Σ 不変、反対側へ行った個体は台帳から 1e-9 以内で再構成。破れたら F2/F3。r(N) と個数は報告"
+}

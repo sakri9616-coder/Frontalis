@@ -357,8 +357,11 @@ class ChecksBaselineAndDetection(unittest.TestCase):
             RP.guard_seeds([3450], "dev")
         with self.assertRaises(ValueError):
             RP.guard_seeds([3400], "eval")
-        self.assertEqual(set(RP.PHASES), {"dev", "diag", "mut"})
-        self.assertFalse(set(RP.STAGE_ALLOWED) & (set(RP.SEEDS_EVAL) | set(RP.SEEDS_RESERVED)))
+        # Stage 5 で、守りの定数だけを広げた（CHANGELOG-v3.4 S5。評価の種は phase = "stage5" でだけ通る。tests/test_ra_stage5_guard.py が検査する）
+        self.assertEqual(set(RP.PHASES), {"dev", "diag", "mut", "stage5"})
+        self.assertFalse(set(RP.STAGE_ALLOWED) & set(RP.SEEDS_RESERVED))
+        for phase in ("dev", "diag", "mut"):
+            self.assertFalse(set(RP.PHASES[phase]) & set(RP.SEEDS_EVAL))
 
     def test_ra12_and_candidate_helpers(self):
         self.assertEqual(CK.ra12_ok([0.0, 0.01], [0.0, -1.0])[0], True)                # 直前の |成分| ≤ 0.02 は数えない
@@ -380,6 +383,8 @@ class FreezeFile(unittest.TestCase):
         v2 = json.loads(p2.read_text(encoding="utf-8"))
         self.assertEqual(v2["version"], 2)
         for rel, h in v2["files"].items():
+            if rel.endswith("tests/ra_protocol.py"):
+                continue          # Stage 5 が守りの定数 2 行だけを変えた。旧 hash との関係は tests/test_ra_stage5_guard.py（2 行を戻すと v2 の hash に一致）が検査する
             self.assertEqual(RP.file_sha256(ROOT.parent / rel), h, rel)
         for need_ in ("tests/ra_protocol.py", "data/make_histories_v34.py", "tests/mutants_v34.py", "tests/ra_parallel.py", "tests/ra_checks_v34.py", "tests/stage4_mutation.py"):
             self.assertIn("frontalis-v3-lab/" + need_, v2["files"])

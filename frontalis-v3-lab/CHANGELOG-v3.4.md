@@ -284,3 +284,108 @@ SPEC・PLAN・凍結済みの結果ファイル・`freeze-protocol.json`（第 1
 主要因計画の 1 個体（15 条件）36 秒、N の掃引の 1 個体（5 条件）9 秒、Shapley 1 組（64 通り）89 秒、val-swap・hm-eq（1 種 × 1 ERR）26 秒、τ-yoke 1 個体 3 秒、故障の検査 1 セル 8 秒（plain）・11 秒（cross。この値は C-OR を含まない縮小の測定。変異テストの実測は 310 仕事の平均で 1 仕事 約 14 秒）。
 1 条件だけの run_individual（C-v34、N = 8、直列）は約 6 秒。PLAN の「1 個体 約 1 秒」は 5〜10 倍小さかった。Stage 5 の想定の構成の CPU 時間は約 28.7 時間（PLAN は約 14 時間）、10 本での壁時計は理想の割り当てで約 2.9 時間、小さな標本の実測の並列効率（0.58）で割ると約 5.0 時間。
 PLAN の「2 倍を超えたら並列の仕方だけを変える」に当たる（種の数や条件は変えない）。変異テスト自体は 1 変異体あたり CPU 約 4300〜4800 秒、壁時計 約 7〜8 分。
+
+## Stage 5（2026-10-17）: Y 系の評価（比較対象としての評価。ユーザーの 2026-10-17 の再定義の下では、本来の NPN 研究の達成ではない）
+
+実装者: Claude（Sonnet 5.5）。環境: Python 3.12.13、numpy 2.5.4（変更・再インストールなし）。ワーカーは最大 6 本（リードの決定。PLAN の 10 本から並列度だけを変えた）。
+この節は、評価の種 3400〜3439 を実行する**前**に書いた部分（リードの判断の受領、守りの変更、SPEC の曖昧さの読み S5-n）と、実行の後に追記した部分（結果）に分かれる。
+
+### リードの判断（Stage 4 の未解決項目）
+
+- **S4-8（RA8(a) の初版の誤り）: 受諾。** 評価の種を一度も実行する前の訂正として、訂正後の版を保つ。RA8(a) = 「A 自身の観測が引き起こした更新の符号が sign(教師 − 予測)」。台帳の合計の不一致の数は別の数として報告する（RA8.json）。
+- **S4-13（守りの拡張）: 次の条件つきで受諾。** (1) 変更は評価の種を phase = "stage5" で通すための守りの定数だけ。(2) 環境変数による解錠は作らない。(3) 旧・新の SHA-256 を記録し、`freeze-protocol-v3.json`（新規。v1・v2 は変えない）に守りだけの変更と書き、unified diff を本ファイルに載せる。(4) 守り以外が同一であることの単体テスト。
+
+### 守りの変更（`tests/ra_protocol.py`。守りだけ）
+
+- 旧 SHA-256（LF 正規化）`a8fc4a79193d03a43ec60e15063929d3f930ab0651a4879fd7262a36962dc820`（freeze-protocol-v2.json）、新 `2474a53886f08201cd4279e183485a623e5f8f1f3b1683a4d3b3cb93b68ddee0`。
+- 変更は 2 行だけ（`PHASES` に `"stage5": SEEDS_EVAL`、`STAGE_ALLOWED` に `frozenset(SEEDS_EVAL)`）。`guard_seeds` の本体は 1 バイトも変えていない（評価の種は phase = "stage5" の種の集合にだけ入り、dev / diag / mut では引き続き拒否。予約の種 3500〜3539 は全 phase で拒否）。環境変数による解錠はない。
+- 単体テスト `tests/test_ra_stage5_guard.py`: 2 行を元の行に戻すと v2 の SHA-256 にバイト単位で一致すること、全関数・クラスの AST が同一であること、`environ`・`getenv` がないこと、守りの挙動（stage5 で 3400〜3439 だけ通り、3450〜3459・3490〜3499・3500〜3539 は拒否）。
+- この変更に伴い、**Stage 4 のテスト `tests/test_ra_stage4.py` の 2 か所を更新**した（弱めても消してもいない）: (i) `test_guard_allows_only_...` の `set(RP.PHASES) == {"dev","diag","mut"}` を `{..., "stage5"}` に、`STAGE_ALLOWED` が評価の種を含まないという主張を、予約の種を含まない・dev / diag / mut の phase が評価の種を含まない、に。(ii) `test_freeze_protocol_v2_...` が ra_protocol.py の hash を v2 と直接比べる 1 行を、`test_ra_stage5_guard` の検査に委ねる形に（v2 の hash との関係はより強く検査される）。
+
+unified diff（`git diff` の ra_protocol.py）:
+
+```diff
+--- a/frontalis-v3-lab/tests/ra_protocol.py
++++ b/frontalis-v3-lab/tests/ra_protocol.py
+@@ -57,8 +57,8 @@ SEEDS_MUTATION = tuple(range(3450, 3460))
+ SEEDS_DIAG = tuple(range(3460, 3480))
+ SEEDS_DEV = tuple(range(3490, 3500))
+ SEEDS_RESERVED = tuple(range(3500, 3540))
+-PHASES = {"dev": SEEDS_DEV, "diag": SEEDS_DIAG, "mut": SEEDS_MUTATION}
+-STAGE_ALLOWED = frozenset(SEEDS_DEV) | frozenset(SEEDS_DIAG) | frozenset(SEEDS_MUTATION)           # Stage 4
++PHASES = {"dev": SEEDS_DEV, "diag": SEEDS_DIAG, "mut": SEEDS_MUTATION, "stage5": SEEDS_EVAL}
++STAGE_ALLOWED = frozenset(SEEDS_DEV) | frozenset(SEEDS_DIAG) | frozenset(SEEDS_MUTATION) | frozenset(SEEDS_EVAL)           # Stage 5
+ BOOTSTRAP_SEED = [34990]
+ N_BOOT = 10000
+```
+
+### 作ったもの
+
+`tests/stage5_tasks.py`（仕事の関数。凍結したプロトコルの上に、観察者による全条件の検査 RA6・RA7(a)・H1・H2、N の掃引、RA5 の再構成、転移の報告、旧 Y 系の実行を足す）、`tests/stage5_run.py`（spawn の並列実行器。仕事ごとにキャッシュ、種ごとに `stage5_seed_<seed>.json`、凍結 hash の照合）、
+`tests/test_ra_criteria.py`（RA0〜RA14・RA-Y4 の判定、RA*.json と stage5_summary.md の書き出し。単体テストは合成データ）、`tests/test_ra_stage5_guard.py`。
+
+### SPEC の曖昧さと、Stage 5 での読み（評価の種の実行前に記録。SPEC は変えていない。判定を易しくしない読みを選ぶ）
+
+- **S5-1（dual 規則）。** 読みが 2 通りある判定は、両方の読みで合格のときだけ pass、片方だけなら partial、どちらも不合格なら fail と書く。以下 S5-2〜S5-6 はこの規則の適用。
+- **S5-2 RA3 (1)。** 「各 BG で Δτ_b のある成分の区間が 0 を含まない」。Δτ_b は SRC の添字を持たない（(2) は「SRC ごと」と明記）ので、SRC を種ごとに平均して BG ごとに判定する（literal）。より厳しい読みは BG × SRC の 9 セルすべて（strict、reliable では τ がほとんど動かない）。両方を計算し dual 規則。
+- **S5-3 RA4 (a)(b)(c)。** r は個体ごとの d_post/d_pre（SPEC）。「27 セルの平均」は、個体 r の平均（SPEC の字義）と、平均どうしの比（Stage 1 の定義。d_pre が小さい ERR-interp の個体 r は不安定）の両方で範囲を測り、両方 ≥ 0.15 のときだけ満たす。(b)(c) は個体 r の種間の変動（種間の標準偏差は個体 r でしか定義できない）。RA0 で除かれた個体は除く。中央値も併記。
+- **S5-4 RA7 (d)。** 「BG 3 セルの間の範囲」。SRC をまとめた読みと SRC-none の読みの両方で ≥ 0.1 のときだけ「経験史に依存する性質」。RA7 の verdict は (a) だけで決める（(b)(c) は J5 により報告、(d) は分類）。
+- **S5-5 RA14。** 「超えた量 −r」は、個体の max(0, −r) の平均と、−mean(d_post)/mean(d_pre) の両方で測り、BG（または SRC）の間の範囲がどちらも ≥ 0.1 のときだけ「経験史に依存する性質」。
+- **S5-6 RA-Y4。** 「全セルの平均で満たす」は、全セルの平均どうしの比（literal）と、セルごとの比の平均（strict。ERR-interp では d_pre が小さく比が不安定で、Stage 1 では 1.02）の両方が ≤ 0.1 のときだけ pass。
+- **S5-7 RA0 の細部。** 「CE_imm ≠ 0」は最大成分の差が 1e-12 を超えること。RA0 の「95% 以上」は点推定（n = 40 では全員でも Wilson の下限は 0.912 なので、下限を条件にすると不可能）で判定し、Wilson の区間を併記。除かれた個体は、比べる 2 つの両方に値のある種だけを使う（pairwise）。正規化の尺度は 1,080 個体すべての C-v34 の COR 直前の R の標準偏差（ddof = 1）。
+- **S5-8 CE の基準。** C-v34 と A-τ-off の「訂正なし」は C-nocorr-v34（v34 の空の刻み N 個）、C-v33 は C-nocorr（v33。時計を進めない）。
+- **S5-9 τ-yoke の donor。** SPEC は「別の背景の人格」。6 つの有向の組すべてを実行し、標的の背景ごとに 2 人の donor の L_fol を種ごとに平均した。
+- **S5-10 Shapley。** 7 群（G5 を κ = G5k と τ = G5t に分ける。RA2(b) の「速さ（G3、G5 の κ）と中身（G1、G2、G4、G5 の τ）」の報告に必要）、価値関数は S4-4。組は無向の 3 組（trust←betray、trust←neutral、betray←neutral。標的は先の側）、ERR 3、種 3400〜3419。G6（h・m）は速さにも中身にも入れず別に書く。
+- **S5-11 「全条件」の検査。** RA6・RA7(a)・H1・H2 は、cell_task（C-v34・C-OR）に加えて、主要因計画の `run_individual` が実行する全条件（17 条件）に、`feed_items` を包む観察者で当てた（状態は変えない読み取り）。RA6 の「訂正の経験の追記は N 件」は M3 を持つ v34 系だけ（v33 系と対照 C-none・C-retro は 0 件が設計）。H4・H5・H8 などは C-v34（と C-OR）のみ。
+- **S5-12 H6。** 評価の種とは別の手順（v3.3 の全テスト）。結果は RA10.json の H6 の項に書く。
+- **S5-13 RA5 の再構成。** 反対側へ行った個体（r < −0.05）の再構成は、COR の前後の like(A) の変化が (i) 台帳の ΔW と (ii) 台帳の a · Σ g_e D から 1e-9 以内で作れること。主要因計画の全個体は cell_task の RA5_reconstruct（(i)）で、N の掃引の C-v34・C-OR の該当個体は `ledger_recon`（(i)(ii)）で検査する。
+- **S5-14 RA5-RC。** RC1 は diag-q0 を要し、評価の種の掃引の条件に含まれない（SPEC は Stage 5 で C-v33 の掃引を報告するとだけ書く）。RC の判定は Stage 1 の診断用の種のまま。評価の種では C-v33 の r(N) と、RC2・RC3 の素材を報告する。
+- **S5-15 旧プロトコル。** v3.3 の Y1〜Y7（`yz_protocol.y_worker`）を評価の種でも実行し、RA8 の「v3.3 の Y3 の比」と C-v33 の比較に使う。
+- **S5-16 RA3 (5) の拡張。** cell_task の検査（SRC-none の 6 セル）に加え、主要因計画の ERR-report・report-x の全 18 セルでも C-v34 と clamp-τ の R が一致し τ が動かないことを求める。
+- **S5-17 RA9・RA13 の定義。** 本文の通り RA9.json・RA13.json の `definitions` / `rule` に書いた（報告のみ）。
+- **S5-18 入れ替えの並び。** リードの判断 L1 の aligned() を使い、文面どおりの除かれる数も `align_task` で数えて RA2.json に載せる。
+
+### 予行（開発用の種 3490〜3493。本番の前。結果は判定に使わない）
+
+- 実行: `python -B tests/stage5_run.py --phase dev --seeds 3490,3491,3492,3493 --shapley-seeds 2`（ワーカー 6 本、種ごとに 122〜131 仕事、計 830 仕事の合計 CPU 約 3.5 時間。壁時計 約 1 時間（最初の起動のやり直しを含む））。続けて `test_ra_criteria.py evaluate --phase dev` を実行し、RA0〜RA14・RA-Y4 の全 JSON と stage5_summary.md が書けることを確かめた。
+- **パイプラインの誤り（計算ではなく書き出し）を 2 つ見つけて直した。** (i) `stage5_run.assemble` が、τ-yoke の結果の numpy 配列を JSON にできず、最初の種の書き出しで例外になった（全仕事はキャッシュ済み。`to_jsonable` を組み立ての時点で全結果に当てるよう修正し、書き出しの失敗は仕事の失敗として記録して続行する形にした）。(ii) `ra1()` の戻り値に `ok_by_err` がなく、結論の規則の節が KeyError になった。どちらも計算の結果を変えない。最初の起動で完了した仕事の結果は、修正の後もそのまま再利用した（関数は変えていない）。
+- **決定性。** 種 3493 を、新しいキャッシュ・ワーカー 3 本で最初からやり直し、最初の実行（ワーカー 6 本）の per-seed JSON と比べた。所要時間・環境・評価コードの hash の欄を除いて、**内容が完全に一致した**。
+- 入れ替えの並び: 3 つの ERR とも、有向の組 24 組すべてが L1 の読みで揃い、文面どおりの読みでは 24 組すべてが除かれた（A1 の予測どおり）。
+- 本番の見積もり: 1 種あたり CPU 約 2,300〜3,700 秒（Shapley 7 群を含む種で約 3,600 秒）。40 種 + Shapley 20 種で合計約 35 CPU 時間、6 本で壁時計 約 6 時間。
+- H6 の再実行（RA10）は本番と並行して作業用の写し（リポジトリ外）で行う（`stage5_h6.json`）。
+
+### 本番の結果（評価の種 3400〜3439、n = 40。2026-10-17。比較対象としての Y 系の結果であり、本来の NPN 研究の達成ではない）
+
+実行: `python -B tests/stage5_run.py --phase stage5`（ワーカー 6 本、4,820 仕事、壁時計 8.34 時間、失敗 0、ワーカーの終了コードはすべて 0 または None（正常終了）。凍結 hash（freeze-protocol-v3.json）と一致を確認してから実行）。種ごとの結果は `tests/results/v34/stage5_seed_<seed>.json`（40 本）。
+判定: `python -B tests/test_ra_criteria.py evaluate --phase stage5 --seeds-dir tests/results/v34 --out tests/results/v34` → `RA0.json`〜`RA14.json`（RA5-RC を含む）、`RA-Y4.json`、`stage5_extra.json`、`stage5_summary.md`。評価コード・入力・閾値・条件・種は、結果を見た後に変えていない。評価コードの誤りの発見も、この時点ではない。
+
+| ID | 判定 | 主な数値 |
+| --- | --- | --- |
+| RA0 | pass | 27 セルすべてで 40/40 の種が満たす。除かれた個体 0 |
+| RA1（主） | **partial** | 合格した ERR: interp（3 組中 2 組で向きが違う）、report（2 組）。report-x は 0 組（不合格）。K1 により 3 つすべてでないので partial。**C-v33 でも partial（同じ ERR で合格）、A-τ-off も同一**: 結論の規則により、向きの違いは M3 の寄与ではない。ERR-report・report-x では CE と既存の評価の差 R_前 − R_前,対照 の余弦が全 BG で −0.96〜−1.0（訂正の効果は既存の評価の縮小に留まる） |
+| RA2（主） | **fail** | 有向 6 通り中、向きが違うのは interp 1、report 1、report-x 0（4 以上が必要）。val-swap で CE の向きはほとんど変わらない（余弦 0.99〜1.0）。RA2 不合格・RA1 部分合格の規則: 向きの違いは評価状態ではなく、信念・経験記録から来る。RA2-hm は pass（ρ の中央値 1.0 前後。h・m を揃えても CE は動かない）。Shapley（種 3400〜3419）: 速さの群（G3 + G5κ）と中身の群（G1 + G2 + G4 + G5τ）のうち、G4・G5κ・G5τ の寄与はすべて 0。G2（信念と経験記録）が 0.745〜1.08（9 組中 6 組で最大）、G1（価値）が 0.75〜0.85（report の trust←neutral、report-x の trust←neutral）、G3（関心の重み）が 0.61（interp の betray←neutral）。h・m（G6）は 0.005 以下 |
+| RA3（主） | **partial** | (1) literal（SRC を平均して BG ごと）: 全 BG で満たす。strict（BG × SRC 9 セル）: SRC-reliable の trust と neutral で Δτ が厳密に 0 のため満たさない。(2) 2 つの SRC（unreliable、none）で BG 3 組中 2 組の向きが違う（reliable は τ が動かず判定不能）。(3)(4)(5) は全個体で満たす（n = 600 / 600 / 240。主要因計画の ERR-report・report-x 全 720 個体でも C-v34 と clamp-τ は一致）。τ の動きは小さい（|log τ| の最大 0.028、境界に達した個体 0）。τ の符号の分布: unreliable の trust は 78% が下がる、none は 97〜100% が上がる、など BG・SRC で違う |
+| RA4（副） | **partial** | (a) 範囲 5.39（平均どうしの比 3.71）で満たす。ただし ERR-interp の個体 r が不安定（d_pre が小さい）で、interp 以外の 18 セルだけでも範囲は 0.18（平均どうしの比 0.456〜0.635）。(b) reliable − unreliable = −0.65（95% −1.44〜−0.05）で満たし、予測した符号（reliable の方が r が小さい）と一致。(c) **満たさない**: セル内の種間の標準偏差が 0.0134 を超えるのは 27 セル中 7（ERR-interp の一部）。ERR-report・report-x の 18 セルは 0.0008〜0.003 で、v3.3 の種間の標準偏差 0.0067 より小さい。SPEC により、標本数に基づく主張はすべて取り下げる。A-g-const（範囲 3.27）、A-κ-fixed（4.99）、C-v33（2.66）の値は RA4.json |
+| RA5 | pass | 不変量はすべて満たす。N の掃引で反対側へ行った C-v34・C-OR の個体 822 件すべてが台帳の ΔW と a · Σ g D から再構成できる（最大誤差 3.7e-16）。C-v34 の r(N) = 0.448/0.378/0.343/0.426/0.507（N = 2/4/8/12/16）、C-v33 は 0.426/0.219/−0.179/−0.382/−0.544。反対側へ行った個体の割合は N = 16 で C-v34 13%、C-v33 76% |
+| RA5-RC | report-only | 評価の種での C-v33 の r(N) は上のとおり（過剰訂正は評価の種でも再現）。RC2 の素材 0.963、RC3 の共有の割合 0.268（Stage 1 と同じ傾向）。RC1 は diag-q0 を要するので Stage 5 では判定しない（S5-14） |
+| RA6 | pass | 1,080 個体（cell_task）と全 17 条件（観察者）で破れ 0 |
+| RA7 | pass（(a) のみ） | (a) 破れ 0。(b) 近づき: ERR-interp 0.96〜1.21、report 0.59〜0.64、report-x 2.2〜4.1（行き過ぎ）。C-v34 と C-v33 は同じ値（M1 は価値だけを動かし、信念は同じ）。旧プロトコル（評価の種）の Y1 = 0.772。(c) local-reattr: report で 0.42〜0.98。(d) BG 間の範囲: interp 0.24/0.40 と report-x 1.95/0.46 は「経験史に依存する性質」、report 0.05/0.34 は「設計仮説と矛盾する性質（逐次の φ の推定の副産物）」 |
+| RA8 | pass | (a)(b)(c の規則と境界の押し)(d の反対向きの検証) は全個体で満たす。台帳の合計の符号の不一致は 66/1,080（6.1%、別の数。S4-8）。τ が境界の個体は 0（50% を超えたセルなし）。κ の α + β は終了時に 10〜14（セルごとの平均。RA8.json）（反対向きの検証での κ̄ の動きは −0.047〜+0.045）。v3.3 の Y3 の比（旧プロトコル、評価の種）= 0.102 |
+| RA9 | report-only | 訂正のない誤解が FOL の後に残る割合（価値 r1 / 信念 r4）: interp 0.09/0.55、report 0.51/0.71、report-x 0.67/−0.08。旧プロトコルの Y7 = 1.173/0.940 |
+| RA10 | pass | H1〜H5、H7〜H9 は全条件・全個体で満たす（n = 1,080 前後。H5 は 40 種）。H6: 作業用の写しで v3.3 の全 350 件を現在の npnv3（既定 'v33'）で再実行し、結果 JSON 64 件中 62 件が同じ環境の基準とバイト単位で一致、2 件（U03・W05）は辞書のキーの並びだけの差（Stage 2・3 と同じ）、全モジュールの件数と合否が基準と同じ（`stage5_h6.json`、所要 112 分） |
+| RA11 | pass | 8/8 検出（Stage 4 の結果。再実行なし） |
+| RA12 | pass | 崩壊した個体 0/1,080。転移の報告: B・A2・P01〜P12 の好悪も COR + FOL で動く（A2 +0.021、B +0.010、A +0.054 の平均）。訂正なしの枝との差は B −0.0009、A2 +0.0048 |
+| RA13 | report-only | BG 間の V の広がりが FOL の後に残る倍率（C-v34 / C-nocorr-v34）: interp 1.14/2.44、report 3.12/1.91、report-x 2.31/0.72。可塑性・置き換えの距離は RA13.json |
+| RA14 | report-only | C-OR の反対側へ行った個体の割合は C-v34 と同じ（C-OR の r(N) は C-v34 とほぼ同じ: 0.448/0.377/0.342/0.426/0.507）。超えた量の分類: interp は経験史に依存する性質、report・report-x は設計仮説と矛盾する性質 |
+| RA-Y4 | **fail** | 平均どうしの比 0.137（> 0.1）、セルごとの比の平均 0.423。ERR 別: interp 1.22（d_pre が小さく対照として判定できない）、report 0.012、report-x 0.040 |
+
+- **故障 F1〜F6: 見つからなかった。** RA3(3)(4)(5)、RA5、RA6、RA7(a)、RA8、RA10（H6 を除く）、RA12 のすべてが全個体で満たされた。
+- **固執・持続・反証への抵抗は故障ではない**（RA9・RA13・RA14 は報告）。
+- **結論の規則の適用。** RA1 が部分合格かつ RA2 が不合格なので、向きの違い（合格した interp と report）は、価値の評価状態ではなく信念・経験記録から来る。RA1 は C-v33 と A-τ-off でも同じ結果なので、その向きの違いは M3 の寄与ではない。RA3 は partial で、τ の経路の効果は存在する（literal の読みで全 BG が非ゼロ）が、τ の動きが小さく（最大 |log τ| 0.028）、reliable ではまったく動かない。RA4(c) が不合格なので、種を標本とする主張は取り下げる。
+- **SPEC と再定義の関係。** この結果は、SPEC-v3.4 の基準を事前登録のとおり評価した比較対象の結果で、再定義が問題にする「事前に指定していない評価上の特徴・関係・判断基準の獲得」を測っていない（内部軸 5 欲求・効果表・Kalman の特徴空間は設計済み）。
+
+### 実行の記録
+
+- 評価の種の実行は 1 回だけ（失敗した仕事 0、再実行なし）。予行（開発用の種 3490〜3493）、変異（3450〜3459）、診断（3460〜3479）、予約（3500〜3539）の種は、この実行に混ぜていない。
+- 他の機械のセッションがワーカーと CPU を共有していたため、1 種あたりの CPU 時間（約 3,000〜7,000 秒）は予行の約 1.5〜2 倍になった（壁時計 8.34 時間。リードの見積もり 5〜9 時間の範囲内）。
+- 自分が起動したプロセスの PID だけを管理した（`taskkill /PID` のみ。イメージ名の一括終了なし）。

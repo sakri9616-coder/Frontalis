@@ -1,0 +1,51 @@
+{
+ "id": "RA11",
+ "verdict": "pass",
+ "label": "比較対象（Y 系）。ユーザーの 2026-10-17 の再定義の下では、本来の NPN 研究の達成ではない。",
+ "source": "tests/results/v34/stage4_mutation.json（変異の種 3450〜3459。Stage 4 で実行済み。ここでは再実行しない）",
+ "n_detected": 8,
+ "n_mutants": 8,
+ "must_detect_MU2_MU3_MU4_MU5_MU7": {
+  "MU2": true,
+  "MU3": true,
+  "MU4": true,
+  "MU5": true,
+  "MU7": true
+ },
+ "per_mutant": {
+  "MU1": {
+   "detected": true,
+   "kind": "invariant"
+  },
+  "MU2": {
+   "detected": true,
+   "kind": "invariant"
+  },
+  "MU3": {
+   "detected": true,
+   "kind": "invariant"
+  },
+  "MU4": {
+   "detected": true,
+   "kind": "invariant"
+  },
+  "MU5": {
+   "detected": true,
+   "kind": "invariant"
+  },
+  "MU6": {
+   "detected": true,
+   "kind": "invariant"
+  },
+  "MU7": {
+   "detected": true,
+   "kind": "invariant"
+  },
+  "MU8": {
+   "detected": true,
+   "kind": "invariant"
+  }
+ },
+ "baseline_invariant_failures": [],
+ "rule": "MU2〜MU5 と MU7 がすべて検出され、8 体中 7 体以上が検出されれば合格"
+}

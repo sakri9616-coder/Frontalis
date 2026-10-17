@@ -1,0 +1,69 @@
+{
+ "id": "RA13",
+ "verdict": "report-only",
+ "label": "比較対象（Y 系）。ユーザーの 2026-10-17 の再定義の下では、本来の NPN 研究の達成ではない。",
+ "by_err": {
+  "interp": {
+   "continuity_V_BG_spread": {
+    "pre_COR": 2.256513940553597,
+    "after_COR_C_v34": 2.1122009026283792,
+    "after_FOL_C_v34": 2.5697876427788136,
+    "after_COR_C_nocorr": 2.256513940553597,
+    "after_FOL_C_nocorr": 5.5151726599974955,
+    "retained_C_v34": 1.138830829535385,
+    "retained_C_nocorr": 2.4441119378347125
+   },
+   "plasticity_norm_of_normalized_CE": {
+    "CE_after_FOL(C_v34 - C_nocorr)": 5.883362842254887,
+    "CE_imm": 2.9311942889962284
+   },
+   "replacement_distance_to_blank_persona_after_FOL": {
+    "C_v34": 4.20480231350608,
+    "C_nocorr": 9.007951964546633,
+    "control(no misattribution)": 3.561717466498356
+   }
+  },
+  "report": {
+   "continuity_V_BG_spread": {
+    "pre_COR": 2.046976473764564,
+    "after_COR_C_v34": 9.044794000268366,
+    "after_FOL_C_v34": 6.383235212526425,
+    "after_COR_C_nocorr": 2.046976473764564,
+    "after_FOL_C_nocorr": 3.9026186196931434,
+    "retained_C_v34": 3.1183725335089525,
+    "retained_C_nocorr": 1.9065283210196822
+   },
+   "plasticity_norm_of_normalized_CE": {
+    "CE_after_FOL(C_v34 - C_nocorr)": 13.511262352243811,
+    "CE_imm": 25.326606662405297
+   },
+   "replacement_distance_to_blank_persona_after_FOL": {
+    "C_v34": 7.08410718187893,
+    "C_nocorr": 17.65371678934085,
+    "control(no misattribution)": 25.887993057404334
+   }
+  },
+  "report-x": {
+   "continuity_V_BG_spread": {
+    "pre_COR": 1.890423928024404,
+    "after_COR_C_v34": 8.431643601179484,
+    "after_FOL_C_v34": 4.368208507062976,
+    "after_COR_C_nocorr": 1.890423928024404,
+    "after_FOL_C_nocorr": 1.3613732701827246,
+    "retained_C_v34": 2.310703140341644,
+    "retained_C_nocorr": 0.720141789363317
+   },
+   "plasticity_norm_of_normalized_CE": {
+    "CE_after_FOL(C_v34 - C_nocorr)": 11.853025465932706,
+    "CE_imm": 25.36492900288392
+   },
+   "replacement_distance_to_blank_persona_after_FOL": {
+    "C_v34": 10.032535462017105,
+    "C_nocorr": 6.552283655001612,
+    "control(no misattribution)": 38.451351784045194
+   }
+  }
+ },
+ "definitions": "連続性: BG 間の V の平均ベクトルの対ごとの距離の平均（正規化した V 成分）を、COR の直前と FOL の後で比べる。可塑性: 正規化した CE のノルム。置き換え: FOL の後の R と、FOL だけを与えた白紙の v34 人格の R の正規化した距離。どの量も、時間だけを進めた C-nocorr-v34 の同じ量を並べる。SRC ごとに計算して平均",
+ "rule": "報告のみ（J4）"
+}

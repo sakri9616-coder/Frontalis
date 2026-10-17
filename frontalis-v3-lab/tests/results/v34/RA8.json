@@ -1,0 +1,403 @@
+{
+ "id": "RA8",
+ "verdict": "pass",
+ "label": "比較対象（Y 系）。ユーザーの 2026-10-17 の再定義の下では、本来の NPN 研究の達成ではない。",
+ "a_sign_of_own_observation_update(corrected reading S4-8)": {
+  "ok": true,
+  "n_run": 1080,
+  "n_fail": 0,
+  "first_fails": []
+ },
+ "a_ledger_sum_sign_disagreements(separate number)": {
+  "count": 66,
+  "n_individuals": 1080,
+  "fraction": 0.06111111111111111
+ },
+ "b_gain_floor": {
+  "ok": true,
+  "n_run": 1080,
+  "n_fail": 0,
+  "first_fails": []
+ },
+ "c_tau_rule_and_boundary_push": {
+  "ok": true,
+  "n_run": 40,
+  "n_fail": 0,
+  "first_fails": []
+ },
+ "c_tau_at_boundary_fraction_by_cell": {
+  "interp|trust|reliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "interp|trust|unreliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "interp|trust|none": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "interp|betray|reliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "interp|betray|unreliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "interp|betray|none": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "interp|neutral|reliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "interp|neutral|unreliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "interp|neutral|none": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report|trust|reliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report|trust|unreliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report|trust|none": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report|betray|reliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report|betray|unreliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report|betray|none": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report|neutral|reliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report|neutral|unreliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report|neutral|none": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report-x|trust|reliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report-x|trust|unreliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report-x|trust|none": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report-x|betray|reliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report-x|betray|unreliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report-x|betray|none": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report-x|neutral|reliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report-x|neutral|unreliable": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  },
+  "report-x|neutral|none": {
+   "k": 0,
+   "n": 40,
+   "p": 0.0,
+   "wilson_lo": 6.938893903907228e-18,
+   "wilson_hi": 0.0876216011972866,
+   "boundary_dominates(>50%)": false
+  }
+ },
+ "c_cells_where_boundary_dominates": [],
+ "d_kappa_moves_under_opposite_verification": {
+  "ok": true,
+  "n_run": 1080,
+  "n_fail": 0,
+  "first_fails": []
+ },
+ "d_kappa_alpha_plus_beta_at_end": {
+  "interp|trust|reliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.0
+  },
+  "interp|trust|unreliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "interp|trust|none|self_discovery": {
+   "mean_alpha_plus_beta": 10.0,
+   "min": 10.0,
+   "max": 10.000000000000002
+  },
+  "interp|betray|reliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "interp|betray|unreliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "interp|betray|none|self_discovery": {
+   "mean_alpha_plus_beta": 10.0,
+   "min": 10.0,
+   "max": 10.000000000000002
+  },
+  "interp|neutral|reliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "interp|neutral|unreliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 14.0,
+   "max": 14.000000000000002
+  },
+  "interp|neutral|none|self_discovery": {
+   "mean_alpha_plus_beta": 10.0,
+   "min": 9.999999999999998,
+   "max": 10.0
+  },
+  "report|trust|reliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.0
+  },
+  "report|trust|unreliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.0
+  },
+  "report|trust|none|self_discovery": {
+   "mean_alpha_plus_beta": 10.0,
+   "min": 10.0,
+   "max": 10.000000000000002
+  },
+  "report|betray|reliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "report|betray|unreliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "report|betray|none|self_discovery": {
+   "mean_alpha_plus_beta": 10.0,
+   "min": 9.999999999999998,
+   "max": 10.0
+  },
+  "report|neutral|reliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "report|neutral|unreliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "report|neutral|none|self_discovery": {
+   "mean_alpha_plus_beta": 10.0,
+   "min": 9.999999999999998,
+   "max": 10.000000000000002
+  },
+  "report-x|trust|reliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "report-x|trust|unreliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "report-x|trust|none|self_discovery": {
+   "mean_alpha_plus_beta": 10.0,
+   "min": 9.999999999999998,
+   "max": 10.0
+  },
+  "report-x|betray|reliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "report-x|betray|unreliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 13.999999999999998,
+   "max": 14.000000000000002
+  },
+  "report-x|betray|none|self_discovery": {
+   "mean_alpha_plus_beta": 10.0,
+   "min": 10.0,
+   "max": 10.0
+  },
+  "report-x|neutral|reliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 14.0,
+   "max": 14.000000000000002
+  },
+  "report-x|neutral|unreliable|self_discovery": {
+   "mean_alpha_plus_beta": 14.0,
+   "min": 14.0,
+   "max": 14.000000000000002
+  },
+  "report-x|neutral|none|self_discovery": {
+   "mean_alpha_plus_beta": 10.0,
+   "min": 10.0,
+   "max": 10.0
+  }
+ },
+ "d_kappa_move_down_up_extremes": {
+  "min_down": -0.04737666715900746,
+  "max_up": 0.045199419333042445
+ },
+ "v33_Y3_ratio_old_protocol_on_evaluation_seeds(report)": {
+  "like_corrected_after_10_good": 0.02912339837812966,
+  "like_ctrl_after_10_good": 0.0339461633973812,
+  "d_10": -0.0048227650192515376,
+  "d_post": -0.04735394514081815,
+  "ratio": 0.1018450522952186
+ },
+ "conclusion_notes": [],
+ "rule": "(a)(b) と (c)(d) の「反対向きに動くか」は全個体で満たす（F2・F6）。持続の強さと差が縮む回数は合否にしない"
+}

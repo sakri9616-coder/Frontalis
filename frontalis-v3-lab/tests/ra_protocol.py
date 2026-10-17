@@ -57,8 +57,8 @@ SEEDS_MUTATION = tuple(range(3450, 3460))
 SEEDS_DIAG = tuple(range(3460, 3480))
 SEEDS_DEV = tuple(range(3490, 3500))
 SEEDS_RESERVED = tuple(range(3500, 3540))
-PHASES = {"dev": SEEDS_DEV, "diag": SEEDS_DIAG, "mut": SEEDS_MUTATION}
-STAGE_ALLOWED = frozenset(SEEDS_DEV) | frozenset(SEEDS_DIAG) | frozenset(SEEDS_MUTATION)           # Stage 4
+PHASES = {"dev": SEEDS_DEV, "diag": SEEDS_DIAG, "mut": SEEDS_MUTATION, "stage5": SEEDS_EVAL}
+STAGE_ALLOWED = frozenset(SEEDS_DEV) | frozenset(SEEDS_DIAG) | frozenset(SEEDS_MUTATION) | frozenset(SEEDS_EVAL)           # Stage 5
 BOOTSTRAP_SEED = [34990]
 N_BOOT = 10000
 

@@ -1,0 +1,746 @@
+{
+ "id": "RA1",
+ "verdict": "partial",
+ "label": "比較対象（Y 系）。ユーザーの 2026-10-17 の再定義の下では、本来の NPN 研究の達成ではない。",
+ "ok_by_err": {
+  "interp": true,
+  "report": true,
+  "report-x": false
+ },
+ "c_v34": {
+  "cond": "C-v34",
+  "baseline": "C-nocorr-v34",
+  "by_err": {
+   "interp": {
+    "pairs": {
+     "trust~betray": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       0
+      ],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9457132375168611,
+      "cos_lo": 0.9390974317259592,
+      "cos_hi": 0.951869656425764,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": true,
+       "cos": 0.9768229952108909,
+       "cos_hi": 0.9794948563842674
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9910524187867437,
+       "cos_hi": 0.9917633618231808
+      }
+     },
+     "trust~neutral": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       0
+      ],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9624242971073742,
+      "cos_lo": 0.9581109374354909,
+      "cos_hi": 0.9665637090272838,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": true,
+       "cos": 0.9746162268282282,
+       "cos_hi": 0.9774305118904664
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9322681950738065,
+       "cos_hi": 0.9368750441420114
+      }
+     },
+     "betray~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9919737285449486,
+      "cos_lo": 0.9911517425656028,
+      "cos_hi": 0.9927623663385703,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9988805804074231,
+       "cos_hi": 0.9989835202972103
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9597997293046013,
+       "cos_hi": 0.9605968083996425
+      }
+     }
+    },
+    "n_pairs_differ": 2,
+    "n_pairs_determined": 3,
+    "ok": true,
+    "self_reinforcement_cos": {
+     "trust": -0.22987641368990006,
+     "betray": -0.5407809399672174,
+     "neutral": -0.6166515350992956
+    },
+    "ce_only_scaling_of_existing_evaluation": false
+   },
+   "report": {
+    "pairs": {
+     "trust~betray": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       4,
+       5,
+       8
+      ],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9998910981520992,
+      "cos_lo": 0.9998858751938117,
+      "cos_hi": 0.9998954965867085,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9999567136130857,
+       "cos_hi": 0.9999609836770623
+      },
+      "P_part": {
+       "differ": true,
+       "cos": 0.5536765832265779,
+       "cos_hi": 0.5678164544099784
+      }
+     },
+     "trust~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9999664725713773,
+      "cos_lo": 0.9999646698549156,
+      "cos_hi": 0.999968186587904,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9999903465698066,
+       "cos_hi": 0.9999909217357575
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9950725033217378,
+       "cos_hi": 0.9951963515336633
+      }
+     },
+     "betray~neutral": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       4,
+       5,
+       8
+      ],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9997534974744715,
+      "cos_lo": 0.9997424902242819,
+      "cos_hi": 0.9997633023230028,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9999108727492049,
+       "cos_hi": 0.9999178640420631
+      },
+      "P_part": {
+       "differ": true,
+       "cos": 0.6284648624230835,
+       "cos_hi": 0.6416593152327431
+      }
+     }
+    },
+    "n_pairs_differ": 2,
+    "n_pairs_determined": 3,
+    "ok": true,
+    "self_reinforcement_cos": {
+     "trust": -0.999933401215005,
+     "betray": -0.9999790606596725,
+     "neutral": -0.9998559629385397
+    },
+    "ce_only_scaling_of_existing_evaluation": true
+   },
+   "report-x": {
+    "pairs": {
+     "trust~betray": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9966874003601534,
+      "cos_lo": 0.9962905495243427,
+      "cos_hi": 0.9970606917573615,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9987342830657677,
+       "cos_hi": 0.9988798215988289
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9924720153487417,
+       "cos_hi": 0.9929672372823036
+      }
+     },
+     "trust~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9999186927333393,
+      "cos_lo": 0.9999099013786319,
+      "cos_hi": 0.9999264022129177,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9999196887929456,
+       "cos_hi": 0.999928000478772
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9999040329582405,
+       "cos_hi": 0.9999189217111898
+      }
+     },
+     "betray~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9959118552868097,
+      "cos_lo": 0.9955238580458372,
+      "cos_hi": 0.9962804839496864,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9980271303754565,
+       "cos_hi": 0.9982240392203776
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9909647639177553,
+       "cos_hi": 0.9916946867962084
+      }
+     }
+    },
+    "n_pairs_differ": 0,
+    "n_pairs_determined": 3,
+    "ok": false,
+    "self_reinforcement_cos": {
+     "trust": -0.958932544890814,
+     "betray": -0.9744777295862327,
+     "neutral": -0.956232717233103
+    },
+    "ce_only_scaling_of_existing_evaluation": true
+   }
+  },
+  "ok_by_err": {
+   "interp": true,
+   "report": true,
+   "report-x": false
+  },
+  "verdict": "partial"
+ },
+ "c_v33": {
+  "cond": "C-v33",
+  "baseline": "C-nocorr",
+  "by_err": {
+   "interp": {
+    "pairs": {
+     "trust~betray": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       0,
+       2
+      ],
+      "b_cos_upper_lt_0.5": true,
+      "cos": -0.4548085494369969,
+      "cos_lo": -0.5032403894133244,
+      "cos_hi": -0.3971147810209696,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": true,
+       "cos": -0.9531661665669161,
+       "cos_hi": -0.9432726565925426
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9907147956582318,
+       "cos_hi": 0.991509457095386
+      }
+     },
+     "trust~neutral": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       0,
+       2
+      ],
+      "b_cos_upper_lt_0.5": true,
+      "cos": -0.0767132432244143,
+      "cos_lo": -0.15551749419937871,
+      "cos_hi": 0.014510524451133077,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": true,
+       "cos": -0.8839136936776251,
+       "cos_hi": -0.8578739140193243
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.930925800566183,
+       "cos_hi": 0.935549271363546
+      }
+     },
+     "betray~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.8937156252353027,
+      "cos_lo": 0.8744985369219057,
+      "cos_hi": 0.9087697975530703,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9691604349573142,
+       "cos_hi": 0.975620594422311
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9603790931072848,
+       "cos_hi": 0.9608704141278869
+      }
+     }
+    },
+    "n_pairs_differ": 2,
+    "n_pairs_determined": 3,
+    "ok": true,
+    "self_reinforcement_cos": {
+     "trust": -0.650889616149399,
+     "betray": 0.07745688988874015,
+     "neutral": -0.22626710381948256
+    },
+    "ce_only_scaling_of_existing_evaluation": false
+   },
+   "report": {
+    "pairs": {
+     "trust~betray": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       4,
+       5,
+       8
+      ],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9999165618076146,
+      "cos_lo": 0.999903263669279,
+      "cos_hi": 0.9999274677869024,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9999702266067032,
+       "cos_hi": 0.9999819331001248
+      },
+      "P_part": {
+       "differ": true,
+       "cos": 0.5536765832265779,
+       "cos_hi": 0.5678164544099784
+      }
+     },
+     "trust~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9999673535887614,
+      "cos_lo": 0.999965245740531,
+      "cos_hi": 0.9999692793692389,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9999917180812038,
+       "cos_hi": 0.9999925596385311
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9950725033217378,
+       "cos_hi": 0.9951963515336633
+      }
+     },
+     "betray~neutral": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       4,
+       5,
+       8
+      ],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9997963015106228,
+      "cos_lo": 0.9997768567260731,
+      "cos_hi": 0.9998151719964996,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9999340797355837,
+       "cos_hi": 0.9999526828200676
+      },
+      "P_part": {
+       "differ": true,
+       "cos": 0.6284648624230835,
+       "cos_hi": 0.6416593152327431
+      }
+     }
+    },
+    "n_pairs_differ": 2,
+    "n_pairs_determined": 3,
+    "ok": true,
+    "self_reinforcement_cos": {
+     "trust": -0.9998873322197807,
+     "betray": -0.99998392984937,
+     "neutral": -0.9997816494854876
+    },
+    "ce_only_scaling_of_existing_evaluation": true
+   },
+   "report-x": {
+    "pairs": {
+     "trust~betray": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9986263854764619,
+      "cos_lo": 0.9984564449525384,
+      "cos_hi": 0.9987900654056022,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9994825824276437,
+       "cos_hi": 0.9995447670497705
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9924720153487417,
+       "cos_hi": 0.9929672372823036
+      }
+     },
+     "trust~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9998459924835464,
+      "cos_lo": 0.9998334094812,
+      "cos_hi": 0.9998554552384538,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9998744910836238,
+       "cos_hi": 0.9998822976376487
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9999040329582405,
+       "cos_hi": 0.9999189217111898
+      }
+     },
+     "betray~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9976678874921259,
+      "cos_lo": 0.9974727221150181,
+      "cos_hi": 0.9978559207220642,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9988677631123927,
+       "cos_hi": 0.9989683929793955
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9909647639177553,
+       "cos_hi": 0.9916946867962084
+      }
+     }
+    },
+    "n_pairs_differ": 0,
+    "n_pairs_determined": 3,
+    "ok": false,
+    "self_reinforcement_cos": {
+     "trust": -0.9824102371668169,
+     "betray": -0.9879925151114115,
+     "neutral": -0.9791456801406424
+    },
+    "ce_only_scaling_of_existing_evaluation": true
+   }
+  },
+  "ok_by_err": {
+   "interp": true,
+   "report": true,
+   "report-x": false
+  },
+  "verdict": "partial"
+ },
+ "a_tau_off": {
+  "cond": "A-τ-off",
+  "baseline": "C-nocorr-v34",
+  "by_err": {
+   "interp": {
+    "pairs": {
+     "trust~betray": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       0
+      ],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9460872085488587,
+      "cos_lo": 0.939415294335094,
+      "cos_hi": 0.9522535618121329,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": true,
+       "cos": 0.9768493179399267,
+       "cos_hi": 0.9795207501540393
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9907147956582318,
+       "cos_hi": 0.991509457095386
+      }
+     },
+     "trust~neutral": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       0
+      ],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9626284533270079,
+      "cos_lo": 0.958337851542679,
+      "cos_hi": 0.9667256768114,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": true,
+       "cos": 0.9746822106150137,
+       "cos_hi": 0.9774948057072594
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.930925800566183,
+       "cos_hi": 0.935549271363546
+      }
+     },
+     "betray~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.992005383812317,
+      "cos_lo": 0.99116936638361,
+      "cos_hi": 0.9928057792153048,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9988708601084202,
+       "cos_hi": 0.9989750173323306
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9603790931072848,
+       "cos_hi": 0.9608704141278869
+      }
+     }
+    },
+    "n_pairs_differ": 2,
+    "n_pairs_determined": 3,
+    "ok": true,
+    "self_reinforcement_cos": {
+     "trust": -0.22694739743157546,
+     "betray": -0.539807252116706,
+     "neutral": -0.6151557581706619
+    },
+    "ce_only_scaling_of_existing_evaluation": false
+   },
+   "report": {
+    "pairs": {
+     "trust~betray": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       4,
+       5,
+       8
+      ],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9998910981520992,
+      "cos_lo": 0.9998858751938117,
+      "cos_hi": 0.9998954965867085,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9999567136130857,
+       "cos_hi": 0.9999609836770623
+      },
+      "P_part": {
+       "differ": true,
+       "cos": 0.5536765832265779,
+       "cos_hi": 0.5678164544099784
+      }
+     },
+     "trust~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9999664725713773,
+      "cos_lo": 0.9999646698549156,
+      "cos_hi": 0.999968186587904,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9999903465698066,
+       "cos_hi": 0.9999909217357575
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9950725033217378,
+       "cos_hi": 0.9951963515336633
+      }
+     },
+     "betray~neutral": {
+      "differ": true,
+      "a_opposite_sign": true,
+      "opposite_components": [
+       4,
+       5,
+       8
+      ],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9997534974744715,
+      "cos_lo": 0.9997424902242819,
+      "cos_hi": 0.9997633023230028,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9999108727492049,
+       "cos_hi": 0.9999178640420631
+      },
+      "P_part": {
+       "differ": true,
+       "cos": 0.6284648624230835,
+       "cos_hi": 0.6416593152327431
+      }
+     }
+    },
+    "n_pairs_differ": 2,
+    "n_pairs_determined": 3,
+    "ok": true,
+    "self_reinforcement_cos": {
+     "trust": -0.999933401215005,
+     "betray": -0.9999790606596725,
+     "neutral": -0.9998559629385397
+    },
+    "ce_only_scaling_of_existing_evaluation": true
+   },
+   "report-x": {
+    "pairs": {
+     "trust~betray": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9966874003601534,
+      "cos_lo": 0.9962905495243427,
+      "cos_hi": 0.9970606917573615,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9987342830657677,
+       "cos_hi": 0.9988798215988289
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9924720153487417,
+       "cos_hi": 0.9929672372823036
+      }
+     },
+     "trust~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9999186927333393,
+      "cos_lo": 0.9999099013786319,
+      "cos_hi": 0.9999264022129177,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9999196887929456,
+       "cos_hi": 0.999928000478772
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9999040329582405,
+       "cos_hi": 0.9999189217111898
+      }
+     },
+     "betray~neutral": {
+      "differ": false,
+      "a_opposite_sign": false,
+      "opposite_components": [],
+      "b_cos_upper_lt_0.5": false,
+      "cos": 0.9959118552868097,
+      "cos_lo": 0.9955238580458372,
+      "cos_hi": 0.9962804839496864,
+      "n_seeds": 40,
+      "V_part": {
+       "differ": false,
+       "cos": 0.9980271303754565,
+       "cos_hi": 0.9982240392203776
+      },
+      "P_part": {
+       "differ": false,
+       "cos": 0.9909647639177553,
+       "cos_hi": 0.9916946867962084
+      }
+     }
+    },
+    "n_pairs_differ": 0,
+    "n_pairs_determined": 3,
+    "ok": false,
+    "self_reinforcement_cos": {
+     "trust": -0.958932544890814,
+     "betray": -0.9744777295862327,
+     "neutral": -0.956232717233103
+    },
+    "ce_only_scaling_of_existing_evaluation": true
+   }
+  },
+  "ok_by_err": {
+   "interp": true,
+   "report": true,
+   "report-x": false
+  },
+  "verdict": "partial"
+ },
+ "conclusion_notes": [
+  "RA1 は C-v33 でも（partial。ERR ごと: {'interp': True, 'report': True, 'report-x': False}）合格側: その向きの違いは M3 の寄与ではない（既存の階層カルマンの Σ、または M1 の寄与）。",
+  "RA1 は A-τ-off でも（partial。ERR ごと: {'interp': True, 'report': True, 'report-x': False}）合格側: その向きの違いは M3 の寄与ではない（既存の階層カルマンの Σ、または M1 の寄与）。"
+ ],
+ "rule": "SRC-none の各 ERR で BG の 3 組中 2 組以上の向きが違えばその ERR で合格。3 つの ERR すべてで合格なら pass、一部なら partial（合格した ERR を明記）、なければ fail。98.33% 区間（Bonferroni）"
+}

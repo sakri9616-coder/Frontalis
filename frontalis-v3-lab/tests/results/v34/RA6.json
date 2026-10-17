@@ -1,0 +1,24 @@
+{
+ "id": "RA6",
+ "verdict": "pass",
+ "label": "比較対象（Y 系）。ユーザーの 2026-10-17 の再定義の下では、本来の NPN 研究の達成ではない。",
+ "cell_task_C_v34_and_C_OR": {
+  "ok": true,
+  "n_run": 1080,
+  "n_fail": 0,
+  "first_fails": []
+ },
+ "observer_all_conditions": {
+  "ok": true,
+  "n_run": 1080,
+  "n_fail": 0,
+  "first_fails": []
+ },
+ "correction_experience_count": {
+  "ok": true,
+  "expected": "M3 を持つ v34 系の条件はちょうど N 件、v33 系・対照（C-none・C-retro）は 0 件",
+  "violations": []
+ },
+ "conclusion_notes": [],
+ "rule": "全条件・全個体で当時の台帳と original_outcomes が完全一致、訂正の経験の追記はちょうど N 件"
+}

@@ -1,0 +1,325 @@
+{
+ "id": "RA14",
+ "verdict": "report-only",
+ "label": "比較対象（Y 系）。ユーザーの 2026-10-17 の再定義の下では、本来の NPN 研究の達成ではない。",
+ "main_design_N8_cells": {
+  "interp|trust|reliable": {
+   "frac_r_lt_-0.05": 0.7,
+   "mean_excess_individual": 6.472968846205362,
+   "excess_ratio_of_means": 3.072873719426823,
+   "k": 28,
+   "n": 40
+  },
+  "interp|trust|unreliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.29796246795554726,
+   "k": 0,
+   "n": 40
+  },
+  "interp|trust|none": {
+   "frac_r_lt_-0.05": 0.7,
+   "mean_excess_individual": 2.5136522092349054,
+   "excess_ratio_of_means": 0.9333471178977809,
+   "k": 28,
+   "n": 40
+  },
+  "interp|betray|reliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.2768319912326526,
+   "k": 0,
+   "n": 40
+  },
+  "interp|betray|unreliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.3034889110541195,
+   "k": 0,
+   "n": 40
+  },
+  "interp|betray|none": {
+   "frac_r_lt_-0.05": 1.0,
+   "mean_excess_individual": 0.24531171666970747,
+   "excess_ratio_of_means": 0.24355691340474458,
+   "k": 40,
+   "n": 40
+  },
+  "interp|neutral|reliable": {
+   "frac_r_lt_-0.05": 0.45,
+   "mean_excess_individual": 0.21579977524262403,
+   "excess_ratio_of_means": 0.10780202156512275,
+   "k": 18,
+   "n": 40
+  },
+  "interp|neutral|unreliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.20312287835801326,
+   "k": 0,
+   "n": 40
+  },
+  "interp|neutral|none": {
+   "frac_r_lt_-0.05": 1.0,
+   "mean_excess_individual": 0.6687727650197088,
+   "excess_ratio_of_means": 0.6350136947384908,
+   "k": 40,
+   "n": 40
+  },
+  "report|trust|reliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.4908467175423325,
+   "k": 0,
+   "n": 40
+  },
+  "report|trust|unreliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5821368993767307,
+   "k": 0,
+   "n": 40
+  },
+  "report|trust|none": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5109717243880988,
+   "k": 0,
+   "n": 40
+  },
+  "report|betray|reliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.45563303425223767,
+   "k": 0,
+   "n": 40
+  },
+  "report|betray|unreliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5788722185383396,
+   "k": 0,
+   "n": 40
+  },
+  "report|betray|none": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5063162111590194,
+   "k": 0,
+   "n": 40
+  },
+  "report|neutral|reliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.48280181863171845,
+   "k": 0,
+   "n": 40
+  },
+  "report|neutral|unreliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5946433821318068,
+   "k": 0,
+   "n": 40
+  },
+  "report|neutral|none": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5101928895428296,
+   "k": 0,
+   "n": 40
+  },
+  "report-x|trust|reliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5115031748971046,
+   "k": 0,
+   "n": 40
+  },
+  "report-x|trust|unreliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.6238374540508562,
+   "k": 0,
+   "n": 40
+  },
+  "report-x|trust|none": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5582137655343641,
+   "k": 0,
+   "n": 40
+  },
+  "report-x|betray|reliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5448220821294172,
+   "k": 0,
+   "n": 40
+  },
+  "report-x|betray|unreliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5799096898479589,
+   "k": 0,
+   "n": 40
+  },
+  "report-x|betray|none": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5206099353458702,
+   "k": 0,
+   "n": 40
+  },
+  "report-x|neutral|reliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.47872026849363897,
+   "k": 0,
+   "n": 40
+  },
+  "report-x|neutral|unreliable": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.6348059572070619,
+   "k": 0,
+   "n": 40
+  },
+  "report-x|neutral|none": {
+   "frac_r_lt_-0.05": 0.0,
+   "mean_excess_individual": 0.0,
+   "excess_ratio_of_means": -0.5524261578687206,
+   "k": 0,
+   "n": 40
+  }
+ },
+ "classification_by_err": {
+  "interp": {
+   "mean_excess_individual": 2.9137697795901865,
+   "mean_excess_individual_bg_range": 2.9137697795901865,
+   "mean_excess_individual_src_range": 2.4623511092982593,
+   "excess_ratio_of_means": 1.5853395283125795,
+   "excess_ratio_of_means_bg_range": 1.379953982616206,
+   "excess_ratio_of_means_src_range": 1.5853395283125795,
+   "class": "経験史に依存する性質"
+  },
+  "report": {
+   "mean_excess_individual": 0.0,
+   "mean_excess_individual_bg_range": 0.0,
+   "mean_excess_individual_src_range": 0.0,
+   "excess_ratio_of_means": 0.1087903098735295,
+   "excess_ratio_of_means_bg_range": 0.01854678670421382,
+   "excess_ratio_of_means_src_range": 0.1087903098735295,
+   "class": "設計仮説と矛盾する性質"
+  },
+  "report-x": {
+   "mean_excess_individual": 0.0,
+   "mean_excess_individual_bg_range": 0.0,
+   "mean_excess_individual_src_range": 0.0,
+   "excess_ratio_of_means": 0.10923990745642108,
+   "excess_ratio_of_means_bg_range": 0.05286730372779171,
+   "excess_ratio_of_means_src_range": 0.10923990745642108,
+   "class": "設計仮説と矛盾する性質"
+  }
+ },
+ "sweep_C_OR_srcnone": {
+  "interp": {
+   "2": {
+    "fraction_overshoot": 0.0375,
+    "mean_excess": 0.19435532269329417,
+    "k": 9,
+    "n": 240
+   },
+   "4": {
+    "fraction_overshoot": 0.058333333333333334,
+    "mean_excess": 0.09925931779147304,
+    "k": 14,
+    "n": 240
+   },
+   "8": {
+    "fraction_overshoot": 0.5083333333333333,
+    "mean_excess": 0.5788094108749511,
+    "k": 122,
+    "n": 240
+   },
+   "12": {
+    "fraction_overshoot": 0.45416666666666666,
+    "mean_excess": 0.27580630957578534,
+    "k": 109,
+    "n": 240
+   },
+   "16": {
+    "fraction_overshoot": 0.38333333333333336,
+    "mean_excess": 0.11872279366938066,
+    "k": 92,
+    "n": 240
+   }
+  },
+  "report": {
+   "2": {
+    "fraction_overshoot": 0.0,
+    "mean_excess": 0.0,
+    "k": 0,
+    "n": 240
+   },
+   "4": {
+    "fraction_overshoot": 0.0,
+    "mean_excess": 0.0,
+    "k": 0,
+    "n": 240
+   },
+   "8": {
+    "fraction_overshoot": 0.0,
+    "mean_excess": 0.0,
+    "k": 0,
+    "n": 240
+   },
+   "12": {
+    "fraction_overshoot": 0.0,
+    "mean_excess": 0.0,
+    "k": 0,
+    "n": 240
+   },
+   "16": {
+    "fraction_overshoot": 0.0,
+    "mean_excess": 0.0,
+    "k": 0,
+    "n": 240
+   }
+  },
+  "report-x": {
+   "2": {
+    "fraction_overshoot": 0.0,
+    "mean_excess": 0.0,
+    "k": 0,
+    "n": 240
+   },
+   "4": {
+    "fraction_overshoot": 0.17916666666666667,
+    "mean_excess": 2.592402593353492,
+    "k": 43,
+    "n": 240
+   },
+   "8": {
+    "fraction_overshoot": 0.09166666666666666,
+    "mean_excess": 0.02307001745668994,
+    "k": 22,
+    "n": 240
+   },
+   "12": {
+    "fraction_overshoot": 0.0,
+    "mean_excess": 0.0,
+    "k": 0,
+    "n": 240
+   },
+   "16": {
+    "fraction_overshoot": 0.0,
+    "mean_excess": 0.0,
+    "k": 0,
+    "n": 240
+   }
+  }
+ },
+ "reading_note": "超えた量 −r は、個体ごとの max(0, −r) の平均と、平均どうしの比 −mean(d_post)/mean(d_pre) の 2 通りで計算し、BG（または SRC）の間の範囲がどちらも 0.1 以上のときだけ「経験史に依存する性質」（S5-5）。故障は RA5・RA10 でだけ判定する",
+ "rule": "報告と分類。故障の判定はしない"
+}

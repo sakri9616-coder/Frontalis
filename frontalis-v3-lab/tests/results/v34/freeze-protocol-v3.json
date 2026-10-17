@@ -1,0 +1,62 @@
+{
+ "version": 3,
+ "frozen_on": "2026-10-17",
+ "stage": "5 (after the dry run on development seeds 3490-3493, before the real run on evaluation seeds 3400-3439)",
+ "supersedes": "freeze-protocol-v2.json (version 2, left untouched; freeze-protocol.json version 1 also untouched)",
+ "hash_note": "SHA-256 of the file bytes with CRLF normalised to LF.",
+ "ra_protocol": {
+  "file": "frontalis-v3-lab/tests/ra_protocol.py",
+  "old_sha256_v2": "a8fc4a79193d03a43ec60e15063929d3f930ab0651a4879fd7262a36962dc820",
+  "new_sha256": "2474a53886f08201cd4279e183485a623e5f8f1f3b1683a4d3b3cb93b68ddee0",
+  "diff_is_guard_only": true,
+  "environment_variable_unlock": false,
+  "note": "Only two constant lines changed: PHASES gains 'stage5': SEEDS_EVAL and STAGE_ALLOWED gains frozenset(SEEDS_EVAL). guard_seeds and every other function/constant are byte-identical (tests/test_ra_stage5_guard.py reverts the two lines and reproduces the v2 hash; AST of all functions/classes compared). Evaluation seeds 3400-3439 pass only with phase='stage5'; 3450-3459 and 3490-3499 are refused in that phase; reserved 3500-3539 are refused in every phase. The unified diff is in CHANGELOG-v3.4.md (Stage 5)."
+ },
+ "evaluation_code_sha256": {
+  "frontalis-v3-lab/tests/ra_protocol.py": "2474a53886f08201cd4279e183485a623e5f8f1f3b1683a4d3b3cb93b68ddee0",
+  "frontalis-v3-lab/data/make_histories_v34.py": "33bb0934640d2d46c64adf5edeacc0bab92a95ed3af919559d965fd76146cd71",
+  "frontalis-v3-lab/tests/mutants_v34.py": "1cb328eb0fb088007f88300047e6f977c99af7c2e154425c711e9be86fcbece9",
+  "frontalis-v3-lab/tests/ra_parallel.py": "d99b107a3fc2998b0971f10652e1ca9c49da7c8bff929a85218e268d4d0e0428",
+  "frontalis-v3-lab/tests/ra_checks_v34.py": "2a0930f7a7160ef3885d9395c0990aeaa10939bf58824e22ba12880ef4dc2b08",
+  "frontalis-v3-lab/tests/stage4_mutation.py": "61262ba768b9279ed82fb7eaaa490f85623ec3e7674f1ff116ebfdf4fa84d1ef",
+  "frontalis-v3-lab/tests/stage5_tasks.py": "e6e2777e474ffb2eadff222bc12bdb6a06bc9f16170f95301e9c2314921c8050",
+  "frontalis-v3-lab/tests/stage5_run.py": "6c8b4bf4b3ba5c803b41c00297afccb953eed5e296e39d47b24bbac8b061dfba",
+  "frontalis-v3-lab/tests/test_ra_criteria.py": "5456aa1795c34b965b7b11ac95c07cc9ae4199b69b68138aac2fd3314031049f"
+ },
+ "system_files_sha256": {
+  "frontalis-v3-lab/npnv3/__init__.py": "6357e21a9a5da70f8154249c1c9e810014247999737354090cf2efbe990b39dd",
+  "frontalis-v3-lab/npnv3/__main__.py": "13a1a5b340cdcfc1902b62be90e508c7c71886000d5bf087e7854aadf09fb35e",
+  "frontalis-v3-lab/npnv3/belief.py": "04c5359f24843ab7b53cf224f1a504874aa2c30b831ac0d0517e36e4d40af40c",
+  "frontalis-v3-lab/npnv3/cli.py": "8c6507b5d2537f7ee371e2afb8c769204666fae77bca7d37a65657f335e90e10",
+  "frontalis-v3-lab/npnv3/config.py": "e7ee1700f06465bccb63ea9ea623bff6ca583a8a9f80e73d7b887a1b6ab3faf0",
+  "frontalis-v3-lab/npnv3/explain.py": "7d861e8ad8ffc9f8c6aeac8e789872218c51a3968fdbb9b06b530510ee6d56c7",
+  "frontalis-v3-lab/npnv3/heads.py": "00a2a559701a7c8821eb831b2f7191769f9e06261b88b84628f6aae083632d3b",
+  "frontalis-v3-lab/npnv3/innate.py": "f40ea491bc25a4db1aa7409893dcf53b07634f464e6aae642a8ede84e59616e9",
+  "frontalis-v3-lab/npnv3/ledger.py": "be6f932f7f605213cfe83b8709230264c435cc20c3a5097bf593b593056bbe80",
+  "frontalis-v3-lab/npnv3/lexicon.py": "1ce3bbdf346e3d96a4f1f00c03adfd8f2c62151795100f1e58afd97854439c3b",
+  "frontalis-v3-lab/npnv3/mlp.py": "71f46aec60ebc429d903a185c89c721aef743082a5f485a8413704f09c899766",
+  "frontalis-v3-lab/npnv3/npn.py": "4c79f25b46ea0efd6472ec7a481a0f9b1e728d08ce328a2535497957f13781b7",
+  "frontalis-v3-lab/npnv3/schema.py": "c1f79217708832b4b0c8ccbdfedac4ed9743781c3ae0f74114f738aef6b001fb",
+  "frontalis-v3-lab/npnv3/trace.py": "889cfa3f30dd2db1ed5cd8e1a4bb2af9b7f5965f9b3860696b26d5b5694cf872",
+  "frontalis-v3-lab/npnv3/value.py": "825906d4492a2de47276d1b11719ed47dc6378b0fa9e394677bf77269d81a74a"
+ },
+ "unchanged_since_v2": {
+  "frontalis-v3-lab/data/make_histories_v34.py": "33bb0934640d2d46c64adf5edeacc0bab92a95ed3af919559d965fd76146cd71",
+  "frontalis-v3-lab/tests/mutants_v34.py": "1cb328eb0fb088007f88300047e6f977c99af7c2e154425c711e9be86fcbece9",
+  "frontalis-v3-lab/tests/ra_parallel.py": "d99b107a3fc2998b0971f10652e1ca9c49da7c8bff929a85218e268d4d0e0428",
+  "frontalis-v3-lab/tests/ra_checks_v34.py": "2a0930f7a7160ef3885d9395c0990aeaa10939bf58824e22ba12880ef4dc2b08",
+  "frontalis-v3-lab/tests/stage4_mutation.py": "61262ba768b9279ed82fb7eaaa490f85623ec3e7674f1ff116ebfdf4fa84d1ef"
+ },
+ "dry_run": {
+  "seeds": [
+   3490,
+   3491,
+   3492,
+   3493
+  ],
+  "phase": "dev",
+  "note": "pipeline proven end to end (RA0-RA14, RA-Y4 JSON + summary); seed 3493 re-run with 3 workers from scratch gave identical content."
+ },
+ "spec_sha256_at_freeze": "9b93bea98ce37cf2122b1f79eccbb4f72b6cbded2861a52badfe9be67dc44b90",
+ "note": "After this file the evaluation code and the system files must not change before the real run. A bug found after seeing results is recorded and a separate 'corrected' condition added; the original results are kept."
+}

@@ -1,0 +1,227 @@
+{
+ "id": "RA0",
+ "verdict": "pass",
+ "label": "比較対象（Y 系）。ユーザーの 2026-10-17 の再定義の下では、本来の NPN 研究の達成ではない。",
+ "cells": {
+  "interp|trust|reliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "interp|trust|unreliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "interp|trust|none": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "interp|betray|reliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "interp|betray|unreliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "interp|betray|none": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "interp|neutral|reliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "interp|neutral|unreliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "interp|neutral|none": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report|trust|reliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report|trust|unreliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report|trust|none": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report|betray|reliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report|betray|unreliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report|betray|none": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report|neutral|reliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report|neutral|unreliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report|neutral|none": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report-x|trust|reliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report-x|trust|unreliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report-x|trust|none": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report-x|betray|reliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report-x|betray|unreliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report-x|betray|none": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report-x|neutral|reliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report-x|neutral|unreliable": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  },
+  "report-x|neutral|none": {
+   "k": 40,
+   "n": 40,
+   "p": 1.0,
+   "wilson_lo": 0.9123783988027133,
+   "wilson_hi": 0.9999999999999999,
+   "ok": true
+  }
+ },
+ "n_excluded_individuals": 0,
+ "excluded": [],
+ "rule": "各セルで 95% 以上の種が |d_pre| > 1e-6 かつ CE_imm ≠ 0（|差| > 1e-12）を満たす。満たさない個体は以降の判定から除く（pairwise: 比べる 2 つの両方に値のある種だけを使う）",
+ "scale_components_dropped": []
+}

@@ -1,0 +1,83 @@
+{
+ "id": "RA10",
+ "verdict": "pass",
+ "label": "比較対象（Y 系）。ユーザーの 2026-10-17 の再定義の下では、本来の NPN 研究の達成ではない。",
+ "items": {
+  "H1": {
+   "ok": true,
+   "n_run": 1120,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "H1_all_conditions_observer": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "H2": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "H2_all_conditions_observer_W_kappa": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "H2_all_conditions_observer_log_tau": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "H3": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "H4": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "H5": {
+   "ok": true,
+   "n_run": 40,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "H7_cell_task": {
+   "ok": true,
+   "n_run": 600,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "H7_all_27_cells": {
+   "ok": true,
+   "n_individuals": 1080
+  },
+  "H8": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  },
+  "H9": {
+   "ok": true,
+   "n_run": 1080,
+   "n_fail": 0,
+   "first_fails": []
+  }
+ },
+ "H6": {
+  "status": "pass",
+  "note": "作業用の写し（リポジトリ外）で、現在の npnv3（reappraisal_mode 既定 'v33'）に対し v3.3 の全 42 モジュール 350 件を実行（Windows に fork がないので pmap を spawn 2 本に）。結果 JSON 64 件のうち 62 件が stage2_h6.json の同じ環境の基準（v3.3 のコード）とバイト単位で一致、残り 2 件（U03・W05）は Stage 2・3 と同じ辞書のキーの並びだけの差（Counter とプロセスごとの文字列ハッシュ）。全モジュールの実行件数と合否（OK / FAILED の別）が基準と同じ。凍結済みファイル（Python 3.13）との差は環境の影響（L2）。"
+ },
+ "conclusion_notes": [],
+ "rule": "H1〜H9 を全条件で満たす。H6 は作業用の写しで v3.3 の全テストを実行する別の手順"
+}
