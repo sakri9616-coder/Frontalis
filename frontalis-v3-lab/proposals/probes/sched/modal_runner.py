@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 import modal
 
-app = modal.App("frontalis-sched", image=modal.Image.debian_slim(python_version="3.12").apt_install("git").pip_install("numpy", "torch"))
+app = modal.App("frontalis-sched", image=modal.Image.debian_slim(python_version="3.12").apt_install("git").pip_install("numpy==2.5.4", "torch==2.14.1"))   # pinned 2026-10-17 to the versions of the P21 Modal check (level 2), so that every evaluation job runs the same software
 REPO, DIR = "https://github.com/sakri9616-coder/Frontalis.git", "/root/F/frontalis-v3-lab/proposals/probes"
 MAX_BYTES = 40_000_000
 

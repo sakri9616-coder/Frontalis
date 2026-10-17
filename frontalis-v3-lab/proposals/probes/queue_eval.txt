@@ -1,0 +1,4 @@
+# Frozen evaluation (FREEZE.md, note of 2026-10-17): 32 independent, idempotent jobs, each 5 evaluation seeds, one result file each.
+# Run ONLY with:  python sched/sched.py run queue_eval.txt --allow-eval --only=modal      (one machine type: Modal T4)
+p31_eval_job.py set {F1,F6m} {77100,77105,77110,77115,77120,77125,77130,77135}
+p31_eval_job.py {krr,nn0} F1 {77100,77105,77110,77115,77120,77125,77130,77135}

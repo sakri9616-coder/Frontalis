@@ -5,6 +5,7 @@
   python sched/sched.py status               providers (free budget left, slots) and job states
   python sched/sched.py approve <provider> <usd>   allow paid spend (beyond the free budget) on that provider, up to <usd>
   python sched/sched.py reset  [--failed | "<job line>"]   put failed / given jobs back to pending
+  --only=<name>[,<name>]  (plan/run) use only these providers, e.g. --only=modal to keep one machine type and the local GPU free
 
 Queue: one job per line, the same form as queue4.txt / queue_cloud.txt ("script.py args"). Brace lists split a line into
 jobs automatically:  p15_prod.py cells {set,krr} {IH,I0} {C-off,C-SLp}  ->  8 jobs.
@@ -85,11 +86,14 @@ def vram_ok(p):
         return False
 
 
+ONLY = None   # set from --only=<names>
+
+
 def pick(providers, st):
     """First enabled provider with a free slot whose spend gate is open. Returns (provider|None, blocked_excess|None)."""
     blocked = None
     for p in providers:
-        if not p.get("enabled", True) or busy_slots(p, st) >= p.get("concurrency", 1) or not vram_ok(p):
+        if (ONLY and p["name"] not in ONLY) or not p.get("enabled", True) or busy_slots(p, st) >= p.get("concurrency", 1) or not vram_ok(p):
             continue
         ok, excess = gate(p, st)
         if ok:
@@ -215,6 +219,7 @@ def cmd_status():
 if __name__ == "__main__":
     a = [x for x in sys.argv[1:] if not x.startswith("--")]
     ev = "--allow-eval" in sys.argv
+    ONLY = next((x.split("=", 1)[1].split(",") for x in sys.argv if x.startswith("--only=")), None)
     if not a:
         sys.exit(__doc__)
     if a[0] == "plan": cmd_plan(a[1], ev)
