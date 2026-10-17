@@ -4,7 +4,7 @@
 
 | 種類 | ライセンス | 全文 |
 | --- | --- | --- |
-| ソースコード | Apache License 2.0 | [LICENSE](LICENSE) |
+| ソースコード | Apache License 2.0（著作権表示は [NOTICE](NOTICE)） | [LICENSE](LICENSE) |
 | 学習済み NN の重み・保存された人格の状態 | Apache License 2.0 | [LICENSE](LICENSE) |
 | 研究文書・実験結果 | Creative Commons Attribution 4.0 International (CC BY 4.0) | [LICENSE-CC-BY-4.0](LICENSE-CC-BY-4.0) |
 | 学習データ | **未指定。権利関係を確認してから別途指定します** | — |
@@ -35,7 +35,7 @@
 
 ## 引用のしかた
 
-CC BY 4.0 の文書・結果を使う場合は、出典として「Project frontalis」と、リポジトリの URL（https://github.com/sakri9616-coder/Frontalis）を示してください。
+CC BY 4.0 の文書・結果を使う場合は、出典として「Project frontalis（Sakuri9616）」と、リポジトリの URL（https://github.com/sakri9616-coder/Frontalis）を示してください。
 
 ---
 
