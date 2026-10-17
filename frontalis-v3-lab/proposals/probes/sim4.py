@@ -171,6 +171,7 @@ class NNPop:
 
     def __init__(self, kind: str, P: int, init_seeds, cfg, init_params: Optional[Dict[str, torch.Tensor]] = None):
         self.kind = kind; H = cfg.get("hidden", 128); d = cfg.get("d", 64); self.d = d; self.H = H
+        self.sdpa = bool(cfg.get("sdpa", 0))   # P23 speed variant: fused attention kernel (same arithmetic up to summation order)
         self.pscale = float(cfg.get("partner_scale", 1.0))
         sh: Dict[str, tuple] = {}
         if kind in ("set", "nn0", "pre"):
@@ -231,7 +232,10 @@ class NNPop:
             hn = F.layer_norm(h, (d,))
             qkv = torch.bmm(hn, p[f"{e}.Wqkv{l}"]).view(P * n, 4, 3, Hh, dh)
             q, k_, v = (qkv[:, :, i].transpose(1, 2) for i in range(3))
-            a = torch.softmax(q @ k_.transpose(-1, -2) / dh ** 0.5, -1) @ v
+            if self.sdpa:
+                a = F.scaled_dot_product_attention(q, k_, v)
+            else:
+                a = torch.softmax(q @ k_.transpose(-1, -2) / dh ** 0.5, -1) @ v
             h = h + torch.bmm(a.transpose(1, 2).reshape(P, n * 4, d), p[f"{e}.Wo{l}"])
             hn = F.layer_norm(h, (d,))
             h = h + torch.bmm(torch.relu(torch.bmm(hn, p[f"{e}.Wf1{l}"]) + p[f"{e}.bf1{l}"]), p[f"{e}.Wf2{l}"]) + p[f"{e}.bf2{l}"]
@@ -327,7 +331,7 @@ DEFAULT = dict(learner="set", innate="IH", cycle=1, pw="S", kmode="zero", kfix=0
                beta=3.0, ceps=0.1, ref=0.5, salience=1, sal_max=2.0, lr=3e-4, bs=32, spn=1, n_steps=3000, n_early=1200,
                clip=1.0, hidden=128, d=64, solve_every=25, krr_ls=4.0, lam=1.0, amp=0, phase="main", eta_kp=0.02,
                blk=200, eta_kh=0.5, sig_kn=0.3, kmax=10.0, ckpt_every=0, ckpt_path=None, stop_at=None, wd=0.0, mask_partner=0,
-               partner_scale=1.0, chunk=1000)
+               partner_scale=1.0, chunk=1000, sdpa=0, tf32=0, fused_opt=0)
 
 
 def _stack(arrs, dtype=None):
@@ -370,7 +374,8 @@ def init_state(pers, worlds, c, init_params=None):
     seeds = [q["init"] for q in pers]
     if kind in NN_KINDS:
         net = NNPop(kind, P, seeds, c, init_params)
-        opt = torch.optim.AdamW(net.trainable, lr=c["lr"], weight_decay=c["wd"]) if c["wd"] > 0 else torch.optim.Adam(net.trainable, lr=c["lr"])
+        okw = dict(fused=True) if c.get("fused_opt", 0) else {}   # P23 speed variant: fused Adam kernel; default off
+        opt = torch.optim.AdamW(net.trainable, lr=c["lr"], weight_decay=c["wd"], **okw) if c["wd"] > 0 else torch.optim.Adam(net.trainable, lr=c["lr"], **okw)
     else:
         wkeys = sorted({q["world"] for q in pers})
         net = RidgePop(kind, P, seeds, c, dict(cl=np.stack([worlds[k]["cl"] for k in wkeys])))
@@ -445,6 +450,7 @@ def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any], state: Op
     learner = c["learner"]; ridge = learner in RIDGE_KINDS
     any_choice = c["choice"] != "none"
     on = CYC > 0; is_ih = INN == 0; is_i0 = INN == 1
+    torch.backends.cuda.matmul.allow_tf32 = bool(c["tf32"])   # P23 speed variant (precision reduction); default False
     t0 = time.time()
 
     def rows(s_, p_, c_, t_idx):
