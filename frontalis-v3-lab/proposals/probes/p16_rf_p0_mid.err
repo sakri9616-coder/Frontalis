@@ -1,0 +1,16 @@
+rf_p0_mid 2000 {'F1': 0.753519207239151, 'F6m': 0.8870020806789398, 'F2': -0.09512776136398315} {'F1': 0.8129696547985077, 'F6m': 0.9487514197826385, 'F2': -0.057456135749816895}
+Traceback (most recent call last):
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\p16_nn_learnability.py", line 59, in <module>
+    main(sys.argv[1])
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\p16_nn_learnability.py", line 48, in main
+    st = sim4.run(pers, worlds, dict(innate="IH", **COND["C-off"], **v, stop_at=stop), state=st)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\sim4.py", line 566, in run
+    gn = prm.grad.flatten(1).norm(dim=1).clamp(min=1e-12)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CUDA error: out of memory
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+exit=1

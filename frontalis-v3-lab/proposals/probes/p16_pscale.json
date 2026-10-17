@@ -1,0 +1,9 @@
+{
+ "krr": 0.0,
+ "lin": 0.0,
+ "nn0": 0.0,
+ "rf": 0.5,
+ "hb": 1.0,
+ "fixk": 1.0,
+ "_note": "chosen by mean own-prediction R2 on P_un over F1, F6m, F2 (dev seeds, 8,000 experiences); hb/fixk features do not use the partner input; rf p0 pending at the time of writing"
+}

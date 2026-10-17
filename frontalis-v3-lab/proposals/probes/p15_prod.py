@@ -4,7 +4,7 @@ Step 1 (lr): NN-SET, I-H, F1, C-off, role A only; lr in {1e-4, 3e-4, 1e-3}; choo
 Step 2 (cells): learner x innate x condition, families F1 F2 F6m F5, roles A A2 B B2 (+ A3 A4 in F1 for calibration and the
          noise roles), N = 32,000, S/N = 4 for NN; ridge learners see each experience once (exact fit on all history).
 Run: python -B p15_prod.py lr | cells <learner> <innate> <cond,...> | all"""
-import json, sys
+import json, os, sys, tempfile
 from pathlib import Path
 import numpy as np
 import sim4
@@ -46,8 +46,11 @@ def chosen_lr():
 def step_cells(learner, innate, conds, fams=("F1", "F2", "F6m", "F5"), calib_conds=("C-off", "C-S0")):
     out_p = HERE / "p15_cells.json"
     roles = ROLES + (("A3", 0, 5, 6), ("A4", 0, 7, 8))
-    run_cell(learner, innate, conds, fams, SEEDS, roles, "prod", out_p, calib_conds=calib_conds if learner in ("set", "rel") else (),
-             extra_cfg=dict(lr=chosen_lr()), log=LOG)
+    ps = json.loads((HERE / "p16_pscale.json").read_text(encoding="utf-8")) if (HERE / "p16_pscale.json").exists() else {}
+    extra = dict(lr=chosen_lr()) if learner in ("set", "rel", "pre") else dict(lr=chosen_lr(), partner_scale=ps.get(learner, 1.0))
+    run_cell(learner, innate, conds, fams, SEEDS, roles, "prod", HERE / f"p15_cells_{learner}_{innate}.json",
+             calib_conds=calib_conds if learner in ("set", "rel") else (), extra_cfg=extra, log=LOG,
+             ckpt_dir=os.path.join(tempfile.gettempdir(), "v4d_ckpt_p15"))
 
 
 if __name__ == "__main__":

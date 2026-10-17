@@ -1,0 +1,22 @@
+lr 0.0003 0.8204785287380219 10183s
+lr 0.001 0.8229754865169525 10233s
+lr 0.0001 0.8185524642467499 10319s
+Traceback (most recent call last):
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\p15_prod.py", line 63, in <module>
+    step_cells(a[1], a[2], a[3].split(","))
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\p15_prod.py", line 51, in step_cells
+    run_cell(learner, innate, conds, fams, SEEDS, roles, "prod", HERE / f"p15_cells_{learner}_{innate}.json",
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\cells.py", line 94, in run_cell
+    st = sim4.run(pers, worlds, cfg)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\sim4.py", line 426, in run
+    UMB = _stack([np.random.default_rng([q["sgd"], 41, ph]).random((N * SPN, BS), dtype=np.float32) for q in pers])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\sim4.py", line 334, in _stack
+    return torch.tensor(np.stack(arrs), device=DEV, dtype=dtype)
+                        ^^^^^^^^^^^^^^
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis\frontalis-phase3d-lab\.venv\Lib\site-packages\numpy\_core\shape_base.py", line 465, in stack
+    return _nx.concatenate(expanded_arrays, axis=axis, out=out,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 11.0 GiB for an array with shape (720, 128000, 32) and data type float32
+exit krr IH=1

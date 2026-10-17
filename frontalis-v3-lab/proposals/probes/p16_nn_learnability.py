@@ -24,12 +24,21 @@ VARIANTS = {
     "krr_p0_mid": dict(learner="krr", n_steps=8000, n_early=0, spn=1, partner_scale=0.0),
     "krr_p05_mid": dict(learner="krr", n_steps=8000, n_early=0, spn=1, partner_scale=0.5),
     "rf_p0_mid": dict(learner="rf", n_steps=8000, n_early=0, spn=4, partner_scale=0.0),
+    "krr_p1_mid": dict(learner="krr", n_steps=8000, n_early=0, spn=1, partner_scale=1.0),
+    "rf_p05_mid": dict(learner="rf", n_steps=8000, n_early=0, spn=4, partner_scale=0.5),
+    "rf_p1_mid": dict(learner="rf", n_steps=8000, n_early=0, spn=4, partner_scale=1.0),
+    "lin_p0_mid": dict(learner="lin", n_steps=8000, n_early=0, spn=1, partner_scale=0.0),
+    "lin_p05_mid": dict(learner="lin", n_steps=8000, n_early=0, spn=1, partner_scale=0.5),
+    "lin_p1_mid": dict(learner="lin", n_steps=8000, n_early=0, spn=1, partner_scale=1.0),
+    "nn0_p0_mid": dict(learner="nn0", n_steps=8000, n_early=0, spn=4, partner_scale=0.0),
+    "nn0_p05_mid": dict(learner="nn0", n_steps=8000, n_early=0, spn=4, partner_scale=0.5),
+    "nn0_p1_mid": dict(learner="nn0", n_steps=8000, n_early=0, spn=4, partner_scale=1.0),
 }
 
 
 def main(name):
     v = dict(VARIANTS[name]); n_tr = v.pop("n_tr", 80)
-    fams = ("F1", "F6m", "F2") if name in ("gate_mid", "gate_rel_mid", "krr_p0_mid", "krr_p05_mid", "rf_p0_mid") else ("F1", "F6m")
+    fams = ("F1", "F6m", "F2") if (name.startswith("gate") or "_p0" in name or "_p1" in name) else ("F1", "F6m")
     worlds = {(s, f): sim4.make_world(s, f, n_tr) for s in SEEDS for f in fams}
     pers = pers_list(SEEDS, fams, (("A", -1, 1, 3),))
     traj = []
@@ -42,10 +51,8 @@ def main(name):
         rtr = {f: float(np.median([m4.own_r2(g["A"], "tr") for k, g in vw.items() if k[1] == f])) for f in fams}
         traj.append(dict(step=stop, r2_un=r, r2_tr=rtr))
         print(name, stop, r, rtr, file=sys.stderr, flush=True)
-    out = HERE / "p16_results.json"
-    d = json.loads(out.read_text(encoding="utf-8")) if out.exists() else {}
-    d[name] = dict(cfg=VARIANTS[name], traj=traj, secs=st["secs"])
-    out.write_text(json.dumps(d, indent=1), encoding="utf-8")
+    out = HERE / f"p16_results_{name}.json"
+    out.write_text(json.dumps({name: dict(cfg=VARIANTS[name], traj=traj, secs=st["secs"])}, indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":

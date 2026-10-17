@@ -274,5 +274,25 @@
    "outcome_sd": 0.4102967060445092,
    "hinge_rate": 0.49681333333333305
   }
+ },
+ "ckpt_determinism": {
+  "set": {
+   "hash_full": "56cdd870bc032fd9",
+   "hash_resumed": "56cdd870bc032fd9",
+   "identical": true,
+   "A_vs_Aexact_maxdiff": 0.0
+  },
+  "rel": {
+   "hash_full": "4254c82214b879eb",
+   "hash_resumed": "4254c82214b879eb",
+   "identical": true,
+   "A_vs_Aexact_maxdiff": 0.0
+  },
+  "krr": {
+   "hash_full": "2f9124d3febdfc04",
+   "hash_resumed": "2f9124d3febdfc04",
+   "identical": true,
+   "A_vs_Aexact_maxdiff": 0.0
+  }
  }
 }
