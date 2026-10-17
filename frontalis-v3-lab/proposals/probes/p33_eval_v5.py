@@ -1,7 +1,8 @@
 """P33: the v5 evaluation (PREREG-v5-DRAFT.md). Idempotent jobs for sched.py, a merge check and the judgement.
 
-  python -B p33_eval_v5.py constants              (before the freeze) from p32_setwg.json: J3v5 usability and m_abs by the
-                                                  rule of PREREG-v5 section 6 -> p33_v5_constants.json
+  python -B p33_eval_v5.py constants              (before the freeze) from p32_setwg_modal.json (evaluation image): J3v5
+                                                  usability and m_abs by the rule of PREREG-v5 section 6 -> p33_v5_constants.json
+  python -B p33_eval_v5.py hashes                 print the SHA-256 block for FREEZE-v5.md (the freeze itself is a separate step)
   python -B p33_eval_v5.py job <set|krr|nn0> <first seed>   one job: 5 seeds, C-off and C-SLp -> p33_eval_<learner>_<first>.json
   python -B p33_eval_v5.py check                  completeness and one-place report (no judgement)
   python -B p33_eval_v5.py judge                  check, then judge -> p33_judgment.json
@@ -14,7 +15,10 @@ for a dry run of the job (writes p33_dev_<learner>_<first>.json; no hash check).
 - An evaluation job checks the SHA-256 of every file listed in FREEZE-v5.md (LF) and refuses to run on a mismatch (exit 3).
 - The merge refuses to judge unless all 24 files exist, each with its 5 seeds x 2 conditions, all on one machine type, and
   every commit the jobs ran holds byte-identical frozen files.
-- Results are reported to the leader first and are not committed (probes/.gitignore)."""
+- The cell list follows p33_v5_config.json ("v2": true -> the KRR and NN-0 cells for V2 are part of the evaluation).
+- The judge re-derives the constants from the hashed p32_setwg_modal.json and refuses to judge if they differ from
+  p33_v5_constants.json.
+- Results are reported to the leader first and are not committed (local git exclude)."""
 import hashlib, json, os, subprocess, sys, time
 from pathlib import Path
 
@@ -23,7 +27,9 @@ sys.path.insert(0, str(HERE)); sys.path.insert(0, str(HERE / "diag5"))
 FIRSTS = list(range(77300, 77340, 5))
 DEV_FIRSTS = (77380, 77385)
 LEARNERS = ("set", "krr", "nn0")
-EXPECTED = [(L, s) for L in LEARNERS for s in FIRSTS]
+CONFIG = json.loads((HERE / "p33_v5_config.json").read_text(encoding="utf-8"))
+EVAL_LEARNERS = LEARNERS if CONFIG["v2"] else ("set",)
+EXPECTED = [(L, s) for L in EVAL_LEARNERS for s in FIRSTS]
 CONDS = ["C-off", "C-SLp"]
 FREEZE = HERE.parent / "FREEZE-v5.md"
 
@@ -39,21 +45,27 @@ def frozen_ok():
     return [p for sha, p in frozen_paths() if hashlib.sha256((HERE.parent / p).read_bytes().replace(b"\r\n", b"\n")).hexdigest() != sha]
 
 
-def constants():
+def derive_constants():
     """PREREG-v5 section 6: usable iff PL-state passes (8 of 10, floor = max(0.25 x median AA, m_abs)) and PL-state0 fails, in
     C-SLp; m_abs = max of the 10 PL-state0 J3v5 differences, rounded UP to 3 decimals (0.001 if not positive)."""
     import math
     import numpy as np
     from measure4 import judge
-    cal = json.loads((HERE / "p32_setwg.json").read_text(encoding="utf-8"))["calibration"]
+    src = json.loads((HERE / "p32_setwg_modal.json").read_text(encoding="utf-8"))
+    cal = src["calibration"]
     null = cal["C-SLp|PL-state0"]["J3v5_diffs"]
     m_abs = max(0.001, math.ceil(max(null) * 1000) / 1000)
-    out = dict(m_abs=m_abs, source="p32_setwg.json")
+    out = dict(m_abs=m_abs, source="p32_setwg_modal.json", source_machine={k: src["meta"].get(k) for k in ("device", "torch", "commit")})
     for nm in ("PL-state", "PL-state0"):
         c = cal[f"C-SLp|{nm}"]
         floor = max(0.25 * float(np.median(c["J3v5_AA"])), m_abs)
         out[nm] = judge(c["J3v5_diffs"], floor, 0.8)
     out["J3v5_usable"] = bool(out["PL-state"]["passed"] and not out["PL-state0"]["passed"])
+    return json.loads(json.dumps(out, default=float))
+
+
+def constants():
+    out = derive_constants()
     (HERE / "p33_v5_constants.json").write_text(json.dumps(out, indent=1, default=float), encoding="utf-8")
     print(json.dumps(out, indent=1, default=float))
     return 0
@@ -61,7 +73,7 @@ def constants():
 
 def job(learner, first):
     first = int(first)
-    assert learner in LEARNERS and (first in FIRSTS or first in DEV_FIRSTS), "bad job"
+    assert learner in EVAL_LEARNERS and (first in FIRSTS or first in DEV_FIRSTS), "bad job (learner not in the frozen cell list?)"
     dev = first in DEV_FIRSTS
     out = HERE / (f"p33_dev_{learner}_{first}.json" if dev else f"p33_eval_{learner}_{first}.json")
     if out.exists():
@@ -75,8 +87,7 @@ def job(learner, first):
     import numpy as np, torch
     import sim5, measure4 as m4
     from cells import ROLES, SCALE, COND, pers_list
-    from d3_exp import j3v5
-    from d2_diag import body_hinge_frac
+    from measure5 import j3v5, w_course
     seeds = list(range(first, first + 5))
     lr = json.loads((HERE / "p15_lr.json").read_text(encoding="utf-8"))["chosen"]
     ps = json.loads((HERE / "p16_pscale.json").read_text(encoding="utf-8"))
@@ -98,10 +109,11 @@ def job(learner, first):
             g = m4.measure_group(vw, w, s, "IH", COND[cond]["cycle"], das=False)
             r.update({k: g[k] for k in ("D_AB_un", "D_AA_un", "Drho_AB_un", "Drho_AA_un", "Drho_AB_nc", "Drho_AA_nc", "xp_other_un",
                                         "xp_same_un", "xp_other_nc", "xp_same_nc", "repro_un", "swapd_AB", "swapd_AA")})
-            r["v5_swapd_AB"], r["v5_swapd_AA"] = j3v5(vw, w, s, True)
-            tr = {ro: body_hinge_frac(st["buf"]["DB"][idx[((s, f), ro, cond)]].cpu().numpy())[2] for ro in ("A", "A2", "B")}
-            r["w_L1_AB"] = {t: float(np.abs(tr["A"][t] - tr["B"][t]).sum()) for t in (4000, 12800, 20000, 32000)}
-            r["w_L1_AA2"] = {t: float(np.abs(tr["A"][t] - tr["A2"][t]).sum()) for t in (4000, 12800, 20000, 32000)}
+            r["v5_swapd_AB"], r["v5_swapd_AA"] = j3v5(vw, w, s)
+            if cond == "C-SLp":
+                tr = {ro: w_course(st["buf"]["DB"][idx[((s, f), ro, cond)]].cpu().numpy()) for ro in ("A", "A2", "B")}
+                r["w_L1_AB"] = {t: float(np.abs(tr["A"][t] - tr["B"][t]).sum()) for t in tr["A"]}
+                r["w_L1_AA2"] = {t: float(np.abs(tr["A"][t] - tr["A2"][t]).sum()) for t in tr["A"]}
         rows.append(r)
     commit = subprocess.run("git rev-parse --short HEAD", shell=True, cwd=HERE, capture_output=True, text=True).stdout.strip()
     env = dict(gpu=torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu", torch=torch.__version__,
@@ -155,7 +167,10 @@ def judge_all():
         print("NOT JUDGED: incomplete or mixed machines; report to the leader.")
         return 2
     K = json.loads((HERE / "p33_v5_constants.json").read_text(encoding="utf-8"))
-    rows = {L: [r for (L2, _), f in files.items() if L2 == L for r in f["rows"]] for L in LEARNERS}
+    if K != derive_constants():
+        print("NOT JUDGED: p33_v5_constants.json differs from the constants re-derived from p32_setwg_modal.json")
+        return 4
+    rows = {L: [r for (L2, _), f in files.items() if L2 == L for r in f["rows"]] for L in EVAL_LEARNERS}
     out = dict(constants=K)
     for cond in CONDS:
         rs = sorted([r for r in rows["set"] if r["cond"] == cond], key=lambda r: r["seed"])
@@ -164,21 +179,36 @@ def judge_all():
         o = dict(J3v5=judge(d, floor, 0.75))
         c = judge4.contrasts([dict(r, r2_nc=r["r2_nc"]) for r in rs])
         o["secondary"] = {j: c[j] for j in ("J1-a", "J2-a", "J2-b", "J4-a", "J4-b", "J5-a")}
-        for ctl in ("krr", "nn0"):
+        for ctl in [L for L in ("krr", "nn0") if L in EVAL_LEARNERS]:
             o[f"J5-c_{ctl}M" if ctl == "krr" else "J5-c_nn0"] = judge4.paired(rs, [r for r in rows[ctl] if r["cond"] == cond], "r2_nc", "r2_nc", 0.02)
-        o["r2_un_median"] = {L: float(np.median([r["r2_un"] for r in rows[L] if r["cond"] == cond])) for L in LEARNERS}
-        o["r2_nc_median"] = {L: float(np.median([r["r2_nc"] for r in rows[L] if r["cond"] == cond])) for L in LEARNERS}
-        o["w_time_course_median"] = {k: {t: float(np.median([r[k][t] for r in rs])) for t in rs[0][k]} for k in ("w_L1_AB", "w_L1_AA2")}
+        o["r2_un_median"] = {L: float(np.median([r["r2_un"] for r in rows[L] if r["cond"] == cond])) for L in EVAL_LEARNERS}
+        o["r2_nc_median"] = {L: float(np.median([r["r2_nc"] for r in rows[L] if r["cond"] == cond])) for L in EVAL_LEARNERS}
+        if cond == "C-SLp":
+            o["w_time_course_median"] = {k: {t: float(np.median([r[k][t] for r in rs])) for t in rs[0][k]} for k in ("w_L1_AB", "w_L1_AA2")}
         out[cond] = o
     slp, off = out["C-SLp"], out["C-off"]
-    out["V1"] = bool(K["J3v5_usable"] and slp["J3v5"]["passed"] and not off["J3v5"]["passed"])
-    out["V2"] = bool(slp["J5-c_krrM"]["passed"] and slp["J5-c_nn0"]["passed"])
+    # C-off is a sanity row, not evidence: w = 1 for every C-off personality, so the J3v5 difference is -swapd_AA <= 0 by
+    # construction. If it passes anyway, the computation is broken (reported as a failure of the run, not as a result).
+    out["C-off_sanity_ok"] = not off["J3v5"]["passed"]
+    out["V1"] = bool(K["J3v5_usable"] and slp["J3v5"]["passed"]) if out["C-off_sanity_ok"] else None
+    out["V2"] = bool(slp["J5-c_krrM"]["passed"] and slp["J5-c_nn0"]["passed"]) if CONFIG["v2"] else "not in the frozen cell list"
     (HERE / "p33_judgment.json").write_text(json.dumps(out, indent=1, default=float), encoding="utf-8")
     print("V1", out["V1"], "V2", out["V2"])
+    return 0
+
+
+HASHED = ["PREREG-v5-DRAFT.md", "probes/sim4.py", "probes/measure4.py", "probes/cells.py", "probes/judge4.py", "probes/measure5.py",
+          "probes/diag5/make_sim5.py", "probes/diag5/sim5.py", "probes/p32_v5_dev.py", "probes/p33_eval_v5.py", "probes/p32_setwg_modal.json",
+          "probes/p33_v5_constants.json", "probes/p33_v5_config.json", "probes/p15_lr.json", "probes/p16_pscale.json"]
+
+
+def hashes():
+    for p in HASHED:
+        print(hashlib.sha256((HERE.parent / p).read_bytes().replace(b"\r\n", b"\n")).hexdigest(), p)
     return 0
 
 
 if __name__ == "__main__":
     a = sys.argv[1:]
     sys.exit({"constants": lambda: constants(), "job": lambda: job(a[1], a[2]), "check": lambda: (check(), 0)[1],
-              "judge": lambda: judge_all()}[a[0]]())
+              "judge": lambda: judge_all(), "hashes": hashes}[a[0]]())

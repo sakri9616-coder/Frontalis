@@ -562,7 +562,7 @@ def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any], state: Op
             buf["s"][:, t] = S2.int(); buf["c"][:, t] = cc.int(); buf["TV"][:, t] = TVt; buf["DB"][:, t] = db; buf["SAL"][:, t] = sal; buf["R"][:, t] = r
             if ridge:
                 phi = net.feats(x, m2)
-                net.add(phi, db[:, None, :].expand(-1, 2, -1), torch.full_like(r, 0.5) if c["krr_flat_b"] else (torch.softmax(ll, 1) if c["krr_self_b"] else r), TVt, sal[:, None].expand(-1, 2))
+                net.add(phi, db[:, None, :].expand(-1, 2, -1), torch.full_like(r, 0.5) if c["krr_flat_b"] else (torch.softmax(-((db[:, None, :] - pb) ** 2).sum(-1) / 0.2, 1) if c["krr_self_b"] else r), TVt, sal[:, None].expand(-1, 2))
                 if (t + 1) % c["solve_every"] == 0 or t == N - 1:
                     net.solve()
         n = t + 1
