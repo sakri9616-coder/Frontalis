@@ -25,3 +25,7 @@
 2026-10-17 15:41:31 START p16_nn_learnability.py gate_rel_lr1e-3_mid
 2026-10-17 16:28:53 END rc=0 p16_nn_learnability.py gate_rel_lr1e-3_mid
 2026-10-17 16:28:53 START p16_nn_learnability.py gate_rel_lr1e-4_mid
+2026-10-17 17:22:53 END rc=0 p16_nn_learnability.py gate_rel_lr1e-4_mid
+2026-10-17 17:22:53 START p16_rel_choose.py
+2026-10-17 17:22:53 END rc=0 p16_rel_choose.py
+2026-10-17 17:22:53 START p17_rehearsal.py set lr

@@ -22,3 +22,5 @@ numpy._core._exceptions._ArrayMemoryError: Unable to allocate 11.0 GiB for an ar
 exit krr IH=1
 exit set IH=127
 set_IH_C-off_prod P=240 train 4756s meas 486s nonfinite 0
+set_IH_C-SLp_prod P=240 train 5828s meas 275s nonfinite 0
+krr_IH_C-off_prod P=240 train 1576s meas 9s nonfinite 0

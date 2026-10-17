@@ -5,3 +5,7 @@
 2026-10-17 13:49:59 START p15_prod.py cells set IH C-off
 2026-10-17 15:19:38 END rc=0 p15_prod.py cells set IH C-off
 2026-10-17 15:19:38 START p15_prod.py cells set IH C-SLp
+2026-10-17 17:04:16 END rc=0 p15_prod.py cells set IH C-SLp
+2026-10-17 17:04:16 START p15_prod.py cells krr IH C-off
+2026-10-17 17:31:22 END rc=0 p15_prod.py cells krr IH C-off
+2026-10-17 17:31:22 START p15_prod.py cells set I0 C-off
