@@ -11,5 +11,11 @@ p17_rehearsal.py pre
 p17_rehearsal.py report
 p16_nn_learnability.py gate_rel_mid
 p16_nn_learnability.py gate_rel_lr1e-3_mid
-p17_rehearsal.py rel
-p17_rehearsal.py report
+p16_nn_learnability.py gate_rel_lr1e-4_mid
+p16_rel_choose.py
+p17_rehearsal.py set lr
+p17_rehearsal.py rel lr
+p17_rehearsal.py krr lr
+p17_rehearsal.py rf lr
+p17_rehearsal.py hb lr
+p17_rehearsal.py report lr

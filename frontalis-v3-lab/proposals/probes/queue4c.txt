@@ -1,0 +1,4 @@
+p18_noise_decomp.py set rehearsal
+p18_noise_decomp.py nn0 rehearsal
+p18_noise_decomp.py hb rehearsal
+p18_noise_decomp.py set mid

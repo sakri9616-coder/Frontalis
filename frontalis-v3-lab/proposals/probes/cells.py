@@ -40,7 +40,7 @@ def _unit(rng, n):
     v = rng.normal(size=n); return v / np.linalg.norm(v)
 
 
-def planted_views(vw, w, seed):
+def planted_views(vw, w, seed, mult=1.0):
     """Calibration views (PREREG draft 4 section 6). vw has roles A, A2, A3, A4 (real NN views; A3, A4 are further
     independent retests of A). Planted B := A3 + alpha*u*phi, B' := A4 + alpha*u*phi (an independent retest PLUS the planted
     history effect), so that the A-B contrast contains retest noise like a real B (first version used B := A + plant, which
@@ -65,7 +65,7 @@ def planted_views(vw, w, seed):
     for name, fn in phis.items():
         ph = fn(s_un, p_un, c_un)
         mag = (np.abs(ph - ph.mean()).mean() if name != "PL-global" else 1.0) * eff
-        alpha = float(noise / (mag + 1e-12))
+        alpha = float(mult * noise / (mag + 1e-12))   # mult: power curve only (P19); the calibration of PREREG section 6 uses 1
         out[name] = {"A": A, "A2": A2, "B": m4.Planted(vw["A3"], u, fn, alpha), "B2": m4.Planted(vw["A4"], u, fn, alpha)}
     out["PL-noise"] = {"A": A, "A2": A2, "B": vw["A3"], "B2": vw["A4"]}
     # evaluative-state calibration for J3: donor B = A with permuted channel weights (PL-state) or identical (PL-state0)
@@ -81,17 +81,26 @@ def planted_views(vw, w, seed):
 
 
 def run_cell(learner, innate, conds, fams, seeds, roles, scale, out_path, calib_conds=(), tag="", extra_cfg=None, remap=True,
-             ckpt_dir=None, log=sys.stderr):
+             ckpt_dir=None, log=sys.stderr, resume=True):
     """One batched run: one learner and innate condition, several cycle conditions (per personality), families, seeds."""
     worlds = {(s, f): sim4.make_world(s, f) for s in seeds for f in fams}
     pers = pers_list(seeds, fams, roles, tag, conds)
     cfg = dict(learner=learner, innate=innate, **SCALE[scale], **(extra_cfg or {}))
     name = f"{learner}_{innate}_{'+'.join(conds)}_{scale}{tag}"
+    resumed = False
     if ckpt_dir:
+        # the checkpoint file name carries a hash of the configuration and the personality list, so that a stale file of
+        # another configuration is never resumed; if a file exists (an interrupted run), resume from it (bit-identical: P13)
+        import hashlib
+        key = hashlib.sha1(json.dumps(dict(cfg=cfg, pers=pers), sort_keys=True, default=str).encode()).hexdigest()[:10]
         os.makedirs(ckpt_dir, exist_ok=True)
-        cfg.update(ckpt_every=4000, ckpt_path=os.path.join(ckpt_dir, name + ".pt"))
+        cfg.update(ckpt_every=4000, ckpt_path=os.path.join(ckpt_dir, f"{name}_{key}.pt"))
     t0 = time.time()
-    st = sim4.run(pers, worlds, cfg)
+    state = None
+    if ckpt_dir and resume and os.path.exists(cfg["ckpt_path"]):
+        state = sim4.load_state(cfg["ckpt_path"], pers, worlds, cfg); state["phase"] = "main"; resumed = True
+        print(f"{name}: resuming from {cfg['ckpt_path']}", file=log); log.flush()
+    st = sim4.run(pers, worlds, cfg, state=state)
     t_train = time.time() - t0
     vw = m4.views(st, pers, worlds)
     rows = []
@@ -113,7 +122,7 @@ def run_cell(learner, innate, conds, fams, seeds, roles, scale, out_path, calib_
         for r, gk in zip(rows, vw.keys()):
             r["r2_rm"] = m4.own_r2(vw2[gk]["A"], "un", remap=True); r["r2_rm_fresh"] = m4.own_r2(vwf[gk]["A"], "un", remap=True)
         del st2, fresh
-    meta = dict(learner=learner, innate=innate, conds=list(conds), scale=scale, P=len(pers), train_secs=t_train, meas_secs=t_meas,
+    meta = dict(learner=learner, innate=innate, conds=list(conds), scale=scale, P=len(pers), train_secs=t_train, meas_secs=t_meas, resumed=resumed,
                 nonfinite=st["nonfinite"], pers_steps_per_sec=len(pers) * cfg["n_steps"] / max(st["secs"], 1e-9),
                 kappa_final=st["kappa"].cpu().numpy().round(4).tolist(), pers=[dict(role=q["role"], cond=q.get("cond"), seed=q["world"][0], fam=q["world"][1]) for q in pers])
     d = json.loads(Path(out_path).read_text(encoding="utf-8")) if Path(out_path).exists() else {}
