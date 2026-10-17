@@ -51,6 +51,8 @@ def pretrain(seeds, fams, n=2000):
 
 def learner_cells(learner):
     innates = ("IH", "I0", "IHE") if learner == "set" else ("IH", "I0")
+    if len(sys.argv) > 3:   # optional innate filter, e.g. "p17_rehearsal.py rel lr I0"
+        innates = tuple(x for x in innates if x in sys.argv[3].split(","))
     for innate in innates:
         extra = dict(partner_scale=pscale(learner)) if learner not in ("set", "rel", "pre") else {}
         extra.update(lr_for(learner))

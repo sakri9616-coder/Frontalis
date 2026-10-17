@@ -1,10 +1,10 @@
 {
  "cost_s_per_pers": {
   "set": {
-   "total": 23.63642060508331,
-   "train": 22.051026176909605,
-   "meas": 1.585394428173701,
-   "source": "production cells (2)"
+   "total": 27.091793755359124,
+   "train": 23.30804927183522,
+   "meas": 3.7837444835238987,
+   "source": "production cells (3)"
   },
   "krr": {
    "total": 6.605764944354693,
@@ -13,79 +13,93 @@
    "source": "production cells (1)"
   },
   "nn0": {
-   "total": 14.11340088401387,
-   "train": 11.974081286706348,
-   "meas": 2.139319597307522,
+   "total": 17.762423167355816,
+   "train": 12.656666151335807,
+   "meas": 5.105757016020009,
    "source": "rehearsal x ratio (estimate)"
   },
   "pre": {
-   "total": 24.617895578831984,
-   "train": 24.617895578831984,
+   "total": 26.021243570113352,
+   "train": 26.021243570113352,
    "meas": 0.0,
    "source": "rehearsal x ratio (estimate)"
   },
   "fixk": {
-   "total": 4.025773700170183,
+   "total": 4.093036574415692,
    "train": 3.977265417427748,
-   "meas": 0.04850828274243555,
+   "meas": 0.11577115698794326,
    "source": "rehearsal x ratio (estimate)"
   },
   "lin": {
-   "total": 2.8584104073934564,
+   "total": 2.9261552607484416,
    "train": 2.8095545335142944,
-   "meas": 0.048855873879161904,
+   "meas": 0.11660072723414702,
    "source": "rehearsal x ratio (estimate)"
   },
   "rf": {
-   "total": 17.57321747151003,
-   "train": 16.099052670890252,
-   "meas": 1.4741648006197785,
+   "total": 20.535063240396624,
+   "train": 17.016782342578896,
+   "meas": 3.51828089781773,
    "source": "rehearsal x ratio (estimate)"
   },
   "hb": {
-   "total": 4.065221143890137,
+   "total": 4.122948231006497,
    "train": 4.0235898295113195,
-   "meas": 0.04163131437881755,
+   "meas": 0.09935840149517759,
    "source": "rehearsal x ratio (estimate)"
   },
   "rel": {
-   "total": 367.01272077535594,
-   "train": 363.8419319190085,
-   "meas": 3.170788856347402,
+   "total": 392.1503019523289,
+   "train": 384.5828129852811,
+   "meas": 7.567488967047797,
    "source": "set x 16.5 (P10/P13 estimate)"
   }
  },
  "full_prereg_gpu_h": {
-  "set": 85.09111417829992,
-  "rel": 1321.2457947912815,
+  "set": 97.53045751929285,
+  "rel": 1411.7410870283838,
   "krr": 23.780753799676894,
-  "hb": 14.634796118004493,
-  "rf": 63.26358289743611,
-  "fixk": 14.492785320612661,
-  "lin": 10.290277466616443,
-  "nn0": 50.808243182449935,
-  "pre": 88.62442408379515,
-  "secondary (set, rel)": 719.6995444328697
+  "hb": 14.842613631623388,
+  "rf": 73.92622766542786,
+  "fixk": 14.73493166789649,
+  "lin": 10.53415893869439,
+  "nn0": 63.94472340248094,
+  "pre": 93.67647685240807,
+  "secondary (set, rel)": 774.2171945971618
  },
  "staged_gpu_h": {
   "S0 dev: NN-REL learnability gate (F1 F6m F2, C-off, role A, 10 dev seeds)": 3.418803418803419,
-  "S0 dev: NN-REL calibration (F1, C-off/C-S0, 6 roles) + reduced sec. 9 pass (I-H, F1 F6m, C-off C-SLp), if gate passes": 28.545433838083238,
-  "S0 dev: remaining production cells (queue A)": 8.05279359936033,
-  "S1a eval seeds 1-10: NN-SET + KRR + HB, 2 innates": 29.73308580088439,
-  "S1a' other controls (RF NN-0 FIX-K LIN PRE), only non-futile blocks": 54.76353830299692,
-  "S1b eval seeds 11-20: NN-SET + KRR + HB (non-futile blocks)": 22.871604462218762,
-  "S1b' other controls seeds 11-20 (non-futile)": 42.12579869461302,
-  "S2 eval seeds 21-40: NN-SET + all controls (non-futile)": 129.99480631366356,
-  "R1a NN-REL F1 F2 seeds 1-10, 2 innates": 97.87005887342825,
-  "R1b NN-REL F1 F2 seeds 11-20 (non-futile)": 97.87005887342825,
-  "R2 NN-REL F6m F5 seeds 1-20 + F7 1-20 (only if R1 not futile)": 293.6101766202848,
-  "R3 NN-REL seeds 21-40, all families + F7 (non-futile)": 489.35029436714126,
-  "S4 optional by budget rule: F6, secondary conds, I-HE (set + rel)": 928.0457531691042
+  "S0 dev: NN-REL calibration (F1, C-off/C-S0, 6 roles) + reduced sec. 9 pass (I-H, F1 F6m, C-off C-SLp), if gate passes": 30.500579040736692,
+  "S0 dev: remaining production cells (queue A)": 9.146477943549222,
+  "S1a eval seeds 1-10: NN-SET + KRR + HB, 2 innates": 32.77777267329094,
+  "S1a' other controls (RF NN-0 FIX-K LIN PRE), only non-futile blocks": 61.82619890462594,
+  "S1b eval seeds 11-20: NN-SET + KRR + HB (non-futile blocks)": 25.213671287146877,
+  "S1b' other controls seeds 11-20 (non-futile)": 47.55861454201995,
+  "S2 eval seeds 21-40: NN-SET + all controls (non-futile)": 145.54457165833367,
+  "R1a NN-REL F1 F2 seeds 1-10, 2 innates": 104.57341385395438,
+  "R1b NN-REL F1 F2 seeds 11-20 (non-futile)": 104.57341385395438,
+  "R2 NN-REL F6m F5 seeds 1-20 + F7 1-20 (only if R1 not futile)": 313.7202415618631,
+  "R3 NN-REL seeds 21-40, all families + F7 (non-futile)": 522.8670692697718,
+  "S4 optional by budget rule: F6, secondary conds, I-HE (set + rel)": 997.8129789745955
  },
  "scenarios": {
-  "A: REL gate fails; every NN-SET block futile at 10 seeds": 41.20468281904814,
-  "B: REL gate passes; everything futile at the first look": 167.62017553055964,
-  "C: REL gate passes; nothing futile (all main stages, no S4)": 1298.2064531649062,
-  "D: C + S4": 2226.25220633401
+  "A: REL gate fails; every NN-SET block futile at 10 seeds": 45.34305403564358,
+  "B: REL gate passes; everything futile at the first look": 180.41704693033464,
+  "C: REL gate passes; nothing futile (all main stages, no S4)": 1401.7208280080504,
+  "D: C + S4": 2399.5338069826457
+ },
+ "minimum": {
+  "main": {
+   "dev before freeze: C-SLp calibration (resume P15 cell) + NN-0 dev cell + KRR C-SLp dev cell": 1.2582300498301662,
+   "EVAL main: NN-SET + KRR + NN-0, I-H, F1, C-off/C-SLp, 20 seeds": 2.287110305203095
+  },
+  "optional": {
+   "O-L3 structure: F6m and F5 for NN-SET + KRR (trigger: L2 signal in F1)": 2.9953385510856725,
+   "O-cycle: C-S0 C-H0 C-SLh C-SLn, F1, NN-SET + KRR + NN-0 (trigger: L1 or L2 signal in C-SLp)": 4.57422061040619,
+   "O-I0: value type, same cells with I0 + dev calibration (trigger: user decision)": 2.8588878815038687,
+   "O-controls: RF HB PRE-NN FIX-K LIN in the main cells (trigger: J5-c passes vs KRR and NN-0)": 2.56437541674136,
+   "O-REL: gate + dev calibration + F1 F2 C-off/C-SLp 20 seeds (trigger: L2 signal AND relational reason)": 51.329481349729086
+  },
+  "main_total": 3.545340355033261
  }
 }

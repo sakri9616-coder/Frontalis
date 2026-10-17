@@ -2,7 +2,7 @@
 compute-reduction plan). Dev seeds 77380-77389 only. The adoption rule below was committed BEFORE any equivalence run.
 
   speed                 throughput (personality-steps / s) at the production configuration (N = 32,000, S/N = 4), timed over
-                        steps 50..350 after a warm-up, two repetitions in alternating order (the GPU is shared; the ratio to
+                        steps 50..150 after a warm-up (shortened from 50..350 before any timing was recorded), two repetitions in alternating order (the GPU is shared; the ratio to
                         the baseline measured in the same window is the reported quantity). Variants: base, sdpa, fused_opt,
                         exact (= sdpa + fused_opt), tf32, amp (bf16; speed only), d32 (model change; speed only), and the
                         population size P in {64, 128, 256} for base and exact. NN-SET base at P = 128 for reference.
@@ -46,9 +46,9 @@ def timed(learner, var, P_conds):
     pers = pers_list(seeds, fams, ROLES, conds=P_conds)
     cfg = dict(learner=learner, innate="IH", **SCALE["prod"], lr=1e-3, **VARIANTS[var])
     st = sim4.run(pers, worlds, dict(cfg, stop_at=50)); torch.cuda.synchronize()
-    s0 = st["secs"]; st = sim4.run(pers, worlds, dict(cfg, stop_at=350), state=st); torch.cuda.synchronize()
+    s0 = st["secs"]; st = sim4.run(pers, worlds, dict(cfg, stop_at=150), state=st); torch.cuda.synchronize()
     sec = st["secs"] - s0
-    out = dict(learner=learner, var=var, P=len(pers), secs=sec, pers_steps_per_s=len(pers) * 300 / sec,
+    out = dict(learner=learner, var=var, P=len(pers), secs=sec, pers_steps_per_s=len(pers) * 100 / sec,
                peak_MiB=torch.cuda.max_memory_allocated() / 2**20)
     del st; torch.cuda.empty_cache(); torch.cuda.reset_peak_memory_stats()
     return out
@@ -57,7 +57,7 @@ def timed(learner, var, P_conds):
 def speed():
     conds = {64: ["C-off"], 128: ["C-off", "C-SLp"], 256: ["C-off", "C-SLp", "C-S0", "C-H0"]}
     plan = [("rel", v, 128) for v in ("base", "sdpa", "fused_opt", "exact", "tf32", "amp", "d32")] + \
-           [("rel", v, P) for v in ("base", "exact") for P in (64, 256)] + [("set", "base", 128)]
+           [("rel", "base", 64), ("rel", "base", 256), ("rel", "exact", 256), ("set", "base", 128)]
     res = []
     for rep in range(2):
         for item in (plan if rep == 0 else plan[::-1]):

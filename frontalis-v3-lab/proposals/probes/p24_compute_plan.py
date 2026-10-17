@@ -52,7 +52,7 @@ def main():
         for v in ("exact", "base"):
             if v == "exact" and not ld("p23_compare_exact.json").get("summary", {}).get("adopted"):
                 continue
-            if thr("rel", v, 128):
+            if base_set and thr("rel", v, 128):
                 rel_ratio, var = base_set / thr("rel", v, 128), v; break
     if rel_ratio is None:
         rel_ratio = 16.5; var = "P10/P13 estimate"
@@ -104,6 +104,19 @@ def main():
         "C: REL gate passes; nothing futile (all main stages, no S4)": sum(v for k, v in st.items() if not k.startswith("S4")),
         "D: C + S4": sum(st.values()),
     }
+    # MINIMUM main path (PREREG 10d, DESIGN 14, after the user's correction): NN-SET only; I-H; F1; C-off and C-SLp;
+    # roles A A' B B'; 20 evaluation seeds (77100-77119; 77120-77139 stay unused); controls KRR and NN-0 in the same cells
+    cell = 20 * 1 * 2 * 4
+    mn = {}
+    mn["dev before freeze: C-SLp calibration (resume P15 cell) + NN-0 dev cell + KRR C-SLp dev cell"] = H("set", 240) * 4000 / 32000 + H("set", 60) * 0 + H("nn0", 120) + H("krr", 240)
+    mn["EVAL main: NN-SET + KRR + NN-0, I-H, F1, C-off/C-SLp, 20 seeds"] = H("set", cell) + H("krr", cell) + H("nn0", cell)
+    opt = {}
+    opt["O-L3 structure: F6m and F5 for NN-SET + KRR (trigger: L2 signal in F1)"] = 2 * (H("set", cell) + H("krr", cell))
+    opt["O-cycle: C-S0 C-H0 C-SLh C-SLn, F1, NN-SET + KRR + NN-0 (trigger: L1 or L2 signal in C-SLp)"] = 2 * (H("set", cell) + H("krr", cell) + H("nn0", cell))
+    opt["O-I0: value type, same cells with I0 + dev calibration (trigger: user decision)"] = 1.25 * (H("set", cell) + H("krr", cell) + H("nn0", cell))
+    opt["O-controls: RF HB PRE-NN FIX-K LIN in the main cells (trigger: J5-c passes vs KRR and NN-0)"] = sum(H(L, cell) for L in ("rf", "hb", "pre", "fixk", "lin"))
+    opt["O-REL: gate + dev calibration + F1 F2 C-off/C-SLp 20 seeds (trigger: L2 signal AND relational reason)"] = 3.4 + H("rel", 120) + H("rel", 2 * cell)
+    out["minimum"] = dict(main=mn, optional=opt, main_total=sum(mn.values()))
     (HERE / "p24_results.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
     for k, v in out["cost_s_per_pers"].items():
         print(f"{k:5s} {v['total']:7.1f} s/pers (train {v['train']:.1f}, meas {v['meas']:.1f})  {v['source']}")
@@ -112,6 +125,13 @@ def main():
         print(f"  {v:7.1f} h  {k}")
     for k, v in out["scenarios"].items():
         print(f"  {v:7.1f} h  ({v/24:.1f} days)  {k}")
+    print("MINIMUM main path:")
+    for k, v in out["minimum"]["main"].items():
+        print(f"  {v:6.2f} h  {k}")
+    print(f"  {out['minimum']['main_total']:6.2f} h  total")
+    print("optional stages (each only by its trigger):")
+    for k, v in out["minimum"]["optional"].items():
+        print(f"  {v:6.2f} h  {k}")
 
 
 if __name__ == "__main__":

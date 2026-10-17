@@ -31,3 +31,8 @@
 2026-10-17 17:22:53 START p17_rehearsal.py set lr
 2026-10-17 18:16:08 END rc=0 p17_rehearsal.py set lr
 2026-10-17 18:16:08 START p17_rehearsal.py rel lr
+2026-10-17 19:55:15 END rc=0 p17_rehearsal.py rel lr
+2026-10-17 19:55:16 START p23_rel_speedup.py speed
+2026-10-17 19:56:05 END rc=0 p23_rel_speedup.py speed
+2026-10-17 19:56:05 START p23_rel_speedup.py equiv base
+2026-10-17 20:07:20 queue B's last job (equiv base) finished; starting queue F

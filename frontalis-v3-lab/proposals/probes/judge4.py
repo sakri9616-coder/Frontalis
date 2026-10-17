@@ -76,7 +76,7 @@ def report(results: Dict[str, dict]) -> dict:
             out["|".join((L, I, C, Fm, S))]["J1-b"] = judge(d, 0.25 * float(np.median([r["D_AA_un"] for r in rows])), frac(len(d)))
         # J5-c vs memory/capacity controls, J4-d vs F6m and F5
         if L in ("set", "rel"):
-            for ctl in ("krr", "hb", "rf"):
+            for ctl in ("krr", "hb", "rf", "nn0"):   # nn0: matched frozen-encoder control of the minimum path (PREREG 10d)
                 cr = cells.get((ctl, I, C, Fm, S))
                 if cr:
                     out["|".join((L, I, C, Fm, S))][f"J5-c_{ctl}"] = paired(rows, cr, "r2_nc", "r2_nc", 0.02)

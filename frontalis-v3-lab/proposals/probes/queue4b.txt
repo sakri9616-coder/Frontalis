@@ -29,3 +29,7 @@ p17_rehearsal.py krr lr
 p17_rehearsal.py rf lr
 p17_rehearsal.py hb lr
 p17_rehearsal.py report lr
+p17_rehearsal.py rel lr IH
+p17_rehearsal.py report lr
+p17_rehearsal.py rel lr I0
+p17_rehearsal.py report lr
