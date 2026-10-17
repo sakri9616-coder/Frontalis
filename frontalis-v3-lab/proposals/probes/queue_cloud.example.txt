@@ -1,0 +1,12 @@
+# Example cloud queue (dev / rehearsal seeds only; never the evaluation seeds 77100-77139). Copy to queue_cloud.txt.
+# Stage A: self-check and measurements on the cloud GPU (saturn_offload.md sections 2, 4, 6)
+p13_ckpt_early.py
+p20_mem.py
+p21_cloud_equiv.py run cloud
+p21_cloud_equiv.py run cloud_retest retest
+p21_cloud_equiv.py compare local_rtx3050 cloud cloud_retest
+# Stage B (only after p21_compare.json shows level1 or level2 = true, or as cloud-only dev results if not): dev work
+p15_prod.py cells set IH C-S0
+p15_prod.py cells set I0 C-off
+p15_prod.py cells set I0 C-SLp
+p17_rehearsal.py rel lr

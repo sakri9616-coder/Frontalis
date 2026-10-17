@@ -23,7 +23,8 @@ def main():
     worlds = {(s, f): sim4.make_world(s, f) for s in SEEDS for f in FAMS}
     pers = pers_list(SEEDS, FAMS, roles, "", ["C-off"])
     cfg = dict(learner="set", innate="IH", **SCALE["prod"], lr=lr)
-    ck = os.path.join(tempfile.gettempdir(), "v4d_ckpt_p15", "set_IH_C-off_prod.pt")
+    import glob   # the first run used the unhashed name; later runs (cells.run_cell with resume) add a config hash
+    ck = max(glob.glob(os.path.join(tempfile.gettempdir(), "v4d_ckpt_p15", "set_IH_C-off_prod*.pt")), key=os.path.getmtime)
     st = sim4.load_state(ck, pers, worlds, cfg); st["phase"] = "main"
     st = sim4.run(pers, worlds, cfg, state=st)
     vw = m4.views(st, pers, worlds)

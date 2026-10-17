@@ -123,6 +123,7 @@ def run_cell(learner, innate, conds, fams, seeds, roles, scale, out_path, calib_
             r["r2_rm"] = m4.own_r2(vw2[gk]["A"], "un", remap=True); r["r2_rm_fresh"] = m4.own_r2(vwf[gk]["A"], "un", remap=True)
         del st2, fresh
     meta = dict(learner=learner, innate=innate, conds=list(conds), scale=scale, P=len(pers), train_secs=t_train, meas_secs=t_meas, resumed=resumed,
+                device=torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu", torch=torch.__version__, host=os.environ.get("COMPUTERNAME") or os.uname().nodename,
                 nonfinite=st["nonfinite"], pers_steps_per_sec=len(pers) * cfg["n_steps"] / max(st["secs"], 1e-9),
                 kappa_final=st["kappa"].cpu().numpy().round(4).tolist(), pers=[dict(role=q["role"], cond=q.get("cond"), seed=q["world"][0], fam=q["world"][1]) for q in pers])
     d = json.loads(Path(out_path).read_text(encoding="utf-8")) if Path(out_path).exists() else {}

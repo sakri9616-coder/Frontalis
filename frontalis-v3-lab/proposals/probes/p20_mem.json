@@ -1,0 +1,42 @@
+{
+ "set": {
+  "P_small": 24,
+  "MiB_small": 179.8232421875,
+  "P_large": 48,
+  "MiB_large": 229.1513671875,
+  "MiB_per_pers": 2.0553385416666665,
+  "MiB_fixed": 130.4951171875
+ },
+ "rel": {
+  "P_small": 24,
+  "MiB_small": 216.1708984375,
+  "P_large": 48,
+  "MiB_large": 433.7724609375,
+  "MiB_per_pers": 9.066731770833334,
+  "MiB_fixed": -1.4306640625
+ },
+ "krr": {
+  "P_small": 24,
+  "MiB_small": 181.28759765625,
+  "P_large": 48,
+  "MiB_large": 361.404296875,
+  "MiB_per_pers": 7.504862467447917,
+  "MiB_fixed": 1.1708984375
+ },
+ "rf": {
+  "P_small": 24,
+  "MiB_small": 101.6318359375,
+  "P_large": 48,
+  "MiB_large": 203.0849609375,
+  "MiB_per_pers": 4.227213541666667,
+  "MiB_fixed": 0.1787109375
+ },
+ "hb": {
+  "P_small": 24,
+  "MiB_small": 132.5859375,
+  "P_large": 48,
+  "MiB_large": 259.50439453125,
+  "MiB_per_pers": 5.28826904296875,
+  "MiB_fixed": 5.66748046875
+ }
+}

@@ -1,0 +1,147 @@
+{
+ "summary": {
+  "E1": true,
+  "E2": true,
+  "E5": true,
+  "E3": true,
+  "E4": true,
+  "env_local": {
+   "torch": "2.7.0+cu128",
+   "cuda": "12.8",
+   "gpu": "NVIDIA GeForce RTX 3050",
+   "numpy": "2.5.4",
+   "python": "3.12.13"
+  },
+  "env_cloud": {
+   "torch": "2.7.0+cu128",
+   "cuda": "12.8",
+   "gpu": "NVIDIA GeForce RTX 3050",
+   "numpy": "2.5.4",
+   "python": "3.12.13"
+  },
+  "level1": true,
+  "level2": true
+ },
+ "per_m": {
+  "D_AB_un": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.025629639625549316,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "D_AA_un": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.01602393388748169,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "Drho_AB_un": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.033404330656583825,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "Drho_AA_un": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.025207989657729246,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "Drho_AB_nc": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.06306715259007628,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "Drho_AA_nc": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.033603401942133404,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "swapd_AB": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.009273983538150787,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "swapd_AA": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.0032513216137886047,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "xp_other_un": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.024200125679296303,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "xp_same_un": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.033533242539844466,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "xp_other_nc": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.04356223332311726,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "xp_same_nc": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.05691347393965407,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "r2_un": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.009926915168762207,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "r2_nc": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.04087314009666443,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  },
+  "repro_un": {
+   "delta_med": 0.0,
+   "delta_p90": 0.0,
+   "nu_med": 0.06187721599559186,
+   "E1": true,
+   "E2": true,
+   "E5": true
+  }
+ }
+}
