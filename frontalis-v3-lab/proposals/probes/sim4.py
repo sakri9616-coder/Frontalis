@@ -327,7 +327,7 @@ DEFAULT = dict(learner="set", innate="IH", cycle=1, pw="S", kmode="zero", kfix=0
                beta=3.0, ceps=0.1, ref=0.5, salience=1, sal_max=2.0, lr=3e-4, bs=32, spn=1, n_steps=3000, n_early=1200,
                clip=1.0, hidden=128, d=64, solve_every=25, krr_ls=4.0, lam=1.0, amp=0, phase="main", eta_kp=0.02,
                blk=200, eta_kh=0.5, sig_kn=0.3, kmax=10.0, ckpt_every=0, ckpt_path=None, stop_at=None, wd=0.0, mask_partner=0,
-               partner_scale=1.0)
+               partner_scale=1.0, chunk=1000)
 
 
 def _stack(arrs, dtype=None):
@@ -414,22 +414,32 @@ def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any], state: Op
         grp.setdefault(q["group"], {})[q["role"]] = i
     leader = torch.tensor([grp[q["group"]].get("A", i) if pc[i]["choice"] == "yoke" else i for i, q in enumerate(pers)], device=DEV)
     seqs = [make_sequence(worlds[q["world"]], q["world"][0], q["early"], N, c["n_early"], phase) for q in pers]
-    SQ = {k: _stack([s[k] for s in seqs], torch.long if k in ("e1", "e2", "c", "a1", "a2", "ac") else (torch.bool if k == "ch" else torch.float32)) for k in seqs[0]}
+    SQ_np = {k: np.stack([s_[k] for s_ in seqs]) for k in seqs[0]}          # host memory; moved to the GPU chunk by chunk
+    del seqs
     ph = 0 if phase == "main" else 1
-    envr = [np.random.default_rng([q["env"], 31, ph]) for q in pers]
-    NZ = _stack([r.normal(size=(N, KB)) for r in envr], torch.float32)
-    DIS = _stack([r.normal(size=(N, D_DIS)) for r in envr], torch.float32)
-    CU = _stack([r.random(size=(N, 2)) for r in envr], torch.float32)           # choice: exploration draw, softmax draw
+    CH = int(c["chunk"])
+
+    def gen_chunk(ci):
+        """Per-chunk random streams (seeded by personality stream and chunk index: resumable at any step)."""
+        lo, hi = ci * CH, min(N, (ci + 1) * CH); m = hi - lo
+        envr = [np.random.default_rng([q["env"], 31, ph, ci]) for q in pers]
+        out = dict(lo=lo, hi=hi)
+        out["NZ"] = _stack([r.normal(size=(m, KB)) for r in envr], torch.float32)
+        out["DIS"] = _stack([r.normal(size=(m, D_DIS)) for r in envr], torch.float32)
+        out["CU"] = _stack([r.random(size=(m, 2)) for r in envr], torch.float32)
+        out["UMB"] = _stack([np.random.default_rng([q["sgd"], 41, ph, ci]).random((m * SPN, BS), dtype=np.float32) for q in pers])
+        for k, v in SQ_np.items():
+            out[k] = torch.tensor(v[:, lo:hi], device=DEV, dtype=torch.long if k in ("e1", "e2", "c", "a1", "a2", "ac") else (torch.bool if k == "ch" else torch.float32))
+        return out
     nblk = N // c["blk"] + 2
     KR = _stack([np.random.default_rng([q["env"], 51, ph]).choice([-1.0, 1.0], nblk) for q in pers], torch.float32)
     KN = _stack([np.random.default_rng([q["env"], 52, ph]).normal(size=nblk) for q in pers], torch.float32)
-    UMB = _stack([np.random.default_rng([q["sgd"], 41, ph]).random((N * SPN, BS), dtype=np.float32) for q in pers])
     if state is None or state.get("phase") != phase:
         if state is None:
             state = init_state(pers, worlds, c, init_params)
-        state.update(phase=phase, t=0, buf=dict(s=torch.zeros(P, N, 2, dtype=torch.long, device=DEV), c=torch.zeros(P, N, dtype=torch.long, device=DEV),
+        state.update(phase=phase, t=0, buf=dict(s=torch.zeros(P, N, 2, dtype=torch.int32, device=DEV), c=torch.zeros(P, N, dtype=torch.int32, device=DEV),
                                                TV=torch.zeros(P, N, 2, KB, device=DEV), DB=torch.zeros(P, N, KB, device=DEV),
-                                               SAL=torch.ones(P, N, device=DEV), RR=torch.full((P, N, 2), 0.5, device=DEV)))
+                                               SAL=torch.ones(P, N, device=DEV), DIS=torch.zeros(P, N, D_DIS, dtype=torch.float16, device=DEV)))
     net, opt, buf = state["net"], state["opt"], state["buf"]
     ar = torch.arange(P, device=DEV)
     learner = c["learner"]; ridge = learner in RIDGE_KINDS
@@ -438,7 +448,7 @@ def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any], state: Op
     t0 = time.time()
 
     def rows(s_, p_, c_, t_idx):
-        return torch.cat([XE[wid[:, None], s_], XE[wid[:, None], p_], XC[wid[:, None], c_], DIS[ar[:, None], t_idx]], -1)
+        return torch.cat([XE[wid[:, None], s_], XE[wid[:, None], p_], XC[wid[:, None], c_], buf["DIS"][ar[:, None], t_idx].float()], -1)
 
     def meta(s_, p_, c_):
         return dict(s=s_, p=p_, c=c_, wi=wid)
@@ -451,24 +461,29 @@ def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any], state: Op
                 pb, vv = net.belief(x), net.value_vec(x)
         return pb.float(), vv.float()
 
+    G = None
     for t in range(state["t"], N):
         if c["stop_at"] is not None and t >= c["stop_at"]:
             break
+        if G is None or t >= G["hi"]:
+            G = gen_chunk(t // CH)
+        tl = t - G["lo"]
+        buf["DIS"][:, t] = G["DIS"][:, tl].half()
         tt = torch.full((P, 2), t, device=DEV, dtype=torch.long)
-        e1, e2, cc = SQ["e1"][:, t], SQ["e2"][:, t], SQ["c"][:, t]
+        e1, e2, cc = G["e1"][:, tl], G["e2"][:, tl], G["c"][:, tl]
         st = state
         with torch.no_grad():
             if any_choice:
-                a1, a2, ac = SQ["a1"][:, t], SQ["a2"][:, t], SQ["ac"][:, t]
+                a1, a2, ac = G["a1"][:, tl], G["a2"][:, tl], G["ac"][:, tl]
                 S4 = torch.stack([e1, e2, a1, a2], 1); P4 = torch.stack([e2, e1, a2, a1], 1); C4 = torch.stack([cc, cc, ac, ac], 1)
                 _, v4 = fwd(rows(S4, P4, C4, torch.full((P, 4), t, device=DEV, dtype=torch.long)), meta(S4, P4, C4))
                 val = v4.sum(-1).view(P, 2, 2).sum(-1) / st["fscale"][:, None]
                 p_alt = torch.sigmoid(c["beta"] * (val[:, 1] - val[:, 0]))
-                own = torch.where(CU[:, t, 0] < c["ceps"], CU[:, t, 1] < 0.5, CU[:, t, 1] < p_alt)
-                pick = own[leader] & SQ["ch"][:, t]
+                own = torch.where(G["CU"][:, tl, 0] < c["ceps"], G["CU"][:, tl, 1] < 0.5, G["CU"][:, tl, 1] < p_alt)
+                pick = own[leader] & G["ch"][:, tl]
                 e1 = torch.where(pick, a1, e1); e2 = torch.where(pick, a2, e2); cc = torch.where(pick, ac, cc)
             p1 = torch.sigmoid(PR[wid, e1] - PR[wid, e2])
-            actor = torch.where(SQ["u"][:, t] < p1, e1, e2); other = torch.where(actor == e1, e2, e1)
+            actor = torch.where(G["u"][:, tl] < p1, e1, e2); other = torch.where(actor == e1, e2, e1)
             db = MM[wid, actor, cc]
             if M2 is not None:
                 wq = w2i[wid]
@@ -477,7 +492,7 @@ def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any], state: Op
             db = torch.where(AVG[wid][:, None], 0.5 * (MM[wid, e1, cc] + MM[wid, e2, cc]), db)
             if phase == "remap":
                 db = torch.gather(db, 1, RM[wid])
-            db = db + 0.1 * NZ[:, t]
+            db = db + 0.1 * G["NZ"][:, tl]
             S2 = torch.stack([e1, e2], 1); P2 = torch.stack([e2, e1], 1); C2 = torch.stack([cc, cc], 1)
             x = rows(S2, P2, C2, tt); m2 = meta(S2, P2, C2)
             pb, vvec = fwd(x, m2)
@@ -538,7 +553,7 @@ def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any], state: Op
                 st["blk_sum"] = torch.zeros_like(R_); st["blk_n"] = torch.zeros_like(R_)
             sal = 1 + CYC * c["salience"] * torch.clamp(f.abs(), max=c["sal_max"])
             TVt = r[:, :, None] * f_k[:, None, :]
-            buf["s"][:, t] = S2; buf["c"][:, t] = cc; buf["TV"][:, t] = TVt; buf["DB"][:, t] = db; buf["SAL"][:, t] = sal; buf["RR"][:, t] = r
+            buf["s"][:, t] = S2.int(); buf["c"][:, t] = cc.int(); buf["TV"][:, t] = TVt; buf["DB"][:, t] = db; buf["SAL"][:, t] = sal
             if ridge:
                 phi = net.feats(x, m2)
                 net.add(phi, db[:, None, :].expand(-1, 2, -1), r, TVt, sal[:, None].expand(-1, 2))
@@ -547,12 +562,12 @@ def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any], state: Op
         n = t + 1
         if not ridge:
             for j in range(SPN):
-                u = UMB[:, t * SPN + j]
+                u = G["UMB"][:, tl * SPN + j]
                 idx = (u * n).long().clamp(max=n - 1)
-                sb = buf["s"][ar[:, None], idx]
-                cb = buf["c"][ar[:, None], idx][..., None].expand(-1, -1, 2)
+                sb = buf["s"][ar[:, None], idx].long()
+                cb = buf["c"][ar[:, None], idx].long()[..., None].expand(-1, -1, 2)
                 xb = torch.cat([XE[wid[:, None, None], sb], XE[wid[:, None, None], sb.flip(-1)], XC[wid[:, None, None], cb],
-                                DIS[ar[:, None, None], idx[..., None].expand(-1, -1, 2)]], -1).reshape(P, BS * 2, D_IN)
+                                buf["DIS"][ar[:, None, None], idx[..., None].expand(-1, -1, 2)].float()], -1).reshape(P, BS * 2, D_IN)
                 tv = buf["TV"][ar[:, None], idx]; dbb = buf["DB"][ar[:, None], idx]; sw = buf["SAL"][ar[:, None], idx]
                 with torch.autocast("cuda", dtype=torch.bfloat16, enabled=bool(c["amp"])):
                     pbb = net.belief(xb).reshape(P, BS, 2, KB); vv = net.value_vec(xb).reshape(P, BS, 2, KB)

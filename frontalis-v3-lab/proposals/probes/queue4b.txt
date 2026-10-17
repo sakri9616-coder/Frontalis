@@ -1,0 +1,15 @@
+p16_nn_learnability.py rf_p0_mid
+p17_rehearsal.py ckpt
+p17_rehearsal.py set
+p17_rehearsal.py krr
+p17_rehearsal.py hb
+p17_rehearsal.py rf
+p17_rehearsal.py nn0
+p17_rehearsal.py fixk
+p17_rehearsal.py lin
+p17_rehearsal.py pre
+p17_rehearsal.py report
+p16_nn_learnability.py gate_rel_mid
+p16_nn_learnability.py gate_rel_lr1e-3_mid
+p17_rehearsal.py rel
+p17_rehearsal.py report

@@ -11,7 +11,7 @@ from cells import COND, ROLES, pers_list
 
 OUT = Path(__file__).with_name("p14_results.json")
 SEEDS = list(range(77380, 77390))
-RUNS = {"main": dict(temp="cal"), "temp0.2": dict(temp=0.2)}
+RUNS = {"main_IH": dict(temp="cal"), "main_I0": dict(temp="cal"), "temp0.2": dict(temp=0.2)}
 
 
 def main(n_steps=32000):
@@ -21,7 +21,7 @@ def main(n_steps=32000):
     for run, extra in RUNS.items():
         if run in res:
             continue
-        combos = [(i, c) for i in ("IH", "I0") for c in ("C-SLp", "C-SLh", "C-SLn")] if run == "main" else [("IH", "C-SLp")]
+        combos = [(run[-2:], c) for c in ("C-SLp", "C-SLh", "C-SLn")] if run.startswith("main") else [("IH", "C-SLp")]
         pers = []
         for innate, cond in combos:
             for q in pers_list(SEEDS, fams, ROLES, conds=[cond]):

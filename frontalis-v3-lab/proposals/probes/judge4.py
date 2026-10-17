@@ -96,7 +96,9 @@ def report(results: Dict[str, dict]) -> dict:
     calout = {}
     for k, rows in sorted(cal.items()):
         c = contrasts(rows)
-        exp = EXPECT.get(k[-1], {})
+        exp = dict(EXPECT.get(k[-1], {}))
+        if k[2] == "C-off" and k[-1] == "PL-state":
+            exp["J3"] = False      # in C-off the targets do not depend on the evaluative state: J3 is a built-in null
         calout["|".join(k)] = {j: dict(passed=c[j]["passed"], expected=e, ok=(c[j]["passed"] == e), n_pos=c[j]["n_pos"], median=c[j]["median"], floor=c[j]["floor"])
                                for j, e in exp.items() if j in c}
     out["_calibration"] = calout

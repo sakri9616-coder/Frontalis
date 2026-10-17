@@ -1,0 +1,5 @@
+2026-10-17 10:17:43 START p13_ckpt_chunk.py
+2026-10-17 10:34:03 END rc=0 p13_ckpt_chunk.py
+2026-10-17 10:34:03 START p14_kappa_check.py
+2026-10-17 13:49:59 END rc=0 p14_kappa_check.py
+2026-10-17 13:49:59 START p15_prod.py cells set IH C-off

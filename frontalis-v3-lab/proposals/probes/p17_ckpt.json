@@ -1,0 +1,20 @@
+{
+ "set": {
+  "P": 432,
+  "identical": true,
+  "hash_full": "458789f2003c0aa5",
+  "hash_resumed": "458789f2003c0aa5"
+ },
+ "rel": {
+  "P": 432,
+  "identical": true,
+  "hash_full": "c9fe70e52f5575aa",
+  "hash_resumed": "c9fe70e52f5575aa"
+ },
+ "krr": {
+  "P": 432,
+  "identical": true,
+  "hash_full": "f1d0982e860dbfe3",
+  "hash_resumed": "f1d0982e860dbfe3"
+ }
+}

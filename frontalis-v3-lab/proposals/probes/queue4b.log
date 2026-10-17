@@ -1,0 +1,11 @@
+2026-10-17 10:18:12 START p16_nn_learnability.py rf_p0_mid
+2026-10-17 10:49:57 END rc=0 p16_nn_learnability.py rf_p0_mid
+2026-10-17 10:49:58 START p17_rehearsal.py ckpt
+2026-10-17 12:10:56 END rc=0 p17_rehearsal.py ckpt
+2026-10-17 12:10:56 START p17_rehearsal.py set
+2026-10-17 13:32:59 END rc=0 p17_rehearsal.py set
+2026-10-17 13:32:59 START p17_rehearsal.py krr
+2026-10-17 13:38:51 END rc=0 p17_rehearsal.py krr
+2026-10-17 13:38:51 START p17_rehearsal.py hb
+2026-10-17 13:42:51 END rc=0 p17_rehearsal.py hb
+2026-10-17 13:42:51 START p17_rehearsal.py rf

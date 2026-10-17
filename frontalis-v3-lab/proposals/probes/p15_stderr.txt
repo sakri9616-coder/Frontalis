@@ -20,3 +20,4 @@ Traceback (most recent call last):
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 numpy._core._exceptions._ArrayMemoryError: Unable to allocate 11.0 GiB for an array with shape (720, 128000, 32) and data type float32
 exit krr IH=1
+exit set IH=127

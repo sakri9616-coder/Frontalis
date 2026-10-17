@@ -24,6 +24,8 @@ VARIANTS = {
     "krr_p0_mid": dict(learner="krr", n_steps=8000, n_early=0, spn=1, partner_scale=0.0),
     "krr_p05_mid": dict(learner="krr", n_steps=8000, n_early=0, spn=1, partner_scale=0.5),
     "rf_p0_mid": dict(learner="rf", n_steps=8000, n_early=0, spn=4, partner_scale=0.0),
+    "gate_rel_lr1e-3_mid": dict(learner="rel", n_steps=8000, n_early=0, spn=4, lr=1e-3),
+    "gate_rel_lr1e-4_mid": dict(learner="rel", n_steps=8000, n_early=0, spn=4, lr=1e-4),
     "krr_p1_mid": dict(learner="krr", n_steps=8000, n_early=0, spn=1, partner_scale=1.0),
     "rf_p05_mid": dict(learner="rf", n_steps=8000, n_early=0, spn=4, partner_scale=0.5),
     "rf_p1_mid": dict(learner="rf", n_steps=8000, n_early=0, spn=4, partner_scale=1.0),
