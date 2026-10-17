@@ -1,4 +1,4 @@
-"""P21: local-vs-cloud equivalence check (proposals/saturn_offload.md section 4). Rule fixed BEFORE any cloud result, in the
+"""P21: local-vs-cloud equivalence check (proposals/offload_note.md section 4). Rule fixed BEFORE any cloud result, in the
 same form as the bf16 rule of PREREG draft 3.1 section 10b. Rehearsal seeds 77340-77342 only (never evaluation seeds).
   run <label>          NN-SET, I-H, C-off and C-SLp, F1 F6m F5, roles A A2 B B2 A3 A4, rehearsal scale (2,000, S/N 1), lr 1e-3
   run <label> retest   the same, but every personality's env and sgd streams shifted by +1000 (a same-condition retest)

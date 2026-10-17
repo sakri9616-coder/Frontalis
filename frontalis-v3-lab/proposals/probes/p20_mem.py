@@ -1,5 +1,5 @@
 """P20: GPU memory per personality at the production configuration (N = 32,000, S/N = 4), for the offload plan
-(proposals/saturn_offload.md). Two small populations (P = 24 and 48: dev seeds 77380-77381, F1 F6m, 6 roles x 1-2 conds), a
+(proposals/offload_note.md). Two small populations (P = 24 and 48: dev seeds 77380-77381, F1 F6m, 6 roles x 1-2 conds), a
 few steps each; peak allocated memory -> fixed part + per-personality slope. Dev seeds only. Writes p20_mem.json.
 The GPU is shared while this runs, so only this process's own allocations (torch.cuda.max_memory_allocated) are reported."""
 import json, sys

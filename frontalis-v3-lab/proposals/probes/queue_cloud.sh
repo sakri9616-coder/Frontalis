@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Sequential job queue for a cloud GPU (proposals/saturn_offload.md section 3). Same form as queue4.sh, plus:
+# Sequential job queue for another machine (cloud or local; no paid resources are planned) (proposals/offload_note.md section 3). Same form as queue4.sh, plus:
 #  - the interpreter comes from $PY (default: python on PATH);
 #  - lines that already finished with rc=0 (listed in queue_cloud.done) are skipped, so the queue can be restarted after
 #    the machine stops; an interrupted cell resumes from its last checkpoint (cells.run_cell) when the line is rerun;

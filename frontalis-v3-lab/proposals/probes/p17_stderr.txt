@@ -18,3 +18,6 @@ lin_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 45s meas 17s nonf
 lin_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 48s meas 17s nonfinite 0
 pre IH P=432 171s
 pre I0 P=432 167s
+set_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 174s meas 1036s nonfinite 0
+set_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 245s meas 548s nonfinite 0
+set_IHE_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 293s meas 634s nonfinite 0
