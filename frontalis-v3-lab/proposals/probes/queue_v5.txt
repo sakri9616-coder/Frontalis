@@ -1,0 +1,2 @@
+# v5 evaluation (FREEZE-v5.md). Run only after the leader's go-ahead:  python sched/sched.py run queue_v5.txt --allow-eval --only=modal
+p33_eval_v5.py job {set,nn0,krr} {77300,77305,77310,77315,77320,77325,77330,77335}

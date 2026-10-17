@@ -466,3 +466,19 @@ PREREG 草案 4 の基準は、以下の実行の前に commit した（0e75f3f�
   - Modal（torch 2.14.1+cu130）では、同じ経路（`p32_v5_dev.py krrcheck`、草案 4 の KRR の設定、種 2）が通った。R²_nc は手元の P15 と 4 桁まで一致（0.6511、0.5755）。草案 4 の評価の KRR のジョブに、この障害は及ばない見込み。
 - `p33_eval_v5.py` の試運転（Modal の T4、開発用の種 77380〜77384、commit 25b2325）: NN-SET 988 秒、NN-0 574 秒、KRR 164 秒。すべて rc 0、非有限 0。
 - DeepSeek が入れた numpy（2026-10-17 23:10〜23:11）: `C:\Users\sakur\AppData\Local\Python\pythoncore-3.14-64` の `Lib\site-packages\numpy\`、`numpy.libs\`、`numpy-2.5.4.dist-info\`、`Scripts\f2py.exe`、`Scripts\numpy-config.exe`。消していない（ユーザーが判断する）。
+
+## v5 の凍結の門の回答と凍結（2026-10-18。開発用の種だけ。評価の結果は見ていない）
+- 査読 A・C への回答は PREREG-v5 第 11 節。
+  - J3v5 を `measure5.py` に移した。運ぶのは w だけにし、受け手の体の状態を通すようにした。
+  - KRR の帰属の式を、NN の soft-min と同じにした。
+  - judge が定数を求め直すようにした。ハッシュの一覧を広げた。
+- 較正のやり直し（Modal T4、torch 2.14.1+cu130、commit 818155d、`p32_setwg_modal.json`）:
+  - m_abs = 0.020（規則による）。PL-state 10/10（0.230）、PL-state0 4/10 → 使える。
+  - 実の C-SLp は 10/10（0.124）。C-off の差は全種で 0。
+  - 訓練した状態のハッシュ aedd774bba59fdd9 は、Kaggle（torch 2.11）での初回と一致した。
+- KRR（新しい帰属の式、Modal）の R²_nc は 0.640 ／ 0.641。
+- V2 の言い換え（ユーザーの判断、開発の結果を見た後）: PREREG-v5 第 12 節、`FREEZE-v5.md`。
+- `sched.py` は 77300〜77339 も拒む。草案 4 の評価のジョブ 32 件が終わった後に直した。
+- 凍結: commit 962de76（`FREEZE-v5.md`）。`frozen_ok` は不一致なし、`same_code(HEAD)` は True。
+- 評価の待ち行列 `queue_v5.txt`（24 ジョブ）は作ったが、走らせていない。
+- 判定の道具の試験: 開発用の種の試運転のファイルを種の番号だけ付け替えて judge に通し、動くことを確かめた。出力は消した（評価の結果ではない）。
