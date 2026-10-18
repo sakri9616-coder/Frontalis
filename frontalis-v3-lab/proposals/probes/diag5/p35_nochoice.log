@@ -1,0 +1,27 @@
+{
+ "secs": 678.047306060791,
+ "Q1_wgate0": {
+  "n_perm_gt_swap": 10,
+  "median_d_perm": 0.546072244644165,
+  "median_d_swap": 0.38714125752449036,
+  "median_d_rt": 0.8936374485492706,
+  "yes": true,
+  "median_w_end_L1_perm": 0.9213002324104309,
+  "median_w_end_L1_swap": 0.02774745225906372
+ },
+ "Q1_wgate1": {
+  "n_perm_gt_swap": 10,
+  "median_d_perm": 0.5972786843776703,
+  "median_d_swap": 0.38255371153354645,
+  "median_d_rt": 0.8415620028972626,
+  "yes": true,
+  "median_w_end_L1_perm": 0.9213002324104309,
+  "median_w_end_L1_swap": 0.02774745225906372
+ },
+ "Q2": {
+  "n_pos": 8,
+  "median": 0.05148833990097046,
+  "floor": 0.21039050072431564,
+  "yes": false
+ }
+}
