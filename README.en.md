@@ -31,7 +31,7 @@ Division of roles:
 
 ### Principles (summary)
 
-The governing document is [`FRONTALIS_PHILOSOPHY.md`](https://github.com/sakri9616-coder/Frontalis/blob/4fecbad/FRONTALIS_PHILOSOPHY.md) (pinned commit `4fecbad`; written in Japanese). The principles we hold to:
+The governing document is [`FRONTALIS_PHILOSOPHY.md`](FRONTALIS_PHILOSOPHY.md) (written in Japanese; same content as pinned commit `4fecbad` of the old branch `claude/project-thread-1vq8ai`). The principles we hold to:
 
 - **Formation is not expression.** An LLM speaking in a personality-like way is not evidence that the NPN formed one. We separate the two by keeping the LLM and prompt fixed and swapping only the NPN's state: does the judgement change?
 - **Individuality is not a fault.** Persistence, lasting aversion and resistance to refutation can be part of a personality. Only computational breakdowns (divergence, saturation) count as faults.
@@ -113,15 +113,19 @@ In order of importance:
 - **LLM use**: Claude models and free models via OpenCode (DeepSeek etc.) for design, critique, implementation and literature collection. No paid API is used.
 - **Workflow**: git worktrees for isolation.
 
-## 7. Branches and documents
+## 7. Folder layout and documents
+
+`main` holds only the research itself.
 
 | Location | Content |
 | --- | --- |
-| `main` | Legacy Phase 3-D/3-E/3-F code and archives (**legacy**; current work is on the branches below) |
-| [`claude/project-thread-1vq8ai`](https://github.com/sakri9616-coder/Frontalis/blob/4fecbad/FRONTALIS_PHILOSOPHY.md) | Philosophy `FRONTALIS_PHILOSOPHY.md` |
-| [`claude/charming-galileo-wawr7u`](https://github.com/sakri9616-coder/Frontalis/tree/claude/charming-galileo-wawr7u/frontalis-v3-lab) | Minimal NPN implementation v3.0 to v3.3 (PR #2) |
-| [`claude/v3.4-prereg`](https://github.com/sakri9616-coder/Frontalis/tree/claude/v3.4-prereg/frontalis-v3-lab) | v3.4 Y-series: preregistration, implementation, evaluation (comparison baseline) |
-| [`claude/value-representation-design`](https://github.com/sakri9616-coder/Frontalis/tree/claude/value-representation-design/frontalis-v3-lab/proposals) | **The main research.** Design (`DESIGN.md`), preregistrations (`PREREG-DRAFT.md`, `PREREG-v5-DRAFT.md`), freeze records (`FREEZE.md`, `FREEZE-v5.md`), independent critiques, development log (`probes/LOG-dev.md`), GPU learners |
+| [`FRONTALIS_PHILOSOPHY.md`](FRONTALIS_PHILOSOPHY.md) | The philosophy (governing document) |
+| [`docs/`](docs/) | Design notes: audit (`01-audit.md`), redesign (`02-redesign.md`), experiment plan (`03-experiment-plan.md`), candidate learning mechanisms (`04*.md`, `learning-mechanisms/`), audit scripts and prototype (`audit/`, `redesign/`) |
+| [`frontalis-v3-lab/`](frontalis-v3-lab/) | **The main research.** NPN implementation and specs v3.0 to v3.4, the Y-series comparison baseline (preregistration and evaluation, `tests/`), and the main study of acquiring value representations (`proposals/`: design `DESIGN.md`, preregistrations `PREREG-DRAFT.md` and `PREREG-v5-DRAFT.md`, freeze records `FREEZE.md` and `FREEZE-v5.md`, independent critiques, development log `probes/LOG-dev.md`, GPU learners) |
+
+- The legacy Phase 3-D/3-E/3-F implementations and archives were removed from `main`. They remain available at the **tag [`legacy-phase3`](https://github.com/sakri9616-coder/Frontalis/tree/legacy-phase3)** (legacy; not a premise of the current research).
+- The working history stays on the branches `claude/charming-galileo-wawr7u` (v3.3, PR #2), `claude/v3.4-prereg` and `claude/value-representation-design`. Their content is merged into `main`.
+- The folder name `frontalis-v3-lab/` and its inner layout are unchanged because the freeze records and the scripts that run in the cloud point at them. Old run scripts inside the experiment logs (`queue*.sh` and similar) still contain environment paths from the machine used.
 
 ## 8. Reproduction
 
@@ -132,7 +136,7 @@ cd frontalis-v3-lab
 python -B -m unittest discover -s tests -p "test_ra_mechanisms.py"
 ```
 
-The GPU experiments of the main research are in `frontalis-v3-lab/proposals/probes/` on the `claude/value-representation-design` branch. Evaluation seeds can be used only once; see `FREEZE-v5.md` and `probes/LOG-dev.md`.
+The GPU experiments of the main research are in `frontalis-v3-lab/proposals/probes/`. Evaluation seeds can be used only once; see `FREEZE-v5.md` and `probes/LOG-dev.md`.
 
 ## 9. Limitations
 

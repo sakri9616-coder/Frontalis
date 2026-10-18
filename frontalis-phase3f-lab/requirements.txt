@@ -1,6 +1,0 @@
-# Tested Python 3.12.13; the existing runtime uses torch 2.7.0+cu128.
-# Do not install into or replace the preserved Phase 3-D environment.
-torch==2.7.0
-numpy==2.5.4
-psutil==7.2.2
-matplotlib==3.11.2

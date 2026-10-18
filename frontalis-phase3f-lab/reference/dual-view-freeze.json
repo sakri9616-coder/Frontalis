@@ -1,6 +1,0 @@
-{
-  "reference/dual-view.md": "722661783fdef8c44b716430a7872500c94a32c1413f231f956d466b93a10c61",
-  "tests/test_dual_view.py": "a27af42e4960d5776cdbcfbf9bb2f2ef6289db28a256709b546c410b976547fb",
-  "experiments/dual_view.py": "d00cff9a5a61244a3fe4a6a27d7e0aad7d6507a139326a6a91f4c77f3155507b",
-  "npnf/dual_view.py": "dfc7e986d740b362ea97edf5a27e5d7422a373ff031ad382249a2e2ec06c3f95"
-}

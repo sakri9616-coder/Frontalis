@@ -1,4 +1,0 @@
-long-s7902-c4-p0-uniform 67.683
-long-s7902-c4-p0-consolidation 64.094
-long-s7902-c4-p2-uniform 65.088
-long-s7902-c4-p2-consolidation 61.613
