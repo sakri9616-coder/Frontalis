@@ -1,6 +1,0 @@
-{
-  "experiments/future_choice.py": "dec830a9a328d439ef33a1e80eb9dc0f35cf965a8c299554d0d6b89759b0689e",
-  "experiments/live-future.mjs": "973b45ff020b1159d2feada043f2dd55e05991dbf0f4e526722922beec492c3a",
-  "reference/future-choice.md": "80c5fcd7a0d6af2faf8a57b04f3a83be50c849041092cbfc69a78cdef5173a47",
-  "scripts/prepare_future.py": "2287c6d41fd80bfa946ea4bc3a21ae40108d6de6d30d9eff94e64138dacf7bd3"
-}

@@ -1,0 +1,6 @@
+# Results of the frozen evaluation: reported to the leader first, never committed (FREEZE.md)
+p31_eval_*.json
+p31_eval_*.part
+p30_cells.json
+p30_judgment.json
+p30_stderr.txt

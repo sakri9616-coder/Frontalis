@@ -1,0 +1,50 @@
+=== Proposed: appraisal uses innate + acquired values ===
+
+[rescued-by-collaboration] acquired values before: connection +0.99, achievement +0.29, loss -0.18, autonomy -0.67, music +0.24, others +0.90
+  felt value of the new event +0.961 = tanh(innate +0.460 + acquired +1.476 + mood +0.017); expected +0.842, surprise +0.119, learning rate 0.350
+  what mattered: connection +0.99, achievement +0.63, music +0.24, novelty +0.06
+  what friendA came to mean: situation +0.042, friendA via connection +0.219, friendA via authorship +0.004, friendA via novelty +0.013, friendA: already expected -0.012
+  "friend A invites again": expected +0.842 -> +0.924
+
+[credit-taken] acquired values before: connection -0.60, authorship +0.60, achievement +0.36, loss -0.10, autonomy +1.21, betrayal -0.20, music +0.61, others -0.70
+  felt value of the new event +0.298 = tanh(innate +0.460 + acquired -0.191 + mood +0.039); expected +0.002, surprise +0.296, learning rate 0.350
+  what mattered: achievement +0.69, music +0.61, connection -0.60, authorship -0.48
+  what friendA came to mean: situation +0.104, friendA via connection -0.136, friendA via authorship -0.109, friendA via novelty +0.014, friendA: already expected -0.031
+  "friend A invites again": expected +0.002 -> +0.153
+
+[explorer] acquired values before: connection +0.58, achievement -0.14, novelty +1.03, autonomy +1.72, music -1.36, others +0.72
+  felt value of the new event +0.215 = tanh(innate +0.460 + acquired -0.273 + mood +0.032); expected -0.650, surprise +0.865, learning rate 0.150
+  what mattered: music -1.36, novelty +0.68, connection +0.58, achievement +0.28
+  what friendA came to mean: situation +0.130, friendA via connection +0.118, friendA via novelty +0.138, friendA: already expected -0.039
+  "friend A invites again": expected -0.650 -> -0.039
+
+Where "credit-taken" got its value for authorship:
+  credit-stolen (decay): -0.002
+  credit-stolen (co-occurrence): +0.208
+  solo-success (decay): -0.011
+  solo-success (co-occurrence): +0.409
+  new-song-with-friendA (decay): -0.001
+  new-song-with-friendA (co-occurrence): -0.041
+
+=== Control: appraisal uses innate values only (fixed teacher, as in 3-F) ===
+
+[rescued-by-collaboration] acquired values before: connection +0.35, achievement +0.10, loss -0.07, autonomy -0.24, music +0.10
+  felt value of the new event +0.432 = tanh(innate +0.460 + acquired +0.000 + mood +0.003); expected +0.420, surprise +0.013, learning rate 0.350
+  what mattered: achievement +0.40, novelty +0.06, authorship +0.00, connection +0.00
+  what friendA came to mean: situation +0.004, friendA via novelty +0.018, friendA: already expected -0.001
+  "friend A invites again": expected +0.420 -> +0.447
+
+[credit-taken] acquired values before: connection -0.19, authorship +0.17, achievement +0.10, autonomy +0.32, betrayal -0.06, music +0.13, others -0.36
+  felt value of the new event +0.433 = tanh(innate +0.460 + acquired +0.000 + mood +0.004); expected -0.053, surprise +0.486, learning rate 0.150
+  what mattered: achievement +0.40, novelty +0.06, authorship +0.00, connection +0.00
+  what friendA came to mean: situation +0.073, friendA via novelty +0.018, friendA: already expected -0.022
+  "friend A invites again": expected -0.053 -> +0.231
+
+[explorer] acquired values before: achievement +0.07, autonomy +0.18, music +0.21, others +0.07
+  felt value of the new event +0.436 = tanh(innate +0.460 + acquired +0.000 + mood +0.007); expected +0.243, surprise +0.193, learning rate 0.350
+  what mattered: achievement +0.40, novelty +0.06, authorship +0.00, connection +0.00
+  what friendA came to mean: situation +0.068, friendA via novelty +0.018, friendA: already expected -0.020
+  "friend A invites again": expected +0.243 -> +0.474
+
+Felt value of the same outcome:   proposed [0.961 0.298 0.215]  control [0.432 0.433 0.436]
+friendA value after the new event: proposed [ 0.265 -0.159  0.346]  control [0.021 0.069 0.065]

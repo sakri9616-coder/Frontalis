@@ -1,0 +1,7 @@
+{'equality_max_rel_diff_vs_ref_fp32': {'ref': 0.0, 'v1_fusedqkv_bcast': 2.5244671064683644e-07, 'v2_stacked_enc': 2.5244671064683644e-07}}
+ref {'P': 360, 'kernel_pers_steps_per_sec': 2766.606749140738, 'peak_mib': 1585.51611328125}
+ref {'P': 720, 'kernel_pers_steps_per_sec': 2762.2707764864235, 'peak_mib': 3156.87158203125}
+v1_fusedqkv_bcast {'P': 360, 'kernel_pers_steps_per_sec': 2568.3734911610613, 'peak_mib': 1595.56689453125}
+v1_fusedqkv_bcast {'P': 720, 'kernel_pers_steps_per_sec': 2583.9449701587237, 'peak_mib': 3153.59814453125}
+v2_stacked_enc {'P': 360, 'kernel_pers_steps_per_sec': 2520.9136042969894, 'peak_mib': 1822.8681640625}
+v2_stacked_enc {'P': 720, 'kernel_pers_steps_per_sec': 2542.5217113424274, 'peak_mib': 3626.4033203125}

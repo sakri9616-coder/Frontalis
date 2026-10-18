@@ -1,0 +1,263 @@
+"""コマンドライン。
+
+python -m npnv3 init  STATE_DIR [--seed 0] [--justification-mode orig|persist|persist_with_decay] [--lc-design spec_literal|revised]
+python -m npnv3 feed  STATE_DIR experiences.jsonl      学習し、各経験の要約を表示し、保存（行ごとに kind = "experience"（省略可）| "correction"（訂正）| "choice"（二択））
+python -m npnv3 probe STATE_DIR probes.json            学習せずに評価
+python -m npnv3 show  STATE_DIR                         価値の上位・信念の要約
+python -m npnv3 explain STATE_DIR CUE [--context C] [--time T] [--trace N]   条件づけられた価値の応答の内訳（原因ごとの重み・価値・寄与と要因）と、割当の記録の最後の N 件
+python -m npnv3 preference STATE_DIR options.json [--key K]   選好の説明（学習しない）: 予期 Q を「経験に根拠のある部分」と「正当化 J の部分」に分け、J の源（spread・reaffirm・counter・overwhelm…）を示す。
+                                                               options.json は状況 1 つか 2 つ（context・concepts・participants）。
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+from typing import Any, Dict, List
+
+from .innate import NEED_LABELS, NEEDS
+from .explain import format_assignment, format_explanation
+from .npn import NPN
+
+
+def _fmt_needs(d: Dict[str, float]) -> str:
+    return " ".join(f"{n}{d[n]:+.2f}" for n in NEEDS)
+
+
+def _top_emotions(emo: Dict[str, float], k: int = 3) -> str:
+    items = sorted(emo.items(), key=lambda kv: -kv[1])[:k]
+    return ", ".join(f"{n} {v:.2f}" for n, v in items if v > 0.01) or "なし"
+
+
+def _summarize_correction(ap: Dict[str, Any]) -> str:
+    """訂正（kind = "correction"）の要約: 当時の結果 → 訂正後の結果、参加者ごとの教師の差 Δ_e、好悪の変化、安堵・罪悪感の手がかり、信念の変化。"""
+    def outs(os_):
+        return ", ".join(f"{o.get('type', 'ambiguous')}({o['actor']} {o['magnitude']:.2f})" for o in os_) or "なし"
+    lines = [f"[{ap['id']}] 訂正: {ap['refers_to']} の結果を訂正（source = {ap['source']}、価値の再評価 = {ap['reappraisal']}）",
+             f"    当時の結果: {outs(ap['original_outcomes'])}",
+             f"    訂正後の結果: {outs(ap['corrected_outcomes'])}",
+             "    当時の記録（受け止め方 f、責任 φ、効用変化 Δu、感情）は台帳に残したまま。"]
+    for pid, d in ap["shifts"].items():
+        l0, l1 = ap["like"][pid]
+        lines.append(f"    {pid}: 教師の差 Δ_e {_fmt_needs(d)}  好悪 like {l0:+.3f} → {l1:+.3f}")
+    for pid, ch in ap["belief_change"].items():
+        lines.append(f"    {pid} の信念 P: " + ", ".join(f"{t} {v[0]:.2f}→{v[1]:.2f}" for t, v in ch.items()))
+    lines.append(f"    状況の予期 Q {ap['Q'][0]:+.3f} → {ap['Q'][1]:+.3f}  訂正の感じた価値 f={ap['f']:+.3f}  安堵 {ap['emotions']['relief']:.2f}  罪悪感 {ap['emotions']['guilt']:.2f}")
+    return "\n".join(lines)
+
+
+def _summarize_choice(ap: Dict[str, Any]) -> str:
+    ch = ap["choice"]
+    o = ch["options"]
+    out = (f"[{ap['id']}] 二択: 選択肢 0 の Q={o[0]['Q']:+.3f}（J {o[0]['J_Q']:+.3f}）, 選択肢 1 の Q={o[1]['Q']:+.3f}（J {o[1]['J_Q']:+.3f}）  "
+           f"P(選ぶ) = {ch['p_choose'][0]:.2f} / {ch['p_choose'][1]:.2f} → 選択肢 {ch['chosen']} を選んだ\n"
+           f"    ΔQ={ch['dQ']:+.3f}  葛藤の強さ c={ch['conflict']:.3f}  正当化 J の動き: "
+           + (", ".join(f"{k} {v:+.3f}" for k, v in ch["dJ"].items()) or "なし"))
+    extra = [e for e in ch.get("pre_events", []) if e["source"] != "spread"]
+    if extra:                                                     # Z-persist: 再び選ぶ（reaffirm）・反する選択（counter）
+        out += "\n    源つきの出来事: " + ", ".join(f"{e['cue']} {e['source']} {e['delta']:+.3f}" for e in extra)
+    if ap.get("discount"):                                        # Z-persist: 反証への抵抗（人モデルの負の教師の一部を場面へ）
+        d = ap["discount"]
+        out += f"\n    反証への抵抗: 割り引き q={d['q']:.3f}（選んだ側の J の和 {d['J_chosen']:+.3f}）。人モデルの負の教師の q を場面（状況モデル）へ回した"
+    return out
+
+
+def _summarize(ap: Dict[str, Any]) -> str:
+    if ap.get("kind") == "correction":
+        return _summarize_correction(ap)
+    pre = _summarize_choice(ap) + "\n" if ap.get("kind") == "choice" else ""
+    return pre + _summarize_experience(ap)
+
+
+def _summarize_experience(ap: Dict[str, Any]) -> str:
+    head = (f"[{ap['id']}] 予期 Q={ap['Q']:+.3f} (U_val={ap['Q_val']:+.3f} + 条件づけ C_Q={ap['C_Q']:+.3f} + 正当化 J_Q={ap['J_Q']:+.3f}; "
+            f"V_MB={ap['V_MB']:+.3f}, V_MF={ap['V_MF']:+.3f}, ω={ap['omega']:.2f})")
+    if ap.get("optional"):
+        head += f"  接近確率 {ap['p_approach']:.2f} → " + ("接近" if ap["approached"] else "回避（学習しない）")
+    if ap["f"] is None:
+        return head
+    fp = ap["f_parts"]
+    lines = [head,
+             f"    感じた価値 f={ap['f']:+.3f}（生得 {fp['innate']:+.2f} + 条件づけ {fp['conditioned']:+.2f} + 参照点 {fp['reference']:+.2f}）"
+             f"  驚き δ={ap['delta']:+.3f}  気分 {ap['mood']:+.3f}→{ap['mood_after']:+.3f}",
+             f"    効用変化 Δu: {_fmt_needs(ap['du'])}  (合計 {ap['du_total']:+.3f})",
+             f"    感情: {_top_emotions(ap['emotions'])}"]
+    for it in ap.get("interpretations") or []:
+        lines.append("    曖昧な結果の解釈（" + it["actor"] + "）: " + ", ".join(f"{t} {w:.2f}" for t, w in it["weights"].items())
+                     + "（LLM の素の読み " + ", ".join(f"{t} {w:.2f}" for t, w in it["llm"].items()) + "）")
+    for w in ap.get("warnings") or []:
+        lines.append("    警告: " + w)
+    vc = ap["value_change"]
+    for pid, v in vc["entities"].items():
+        lines.append(f"    {pid} への評価 {v['before']:+.3f} → {v['after']:+.3f} ({v['delta']:+.3f})")
+    s = vc["situation"]
+    lines.append(f"    状況の評価 {s['before']:+.3f} → {s['after']:+.3f} ({s['delta']:+.3f})")
+    return "\n".join(lines)
+
+
+def cmd_init(args: argparse.Namespace) -> int:
+    kw: Dict[str, Any] = {}
+    if args.justification_mode is not None:
+        kw["justification_mode"] = args.justification_mode
+    if args.lc_design is not None:
+        kw["lc_design"] = args.lc_design
+    n = NPN(seed=args.seed, **kw)
+    h = n.save(args.state_dir)
+    extra = "".join(f"、{k} = {v}" for k, v in kw.items())
+    print(f"初期化しました: {args.state_dir}（種 {args.seed}{extra}、内容ハッシュ {h[:12]}…）")
+    return 0
+
+
+def cmd_feed(args: argparse.Namespace) -> int:
+    n = NPN.load(args.state_dir)
+    count = 0
+    with open(args.experiences, "r", encoding="utf-8") as f:
+        for ln, line in enumerate(f, 1):
+            if not line.strip():
+                continue
+            try:
+                exp = json.loads(line)
+                ap = n.experience(exp)
+            except ValueError as e:
+                print(f"{args.experiences}:{ln}: エラー: {e}", file=sys.stderr)
+                return 2
+            print(_summarize(ap))
+            count += 1
+    h = n.save(args.state_dir)
+    print(f"{count} 件を処理し、保存しました（経験 {n.n_experiences} 件、回避 {n.n_avoided} 件、ハッシュ {h[:12]}…）")
+    return 0
+
+
+def _probe_line(p: Dict[str, Any]) -> str:
+    k = p["kind"]
+    if k == "situation":
+        return (f"状況: Q={p['Q']:+.3f} (正当化 J_Q={p['J_Q']:+.3f}; V_MB={p['V_MB']:+.3f}, V_MF={p['V_MF']:+.3f}, ω={p['omega']:.2f}); "
+                f"参加者 " + ", ".join(f"{x['id']} {x['value']:+.3f}" for x in p["persons"]))
+    if k == "entity":
+        return (f"エンティティ {p['entity']}（{p['class']}）: like={p['like']:+.3f} "
+                f"({_fmt_needs(p['like_by_need'])}) 既知={p['known']}; Q={p['Q']:+.3f}; "
+                f"P(手柄を取る)={p['p_person']['credit_taken']:.2f}; 条件づけ C={p['conditioned']:+.3f}")
+    if k == "cue":
+        ctx = f"（文脈 {p['context']}）" if p.get("context") else "（文脈を問わない）"
+        return f"手がかり {p['cue']}{ctx}: 条件づけられた価値 C={p['C']:+.3f} 正当化 J={p['J']:+.3f} 原因の数={p['n_causes']} 既知={p['known']}"
+    return (f"概念 {p['concept']}: like={p['like']:+.3f} ({_fmt_needs(p['like_by_need'])}) 既知={p['known']}"
+            f" 条件づけ C={p['conditioned']:+.3f}")
+
+
+def cmd_probe(args: argparse.Namespace) -> int:
+    n = NPN.load(args.state_dir)
+    with open(args.probes, "r", encoding="utf-8") as f:
+        doc = json.load(f)
+    probes: List[Dict[str, Any]] = doc if isinstance(doc, list) else [doc]
+    for p in probes:
+        try:
+            out = n.probe(p)
+        except ValueError as e:
+            print(f"エラー: {e}", file=sys.stderr)
+            return 2
+        print(json.dumps(out, ensure_ascii=False, indent=1) if args.json else _probe_line(out))
+    return 0
+
+
+def cmd_show(args: argparse.Namespace) -> int:
+    n = NPN.load(args.state_dir)
+    s = n.summary()
+    print(f"経験 {s['n_experiences']} 件（回避 {s['n_avoided']} 件）  気分 {s['mood']:+.3f}")
+    print("欲求の状態 h: " + " ".join(f"{NEED_LABELS[k]}={v:.2f}" for k, v in s["h"].items()))
+    print("関心の重み a: " + " ".join(f"{NEED_LABELS[k]}={v:.2f}" for k, v in s["a"].items()))
+    print("\n人モデルの価値（上位）")
+    for r in s["person_top"]:
+        print(f"  {r['feature']:<28s} {r['value']:+.3f}  ({_fmt_needs(r['by_need'])})")
+    print("\n状況モデルの価値（上位）")
+    for r in s["situation_top"]:
+        print(f"  {r['feature']:<28s} {r['value']:+.3f}  ({_fmt_needs(r['by_need'])})")
+    print("\n条件づけられた価値 C（手がかり。|C| の大きい順。C は潜在原因の価値の、計数による加重平均。読み出しの応答は文脈と時刻に依存する）")
+    for r in s["conditioned_top"]:
+        print(f"  {r['cue']:<28s} {r['C']:+.3f}  （原因 {r['n_causes']} 個）")
+    mode = n.cfg.justification_mode
+    print(f"\n選択の正当化 J（二択から生じる。予期 Q に加わる。|J| の大きい順。条件 justification_mode = {mode}"
+          + ("、反証への抵抗あり: 教師が変わる" if mode != "orig" else "、経験の教師にはならない") + "）")
+    for r in s["justification_top"]:
+        src = n.just_src.get(r["cue"], {})
+        print(f"  {r['cue']:<28s} {r['J']:+.3f}" + ("  （源: " + ", ".join(f"{k} {v:+.3f}" for k, v in sorted(src.items()) if abs(v) > 1e-9) + "）" if src else ""))
+    if not s["justification_top"]:
+        print("  （なし）")
+    if s["n_corrections"]:
+        print(f"  訂正を受けた回数: {s['n_corrections']}")
+    b = s["belief"]
+    print(f"\n信念: 個体 {b['n_individuals']}、文脈 {b['n_contexts']}、観測 {b['n_obs']}、事前ヘッド {b['head_kind']}（ヘッドの寄与 ρ_h={b['rho_h']:.2f}）")
+    if b["head_kind"] == "mixture":
+        print("  ヘッドの重み（類を除いたモデルの転移性能の softmax）: "
+              + ", ".join(f"{h} {w:.2f}" for h, w in b["head_weights"].items() if h in b["mixture_heads"]))
+    for c, rates in sorted(b["class_rate"].items()):
+        top = sorted(rates.items(), key=lambda kv: -kv[1])[:4]
+        print(f"  類 {c}（κ_e={b['kappa_e'][c]:.2f}）: " + ", ".join(f"{t} {v:.2f}" for t, v in top))
+    for w in s["warnings"]:
+        print("  警告: " + w)
+    pi = sorted(b["pi_person"].items(), key=lambda kv: -kv[1])[:4]
+    print("  「人のせい」の事前 π_person（高い順）: " + ", ".join(f"{t} {v:.2f}" for t, v in pi))
+    return 0
+
+
+def cmd_explain(args: argparse.Namespace) -> int:
+    npn = NPN.load(args.state_dir)
+    ex = npn.explain_response(args.cue, args.context, args.time)
+    print("\n".join(format_explanation(ex)))
+    if args.trace > 0:
+        recs = npn.assignment_trace(args.cue)[-args.trace:]
+        print(f"\n割当の記録（{args.cue}。最後の {len(recs)} 件）")
+        for r in recs:
+            print("  " + format_assignment(r))
+    return 0
+
+
+def cmd_preference(args: argparse.Namespace) -> int:
+    n = NPN.load(args.state_dir)
+    with open(args.options, "r", encoding="utf-8") as f:
+        doc = json.load(f)
+    opts: List[Dict[str, Any]] = doc if isinstance(doc, list) else [doc]
+    ex = n.explain_preference(opts, key=args.key)
+    print(f"選好の説明（justification_mode = {ex['mode']}。学習しない。MB の標本は key = {args.key!r} で決まる）")
+    for i, o in enumerate(ex["options"]):
+        print(f"  選択肢 {i}: Q={o['Q']:+.3f} = 根拠のある部分 {o['Q_grounded']:+.3f}（価値 {o['Q_val']:+.3f} + 条件づけ {o['C_Q']:+.3f}） + 正当化 J の部分 {o['J_Q']:+.3f}")
+        for cue, d in o["justification"].items():
+            src = ", ".join(f"{k} {v:+.3f}" for k, v in d["sources"].items()) or "源の記録なし"
+            print(f"      {cue:<26s} J={d['J']:+.3f}  源: {src}")
+    if "delta" in ex:
+        d = ex["delta"]
+        print(f"  ΔQ = {d['Q']:+.3f} = 根拠 {d['grounded']:+.3f} + 正当化 {d['justification']:+.3f}  P(選ぶ) = {ex['p_choose'][0]:.2f} / {ex['p_choose'][1]:.2f}")
+        pf = ex["preferred"]
+        print(f"  好む側: Q では {pf['by_Q']}、根拠のみでは {pf['by_grounded']}、正当化のみでは {pf['by_justification']}"
+              + ("  → 正当化が選好を決めている（根拠のみとは向きが違う）" if ex["justification_decides"] else ""))
+    return 0
+
+
+def main(argv: List[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(prog="python -m npnv3", description="NPN v3 最小実装")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("init", help="新しい NPN を作って保存"); p.add_argument("state_dir")
+    p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--justification-mode", default=None, choices=["orig", "persist", "persist_with_decay"], help="正当化 J の条件（既定 orig = Z-orig。persist = Z-persist）")
+    p.add_argument("--lc-design", default=None, choices=["spec_literal", "revised"], help="条件づけの潜在原因の設計（既定 spec_literal。revised は実験設定）")
+    p.set_defaults(fn=cmd_init)
+    p = sub.add_parser("feed", help="経験（JSONL）を学習して保存"); p.add_argument("state_dir")
+    p.add_argument("experiences"); p.set_defaults(fn=cmd_feed)
+    p = sub.add_parser("probe", help="学習せずに評価"); p.add_argument("state_dir"); p.add_argument("probes")
+    p.add_argument("--json", action="store_true", help="詳細を JSON で出力"); p.set_defaults(fn=cmd_probe)
+    p = sub.add_parser("show", help="価値の上位と信念の要約"); p.add_argument("state_dir"); p.set_defaults(fn=cmd_show)
+    p = sub.add_parser("explain", help="条件づけられた価値の応答の内訳と割当の記録"); p.add_argument("state_dir"); p.add_argument("cue")
+    p.add_argument("--context", default=None); p.add_argument("--time", type=float, default=None); p.add_argument("--trace", type=int, default=5)
+    p.set_defaults(fn=cmd_explain)
+    p = sub.add_parser("preference", help="選好の説明（Q を根拠のある部分と正当化 J の部分に分ける）"); p.add_argument("state_dir"); p.add_argument("options")
+    p.add_argument("--key", default="preference"); p.set_defaults(fn=cmd_preference)
+    args = ap.parse_args(argv)
+    try:
+        return args.fn(args)
+    except (FileNotFoundError, ValueError) as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())

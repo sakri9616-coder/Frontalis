@@ -1,0 +1,13 @@
+| q rule | stable m=20 | noisy m=20 | switch m=20 | stable m=100 | switch m=100 | stationary q (cls) in stable world | q in switch world |
+|---|---|---|---|---|---|---|---|
+| q fixed 1e-6 (x0.01 of default) | 0.69 | 0.68 | 0.70 | 0.16 | 0.17 | 0.00000 | 0.00000 |
+| q fixed default (1e-4) | 0.04 | 0.04 | 0.01 | 0.00 | 0.00 | 0.00002 | 0.00002 |
+| EMA eta=.002 | 0.01 | -0.01 | -0.06 | 0.00 | -0.02 | 0.00004 | 0.00356 |
+| EMA eta=.005 | 0.01 | -0.01 | -0.07 | 0.00 | 0.00 | 0.00000 | 0.00398 |
+| EMA eta=.01 | 0.01 | -0.01 | -0.06 | 0.00 | 0.01 | 0.00000 | 0.00444 |
+
+G1' for EMA eta=.002 (retention m=20, stable vs switch; coefficient elasticities)
+   ret stable 0.012 vs switch 0.001: E_evid=+2.06
+   coef eta_q  : ret(x/2)=0.016 ret(2x)=0.011 E_coef=-0.25 ratio 0.12 PASS
+   coef R      : ret(x/2)=0.008 ret(2x)=0.024 E_coef=+0.83 ratio 0.40 FAIL
+   coef var_ind: ret(x/2)=0.012 ret(2x)=0.012 E_coef=+0.00 ratio 0.00 PASS

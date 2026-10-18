@@ -1,0 +1,3 @@
+# NN-REL calibration and reduced production pass (PREREG draft 4 10c 6(b)); dev seeds only. Run: python sched/sched.py run queue_rel_dev.txt --only=modal
+p36_rel_dev.py calib {77380,77385}
+p36_rel_dev.py pass {F1,F6m} {77380,77385}

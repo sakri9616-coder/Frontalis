@@ -1,0 +1,8 @@
+2026-10-17 14:51:49 START p18_noise_decomp.py set rehearsal
+2026-10-17 14:53:58 END rc=0 p18_noise_decomp.py set rehearsal
+2026-10-17 14:53:58 START p18_noise_decomp.py nn0 rehearsal
+2026-10-17 14:55:34 END rc=0 p18_noise_decomp.py nn0 rehearsal
+2026-10-17 14:55:34 START p18_noise_decomp.py hb rehearsal
+2026-10-17 14:57:12 END rc=0 p18_noise_decomp.py hb rehearsal
+2026-10-17 14:57:12 START p18_noise_decomp.py set mid
+2026-10-17 15:05:10 END rc=0 p18_noise_decomp.py set mid

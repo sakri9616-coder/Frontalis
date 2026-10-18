@@ -1,0 +1,5 @@
+fixed q (all three layers = q_ind; cls = q/5, gen = q/20): retention at m=20 / 100 for the stable history; steady gain
+   q_ind=1e-07: ret20=0.812 ret100=0.428
+   q_ind=1e-06: ret20=0.691 ret100=0.165
+   q_ind=1e-05: ret20=0.332 ret100=0.004
+   q_ind=0.0001: ret20=0.038 ret100=0.004

@@ -1,0 +1,639 @@
+"""sim5 = sim4 + switches (diag5/make_sim5.py). Draft-4 batched simulator (dev seeds only). PREREG draft 4, sections 2 and 10.
+
+World: body channels KB = 5; the world returns only delta-b. Families F1, F2 (pair relation), F5, F6, F6m (additive,
+per-channel variance matched to F1), F0a (outcome independent of the actor). Contexts 0-11 appear in experience;
+12-15 never do (novel contexts). Channel remap (permutation) for a short post-phase.
+Innate conditions: IH (homeostatic), I0 (learning progress only), IHE (homeostatic 0-3 + appetitive channel 4 + LP).
+Cycle: P-R (expectation), P-I (calibrated attribution + kappa), P-S (salience), P-W (S = sensitisation, H = habituation).
+kappa modes: zero, fixed, Lp (gradient of the predictive likelihood), Lh (evolution-strategy on the innate signal),
+Ln (no criterion: random walk). Choice scenes (30%): yoked to the group's A, or self.
+Learners: set (MLP), rel (attention over 4 tokens), nn0 (set with frozen encoder), rf (fixed random ReLU features),
+krr (random Fourier features + exact ridge on all history), hb (indicator features incl. ids/clusters + ridge),
+fixk (entity + context one-hot ridge), lin (raw input ridge). 'pre' = set initialised from given weights.
+Replay stores indices + recorded targets (targets are never recomputed). Checkpoint/resume at any step.
+Randomness: per-personality streams env (outcome noise, distractors, choice noise, kappa noise), sgd (minibatches), init.
+"""
+from __future__ import annotations
+
+import os
+import time
+from typing import Any, Dict, List, Optional
+
+os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
+import numpy as np
+import torch
+import torch.nn.functional as F
+
+DEV = "cuda" if torch.cuda.is_available() else "cpu"
+torch.use_deterministic_algorithms(True)
+torch.backends.cuda.matmul.allow_tf32 = False
+
+KB, DT, DC = 5, 4, 3
+N_TR, N_UN = 80, 40
+N_CTX, N_CTX_TR = 16, 12
+D_E, D_C, D_DIS = 48, 16, 8
+D_IN = 2 * D_E + D_C + D_DIS                  # self token, partner token, context, distractor
+ID_DIMS = list(range(32, 48)) + list(range(D_E + 32, D_E + 48))
+TOL, DECAY = 0.4, 0.7
+FAMS_ALL = ("F1", "F2", "F5", "F6", "F6m", "F0a")
+
+
+# ----------------------------------------------------------------------------------------------------------- world
+def make_world(seed: int, fam: str, n_tr: int = N_TR) -> Dict[str, Any]:
+    """n_tr: training entities per cluster (N_ent rule, PREREG draft 4 section 9). 80 keeps the original random stream."""
+    rng = np.random.default_rng([seed, 11, 4] if n_tr == N_TR else [seed, 11, 4, n_tr])
+    n_c = n_tr + N_UN; n = 2 * n_c
+    cl = np.repeat([0, 1], n_c)
+    mu = rng.normal(size=DT); mu = mu / np.linalg.norm(mu)
+    T = rng.normal(size=(n, DT)) * 0.8 + np.where(cl[:, None] == 0, mu, -mu)
+    C = rng.normal(size=(N_CTX, DC))
+    Pt = rng.normal(size=(DT, 32)) / np.sqrt(DT); Pc = rng.normal(size=(DC, 16)) / np.sqrt(DC)
+    Xe = np.concatenate([np.tanh(T @ Pt) + 0.3 * rng.normal(size=(n, 32)), rng.normal(size=(n, 16))], 1)
+    Xc = np.tanh(C @ Pc) + 0.2 * rng.normal(size=(N_CTX, 16))
+    B = rng.normal(size=(KB, DT, DC)) / np.sqrt(DT * DC) * 2.0
+    A = rng.normal(size=(KB, DT)) * 0.5
+    cadd = rng.normal(size=(N_CTX, KB)) * 0.5
+    B2 = rng.normal(size=(KB, DT, DC)) / np.sqrt(DT * DC) * 2.5     # (draft-4 initial symmetric F2; kept in the stream)
+    B2a = rng.normal(size=(KB, DT, DT, DC)) / np.sqrt(DT * DT * DC) * 2.5   # asymmetric relation: actor x partner x context
+    perm_tab = rng.permutation(n * N_CTX)
+    remap = rng.permutation(KB)
+    while np.any(remap == np.arange(KB)):
+        remap = rng.permutation(KB)
+    prop = rng.normal(size=n)
+    ids = np.arange(n)
+    tr0, tr1, un0, un1 = ids[cl == 0][:n_tr], ids[cl == 1][:n_tr], ids[cl == 0][n_tr:], ids[cl == 1][n_tr:]
+    part = {}
+    for nm, (p0, p1) in {"tr": (tr0, tr1), "un": (un0, un1)}.items():
+        ents = np.concatenate([p0, p1])
+        part[nm] = np.array([[rng.choice(p0[p0 != e]), rng.choice(p1[p1 != e])] for e in ents])
+    inter = np.einsum("ed,kdc,xc->exk", T, B, C)
+    add = (T @ A.T)[:, None, :] + cadd[None]
+    M1 = 0.7 * np.tanh(inter) + 0.2 * add
+    M2 = None
+    avg = False
+    if fam == "F1":
+        M = M1
+    elif fam == "F2":
+        M = 0.2 * add                     # single-actor part; the pair part is computed on the fly from T and BC (no n x n table)
+        M2 = dict(T=T.astype(np.float32), BC=np.einsum("kdec,xc->xkde", B2a, C).astype(np.float32))   # rev. a: asymmetric
+    elif fam == "F5":
+        M = M1.reshape(-1, KB)[perm_tab].reshape(M1.shape)
+    elif fam == "F6":
+        M = 0.5 * np.tanh(add)
+    elif fam == "F6m":
+        trm = np.ix_(np.concatenate([tr0, tr1]), np.arange(N_CTX_TR))
+        a_ = add[trm[0], trm[1]].reshape(-1, KB); m_ = M1[trm[0], trm[1]].reshape(-1, KB)
+        M = (add - a_.mean(0)) / a_.std(0) * m_.std(0) + m_.mean(0)
+    elif fam == "F0a":
+        M = M1; avg = True
+    else:
+        raise ValueError(fam)
+    return dict(fam=fam, seed=seed, Xe=Xe.astype(np.float32), Xc=Xc.astype(np.float32), M=M.astype(np.float32), M2=M2,
+                avg=avg, prop=prop.astype(np.float32), remap=remap, cl=cl, T=T, tr0=tr0, tr1=tr1, un0=un0, un1=un1,
+                part=part, n=n)
+
+
+def _pairs(rng, pool, n):
+    i1 = rng.integers(0, len(pool), n)
+    i2 = (i1 + 1 + rng.integers(0, len(pool) - 1, n)) % len(pool)
+    return pool[i1], pool[i2]
+
+
+def make_sequence(w, seed: int, early: int, n_steps: int, n_early: int, phase: str = "main") -> Dict[str, np.ndarray]:
+    """Experience order is HISTORY. Early phase: cluster `early` only (early = -1: both clusters). Shared phase identical for
+    every personality of a world seed. Each step also carries an alternative encounter for choice scenes."""
+    pool = np.concatenate([w["tr0"], w["tr1"]])
+    if phase == "remap":
+        rs = np.random.default_rng([seed, 23])
+        out = {}
+        out["e1"], out["e2"] = _pairs(rs, pool, n_steps); out["c"] = rs.integers(0, N_CTX_TR, n_steps); out["u"] = rs.random(n_steps)
+        out["a1"], out["a2"] = _pairs(rs, pool, n_steps); out["ac"] = rs.integers(0, N_CTX_TR, n_steps)
+        out["ch"] = rs.random(n_steps) < 0.3
+        return out
+    rs = np.random.default_rng([seed, 21]); re = np.random.default_rng([seed, 22 + max(early, 0) + (5 if early < 0 else 0)])
+    pe = pool if early < 0 else (w["tr0"] if early == 0 else w["tr1"])
+    m = n_steps - n_early
+    a1, a2 = _pairs(re, pe, n_early); ac = re.integers(0, N_CTX_TR, n_early); au = re.random(n_early)
+    x1, x2 = _pairs(re, pe, n_early); xc = re.integers(0, N_CTX_TR, n_early); xch = re.random(n_early) < 0.3
+    b1, b2 = _pairs(rs, pool, m); bc = rs.integers(0, N_CTX_TR, m); bu = rs.random(m)
+    y1, y2 = _pairs(rs, pool, m); yc = rs.integers(0, N_CTX_TR, m); ych = rs.random(m) < 0.3
+    cat = np.concatenate
+    return dict(e1=cat([a1, b1]), e2=cat([a2, b2]), c=cat([ac, bc]), u=cat([au, bu]), a1=cat([x1, y1]), a2=cat([x2, y2]),
+                ac=cat([xc, yc]), ch=cat([xch, ych]))
+
+
+def rows_np(w, s, p, c, dis=None):
+    """Input rows (self, partner, context, distractor). Identity dims are zeroed by the learner, not here."""
+    x = np.concatenate([w["Xe"][s], w["Xe"][p], w["Xc"][c], np.zeros((len(s), D_DIS), np.float32) if dis is None else dis], 1)
+    return x.astype(np.float32)
+
+
+def probe_set(w, which: str):
+    """P_tr: training entities x contexts 0-11; P_un: unseen x 0-11; P_nc: unseen x novel contexts 12-15. Two fixed partners."""
+    if which == "tr":
+        ents, part, ctxs = np.concatenate([w["tr0"], w["tr1"]]), w["part"]["tr"], np.arange(N_CTX_TR)
+    else:
+        ents, part = np.concatenate([w["un0"], w["un1"]]), w["part"]["un"]
+        ctxs = np.arange(N_CTX_TR) if which == "un" else np.arange(N_CTX_TR, N_CTX)
+    s = np.repeat(ents, 2 * len(ctxs)); p = np.repeat(part.reshape(-1), len(ctxs)); c = np.tile(ctxs, 2 * len(ents))
+    return s, p, c
+
+
+def outcome_np(w, s, p, c, remap=False):
+    """Delta-b if the row's self entity acts (no noise)."""
+    if w["M2"] is not None:
+        o = 0.7 * np.tanh(np.einsum("nd,nkde,ne->nk", w["M2"]["T"][s], w["M2"]["BC"][c], w["M2"]["T"][p])) + w["M"][s, c]
+    elif w["avg"]:
+        o = 0.5 * (w["M"][s, c] + w["M"][p, c])
+    else:
+        o = w["M"][s, c]
+    return o[:, w["remap"]] if remap else o
+
+
+# --------------------------------------------------------------------------------------------------------- learners
+NN_KINDS = ("set", "rel", "nn0", "rf", "pre")
+RIDGE_KINDS = ("krr", "hb", "fixk", "lin")
+
+
+def _init(shapes: Dict[str, tuple], seeds, gain_w=2.0):
+    g = torch.Generator(device="cpu")
+    st: Dict[str, List[torch.Tensor]] = {}
+    for s in seeds:
+        g.manual_seed(int(s))
+        for n_, sh in shapes.items():
+            t = torch.randn(*sh, generator=g) * np.sqrt(gain_w / sh[0]) if n_.split(".")[-1].startswith("W") else torch.zeros(*sh)
+            st.setdefault(n_, []).append(t)
+    return {k: torch.stack(v).to(DEV) for k, v in st.items()}
+
+
+class NNPop:
+    """Batched per-personality networks. kind: set | rel | nn0 | rf | pre. Separate belief/value encoders (set, rel, nn0, pre)."""
+
+    def __init__(self, kind: str, P: int, init_seeds, cfg, init_params: Optional[Dict[str, torch.Tensor]] = None):
+        self.kind = kind; H = cfg.get("hidden", 128); d = cfg.get("d", 64); self.d = d; self.H = H
+        self.sdpa = bool(cfg.get("sdpa", 0))   # P23 speed variant: fused attention kernel (same arithmetic up to summation order)
+        self.pscale = float(cfg.get("partner_scale", 1.0))
+        sh: Dict[str, tuple] = {}
+        if kind in ("set", "nn0", "pre"):
+            for e in ("b", "v"):
+                sh.update({f"{e}.W1": (D_IN, H), f"{e}.b1": (1, H), f"{e}.W2": (H, H), f"{e}.b2": (1, H)})
+            hv = H
+        elif kind == "rel":
+            for e in ("b", "v"):
+                sh.update({f"{e}.Ws": (D_E, d), f"{e}.Wp": (D_E, d), f"{e}.Wc": (D_C, d), f"{e}.Wd": (D_DIS, d), f"{e}.bt": (4, d)})
+                for l in range(2):
+                    sh.update({f"{e}.Wqkv{l}": (d, 3 * d), f"{e}.Wo{l}": (d, d), f"{e}.Wf1{l}": (d, 2 * d), f"{e}.bf1{l}": (1, 2 * d),
+                               f"{e}.Wf2{l}": (2 * d, d), f"{e}.bf2{l}": (1, d)})
+            hv = d
+        elif kind == "rf":
+            sh.update({"r.W1": (D_IN, 512), "r.b1": (1, 512)}); hv = 512
+        sh.update({"h.Wb": (hv, KB), "h.bb": (1, KB), "h.Wv": (hv, KB), "h.bv": (1, KB)})
+        if kind in ("set", "nn0", "pre", "rel"):
+            sh.update({"b.gp": (1, 1), "v.gp": (1, 1)})       # partner gate (rev. a), initialised at 0 (zeros by _init)
+        p = _init(sh, init_seeds)
+        if kind == "rel":   # residual-branch outputs start small; attention projections with gain 1 (standard practice)
+            for k_ in p:
+                if any(t in k_ for t in (".Wo", ".Wf2")):
+                    p[k_] = p[k_] * 0.25
+                if ".Wqkv" in k_:
+                    p[k_] = p[k_] / np.sqrt(2.0)
+        if kind == "rf":
+            p["r.b1"] = torch.stack([torch.rand(1, 512, generator=torch.Generator().manual_seed(int(s) + 7)) * 2 - 1 for s in init_seeds]).to(DEV)
+        if init_params is not None:
+            for k, v in init_params.items():
+                p[k] = v.clone().to(DEV)
+        if cfg.get("mask_partner", 0):      # diagnostic only (P16): hide the partner token
+            self.extra_mask = list(range(D_E, 2 * D_E))
+        else:
+            self.extra_mask = []
+        frozen = set()
+        if kind in ("nn0", "rf"):
+            frozen = {k for k in p if not k.startswith("h.")}
+            if kind == "nn0":
+                for k in [k for k in p if k.endswith(".gp")]:
+                    p[k] = p[k] + float(cfg.get("partner_scale", 1.0))   # frozen encoder: fixed partner scale
+        self.p = {k: v.requires_grad_(k not in frozen) for k, v in p.items()}
+        self.trainable = [v for k, v in self.p.items() if k not in frozen]
+        self.mask = torch.ones(D_IN, device=DEV); self.mask[ID_DIMS] = 0.0
+        if self.extra_mask:
+            self.mask[self.extra_mask] = 0.0
+
+    def _mlp(self, x, e, p):
+        h = torch.relu(torch.bmm(x, p[f"{e}.W1"]) + p[f"{e}.b1"])
+        return torch.relu(torch.bmm(h, p[f"{e}.W2"]) + p[f"{e}.b2"])
+
+    def _rel(self, x, e, p):
+        P, n, _ = x.shape; d = self.d; Hh = 4; dh = d // Hh
+        s, pt, c, di = x[..., :D_E], x[..., D_E:2 * D_E], x[..., 2 * D_E:2 * D_E + D_C], x[..., 2 * D_E + D_C:]
+        tok = torch.stack([torch.bmm(s, p[f"{e}.Ws"]), torch.bmm(pt, p[f"{e}.Wp"]), torch.bmm(c, p[f"{e}.Wc"]),
+                           torch.bmm(di, p[f"{e}.Wd"])], 2) + p[f"{e}.bt"][:, None]          # P, n, 4, d
+        h = tok.reshape(P, n * 4, d)
+        for l in range(2):
+            hn = F.layer_norm(h, (d,))
+            qkv = torch.bmm(hn, p[f"{e}.Wqkv{l}"]).view(P * n, 4, 3, Hh, dh)
+            q, k_, v = (qkv[:, :, i].transpose(1, 2) for i in range(3))
+            if self.sdpa:
+                a = F.scaled_dot_product_attention(q, k_, v)
+            else:
+                a = torch.softmax(q @ k_.transpose(-1, -2) / dh ** 0.5, -1) @ v
+            h = h + torch.bmm(a.transpose(1, 2).reshape(P, n * 4, d), p[f"{e}.Wo{l}"])
+            hn = F.layer_norm(h, (d,))
+            h = h + torch.bmm(torch.relu(torch.bmm(hn, p[f"{e}.Wf1{l}"]) + p[f"{e}.bf1{l}"]), p[f"{e}.Wf2{l}"]) + p[f"{e}.bf2{l}"]
+        return F.layer_norm(h.view(P, n, 4, d).mean(2), (d,))          # final norm (pre-LN transformer convention)
+
+    def rep(self, x, which, p=None):
+        p = p or self.p
+        x = x * self.mask
+        if self.kind == "rf":
+            x = torch.cat([x[..., :D_E], self.pscale * x[..., D_E:2 * D_E], x[..., 2 * D_E:]], -1)
+            return torch.relu(torch.bmm(x, p["r.W1"]) + p["r.b1"])
+        x = torch.cat([x[..., :D_E], p[f"{which}.gp"] * x[..., D_E:2 * D_E], x[..., 2 * D_E:]], -1)
+        if self.kind == "rel":
+            return self._rel(x, which, p)
+        return self._mlp(x, which, p)
+
+    def belief(self, x, p=None):
+        p = p or self.p
+        return torch.bmm(self.rep(x, "b", p), p["h.Wb"]) + p["h.bb"]
+
+    def vrep(self, x, p=None):
+        return self.rep(x, "v", p)
+
+    def value_vec(self, x, p=None, h=None):
+        p = p or self.p
+        h = self.vrep(x, p) if h is None else h
+        return torch.bmm(h, p["h.Wv"]) + p["h.bv"]
+
+    def slice(self, i):
+        return {k: v[i:i + 1].detach() for k, v in self.p.items()}
+
+
+class RidgePop:
+    """Exact ridge regression on fixed features over the whole (weighted) history; re-solved every `solve_every` steps."""
+
+    def __init__(self, kind: str, P: int, init_seeds, cfg, worlds_meta):
+        self.kind = kind; self.P = P; self.pscale = float(cfg.get("partner_scale", 1.0))
+        self.mask = torch.ones(D_IN, device=DEV); self.mask[ID_DIMS] = 0.0
+        n = int(np.asarray(worlds_meta["cl"]).shape[1])
+        if kind == "krr":
+            Fd = 512; ls = cfg.get("krr_ls", 4.0)
+            g = torch.Generator().manual_seed(int(init_seeds[0]) * 0 + 4242)   # same random features for all (a kernel, not a weight)
+            self.Om = (torch.randn(D_IN, Fd, generator=g) / ls).to(DEV); self.ph = (torch.rand(Fd, generator=g) * 2 * np.pi).to(DEV)
+            lam = torch.full((Fd,), cfg.get("lam", 1.0))
+        elif kind == "hb":
+            Fd = n + N_CTX + 2 * N_CTX + 4 * N_CTX + 1
+            lam = torch.cat([torch.full((n,), 1.0), torch.full((N_CTX,), 0.3), torch.full((2 * N_CTX,), 0.1), torch.full((4 * N_CTX,), 0.1), torch.full((1,), 1e-3)])
+        elif kind == "fixk":
+            Fd = n + N_CTX + 1
+            lam = torch.cat([torch.full((n,), 1.0), torch.full((N_CTX,), 0.3), torch.full((1,), 1e-3)])
+        elif kind == "lin":
+            Fd = D_IN + 1; lam = torch.full((Fd,), cfg.get("lam", 1.0))
+        self.Fd = Fd
+        self.Gb = torch.diag(lam).to(DEV)[None].repeat(P, 1, 1); self.Gv = self.Gb.clone()
+        self.R = torch.zeros(P, Fd, 2 * KB, device=DEV)
+        self.W = torch.zeros(P, Fd, 2 * KB, device=DEV)
+        self.cl = torch.tensor(worlds_meta["cl"], device=DEV)          # (Wn, n) cluster of each entity per world
+
+    def feats(self, x, meta):
+        """meta: dict of (P, m) long tensors s, p, c and (P,) world index wi."""
+        x = torch.cat([x[..., :D_E], self.pscale * x[..., D_E:2 * D_E], x[..., 2 * D_E:]], -1)
+        if self.kind == "krr":
+            return np.sqrt(2.0 / self.Fd) * torch.cos(torch.matmul(x * self.mask, self.Om) + self.ph)
+        if self.kind == "lin":
+            return torch.cat([x * self.mask, torch.ones_like(x[..., :1])], -1)
+        n = self.cl.shape[1]
+        s, p, c = meta["s"], meta["p"], meta["c"]
+        oh = lambda i, k: F.one_hot(i, k).float()
+        if self.kind == "fixk":
+            return torch.cat([oh(s, n), oh(c, N_CTX), torch.ones_like(s[..., None], dtype=torch.float32)], -1)
+        cl = self.cl[meta["wi"][:, None].expand_as(s), s]; clp = self.cl[meta["wi"][:, None].expand_as(p), p]
+        return torch.cat([oh(s, n), oh(c, N_CTX), oh(cl * N_CTX + c, 2 * N_CTX), oh((cl * 2 + clp) * N_CTX + c, 4 * N_CTX),
+                          torch.ones_like(s[..., None], dtype=torch.float32)], -1)
+
+    def predict(self, x, meta, W=None):
+        W = self.W if W is None else W
+        o = torch.bmm(self.feats(x, meta), W)
+        return o[..., :KB], o[..., KB:]
+
+    def add(self, phi, yb, wb, yv, wv):
+        """phi (P, m, F); belief targets yb (P, m, KB) with weights wb (P, m); value targets yv with weights wv."""
+        pt = phi.transpose(1, 2)
+        self.Gb = self.Gb + torch.bmm(pt, phi * wb[..., None]); self.Gv = self.Gv + torch.bmm(pt, phi * wv[..., None])
+        self.R[..., :KB] += torch.bmm(pt, yb * wb[..., None]); self.R[..., KB:] += torch.bmm(pt, yv * wv[..., None])
+
+    def solve(self):
+        self.W = torch.cat([torch.cholesky_solve(self.R[..., :KB], torch.linalg.cholesky(self.Gb)),
+                            torch.cholesky_solve(self.R[..., KB:], torch.linalg.cholesky(self.Gv))], -1)
+
+
+# -------------------------------------------------------------------------------------------------------- simulation
+DEFAULT = dict(learner="set", innate="IH", cycle=1, pw="S", kmode="zero", kfix=0.0, temp="cal", choice="yoke", cfrac=0.3,
+               beta=3.0, ceps=0.1, ref=0.5, salience=1, sal_max=2.0, lr=3e-4, bs=32, spn=1, n_steps=3000, n_early=1200,
+               clip=1.0, hidden=128, d=64, solve_every=25, krr_ls=4.0, lam=1.0, amp=0, phase="main", eta_kp=0.02,
+               blk=200, eta_kh=0.5, sig_kn=0.3, kmax=10.0, ckpt_every=0, ckpt_path=None, stop_at=None, wd=0.0, mask_partner=0,
+               partner_scale=1.0, chunk=1000, sdpa=0, tf32=0, fused_opt=0, bel_r=0, krr_flat_b=0, wgate=0, krr_self_b=0)
+
+
+def _stack(arrs, dtype=None):
+    return torch.tensor(np.stack(arrs), device=DEV, dtype=dtype)
+
+
+COND_CODES = {  # per-personality cycle condition (PREREG draft 4 section 2.3); q["cond"] overrides cfg
+    "C-off": dict(cycle=0, pw="none", kmode="zero", choice="yoke"),
+    "C-S0": dict(cycle=1, pw="S", kmode="zero", choice="yoke"),
+    "C-H0": dict(cycle=1, pw="H", kmode="zero", choice="yoke"),
+    "C-SLp": dict(cycle=1, pw="S", kmode="Lp", choice="yoke"),
+    "C-SLh": dict(cycle=1, pw="S", kmode="Lh", choice="self"),
+    "C-SLn": dict(cycle=1, pw="S", kmode="Ln", choice="yoke"),
+    "C-HLp": dict(cycle=1, pw="H", kmode="Lp", choice="yoke"),
+    "C-HLh": dict(cycle=1, pw="H", kmode="Lh", choice="self"),
+    "C-HLn": dict(cycle=1, pw="H", kmode="Ln", choice="yoke"),
+    "C-S+5": dict(cycle=1, pw="S", kmode="fixed", kfix=5.0, choice="yoke"),
+    "C-S-5": dict(cycle=1, pw="S", kmode="fixed", kfix=-5.0, choice="yoke"),
+}
+_PW = {"none": 0, "S": 1, "H": 2}
+_KM = {"zero": 0, "fixed": 1, "Lp": 2, "Lh": 3, "Ln": 4}
+_IN = {"IH": 0, "I0": 1, "IHE": 2}
+
+
+def pers_cond(q, c):
+    """Effective condition of one personality: cfg defaults, overridden by q['cond'] (a COND_CODES key) and q['innate']."""
+    e = dict(cycle=c["cycle"], pw=c["pw"], kmode=c["kmode"], kfix=c["kfix"], choice=c["choice"], innate=c["innate"])
+    if "cond" in q:
+        e.update(COND_CODES[q["cond"]])
+    if "innate" in q:
+        e["innate"] = q["innate"]
+    if c["choice"] == "none":
+        e["choice"] = "none"
+    return e
+
+
+def init_state(pers, worlds, c, init_params=None):
+    P = len(pers)
+    kind = c["learner"]
+    seeds = [q["init"] for q in pers]
+    if kind in NN_KINDS:
+        net = NNPop(kind, P, seeds, c, init_params)
+        okw = dict(fused=True) if c.get("fused_opt", 0) else {}   # P23 speed variant: fused Adam kernel; default off
+        opt = torch.optim.AdamW(net.trainable, lr=c["lr"], weight_decay=c["wd"], **okw) if c["wd"] > 0 else torch.optim.Adam(net.trainable, lr=c["lr"], **okw)
+    else:
+        wkeys = sorted({q["world"] for q in pers})
+        net = RidgePop(kind, P, seeds, c, dict(cl=np.stack([worlds[k]["cl"] for k in wkeys])))
+        opt = None
+    z = lambda *s: torch.zeros(P, *s, device=DEV)
+    pc = [pers_cond(q, c) for q in pers]
+    st = dict(net=net, opt=opt, t=0, b=z(KB), cum=z(KB), fscale=torch.ones(P, device=DEV),
+              sig2=torch.full((P, KB), 0.05, device=DEV),
+              kappa=torch.tensor([float(e.get("kfix", 0.0)) if e["kmode"] == "fixed" else 0.0 for e in pc], device=DEV),
+              eps_k=z(), blk_sum=z(), blk_n=z(), base=z(), base_set=z(), Ef=torch.full((P, N_CTX, KB), 0.1, device=DEV),
+              Es=torch.full((P, N_CTX, KB), 0.1, device=DEV), sat=z(), w_use=torch.ones(P, KB, device=DEV), nonfinite=0,
+              kmode_vec=torch.tensor([_KM[e["kmode"]] for e in pc], device=DEV), cyc_vec=torch.tensor([float(e["cycle"]) for e in pc], device=DEV),
+              innate_vec=torch.tensor([_IN[e["innate"]] for e in pc], device=DEV))
+    return st
+
+
+def run(pers: List[Dict[str, Any]], worlds: Dict, cfg: Dict[str, Any], state: Optional[Dict] = None,
+        init_params: Optional[Dict[str, torch.Tensor]] = None) -> Dict[str, Any]:
+    """Train all personalities in lockstep (one learner type; cycle condition and innate condition may differ per
+    personality via q['cond'] / q['innate']). Continue from `state` if given (same phase: resume; other phase: continue
+    learning, e.g. remap). Returns the state (with replay buffers) and bookkeeping."""
+    c = {**DEFAULT, **cfg}
+    P = len(pers); N = c["n_steps"]; BS = c["bs"]; SPN = c["spn"]; phase = c["phase"]
+    wkeys = sorted({q["world"] for q in pers}); widx = {k: i for i, k in enumerate(wkeys)}
+    XE = _stack([worlds[k]["Xe"] for k in wkeys]); XC = _stack([worlds[k]["Xc"] for k in wkeys])
+    MM = _stack([worlds[k]["M"] for k in wkeys]); PR = _stack([worlds[k]["prop"] for k in wkeys])
+    AVG = torch.tensor([worlds[k]["avg"] for k in wkeys], device=DEV)
+    RM = _stack([worlds[k]["remap"] for k in wkeys], torch.long)
+    f2 = [k for k in wkeys if worlds[k]["M2"] is not None]
+    M2 = (_stack([worlds[k]["M2"]["T"] for k in f2]), _stack([worlds[k]["M2"]["BC"] for k in f2])) if f2 else None
+    w2i = torch.tensor([f2.index(k) if k in f2 else 0 for k in wkeys], device=DEV)
+    IS2 = torch.tensor([worlds[k]["M2"] is not None for k in wkeys], device=DEV)
+    wid = torch.tensor([widx[q["world"]] for q in pers], device=DEV)
+    pc = [pers_cond(q, c) for q in pers]
+    CYC = torch.tensor([float(e["cycle"]) for e in pc], device=DEV)
+    PW = torch.tensor([_PW[e["pw"]] for e in pc], device=DEV)
+    KM = torch.tensor([_KM[e["kmode"]] for e in pc], device=DEV)
+    INN = torch.tensor([_IN[e["innate"]] for e in pc], device=DEV)
+    grp = {}
+    for i, q in enumerate(pers):
+        grp.setdefault(q["group"], {})[q["role"]] = i
+    leader = torch.tensor([grp[q["group"]].get("A", i) if pc[i]["choice"] == "yoke" else i for i, q in enumerate(pers)], device=DEV)
+    seqs = [make_sequence(worlds[q["world"]], q["world"][0], q["early"], N, c["n_early"], phase) for q in pers]
+    SQ_np = {k: np.stack([s_[k] for s_ in seqs]) for k in seqs[0]}          # host memory; moved to the GPU chunk by chunk
+    del seqs
+    ph = 0 if phase == "main" else 1
+    CH = int(c["chunk"])
+
+    def gen_chunk(ci):
+        """Per-chunk random streams (seeded by personality stream and chunk index: resumable at any step)."""
+        lo, hi = ci * CH, min(N, (ci + 1) * CH); m = hi - lo
+        envr = [np.random.default_rng([q["env"], 31, ph, ci]) for q in pers]
+        out = dict(lo=lo, hi=hi)
+        out["NZ"] = _stack([r.normal(size=(m, KB)) for r in envr], torch.float32)
+        out["DIS"] = _stack([r.normal(size=(m, D_DIS)) for r in envr], torch.float32)
+        out["CU"] = _stack([r.random(size=(m, 2)) for r in envr], torch.float32)
+        out["UMB"] = _stack([np.random.default_rng([q["sgd"], 41, ph, ci]).random((m * SPN, BS), dtype=np.float32) for q in pers])
+        for k, v in SQ_np.items():
+            out[k] = torch.tensor(v[:, lo:hi], device=DEV, dtype=torch.long if k in ("e1", "e2", "c", "a1", "a2", "ac") else (torch.bool if k == "ch" else torch.float32))
+        return out
+    nblk = N // c["blk"] + 2
+    KR = _stack([np.random.default_rng([q["env"], 51, ph]).choice([-1.0, 1.0], nblk) for q in pers], torch.float32)
+    KN = _stack([np.random.default_rng([q["env"], 52, ph]).normal(size=nblk) for q in pers], torch.float32)
+    if state is None or state.get("phase") != phase:
+        if state is None:
+            state = init_state(pers, worlds, c, init_params)
+        state.update(phase=phase, t=0, buf=dict(s=torch.zeros(P, N, 2, dtype=torch.int32, device=DEV), c=torch.zeros(P, N, dtype=torch.int32, device=DEV),
+                                               TV=torch.zeros(P, N, 2, KB, device=DEV), DB=torch.zeros(P, N, KB, device=DEV),
+                                               SAL=torch.ones(P, N, device=DEV), R=torch.full((P, N, 2), 0.5, device=DEV), DIS=torch.zeros(P, N, D_DIS, dtype=torch.float16, device=DEV)))
+    net, opt, buf = state["net"], state["opt"], state["buf"]
+    ar = torch.arange(P, device=DEV)
+    learner = c["learner"]; ridge = learner in RIDGE_KINDS
+    any_choice = c["choice"] != "none"
+    on = CYC > 0; is_ih = INN == 0; is_i0 = INN == 1
+    torch.backends.cuda.matmul.allow_tf32 = bool(c["tf32"])   # P23 speed variant (precision reduction); default False
+    t0 = time.time()
+
+    def rows(s_, p_, c_, t_idx):
+        return torch.cat([XE[wid[:, None], s_], XE[wid[:, None], p_], XC[wid[:, None], c_], buf["DIS"][ar[:, None], t_idx].float()], -1)
+
+    def meta(s_, p_, c_):
+        return dict(s=s_, p=p_, c=c_, wi=wid)
+
+    def fwd(x, m):
+        with torch.autocast("cuda", dtype=torch.bfloat16, enabled=bool(c["amp"])):
+            if ridge:
+                pb, vv = net.predict(x, m)
+            else:
+                pb, vv = net.belief(x), net.value_vec(x)
+        return pb.float(), vv.float()
+
+    G = None
+    for t in range(state["t"], N):
+        if c["stop_at"] is not None and t >= c["stop_at"]:
+            break
+        if G is None or t >= G["hi"]:
+            G = gen_chunk(t // CH)
+        tl = t - G["lo"]
+        buf["DIS"][:, t] = G["DIS"][:, tl].half()
+        tt = torch.full((P, 2), t, device=DEV, dtype=torch.long)
+        e1, e2, cc = G["e1"][:, tl], G["e2"][:, tl], G["c"][:, tl]
+        st = state
+        with torch.no_grad():
+            if any_choice:
+                a1, a2, ac = G["a1"][:, tl], G["a2"][:, tl], G["ac"][:, tl]
+                S4 = torch.stack([e1, e2, a1, a2], 1); P4 = torch.stack([e2, e1, a2, a1], 1); C4 = torch.stack([cc, cc, ac, ac], 1)
+                _, v4 = fwd(rows(S4, P4, C4, torch.full((P, 4), t, device=DEV, dtype=torch.long)), meta(S4, P4, C4))
+                val = v4.sum(-1).view(P, 2, 2).sum(-1) / st["fscale"][:, None]
+                p_alt = torch.sigmoid(c["beta"] * (val[:, 1] - val[:, 0]))
+                own = torch.where(G["CU"][:, tl, 0] < c["ceps"], G["CU"][:, tl, 1] < 0.5, G["CU"][:, tl, 1] < p_alt)
+                pick = own[leader] & G["ch"][:, tl]
+                e1 = torch.where(pick, a1, e1); e2 = torch.where(pick, a2, e2); cc = torch.where(pick, ac, cc)
+            p1 = torch.sigmoid(PR[wid, e1] - PR[wid, e2])
+            actor = torch.where(G["u"][:, tl] < p1, e1, e2); other = torch.where(actor == e1, e2, e1)
+            db = MM[wid, actor, cc]
+            if M2 is not None:
+                wq = w2i[wid]
+                pair = 0.7 * torch.tanh(torch.einsum("nd,nkde,ne->nk", M2[0][wq, actor], M2[1][wq, cc], M2[0][wq, other])) + MM[wid, actor, cc]
+                db = torch.where(IS2[wid][:, None], pair, db)
+            db = torch.where(AVG[wid][:, None], 0.5 * (MM[wid, e1, cc] + MM[wid, e2, cc]), db)
+            if phase == "remap":
+                db = torch.gather(db, 1, RM[wid])
+            db = db + 0.1 * G["NZ"][:, tl]
+            S2 = torch.stack([e1, e2], 1); P2 = torch.stack([e2, e1], 1); C2 = torch.stack([cc, cc], 1)
+            x = rows(S2, P2, C2, tt); m2 = meta(S2, P2, C2)
+            pb, vvec = fwd(x, m2)
+            v = vvec.sum(-1)
+            # attribution log-likelihood (calibrated: per-personality residual variance; or a fixed temperature)
+            ll = -((db[:, None, :] - pb) ** 2 / (2 * st["sig2"][:, None, :])).sum(-1) if c["temp"] == "cal" else \
+                -((db[:, None, :] - pb) ** 2).sum(-1) / float(c["temp"])
+            # innate signals (all variants computed; selected per personality)
+            bnew = DECAY * st["b"] + db
+            d = torch.clamp(bnew.abs() - TOL, min=0) ** 2
+            pmix = torch.where(on[:, None], (torch.softmax(ll, 1)[..., None] * pb).sum(1), pb.mean(1))
+            err = (db - pmix) ** 2
+            Ef_c = st["Ef"][ar, cc]; Es_c = st["Es"][ar, cc]
+            Ef_c = Ef_c + 0.1 * (err - Ef_c); Es_c = Es_c + 0.01 * (err - Es_c)
+            st["Ef"][ar, cc] = Ef_c; st["Es"][ar, cc] = Es_c
+            lp = (Es_c - Ef_c) / (Es_c + 1e-3)
+            gain = torch.clamp(db[:, 4], min=0); st["sat"] = st["sat"] + 0.05 * (gain - st["sat"])
+            app = gain * (1 - torch.clamp(st["sat"], 0, 1))
+            raw = torch.where(is_ih[:, None], d, torch.where(is_i0[:, None], lp.abs(), torch.cat([d[:, :4], app[:, None]], 1)))
+            pw_on = on & (PW > 0)
+            st["cum"] = st["cum"] + pw_on[:, None] * raw
+            wS = st["cum"] + 1e-3; wH = 1.0 / (st["cum"] + 1e-3)
+            wS = KB * wS / wS.sum(1, keepdim=True); wH = KB * wH / wH.sum(1, keepdim=True)
+            st["w_use"] = torch.where((pw_on & (PW == 1))[:, None], wS, torch.where((pw_on & (PW == 2))[:, None], wH, torch.ones_like(wS)))
+            w_use = st["w_use"]
+            inn_ih = -(w_use * d)
+            inn_i0 = w_use * lp
+            inn_ihe = torch.cat([-(w_use[:, :4] * d[:, :4]), (w_use[:, 4] * app)[:, None]], 1) + 0.5 * w_use * lp
+            inn_k = torch.where(is_ih[:, None], inn_ih, torch.where(is_i0[:, None], inn_i0, inn_ihe))
+            st["b"] = bnew
+            f_k = inn_k + CYC[:, None] * c["ref"] * (inn_k - vvec.sum(1))
+            f = f_k.sum(1)
+            st["fscale"] = st["fscale"] + 0.01 * (f.abs() - st["fscale"])
+            fs = st["fscale"].clamp(min=1e-3)
+            f = f / fs; f_k = f_k / fs[:, None]
+            kap = torch.where(KM == 0, torch.zeros_like(st["kappa"]), st["kappa"] + torch.where(KM == 3, st["eps_k"], torch.zeros_like(st["eps_k"])))
+            a_ = torch.sign(f)[:, None] * v / fs[:, None]
+            prior_logit = kap[:, None] * a_
+            r_on = torch.softmax(ll + prior_logit, 1)
+            prior = torch.softmax(prior_logit, 1)
+            st["kappa"] = torch.where(on & (KM == 2), (st["kappa"] + c["eta_kp"] * ((r_on * a_).sum(1) - (prior * a_).sum(1))).clamp(-c["kmax"], c["kmax"]), st["kappa"])
+            res = (r_on[..., None] * (db[:, None, :] - pb) ** 2).sum(1)
+            st["sig2"] = (st["sig2"] + 0.01 * (res - st["sig2"])).clamp(min=1e-3)
+            r = torch.where(on[:, None], r_on, torch.full_like(r_on, 0.5))
+            blk_on = on & ((KM == 3) | (KM == 4))
+            st["blk_sum"] = st["blk_sum"] + blk_on * inn_k.sum(1); st["blk_n"] = st["blk_n"] + blk_on.float()
+            if (t + 1) % c["blk"] == 0:
+                bi = (t + 1) // c["blk"]
+                R_ = st["blk_sum"] / st["blk_n"].clamp(min=1)
+                lh = on & (KM == 3); ln = on & (KM == 4)
+                upd = torch.where(st["base_set"] > 0, torch.sign(R_ - st["base"]), torch.zeros_like(R_))
+                k_h = (st["kappa"] + c["eta_kh"] * st["eps_k"] * upd).clamp(-c["kmax"], c["kmax"])
+                k_n = (st["kappa"] + c["sig_kn"] * KN[:, bi]).clamp(-c["kmax"], c["kmax"])
+                st["kappa"] = torch.where(lh, k_h, torch.where(ln, k_n, st["kappa"]))
+                st["base"] = torch.where(lh, torch.where(st["base_set"] > 0, st["base"] + 0.2 * (R_ - st["base"]), R_), st["base"])
+                st["base_set"] = torch.where(lh, torch.ones_like(R_), st["base_set"])
+                st["eps_k"] = torch.where(lh, KR[:, bi], st["eps_k"])
+                st["blk_sum"] = torch.zeros_like(R_); st["blk_n"] = torch.zeros_like(R_)
+            sal = 1 + CYC * c["salience"] * torch.clamp(f.abs(), max=c["sal_max"])
+            TVt = r[:, :, None] * f_k[:, None, :]
+            buf["s"][:, t] = S2.int(); buf["c"][:, t] = cc.int(); buf["TV"][:, t] = TVt; buf["DB"][:, t] = db; buf["SAL"][:, t] = sal; buf["R"][:, t] = r
+            if ridge:
+                phi = net.feats(x, m2)
+                net.add(phi, db[:, None, :].expand(-1, 2, -1), torch.full_like(r, 0.5) if c["krr_flat_b"] else (torch.softmax(-((db[:, None, :] - pb) ** 2).sum(-1) / 0.2, 1) if c["krr_self_b"] else r), TVt, sal[:, None].expand(-1, 2))
+                if (t + 1) % c["solve_every"] == 0 or t == N - 1:
+                    net.solve()
+        n = t + 1
+        if not ridge:
+            for j in range(SPN):
+                u = G["UMB"][:, tl * SPN + j]
+                idx = (u * n).long().clamp(max=n - 1)
+                sb = buf["s"][ar[:, None], idx].long()
+                cb = buf["c"][ar[:, None], idx].long()[..., None].expand(-1, -1, 2)
+                xb = torch.cat([XE[wid[:, None, None], sb], XE[wid[:, None, None], sb.flip(-1)], XC[wid[:, None, None], cb],
+                                buf["DIS"][ar[:, None, None], idx[..., None].expand(-1, -1, 2)].float()], -1).reshape(P, BS * 2, D_IN)
+                tv = buf["TV"][ar[:, None], idx]; dbb = buf["DB"][ar[:, None], idx]; sw = buf["SAL"][ar[:, None], idx]
+                with torch.autocast("cuda", dtype=torch.bfloat16, enabled=bool(c["amp"])):
+                    pbb = net.belief(xb).reshape(P, BS, 2, KB); vv = net.value_vec(xb).reshape(P, BS, 2, KB)
+                pbb = pbb.float(); vv = vv.float()
+                if c["bel_r"]:
+                    rb = buf["R"][ar[:, None], idx]
+                    mix = (rb * ((dbb[:, :, None, :] - pbb) ** 2).sum(-1)).sum(-1).mean(1) / 0.2
+                else:
+                    mix = -torch.logsumexp(-((dbb[:, :, None, :] - pbb) ** 2).sum(-1) / 0.2, dim=2).mean(1)
+                gw = state["w_use"][:, None, None, :] if c["wgate"] else 1.0
+                lv = (sw[:, :, None, None] * gw * (vv - tv) ** 2).sum(-1).mean((1, 2))
+                loss = (0.1 * mix + lv).sum()
+                opt.zero_grad(); loss.backward()
+                if c["clip"] > 0:
+                    for prm in [q_ for q_ in net.trainable if q_.grad is not None]:
+                        gn = prm.grad.flatten(1).norm(dim=1).clamp(min=1e-12)
+                        prm.grad.mul_((c["clip"] / gn).clamp(max=1.0).view(-1, *([1] * (prm.grad.dim() - 1))))
+                opt.step()
+            if not torch.isfinite(loss):
+                state["nonfinite"] += 1
+        state["t"] = n
+        if c["ckpt_every"] and c["ckpt_path"] and n % c["ckpt_every"] == 0 and n < N:
+            save_state(state, c["ckpt_path"])
+    state["secs"] = state.get("secs", 0.0) + time.time() - t0
+    state["cfg"] = c; state["wid"] = wid; state["wkeys"] = wkeys
+    state["pcond"] = pc
+    return state
+
+
+def save_state(state, path):
+    net = state["net"]
+    d = {k: v for k, v in state.items() if k not in ("net", "opt", "cfg", "wid", "wkeys", "pcond")}
+    d["net_p"] = {k: v.detach() for k, v in net.p.items()} if hasattr(net, "p") else dict(Gb=net.Gb, Gv=net.Gv, R=net.R, W=net.W)
+    d["opt"] = state["opt"].state_dict() if state["opt"] is not None else None
+    torch.save(d, path)
+
+
+def load_state(path, pers, worlds, cfg):
+    c = {**DEFAULT, **cfg}
+    st = init_state(pers, worlds, c)
+    d = torch.load(path, map_location=DEV, weights_only=False)
+    net = st["net"]
+    if hasattr(net, "p"):
+        with torch.no_grad():
+            for k, v in d["net_p"].items():
+                net.p[k].copy_(v)
+        st["opt"].load_state_dict(d["opt"])
+    else:
+        net.Gb, net.Gv, net.R, net.W = d["net_p"]["Gb"], d["net_p"]["Gv"], d["net_p"]["R"], d["net_p"]["W"]
+    for k, v in d.items():
+        if k not in ("net_p", "opt"):
+            st[k] = v
+    return st
+
+
+def state_hash(state) -> str:
+    import hashlib
+    net = state["net"]
+    h = hashlib.sha256()
+    ts = [net.p[k] for k in sorted(net.p)] if hasattr(net, "p") else [net.W]
+    for t in ts + [state["kappa"], state["w_use"], state["buf"]["TV"]]:
+        h.update(t.detach().float().cpu().numpy().tobytes())
+    return h.hexdigest()[:16]

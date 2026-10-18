@@ -1,0 +1,16 @@
+Kernel version 1 successfully pushed.  Please check progress at https://www.kaggle.com/code/sakuri9616/frontalis-sched-250960
+ 
+status: complete
+[{"stream_name":"stdout","time":1355.009348317,"data":"COMMIT 9a37b92\n"}
+,{"stream_name":"stdout","time":1355.009432914,"data":"{\"train_secs\": 1158.130035161972, \"total_secs\": 1260.701934337616, \"nonfinite\": 0, \"hash\": \"aedd774bba59fdd9\", \"device\": \"Tesla T4\", \"torch\": \"2.11.0+cu128\"}\n"}
+,{"stream_name":"stdout","time":1355.009440945,"data":"\n"}
+,{"stream_name":"stdout","time":1355.009456266,"data":"\n"}
+,{"stream_name":"stdout","time":1355.670370582,"data":"RC 0\n"}
+,{"stream_name":"stderr","time":1358.706220494,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":1358.706254439,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":1359.203076075,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":1359.203102881,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":1360.34400708,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":1361.805233282,"data":"[NbConvertApp] Writing 278804 bytes to __results__.html\n"}
+]
+files: ['p32_setwg.json']

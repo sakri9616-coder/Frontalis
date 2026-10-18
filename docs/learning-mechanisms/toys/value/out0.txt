@@ -1,0 +1,38 @@
+=== (a) 1-D reductions: v <- (1-d) v + a_eff * delta ===
+case c=1 (feature in cue and outcome), innate i:
+  i=+0.5  v* from v0=0: +2.449   from v0=+3: +2.449   from v0=-3: +2.449
+  i=-0.5  v* from v0=0: -2.449   from v0=+3: -2.449   from v0=-3: -2.449
+  i=+0.1  v* from v0=0: +1.930   from v0=+3: +1.930   from v0=-3: +1.930
+  i=+0.0  v* from v0=0: +0.000   from v0=+3: +0.000   from v0=-3: -0.000
+case c=0 (outcome-only feature), innate i  (bistable: unstable point near -i):
+  i=+0.5  v0=-0.7->-37.5  v0=-0.6->-37.5  v0=-0.5->+37.5  v0=-0.3->+37.5  v0=+0.0->+37.5  v0=+0.3->+37.5  v0=+0.7->+37.5
+  i=-0.5  v0=-0.7->-37.5  v0=-0.6->-37.5  v0=-0.5->-37.5  v0=-0.3->-37.5  v0=+0.0->-37.5  v0=+0.3->-37.5  v0=+0.7->+37.5
+  i=+0.0  v0=-0.7->-37.5  v0=-0.6->-37.5  v0=-0.5->-37.5  v0=-0.3->-37.5  v0=+0.0->+0.0  v0=+0.3->+37.5  v0=+0.7->+37.5
+outcome-only, o sign flips (o=-1): dv independent of sign(o)?
+  i=+0.5 o=-1 v0=-0.7->-37.5  v0=-0.3->+37.5  v0=+0.0->+37.5  v0=+0.3->+37.5  v0=+0.7->+37.5
+no decay, outcome-only, i=0.5, v0=0: v after t steps: [np.float64(0.44), np.float64(7.01), np.float64(74.51), np.float64(749.51)]
+
+=== (b) prototype, long histories (repeat each history block n times) ===
+  rescued-by-collaboration   reps=  1 (events=  22) max|v|=  0.99  connection +0.99, others +0.90, autonomy -0.67
+  rescued-by-collaboration   reps=  5 (events= 110) max|v|=  1.52  autonomy -1.52, connection +1.39, others +1.37
+  rescued-by-collaboration   reps= 25 (events= 550) max|v|=  1.69  autonomy -1.69, connection +1.50, others +1.49
+  rescued-by-collaboration   reps=100 (events=2200) max|v|=  1.69  autonomy -1.69, connection +1.51, others +1.50
+  credit-taken               reps=  1 (events=  20) max|v|=  1.21  autonomy +1.21, others -0.70, music +0.61
+  credit-taken               reps=  5 (events= 100) max|v|=  1.81  autonomy +1.81, others -1.58, connection -1.23
+  credit-taken               reps= 25 (events= 500) max|v|=  1.95  autonomy +1.95, others -1.76, connection -1.32
+  credit-taken               reps=100 (events=2000) max|v|=  1.95  autonomy +1.95, others -1.76, connection -1.33
+  explorer                   reps=  1 (events=  24) max|v|=  1.72  autonomy +1.72, music -1.36, novelty +1.03
+  explorer                   reps=  5 (events= 120) max|v|=  2.35  autonomy +2.35, music -2.02, novelty +1.47
+  explorer                   reps= 25 (events= 600) max|v|=  2.47  autonomy +2.47, music -2.20, novelty +1.58
+  explorer                   reps=100 (events=2400) max|v|=  2.47  autonomy +2.47, music -2.21, novelty +1.58
+
+=== (c) sign lock-in and content-permutation control (prototype) ===
+  rescued-by-collaboration   ||v_true||=2.32  mean ||v_perm||=1.95  mean||v_true - v_perm||=2.25
+  credit-taken               ||v_true||=2.76  mean ||v_perm||=6.17  mean||v_true - v_perm||=5.29
+  explorer                   ||v_true||=3.46  mean ||v_perm||=5.69  mean||v_true - v_perm||=3.85
+
+Sign lock-in test (outcome-only feature "authorship", other features fixed): first n_early events with extra +/-0.6 of achievement-like push, then late evidence
+  early achievement push +1, late +1:  authorship after early +0.31 -> after late +1.11   (achievement v +1.11)
+  early achievement push +1, late -1:  authorship after early +0.31 -> after late -1.17   (achievement v +1.59)
+  early achievement push -1, late +1:  authorship after early -0.31 -> after late +1.17   (achievement v +1.59)
+  early achievement push -1, late -1:  authorship after early -0.31 -> after late -1.11   (achievement v +1.11)

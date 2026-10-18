@@ -1,0 +1,79 @@
+{
+ "sign_violations_per_type": {
+  "connection": 0,
+  "rejection": 0,
+  "support": 0,
+  "betrayal": 0,
+  "harm": 0,
+  "praise": 0,
+  "criticism": 0,
+  "credit_taken": 0,
+  "credit_given": 0,
+  "credit_shared": 0,
+  "taught": 0,
+  "achievement": 0,
+  "failure": 0,
+  "autonomy_gain": 0,
+  "autonomy_loss": 0,
+  "novelty": 0,
+  "monotony": 0,
+  "safety_threat": 0,
+  "comfort": 0
+ },
+ "types_all_nonpositive": [
+  "rejection",
+  "betrayal",
+  "harm",
+  "criticism",
+  "credit_taken",
+  "failure",
+  "autonomy_loss",
+  "monotony",
+  "safety_threat"
+ ],
+ "types_all_nonnegative": [
+  "connection",
+  "support",
+  "credit_given",
+  "credit_shared",
+  "taught",
+  "achievement",
+  "autonomy_gain",
+  "novelty",
+  "comfort"
+ ],
+ "types_zero_row": [
+  "praise"
+ ],
+ "identical_rows": [
+  [
+   "credit_taken",
+   "autonomy_loss"
+  ],
+  [
+   "taught",
+   "novelty"
+  ]
+ ],
+ "V_MF": {
+  "A|studio": -0.15005122697561796,
+  "A|project_meeting": -0.15425255661866313,
+  "B|studio": -0.1231434596520943,
+  "B|project_meeting": -0.12734478929513948
+ },
+ "V_MF_person_x_context_interaction": 0.0,
+ "C_unseen_cue": 0.0,
+ "C_seen_cues": {
+  "cls:collaborator": -0.19130040751682822,
+  "ind:A": -0.04745617173074728,
+  "ind:B": -0.0695918974060005,
+  "type:support": -0.06932566814160962,
+  "type:betrayal": -0.04938797626696369
+ },
+ "n_mlp_heads_in_default_npn": 0,
+ "default_mixture_heads": [
+  "linear",
+  "knn1",
+  "none"
+ ]
+}

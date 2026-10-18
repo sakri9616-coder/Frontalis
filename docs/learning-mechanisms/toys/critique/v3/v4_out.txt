@@ -1,0 +1,9 @@
+| setting | friend probe | music probe (MF) | music probe + 0.5*EC | situation F+music: MF / MB / omega / U_val | situation F alone: U_val |
+|---|---|---|---|---|---|
+| music = class feature; friend established; friend alone 30% | 0.500 | 0.300 | 0.300 | 0.800 / 0.800 / 0.20 / 0.800 | 0.500 |
+| music = class feature; friend established; always together | 0.510 | 0.290 | 0.290 | 0.800 / 0.800 / 0.21 / 0.800 | 0.500 |
+| music = class feature; both new; always together | 0.706 | 0.094 | 0.094 | 0.800 / 0.800 / 0.21 / 0.800 | 0.706 |
+| music = individual song; both new; always together | 0.436 | 0.364 | 0.364 | 0.800 / 0.800 / 0.17 / 0.800 | 0.436 |
+| music = individual song; friend established; always together | 0.501 | 0.299 | 0.299 | 0.800 / 0.800 / 0.17 / 0.800 | 0.500 |
+| class music; friend established; alone 30%; noise sd .06; EC on | 0.499 | 0.301 | 0.426 | 0.800 / 0.798 / 0.31 / 0.798 | 0.500 |
+(true marginal values: friend 0.5, music 0.3; situation F+music 0.8, F alone 0.5)

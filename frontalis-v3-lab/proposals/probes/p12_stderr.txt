@@ -1,0 +1,6 @@
+kappa5_on fp32 50s nonfinite 0
+kappa5_on bf16 57s nonfinite 0
+kappa5_on fp32p 48s nonfinite 0
+off fp32 46s nonfinite 0
+off bf16 35s nonfinite 0
+off fp32p 31s nonfinite 0

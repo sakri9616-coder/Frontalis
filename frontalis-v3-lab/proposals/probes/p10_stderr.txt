@@ -1,0 +1,12 @@
+MLP64 {'P': 360, 'sec_per_step': 0.005671829999967789, 'kernel_pers_steps_per_sec': 63471.57795668144, 'peak_mib': 211.60693359375}
+MLP64 {'P': 720, 'sec_per_step': 0.011033171667077114, 'kernel_pers_steps_per_sec': 65257.75377432707, 'peak_mib': 414.08349609375}
+MLP64 {'P': 1440, 'sec_per_step': 0.021811808333344136, 'kernel_pers_steps_per_sec': 66019.2854252549, 'peak_mib': 796.23681640625}
+SET128 {'P': 360, 'sec_per_step': 0.013352546666768224, 'kernel_pers_steps_per_sec': 26961.148984108542, 'peak_mib': 645.79736328125}
+SET128 {'P': 720, 'sec_per_step': 0.026344888333793885, 'kernel_pers_steps_per_sec': 27329.779913184168, 'peak_mib': 1015.88037109375}
+SET128 {'P': 1440, 'sec_per_step': 0.052460853333468546, 'kernel_pers_steps_per_sec': 27449.03882608636, 'peak_mib': 1998.99462890625}
+REL64 {'P': 360, 'sec_per_step': 0.2591504249998252, 'kernel_pers_steps_per_sec': 1389.154580781578, 'peak_mib': 2058.0224609375}
+REL64 {'P': 720, 'sec_per_step': 0.5172366600003443, 'kernel_pers_steps_per_sec': 1392.0127007229548, 'peak_mib': 4096.2119140625}
+REL64 {'P': 1440, 'sec_per_step': 1.0363903466665458, 'kernel_pers_steps_per_sec': 1389.4378740902282, 'peak_mib': 8177.4228515625}
+REL64m {'P': 360, 'sec_per_step': 0.1263073616665982, 'kernel_pers_steps_per_sec': 2850.190165085219, 'peak_mib': 3029.84423828125}
+REL64m {'P': 720, 'sec_per_step': 0.25253076833323573, 'kernel_pers_steps_per_sec': 2851.1377237402576, 'peak_mib': 3154.40283203125}
+REL64m {'P': 1440, 'sec_per_step': 0.5059840249998767, 'kernel_pers_steps_per_sec': 2845.939651949191, 'peak_mib': 6300.52392578125}

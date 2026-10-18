@@ -31,7 +31,7 @@ English: [README.en.md](README.en.md)
 
 ### 研究の理念（要点）
 
-正本は [`FRONTALIS_PHILOSOPHY.md`](https://github.com/sakri9616-coder/Frontalis/blob/4fecbad/FRONTALIS_PHILOSOPHY.md)（固定コミット `4fecbad`）です。この研究が守る原則を、短く挙げます。
+正本は [`FRONTALIS_PHILOSOPHY.md`](FRONTALIS_PHILOSOPHY.md) です（旧ブランチ `claude/project-thread-1vq8ai` の固定コミット `4fecbad` と同じ内容）。この研究が守る原則を、短く挙げます。
 
 - **形成と表現は別物です。** LLM が人格らしく語れても、それは NPN が人格を形成した証拠になりません。「同じ LLM、同じ文面で、NPN の状態だけを入れ替えたとき、判断が変わるか」で切り分けます。
 - **個性は、故障ではありません。** 固執や、嫌悪の持続、反論への抵抗は、人格の一部でありえます。故障と数えるのは、数値の発散、学習の飽和のような、計算としての破綻だけです。
@@ -113,15 +113,19 @@ English: [README.en.md](README.en.md)
 - **LLM の利用**: 設計、批評、実装、文献の収集に、Claude の各モデルと、OpenCode 経由の無料モデル（DeepSeek など）を使っています。有料の API は使っていません。
 - **作業管理**: git worktree による作業の分離。
 
-## 7. ブランチと文書の案内
+## 7. フォルダの構成と文書の案内
+
+`main` には、研究そのものだけを置いています。
 
 | 場所 | 内容 |
 | --- | --- |
-| `main` | 旧 Phase 3-D/3-E/3-F のコードとアーカイブ（**旧実装**。現行の実装は下の別ブランチ） |
-| [`claude/project-thread-1vq8ai`](https://github.com/sakri9616-coder/Frontalis/blob/4fecbad/FRONTALIS_PHILOSOPHY.md) | 研究思想 `FRONTALIS_PHILOSOPHY.md` |
-| [`claude/charming-galileo-wawr7u`](https://github.com/sakri9616-coder/Frontalis/tree/claude/charming-galileo-wawr7u/frontalis-v3-lab) | v3.0〜v3.3 の NPN の最小実装（PR #2） |
-| [`claude/v3.4-prereg`](https://github.com/sakri9616-coder/Frontalis/tree/claude/v3.4-prereg/frontalis-v3-lab) | v3.4 Y 系の事前登録、実装、評価（比較対象） |
-| [`claude/value-representation-design`](https://github.com/sakri9616-coder/Frontalis/tree/claude/value-representation-design/frontalis-v3-lab/proposals) | **本命の研究**。設計（`DESIGN.md`）、事前登録（`PREREG-DRAFT.md`、`PREREG-v5-DRAFT.md`）、凍結の記録（`FREEZE.md`、`FREEZE-v5.md`）、独立批評、開発の記録（`probes/LOG-dev.md`）、GPU の学習器 |
+| [`FRONTALIS_PHILOSOPHY.md`](FRONTALIS_PHILOSOPHY.md) | 研究思想（正本） |
+| [`docs/`](docs/) | 設計のメモ。監査（`01-audit.md`）、再設計（`02-redesign.md`）、実験計画（`03-experiment-plan.md`）、学習機構の候補（`04*.md`、`learning-mechanisms/`）、監査用のスクリプトと試作（`audit/`、`redesign/`） |
+| [`frontalis-v3-lab/`](frontalis-v3-lab/) | **本命の研究。** v3.0〜v3.4 の NPN の実装と仕様、比較対象の Y 系の事前登録と評価（`tests/`）、本命の価値表現の獲得の研究（`proposals/`: 設計 `DESIGN.md`、事前登録 `PREREG-DRAFT.md`・`PREREG-v5-DRAFT.md`、凍結の記録 `FREEZE.md`・`FREEZE-v5.md`、独立批評、開発の記録 `probes/LOG-dev.md`、GPU の学習器） |
+
+- 旧 Phase 3-D/3-E/3-F の実装とアーカイブは、`main` から外しました。**タグ [`legacy-phase3`](https://github.com/sakri9616-coder/Frontalis/tree/legacy-phase3)** から、いつでも見られます（旧実装。現行の研究の前提にしていません）。
+- 作業の経過は、ブランチ `claude/charming-galileo-wawr7u`（v3.3、PR #2）、`claude/v3.4-prereg`、`claude/value-representation-design` に残っています。内容は、`main` に取り込み済みです。
+- `frontalis-v3-lab/` のフォルダ名と中の構成は、凍結の記録とクラウドで走らせる実行用スクリプトが指しているため、変えていません。実験の記録の中の古い手順書（`queue*.sh` など）には、作業した PC の環境の場所が残っています。
 
 ## 8. 再現
 
@@ -132,7 +136,7 @@ cd frontalis-v3-lab
 python -B -m unittest discover -s tests -p "test_ra_mechanisms.py"
 ```
 
-GPU を使う本命の実験は、`claude/value-representation-design` ブランチの `frontalis-v3-lab/proposals/probes/` にあります。評価用の乱数は、1 回しか使えません。手順は、`FREEZE-v5.md` と `probes/LOG-dev.md` を参照してください。
+GPU を使う本命の実験は、`frontalis-v3-lab/proposals/probes/` にあります。評価用の乱数は、1 回しか使えません。手順は、`FREEZE-v5.md` と `probes/LOG-dev.md` を参照してください。
 
 ## 9. 限界と注意
 

@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "frozen_on": "2026-10-16",
+  "stage": "1 (before running the diagnostic seeds 3460-3479)",
+  "files": {
+    "frontalis-v3-lab/tests/ra_protocol.py": "d21ec5b0f2f26b68b292793cf4cdf195eed040c8ff4d443ef49de9248a96f30c",
+    "frontalis-v3-lab/data/make_histories_v34.py": "33bb0934640d2d46c64adf5edeacc0bab92a95ed3af919559d965fd76146cd71"
+  },
+  "hash_note": "SHA-256 of the file bytes with CRLF normalised to LF (git autocrlf=true on the authoring machine).",
+  "tuned_on": "development seeds 3490-3499 only (smoke runs; no diagnostic, mutation, evaluation or reserved seed was run before this file was written)",
+  "informational_not_frozen": {
+    "frontalis-v3-lab/tests/diagnostics_v34_rc.py": "902c981dca9b58258635af10bc802ecb38c34628bdce4f182f077456f87f9d51"
+  },
+  "spec_sha256_at_freeze": "9b93bea98ce37cf2122b1f79eccbb4f72b6cbded2861a52badfe9be67dc44b90",
+  "note": "Version 2 is written at the end of Stage 4 (before the evaluation seeds). Changes after this file are recorded in CHANGELOG-v3.4.md."
+}

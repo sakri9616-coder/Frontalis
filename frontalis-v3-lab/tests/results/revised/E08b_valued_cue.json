@@ -1,0 +1,20 @@
+{
+ "latent": {
+  "value_before_mean": -0.1455727207230249,
+  "max_abs_change_protocol": 0.059916485926108015,
+  "max_abs_change_time_matched_unrelated_control (reported, not judged)": 0.10221673216629026,
+  "max_abs_protocol_minus_control (reported)": 0.04266267981116067
+ },
+ "single": {
+  "value_before_mean": -0.21272644200983531,
+  "max_abs_change_protocol": 0.0,
+  "max_abs_change_time_matched_unrelated_control (reported, not judged)": 0.0,
+  "max_abs_protocol_minus_control (reported)": 0.0
+ },
+ "revised_report_only": {
+  "value_before_mean": -0.1455727207230249,
+  "max_abs_change_protocol": 0.059916485926108015,
+  "max_abs_change_time_matched_unrelated_control (reported, not judged)": 0.10221673216629026,
+  "max_abs_protocol_minus_control (reported)": 0.04266267981116067
+ }
+}

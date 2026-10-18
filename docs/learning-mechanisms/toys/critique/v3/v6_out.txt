@@ -1,0 +1,8 @@
+true effect of x = -0.5; honest says -1; flatterers say +1. 100 runs, T=400, contact by relationship value.
+| scenario | w_soc mean | runs w>0 | runs w undefined (sum g = 0) | contact share of source 0 | w at t=20 undefined |
+|---|---|---|---|---|---|
+| 1 honest + 1 flatterer (c3 setting) | -0.92 | 0/100 | 0/100 | 0.19 | 4/100 |
+| 1 honest + 4 independent flatterers (acc .5) | -0.58 | 2/100 | 0/100 | 0.07 | 4/100 |
+| 1 honest(.8) + 4 coordinated flatterers (acc .6, same statement) | +0.17 | 78/100 | 0/100 | 0.07 | 1/100 |
+| only flatterers (acc .55) | +1.00 | 100/100 | 0/100 | 0.50 | 16/100 |
+| honest source only (acc .8) + anti-informative liar (acc .3, says +1) | -1.00 | 0/100 | 0/100 | 0.19 | 5/100 |

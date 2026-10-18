@@ -1,0 +1,9 @@
+{
+ "worst_pi_min": 0.03899790220444685,
+ "worst_pi_max": 0.907941391650719,
+ "final_pi_min": 0.03899795042991613,
+ "final_pi_max": 0.9079413822285124,
+ "max_change_last_sweep": 1.595434895307335e-11,
+ "n_histories": 24,
+ "sweeps": 400
+}

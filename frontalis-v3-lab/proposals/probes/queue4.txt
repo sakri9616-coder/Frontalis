@@ -1,0 +1,10 @@
+p13_ckpt_chunk.py
+p14_kappa_check.py
+p15_prod.py cells set IH C-off
+p15_prod.py cells set IH C-SLp
+p15_prod.py cells krr IH C-off
+p15_prod.py cells set I0 C-off
+p15_prod.py cells set IH C-S0
+p15_prod.py cells krr IH C-SLp
+p25_min_dev.py calib_slp
+p25_min_dev.py nn0

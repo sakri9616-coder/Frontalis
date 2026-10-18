@@ -1,0 +1,190 @@
+{
+ "set|IH|C-off|F1|prod|PL-global": {
+  "J2-a": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 9,
+   "median": 0.02862998049635651,
+   "floor": 0.14782288063049231
+  },
+  "J2-b": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 7,
+   "median": 0.029341353651343993,
+   "floor": 0.16481000379271152
+  },
+  "J4-a": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 6,
+   "median": 0.027425974261220065,
+   "floor": 0.05
+  },
+  "J4-b": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 3,
+   "median": -0.023418454168618985,
+   "floor": 0.05
+  },
+  "repro": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 8,
+   "median": 0.020980808800877805,
+   "floor": 0.05
+  }
+ },
+ "set|IH|C-off|F1|prod|PL-noise": {
+  "J1-a": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 7,
+   "median": 0.03573507070541382,
+   "floor": 0.14479319006204605
+  },
+  "J2-a": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 9,
+   "median": 0.028501432898491608,
+   "floor": 0.15588174782969386
+  },
+  "J2-b": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 7,
+   "median": 0.02590792621809085,
+   "floor": 0.17542768136543074
+  },
+  "J4-a": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 5,
+   "median": 0.00025499511860216373,
+   "floor": 0.05
+  },
+  "J4-b": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 3,
+   "median": -0.02341851769597858,
+   "floor": 0.05
+  },
+  "J3": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 0,
+   "median": 0.0,
+   "floor": 0.0
+  },
+  "repro": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 8,
+   "median": 0.020980808974990516,
+   "floor": 0.05
+  }
+ },
+ "set|IH|C-off|F1|prod|PL-rand": {
+  "J2-a": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.16060243100331612,
+   "floor": 0.15294413136039214
+  },
+  "J2-b": {
+   "passed": false,
+   "expected": true,
+   "ok": false,
+   "n_pos": 10,
+   "median": 0.14729703437503194,
+   "floor": 0.1647828886591104
+  },
+  "J4-a": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.23050848871750085,
+   "floor": 0.05
+  },
+  "J4-b": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.17826588220482886,
+   "floor": 0.05
+  },
+  "repro": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.12400522181295809,
+   "floor": 0.05
+  }
+ },
+ "set|IH|C-off|F1|prod|PL-state": {
+  "J3": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 0,
+   "median": 0.0,
+   "floor": 0.0
+  }
+ },
+ "set|IH|C-off|F1|prod|PL-state0": {
+  "J3": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 0,
+   "median": 0.0,
+   "floor": 0.0
+  }
+ },
+ "set|IH|C-off|F1|prod|PL-struct": {
+  "J2-a": {
+   "passed": false,
+   "expected": true,
+   "ok": false,
+   "n_pos": 10,
+   "median": 0.1459872834756355,
+   "floor": 0.15131623895057572
+  },
+  "J2-b": {
+   "passed": false,
+   "expected": true,
+   "ok": false,
+   "n_pos": 10,
+   "median": 0.1455915682950144,
+   "floor": 0.16816460972470254
+  },
+  "repro": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.13292878615200593,
+   "floor": 0.05
+  }
+ }
+}

@@ -1,0 +1,9 @@
+settled system (Sigma, q at their stationary values for noise-only data), then one event whose innovation is e. radius of the one-step Jacobian
+| mode | eta_q | e=0.1 | e=0.2 | e=0.4 | e=0.8 |
+|---|---|---|---|---|---|
+| literal | 0.01 | 0.915 | 0.822 | 0.977 | 1.341 |   (settled Sigma=0.0033, q=0.00150)
+| literal | 0.05 | 0.756 | 0.917 | 1.295 | 2.168 |   (settled Sigma=0.0041, q=0.00202)
+| literal | 0.2 | 0.826 | 1.221 | 2.108 | 4.007 |   (settled Sigma=0.0041, q=0.00197)
+| ema | 0.01 | 0.929 | 1.039 | 1.270 | 1.780 |   (settled Sigma=0.0014, q=0.00036)
+| ema | 0.05 | 0.893 | 1.109 | 1.593 | 2.694 |   (settled Sigma=0.0024, q=0.00081)
+| ema | 0.2 | 1.152 | 1.728 | 3.004 | 5.728 |   (settled Sigma=0.0017, q=0.00000)

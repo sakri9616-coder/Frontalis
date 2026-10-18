@@ -1,0 +1,7 @@
+v2 core (no c, no EC): events=69  max radius full=1.0000  excluding c-block=1.000001  W-block=1.000000  S-block=1.000001; events with radius(no c)>1.0001: 0/69
+v2 + c: events=69  max radius full=1.0300  excluding c-block=1.000001  W-block=1.000000  S-block=1.000001; events with radius(no c)>1.0001: 0/69
+v2 + c + EC: events=69  max radius full=1.0300  excluding c-block=1.000001  W-block=1.000000  S-block=1.000001; events with radius(no c)>1.0001: 0/69
+learning phase (credit-taken from scratch), radius excl. c: [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]  full: [1.03  1.029 1.029 1.028 1.028 1.028 1.028 1.029 1.03  1.03  1.03  1.03 ]
+open-loop 1e-3 perturbation, 128 shared events, v2 core (no c, no EC): ||dstate_final||/||dstate_0|| = 0.701 (max 0.785); probe ratio 0.002
+open-loop 1e-3 perturbation, 128 shared events, v2 + c: ||dstate_final||/||dstate_0|| = 2.333 (max 3.328); probe ratio 2.220
+open-loop 1e-3 perturbation, 128 shared events, v2 + c + EC: ||dstate_final||/||dstate_0|| = 2.333 (max 3.328); probe ratio 2.220

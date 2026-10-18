@@ -1,5 +1,0 @@
-{
-  "tests/test_transport.py": "4cb51b886e39267941e5961139c4308fe43cebe88a723b68df599a5bdc67b348",
-  "reference/transport-adapter.md": "07de043f61ae6b6f688c3f8a6f94d64448b4c2e5e650758cbe689ec1b65893b9",
-  "npnf/transport.py": "64ab8f52c21793a47b00721126814d8c75b959a8f2f38f590759d7b08ff0041b"
-}

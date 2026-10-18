@@ -1,0 +1,24 @@
+{
+ "m_abs": 0.02,
+ "source": "p32_setwg_modal.json",
+ "source_machine": {
+  "device": "Tesla T4",
+  "torch": "2.14.1+cu130",
+  "commit": "818155d"
+ },
+ "PL-state": {
+  "n_pos": 10,
+  "n": 10,
+  "median": 0.2296377308666706,
+  "floor": 0.02,
+  "passed": true
+ },
+ "PL-state0": {
+  "n_pos": 4,
+  "n": 10,
+  "median": -0.0002712010173127055,
+  "floor": 0.02,
+  "passed": false
+ },
+ "J3v5_usable": true
+}

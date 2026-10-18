@@ -1,0 +1,11 @@
+true need effect of x = -0.5; honest says -1 (factual accuracy .8, 50% praise/50% criticism), flatterer says +1 (accuracy .5, always praises). 100 runs.
+| selection | update | weight | tau_H | tau_F | share flatterer | w_soc mean | runs with w_soc>0 |
+|---|---|---|---|---|---|---|---|
+| tau | spec | tau | 0.80 | 0.50 | 0.19 | -0.75 | 0/100 |
+| tau | spec | excess | 0.80 | 0.50 | 0.19 | -0.96 | 0/100 |
+| tau | norm | tau | 0.80 | 0.50 | 0.19 | -0.24 | 0/100 |
+| tau | norm | excess | 0.80 | 0.50 | 0.19 | -0.88 | 0/100 |
+| rel | spec | tau | 0.79 | 0.50 | 0.82 | +0.46 | 98/100 |
+| rel | spec | excess | 0.79 | 0.50 | 0.82 | -0.73 | 4/100 |
+| rel | norm | tau | 0.79 | 0.50 | 0.82 | -0.23 | 0/100 |
+| rel | norm | excess | 0.79 | 0.50 | 0.82 | -0.93 | 0/100 |

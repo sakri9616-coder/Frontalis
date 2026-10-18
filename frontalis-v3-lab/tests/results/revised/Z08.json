@@ -1,0 +1,155 @@
+{
+ "orig": {
+  "max_errors": {
+   "conflict": 0.0,
+   "dQ": 0.0,
+   "p_choose": 0.0,
+   "Q_vs_appraise": 0.0,
+   "Q_split": 0.0,
+   "dJ_chosen_side": 0.0,
+   "J_before": 0.0,
+   "J_after": 0.0,
+   "explain_Q_vs_appraise": 0.0,
+   "explain_Q_split": 0.0,
+   "explain_delta_split": 1.1102230246251565e-16,
+   "explain_sources_sum": 2.0816681711721685e-17
+  },
+  "explain_is_pure_all": true,
+  "restore_same_state_all": true,
+  "restore_same_explain_all": true,
+  "restore_same_future_all": true,
+  "choices_per_seed": 20,
+  "seeds_where_J_decides_the_preference (Q and grounded-only disagree)": 5,
+  "example_seed0_explain_preference": {
+   "mode": "orig",
+   "options": [
+    {
+     "Q": -0.0010126873859243254,
+     "Q_grounded": -0.0047828414395614804,
+     "Q_val": -0.0047828414395614804,
+     "C_Q": 0.0,
+     "J_Q": 0.003770154053637155,
+     "justification": {
+      "concept:z8_d_a": {
+       "J": 0.003770154053637155,
+       "sources": {
+        "bound": -4.801210859342901e-05,
+        "decay": -0.00011315382110964074,
+        "spread": 0.003931319983340224
+       }
+      }
+     }
+    },
+    {
+     "Q": -0.008602704595547274,
+     "Q_grounded": -0.00483255054191012,
+     "Q_val": -0.00483255054191012,
+     "C_Q": 0.0,
+     "J_Q": -0.003770154053637155,
+     "justification": {
+      "concept:z8_d_b": {
+       "J": -0.003770154053637155,
+       "sources": {
+        "bound": 4.801210859342901e-05,
+        "decay": 0.00011315382110964074,
+        "spread": -0.003931319983340224
+       }
+      }
+     }
+    }
+   ],
+   "delta": {
+    "Q": 0.0075900172096229485,
+    "grounded": 4.9709102348639324e-05,
+    "justification": 0.00754030810727431
+   },
+   "p_choose": [
+    0.5075894342654172,
+    0.49241056573458286
+   ],
+   "preferred": {
+    "by_Q": 0,
+    "by_grounded": 0,
+    "by_justification": 0
+   },
+   "justification_decides": false
+  }
+ },
+ "persist": {
+  "max_errors": {
+   "conflict": 0.0,
+   "dQ": 0.0,
+   "p_choose": 0.0,
+   "Q_vs_appraise": 0.0,
+   "Q_split": 0.0,
+   "dJ_chosen_side": 0.0,
+   "J_before": 0.0,
+   "J_after": 0.0,
+   "explain_Q_vs_appraise": 0.0,
+   "explain_Q_split": 0.0,
+   "explain_delta_split": 1.1102230246251565e-16,
+   "explain_sources_sum": 1.3877787807814457e-17
+  },
+  "explain_is_pure_all": true,
+  "restore_same_state_all": true,
+  "restore_same_explain_all": true,
+  "restore_same_future_all": true,
+  "choices_per_seed": 20,
+  "seeds_where_J_decides_the_preference (Q and grounded-only disagree)": 4,
+  "example_seed0_explain_preference": {
+   "mode": "persist",
+   "options": [
+    {
+     "Q": 0.03380036221810502,
+     "Q_grounded": -0.0047828414395614804,
+     "Q_val": -0.0047828414395614804,
+     "C_Q": 0.0,
+     "J_Q": 0.0385832036576665,
+     "justification": {
+      "concept:z8_d_a": {
+       "J": 0.0385832036576665,
+       "sources": {
+        "counter": -0.002679743756194189,
+        "reaffirm": 0.05921949174809285,
+        "spread": -0.01795654433423216
+       }
+      }
+     }
+    },
+    {
+     "Q": 0.06648598753342588,
+     "Q_grounded": -0.00483255054191012,
+     "Q_val": -0.00483255054191012,
+     "C_Q": 0.0,
+     "J_Q": 0.071318538075336,
+     "justification": {
+      "concept:z8_d_b": {
+       "J": 0.071318538075336,
+       "sources": {
+        "counter": -0.005736785683123831,
+        "overwhelm": -1.1224458680412282e-05,
+        "reaffirm": 0.059110003882908095,
+        "spread": 0.01795654433423216
+       }
+      }
+     }
+    }
+   ],
+   "delta": {
+    "Q": -0.03268562531532086,
+    "grounded": 4.9709102348639324e-05,
+    "justification": -0.0327353344176695
+   },
+   "p_choose": [
+    0.4673608548231956,
+    0.5326391451768044
+   ],
+   "preferred": {
+    "by_Q": 1,
+    "by_grounded": 0,
+    "by_justification": 1
+   },
+   "justification_decides": true
+  }
+ }
+}

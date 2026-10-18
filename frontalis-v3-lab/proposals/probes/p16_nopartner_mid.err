@@ -1,0 +1,17 @@
+nopartner_mid 2000 {'F1': 0.7273729145526886, 'F6m': 0.8322404623031616} {'F1': 0.8336621224880219, 'F6m': 0.9305318593978882}
+nopartner_mid 4000 {'F1': 0.7888465523719788, 'F6m': 0.8634619116783142} {'F1': 0.9121244847774506, 'F6m': 0.9625440835952759}
+Traceback (most recent call last):
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\p16_nn_learnability.py", line 46, in <module>
+    d = json.loads(out.read_text(encoding="utf-8")) if out.exists() else {}
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\p16_nn_learnability.py", line 33, in main
+    worlds = {(s, f): sim4.make_world(s, f, n_tr) for s in SEEDS for f in fams}
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\sim4.py", line 558, in run
+    pbb = net.belief(xb).reshape(P, BS, 2, KB); vv = net.value_vec(xb).reshape(P, BS, 2, KB)
+   ^^^^^^^^^^^^^^^^^^^^
+RuntimeError: CUDA error: an illegal memory access was encountered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

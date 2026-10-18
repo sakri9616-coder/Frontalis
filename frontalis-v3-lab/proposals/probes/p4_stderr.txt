@@ -1,0 +1,10 @@
+S_on train 56s total 83s nonfinite 0
+S_off train 49s total 67s nonfinite 0
+S_wd3_on train 53s total 71s nonfinite 0
+S_wd3_off train 51s total 70s nonfinite 0
+S_wd2_on train 55s total 73s nonfinite 0
+S_wd2_off train 50s total 69s nonfinite 0
+S_lr_on train 58s total 78s nonfinite 0
+S_lr_off train 49s total 75s nonfinite 0
+S_cum_aff_on train 59s total 78s nonfinite 0
+S_wd2_cum_aff_on train 60s total 80s nonfinite 0

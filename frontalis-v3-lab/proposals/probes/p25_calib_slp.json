@@ -1,0 +1,260 @@
+{
+ "PL-struct": {
+  "J2-a": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.2082634429899482,
+   "floor": 0.20624715206108335
+  },
+  "J2-b": {
+   "passed": false,
+   "expected": true,
+   "ok": false,
+   "n_pos": 9,
+   "median": 0.1701749643276086,
+   "floor": 0.24344989937346023
+  },
+  "repro": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.23816419649679116,
+   "floor": 0.05
+  }
+ },
+ "PL-rand": {
+  "J2-a": {
+   "passed": false,
+   "expected": true,
+   "ok": false,
+   "n_pos": 10,
+   "median": 0.17436915779090284,
+   "floor": 0.2069789839010902
+  },
+  "J2-b": {
+   "passed": false,
+   "expected": true,
+   "ok": false,
+   "n_pos": 9,
+   "median": 0.1521717285170981,
+   "floor": 0.24660525038770204
+  },
+  "J4-a": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.1899126052576613,
+   "floor": 0.05
+  },
+  "J4-b": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 8,
+   "median": 0.17985655875274553,
+   "floor": 0.05
+  },
+  "repro": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.19438434510542713,
+   "floor": 0.05
+  }
+ },
+ "PL-global": {
+  "J2-a": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 3,
+   "median": -0.011448335386910813,
+   "floor": 0.2084671585135074
+  },
+  "J2-b": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 5,
+   "median": 0.004605543042941862,
+   "floor": 0.24424797586253855
+  },
+  "J4-a": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 5,
+   "median": 0.015008749726792225,
+   "floor": 0.05
+  },
+  "J4-b": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 5,
+   "median": 0.0387412930739659,
+   "floor": 0.05
+  },
+  "repro": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 7,
+   "median": 0.028723000620649693,
+   "floor": 0.05
+  }
+ },
+ "PL-noise": {
+  "J1-a": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 4,
+   "median": -0.014663755893707275,
+   "floor": 0.21546683460474014
+  },
+  "J2-a": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 3,
+   "median": -0.012128380906352543,
+   "floor": 0.22135269021453974
+  },
+  "J2-b": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 5,
+   "median": 0.0047558673258460415,
+   "floor": 0.2697464401099871
+  },
+  "J4-a": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 5,
+   "median": 0.009990013969592204,
+   "floor": 0.05
+  },
+  "J4-b": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 5,
+   "median": 0.026494953896913476,
+   "floor": 0.05
+  },
+  "J3": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 4,
+   "median": -0.012248646467924118,
+   "floor": 0.045736368745565414
+  },
+  "repro": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 7,
+   "median": 0.028722997576859234,
+   "floor": 0.05
+  }
+ },
+ "PL-state": {
+  "J3": {
+   "passed": false,
+   "expected": true,
+   "ok": false,
+   "n_pos": 7,
+   "median": 0.048510052263736725,
+   "floor": 0.04334377497434616
+  }
+ },
+ "PL-state0": {
+  "J3": {
+   "passed": false,
+   "expected": false,
+   "ok": true,
+   "n_pos": 6,
+   "median": 0.01911924034357071,
+   "floor": 0.04334377497434616
+  }
+ },
+ "PL-struct@1.5": {
+  "J2-a": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.3544950856059999,
+   "floor": 0.1858198693139749
+  },
+  "J2-b": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.3448304187670179,
+   "floor": 0.22623277464184022
+  },
+  "repro": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.4057971369213943,
+   "floor": 0.05
+  }
+ },
+ "PL-rand@1.5": {
+  "J2-a": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.3226806192235595,
+   "floor": 0.18712050932294855
+  },
+  "J2-b": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.2892919153726534,
+   "floor": 0.22864592046293236
+  },
+  "J4-a": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.33907122890668884,
+   "floor": 0.05
+  },
+  "J4-b": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 9,
+   "median": 0.28315467591037846,
+   "floor": 0.05
+  },
+  "repro": {
+   "passed": true,
+   "expected": true,
+   "ok": true,
+   "n_pos": 10,
+   "median": 0.3496721781192472,
+   "floor": 0.05
+  }
+ },
+ "_hash": "967538036a35f9e8",
+ "_ckpt": "set_IH_C-SLp_prod.pt"
+}

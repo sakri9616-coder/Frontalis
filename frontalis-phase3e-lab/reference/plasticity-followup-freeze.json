@@ -1,9 +1,0 @@
-{
-  "posthoc": true,
-  "sources": {
-    "docs/01b-plasticity-followup.md": "a589fb17e3635c9630d0c9e2e40451bb96eef73e9a603eb9927089dbe2e80e93",
-    "experiments/plasticity_followup.py": "cd2ff1027ac31f40763bad2c9019c6f0649d26592d82d6bd549802ffbfe54df9"
-  },
-  "mainResultSha256": "ab1ee6bc6f1a15f5fcc2ef8aafd4ad08384c2ee248e289055634e168ece93990",
-  "resultsInspected": false
-}

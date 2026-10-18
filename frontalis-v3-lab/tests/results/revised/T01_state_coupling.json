@@ -1,0 +1,20 @@
+{
+ "situation_Q": {
+  "related_mean": 0.3265595806236018,
+  "unrelated_mean": 0.05384454205170559,
+  "ratio": 6.0648594672792395,
+  "seeds_passing": 0
+ },
+ "entity_Q": {
+  "related_mean": 0.19331706523537046,
+  "unrelated_mean": 0.040707976709808545,
+  "ratio": 4.748874320466802,
+  "seeds_passing": 0
+ },
+ "entity_like": {
+  "related_mean": 0.14824952562854582,
+  "unrelated_mean": 0.00022028403634048732,
+  "ratio": 672.9925967009265,
+  "seeds_passing": 20
+ }
+}

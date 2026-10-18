@@ -1,0 +1,30 @@
+T4a NV3 retention Q(music)/Q_before after m removal events (m=20,100); training n=100 reinforcements (music + achievement .9)
+| config | Q before | retention m=20 | m=100 |
+|---|---|---|---|
+| v2 core (RB=.004) | 0.180 | 0.22 | 0.00 |
+| v2 core RB=.4 | 0.163 | 0.05 | 0.00 |
+| v2 core RB=.4, q=0 | 0.163 | 0.83 | 0.50 |
+| v2 + c (lam_c=1, g=1.3) | 0.564 | 0.66 | 1.63 |
+| v2 + c (lam_c=.1, g=1.3) | 0.218 | 0.33 | 0.42 |
+| v2 + c (lam_c=.1) RB=.4 | 0.202 | 0.21 | 0.45 |
+
+T4b G1' elasticities on retention at m=20 (|E_coef| <= 0.25|E_evidence| required). E = ln(ret(2x)/ret(x/2))/ln 4. Evidence = training trials n (50 vs 200) or reinforcer magnitude
+-- v2 core RB=.4
+   E_evidence (n 50->200): ret 0.050 -> 0.050, E=+0.000
+   coef R   : ret(x/2)=0.018 ret(2x)=0.114  E_coef=+1.335  |E_coef|/|E_evid|=302637.31  G1' FAIL
+   coef q   : ret(x/2)=0.111 ret(2x)=0.024  E_coef=-1.100  |E_coef|/|E_evid|=249416.13  G1' FAIL
+   coef dB  : ret(x/2)=0.059 ret(2x)=0.044  E_coef=-0.212  |E_coef|/|E_evid|=48112.38  G1' FAIL
+-- v2 + c (lam_c=.1) RB=.4
+   E_evidence (n 50->200): ret 0.001 -> 0.356, E=+4.239
+   coef R   : ret(x/2)=0.220 ret(2x)=0.220  E_coef=+0.001  |E_coef|/|E_evid|=0.00  G1' PASS
+   coef q   : ret(x/2)=0.203 ret(2x)=0.229  E_coef=+0.088  |E_coef|/|E_evid|=0.02  G1' PASS
+   coef dB  : ret(x/2)=0.213 ret(2x)=0.201  E_coef=-0.041  |E_coef|/|E_evid|=0.01  G1' PASS
+   coef a_c : ret(x/2)=0.008 ret(2x)=0.342  E_coef=+2.703  |E_coef|/|E_evid|=0.64  G1' FAIL
+   coef g-1 : ret(x/2)=0.001 ret(2x)=0.469  E_coef=+4.436  |E_coef|/|E_evid|=1.05  G1' FAIL
+
+T4c q=0 (static world) retention vs evidence n, Kalman gain 1/(n+..): m=20 / m=100
+   n=25: Q_before=0.165 retention m=20: 0.55  m=100: 0.20   (n/(n+m) = 0.56, 0.20)
+   n=50: Q_before=0.164 retention m=20: 0.71  m=100: 0.33   (n/(n+m) = 0.71, 0.33)
+   n=100: Q_before=0.163 retention m=20: 0.83  m=100: 0.50   (n/(n+m) = 0.83, 0.50)
+   n=200: Q_before=0.163 retention m=20: 0.91  m=100: 0.67   (n/(n+m) = 0.91, 0.67)
+   n=400: Q_before=0.163 retention m=20: 0.95  m=100: 0.80   (n/(n+m) = 0.95, 0.80)

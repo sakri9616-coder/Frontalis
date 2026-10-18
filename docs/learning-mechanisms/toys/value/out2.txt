@@ -1,0 +1,77 @@
+############ B: TD -- order dependence and contraction
+  A->B->reward : {'A': 0.9, 'B': 1.0}    B->A->reward : {'A': 1.0, 'B': 0.9} (same co-occurrence counts, different order)
+  1-D bootstrapped fixed point v*=r/(1-gamma*p): gamma=.9, p=1 -> 10.000000000000002 ; gamma=1.0 diverges (no fixed point)
+
+############ C: set-point dynamics, 1 need (deficit e=h*-h)
+  eta=0.02 rho(anchor)=0.0: after 4000 steps of constant consumption: h=-46.624 set point=-46.048 (innate 1.0)
+  eta=0.02 rho(anchor)=0.005: after 4000 steps of constant consumption: h=-2.000 set point=-1.400 (innate 1.0)
+  eta=0.02 rho(anchor)=0.02: after 4000 steps of constant consumption: h=-0.200 set point=0.400 (innate 1.0)
+  eta=0.0 rho(anchor)=0.0: after 4000 steps of constant consumption: h=0.400 set point=1.000 (innate 1.0)
+  same, but consumption halves for the first 2000 steps then doubles (history-dependence of set point):
+   lam 0.1 then 0.3 -> set point at end of phase 1, 2: [0.2, -1.4] ; lam 0.3 then 0.1 -> [-1.4, 0.2]
+
+############ C: 3-persona NEW event, felt = drive reduction and set-point change
+  rescued-by-collaboration   deficit before (h*-h)=[0.01 0.15 0.63 0.53]  NEW dh=[ 0.06   0.048 -0.048  0.036]  felt=-0.0080  set point change=[ 0.001 -0.002 -0.013 -0.009]
+  credit-taken               deficit before (h*-h)=[ 0.52  0.17 -0.27  0.52]  NEW dh=[ 0.06   0.048 -0.048  0.036]  felt=+0.0661  set point change=[-0.009 -0.002  0.005 -0.009]
+  explorer                   deficit before (h*-h)=[0.35 0.35 0.65 0.49]  NEW dh=[ 0.06   0.048 -0.048  0.036]  felt=+0.0192  set point change=[-0.005 -0.006 -0.013 -0.009]
+
+############ D: learning-progress interest (3 domains), persona states from histories; then NEW x6
+  rescued-by-collaboration   (E,LP,interest) after history {'M': (0.32, 0.54, 0.649), 'Cn': (0.7, -0.33, 0.068), 'Ex': (1.18, 1.24, 0.621)}
+      after NEW x1: {'M': (1.06, -0.37, 0.342), 'Cn': (1.3, -0.61, -0.137), 'Ex': (2.15, -0.04, 0.423)}
+      after NEW x3: {'M': (1.37, -0.96, -0.288), 'Cn': (1.47, -0.7, -0.425), 'Ex': (2.42, -0.96, -0.225)}
+      after NEW x6: {'M': (0.95, 0.39, -0.134), 'Cn': (0.97, 0.53, -0.049), 'Ex': (1.59, 0.87, 0.09)}
+  credit-taken               (E,LP,interest) after history {'M': (0.58, 0.96, 1.103), 'Cn': (1.46, 2.06, 1.714), 'Ex': (0.38, 0.69, 0.971)}
+      after NEW x1: {'M': (2.01, -0.78, 0.537), 'Cn': (2.03, 0.87, 1.461), 'Ex': (2.02, -1.19, 0.321)}
+      after NEW x3: {'M': (2.63, -1.88, -0.637), 'Cn': (2.03, -0.16, 0.707), 'Ex': (2.8, -2.31, -0.964)}
+      after NEW x6: {'M': (1.82, 0.74, -0.298), 'Cn': (1.27, 0.88, 0.561), 'Ex': (1.97, 0.72, -0.506)}
+  explorer                   (E,LP,interest) after history {'M': (0.94, 1.32, 1.097), 'Cn': (1.77, 0.0, 0.0), 'Ex': (2.46, -0.67, -0.219)}
+      after NEW x1: {'M': (2.2, -0.34, 0.665), 'Cn': (2.39, 0.25, 0.075), 'Ex': (2.65, 0.01, -0.15)}
+      after NEW x3: {'M': (2.66, -1.47, -0.358), 'Cn': (2.35, -0.24, -0.054), 'Ex': (2.26, 0.5, 0.149)}
+      after NEW x6: {'M': (1.8, 0.86, -0.073), 'Cn': (1.46, 1.04, 0.379), 'Ex': (1.31, 1.22, 0.716)}
+
+############ E: devaluation persistence (cache vs belief)
+  trained   3 times (MB value 0.5): omega, v_MF, then after the reinforcer is removed (belief->0): (m extinction trials, felt value, v_MF) = (0.23, 0.375, [(1, 0.086, 0.3), (5, 0.074, 0.167), (20, 0.044, 0.062), (80, 0.013, 0.015)])
+  trained  10 times (MB value 0.5): omega, v_MF, then after the reinforcer is removed (belief->0): (m extinction trials, felt value, v_MF) = (0.5, 0.455, [(1, 0.218, 0.417), (5, 0.188, 0.312), (20, 0.121, 0.161), (80, 0.039, 0.044)])
+  trained  30 times (MB value 0.5): omega, v_MF, then after the reinforcer is removed (belief->0): (m extinction trials, felt value, v_MF) = (0.75, 0.484, [(1, 0.354, 0.469), (5, 0.324, 0.417), (20, 0.245, 0.294), (80, 0.08, 0.087)])
+  trained 100 times (MB value 0.5): omega, v_MF, then after the reinforcer is removed (belief->0): (m extinction trials, felt value, v_MF) = (0.91, 0.496, [(1, 0.443, 0.487), (5, 0.41, 0.449), (20, 0.306, 0.331), (80, 0.093, 0.099)])
+
+############ F: choice-induced preference change
+  naive self-perception, v0=0 (symmetric), 10 runs final v (bistable polarisation): [-149.2  149.4 -147.9 -149.3 -149.4 -149.4 -147.9  149.2  149.7  149. ]
+  calibrated (subtract own prediction), v0=0: mean final v 0.158, sd 1.398 (martingale: no drift, only random walk)
+  cost-anchored (effort justification) v <- v + eta*max(c - v, 0), c=0.5: from v0=-0.54 -> 0.5 , from 0.755 -> 0.755 , from 0.52 -> 0.52
+  3-persona NEW (forced choice: co-create, cost c=.5, eta=.3); prior value = tanh(A-value of connection / autonomy):
+   rescued-by-collaboration   v_cocreate +0.76 -> +0.76 (+0.000);  v_solo -0.58 -> -0.58 (-0.000)
+   credit-taken               v_cocreate -0.54 -> -0.23 (+0.312);  v_solo +0.84 -> +0.59 (-0.251)
+   explorer                   v_cocreate +0.52 -> +0.52 (+0.000);  v_solo +0.94 -> +0.66 (-0.281)
+
+############ G: trust-weighted social value
+  agreement-trust width s=0.5: final w from w0=+0.01: +1.00; from w0=-0.01: -1.00
+  agreement-trust width s=0.9: final w from w0=+0.01: -0.75; from w0=-0.01: -0.75
+  agreement-trust width s=1.0: final w from w0=+0.01: -0.45; from w0=-0.01: -0.45
+  agreement-trust width s=1.2: final w from w0=+0.01: -0.12; from w0=-0.01: -0.12
+  agreement-trust width s=2.0: final w from w0=+0.01: -0.05; from w0=-0.01: -0.05
+  fixed-trust control (outcome-anchored): final w from +-0.01: -0.04 -0.04 (sources average out)
+  3-persona: trust from Beta(1+benevolent,1+betrayed) over "others", then testimony u=-0.5 on authorship from NEW friend A; eta=.4; prior w=tanh(A value of authorship)
+   rescued-by-collaboration   trust tau=0.94 signed=+0.89; w_auth -0.02 -> signed -0.19 (-0.170) | clamped(no reactance) -0.19 (-0.170)
+   credit-taken               trust tau=0.10 signed=-0.80; w_auth +0.54 -> signed +0.87 (+0.333) | clamped(no reactance) +0.54 (-0.000)
+   explorer                   trust tau=0.83 signed=+0.67; w_auth +0.00 -> signed -0.13 (-0.133) | clamped(no reactance) -0.13 (-0.133)
+
+############ H: relevance (attention) weights over appraisal dimensions
+  rho= 0: final (w1,w2) for 4 seeds: (0.50,0.50) (0.50,0.50) (0.50,0.50) (0.50,0.50)  sum=1 always (anchored); split depends on seed
+  rho= 2: final (w1,w2) for 4 seeds: (0.50,0.50) (0.50,0.50) (0.50,0.50) (0.51,0.49)  sum=1 always (anchored); split depends on seed
+  rho= 5: final (w1,w2) for 4 seeds: (0.50,0.50) (0.50,0.50) (0.50,0.50) (0.52,0.48)  sum=1 always (anchored); split depends on seed
+  rho=10: final (w1,w2) for 4 seeds: (0.51,0.49) (0.48,0.52) (0.52,0.48) (0.61,0.39)  sum=1 always (anchored); split depends on seed
+  rho=20: final (w1,w2) for 4 seeds: (0.61,0.39) (0.31,0.69) (0.63,0.37) (0.77,0.23)  sum=1 always (anchored); split depends on seed
+   rescued-by-collaboration   beta [ 0.43  0.08 -0.44] relevance omega [0.46 0.02 0.53]  appraisal of NEW (sum omega*valence*level) = +0.446
+   credit-taken               beta [-0.3   0.38  0.07] relevance omega [0.08 0.89 0.02]  appraisal of NEW (sum omega*valence*level) = -0.632
+   explorer                   beta [0.07 0.   0.07] relevance omega [0.09 0.02 0.89]  appraisal of NEW (sum omega*valence*level) = +0.079
+
+############ I: Kalman steady-state gain (volatility keeps plasticity) and hierarchical prior for a NEW entity
+  process noise q=0.0: steady Kalman gain 0.000
+  process noise q=0.001: steady Kalman gain 0.061
+  process noise q=0.01: steady Kalman gain 0.181
+  process noise q=0.1: steady Kalman gain 0.463
+  hierarchical prior for friendA: prior mean = mean value of known "others"-class entities; observation y=+0.3; prior var tau0^2=0.3, obs var .25
+   rescued-by-collaboration   prior +0.80 -> posterior +0.53 (update -0.27, posterior sd 0.37)
+   credit-taken               prior -0.60 -> posterior -0.11 (update +0.49, posterior sd 0.37)
+   explorer                   prior +0.40 -> posterior +0.35 (update -0.05, posterior sd 0.37)

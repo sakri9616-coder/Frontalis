@@ -1,0 +1,14 @@
+2026-10-18 10:29:30 NN-REL dev start (Modal only)
+10:29:31 START [modal] p36_rel_dev.py calib 77380
+10:29:31 START [modal] p36_rel_dev.py calib 77385
+11:33:06 DONE rc=0 3815s $0.625 [modal] p36_rel_dev.py calib 77385
+11:33:07 START [modal] p36_rel_dev.py pass F1 77380
+11:34:04 DONE rc=0 3873s $0.635 [modal] p36_rel_dev.py calib 77380
+11:34:07 START [modal] p36_rel_dev.py pass F1 77385
+12:22:01 DONE rc=0 2874s $0.471 [modal] p36_rel_dev.py pass F1 77385
+12:22:03 START [modal] p36_rel_dev.py pass F6m 77380
+12:45:37 DONE rc=0 4350s $0.713 [modal] p36_rel_dev.py pass F1 77380
+12:45:38 START [modal] p36_rel_dev.py pass F6m 77385
+13:06:08 DONE rc=0 2645s $0.433 [modal] p36_rel_dev.py pass F6m 77380
+13:35:45 DONE rc=0 3007s $0.493 [modal] p36_rel_dev.py pass F6m 77385
+queue finished: {'done': 6, 'failed': 0, 'pending': 0}

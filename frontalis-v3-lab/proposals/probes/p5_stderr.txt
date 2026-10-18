@@ -1,0 +1,7 @@
+M_on train 63s total 88s nonfinite 0
+M_off train 57s total 74s nonfinite 0
+MC_on train 60s total 77s nonfinite 0
+MC_off train 58s total 75s nonfinite 0
+MCA_on train 63s total 80s nonfinite 0
+MCs4_on train 174s total 191s nonfinite 0
+MCs4_off train 177s total 195s nonfinite 0

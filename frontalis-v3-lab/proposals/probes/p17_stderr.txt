@@ -1,0 +1,23 @@
+ckpt set {'P': 432, 'identical': True, 'hash_full': '458789f2003c0aa5', 'hash_resumed': '458789f2003c0aa5'}
+ckpt rel {'P': 432, 'identical': True, 'hash_full': 'c9fe70e52f5575aa', 'hash_resumed': 'c9fe70e52f5575aa'}
+ckpt krr {'P': 432, 'identical': True, 'hash_full': 'f1d0982e860dbfe3', 'hash_resumed': 'f1d0982e860dbfe3'}
+set_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 1853s meas 1265s nonfinite 0
+set_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 164s meas 739s nonfinite 0
+set_IHE_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 150s meas 545s nonfinite 0
+krr_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 112s meas 11s nonfinite 0
+krr_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 112s meas 14s nonfinite 0
+hb_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 72s meas 16s nonfinite 0
+hb_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 69s meas 14s nonfinite 0
+rf_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 93s meas 524s nonfinite 0
+rf_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 109s meas 507s nonfinite 0
+nn0_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 94s meas 621s nonfinite 0
+nn0_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 81s meas 736s nonfinite 0
+fixk_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 69s meas 16s nonfinite 0
+fixk_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 68s meas 17s nonfinite 0
+lin_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 45s meas 17s nonfinite 0
+lin_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 48s meas 17s nonfinite 0
+pre IH P=432 171s
+pre I0 P=432 167s
+set_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 174s meas 1036s nonfinite 0
+set_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 245s meas 548s nonfinite 0
+set_IHE_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal P=432 train 293s meas 634s nonfinite 0

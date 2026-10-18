@@ -1,0 +1,17 @@
+V1a persistence P (difference on an unseen individual, after N-experience / before) and plasticity L (gap closed for N's own value, P1), history = 8 individuals x 1 event
+| model | P m=8 | L m=8 | P m=32 | L m=32 | both >=0.7 (m=8,32) |
+|---|---|---|---|---|---|
+| v3 hier, q fixed (q0 by layer) | 0.93 | 1.00 | 0.93 | 1.00 | PASS |
+| v3 hier, q learned (spec literal) | 0.91 | 1.01 | 0.93 | 1.00 | PASS |
+| v3 hier, q learned (EMA, eta=.01) | 0.92 | 1.00 | 0.93 | 1.00 | PASS |
+| v2 core (no hierarchy) | 0.26 | 0.74 | 0.01 | 0.99 | FAIL |
+| fixed rate 0.25 | 0.09 | 0.90 | 0.00 | 1.00 | FAIL |
+| 1/n count | 0.50 | 0.50 | 0.20 | 0.80 | FAIL |
+
+V1b retention (persistence) vs the number of individuals that produced the history (8 events in total), v3 hier q fixed / literal / EMA, and 1/n count; m=8 and m=32
+| n individuals x events | v3 fixed m=8 | m=32 | v3 literal m=8 | m=32 | v3 EMA m=8 | m=32 | 1/n m=8 |
+|---|---|---|---|---|---|---|---|
+| 1x8 | 0.85 | 0.85 | 0.78 | 0.87 | 0.83 | 0.82 | 0.50 |
+| 2x4 | 0.87 | 0.87 | 0.82 | 0.87 | 0.86 | 0.85 | 0.50 |
+| 4x2 | 0.90 | 0.90 | 0.87 | 0.89 | 0.89 | 0.89 | 0.50 |
+| 8x1 | 0.93 | 0.93 | 0.91 | 0.92 | 0.92 | 0.92 | 0.50 |

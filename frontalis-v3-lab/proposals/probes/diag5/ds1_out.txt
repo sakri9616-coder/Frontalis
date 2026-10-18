@@ -1,0 +1,702 @@
+[0m
+> build · deepseek-v4.1-flash-free
+I'll start by exploring the working directory structure to understand the layout.
+[0m$ [0mcd "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design" && ls -la && echo "---FRONTALIS-V3-LAB---" && ls -la frontalis-v3-lab 2>/dev/null && echo "---PROPOSALS---" && ls -la frontalis-v3-lab/proposals 2>/dev/null
+�����ꏊ �s:1 ����:72
++ ... \sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design" && ls -la  ...
++                                                                ~~
+�g�[�N�� '&&' �́A���̃o�[�W�����ł͗L���ȃX�e�[�g�����g��؂�ł͂���܂���B
+�����ꏊ �s:1 ����:82
++ ... Data\Local\ASIST-She-necheia\Frontalis-v4design" && ls -la && echo "- ...
++                                                                ~~
+�g�[�N�� '&&' �́A���̃o�[�W�����ł͗L���ȃX�e�[�g�����g��؂�ł͂���܂���B
+�����ꏊ �s:1 ����:115
++ ... talis-v4design" && ls -la && echo "---FRONTALIS-V3-LAB---" && ls -la  ...
++                                                                ~~
+�g�[�N�� '&&' �́A���̃o�[�W�����ł͗L���ȃX�e�[�g�����g��؂�ł͂���܂���B
+�����ꏊ �s:1 ����:154
++ ... RONTALIS-V3-LAB---" && ls -la frontalis-v3-lab 2>/dev/null && echo "- ...
++                                                                ~~
+�g�[�N�� '&&' �́A���̃o�[�W�����ł͗L���ȃX�e�[�g�����g��؂�ł͂���܂���B
+�����ꏊ �s:1 ����:180
++ ... -la frontalis-v3-lab 2>/dev/null && echo "---PROPOSALS---" && ls -la  ...
++                                                                ~~
+�g�[�N�� '&&' �́A���̃o�[�W�����ł͗L���ȃX�e�[�g�����g��؂�ł͂���܂���B
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : InvalidEndOfLine
+> build · deepseek-v4.1-flash-free
+This is PowerShell. Let me use the appropriate syntax.
+[0m$ [0mGet-ChildItem "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design"
+�f�B���N�g��: C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----        2026/10/17      2:27                docs                                                                 
+d-----        2026/10/17      2:27                frontalis-archives                                                   
+d-----        2026/10/17      2:27                frontalis-phase3d-lab                                                
+d-----        2026/10/17      2:27                frontalis-phase3e-lab                                                
+d-----        2026/10/17      2:27                frontalis-phase3f-lab                                                
+d-----        2026/10/17      2:38                frontalis-v3-lab                                                     
+d-----        2026/10/17      2:27                learning-mechanisms                                                  
+-a----        2026/10/17      2:27             60 .gitignore                                                           
+-a----        2026/10/17      2:27           4348 FRONTALIS_HANDOFF.md                                                 
+-a----        2026/10/17      2:27           2195 FRONTALIS_INDEX.md                                                   
+-a----        2026/10/17     16:30          11560 LICENSE                                                              
+-a----        2026/10/17     16:30          19055 LICENSE-CC-BY-4.0                                                    
+-a----        2026/10/17     16:30           3042 LICENSING.md                                                         
+-a----        2026/10/17     16:30            167 NOTICE                                                               
+-a----        2026/10/17     16:30          14888 README.md
+[0m$ [0mGet-ChildItem "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab" -ErrorAction SilentlyContinue
+�f�B���N�g��: C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----        2026/10/17      2:27                benchmarks                                                           
+d-----        2026/10/17      2:27                data                                                                 
+d-----        2026/10/17      2:27                examples                                                             
+d-----        2026/10/17      2:27                npnv3                                                                
+d-----        2026/10/17     22:33                proposals                                                            
+d-----        2026/10/17      2:28                reviews                                                              
+d-----        2026/10/17      2:27                tests                                                                
+-a----        2026/10/17      2:27             39 .gitignore                                                           
+-a----        2026/10/17      2:27          44441 CHANGELOG-v3.4.md                                                    
+-a----        2026/10/17      2:27         243804 CHANGELOG.md                                                         
+-a----        2026/10/17      2:27          14030 PLAN-v3.4.md                                                         
+-a----        2026/10/17      2:27          81684 README.md                                                            
+-a----        2026/10/17      2:27          30302 REPORT.md                                                            
+-a----        2026/10/17      2:27          11691 SPEC-v3.1.md                                                         
+-a----        2026/10/17      2:27           5234 SPEC-v3.2.md                                                         
+-a----        2026/10/17      2:27          28448 SPEC-v3.3.md                                                         
+-a----        2026/10/17      2:27          73906 SPEC-v3.4.md                                                         
+-a----        2026/10/17      2:27          16191 SPEC.md
+> build · deepseek-v4.1-flash-free
+[0m$ [0mGet-ChildItem "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals"
+�f�B���N�g��: C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----        2026/10/17      5:30                history                                                              
+d-----        2026/10/17      3:07                literature                                                           
+d-----        2026/10/17     23:07                probes                                                               
+-a----        2026/10/17      3:39          17763 AUDIT.md                                                             
+-a----        2026/10/17      3:27          13131 CRITIQUE-1.md                                                        
+-a----        2026/10/17      5:13          14391 CRITIQUE-2.md                                                        
+-a----        2026/10/17     21:05          46132 DESIGN.md                                                            
+-a----        2026/10/17     21:28          12868 ESCAPE-AUDIT.md                                                      
+-a----        2026/10/17     22:48           8085 FREEZE.md                                                            
+-a----        2026/10/17     22:33           3076 NOTES-llm-operations.md                                              
+-a----        2026/10/17     18:29           8643 offload_note.md                                                      
+-a----        2026/10/17     21:05          49988 PREREG-DRAFT.md                                                      
+-a----        2026/10/17     21:28           7045 README.md
+[0m$ [0mGet-ChildItem "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes" -ErrorAction SilentlyContinue
+�f�B���N�g��: C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----        2026/10/17     23:07                diag5                                                                
+d-----        2026/10/17     23:03                sched                                                                
+-a----        2026/10/17     21:39            180 .gitignore                                                           
+-a----        2026/10/17     20:54           8277 cells.py                                                             
+-a----        2026/10/17     21:39            594 eval_launch.sh                                                       
+-a----        2026/10/17     22:30             72 eval_run.log                                                         
+-a----        2026/10/17     20:39           5776 judge4.py                                                            
+-a----        2026/10/17     22:35          62426 LOG-dev.md                                                           
+-a----        2026/10/17      4:43          10811 measure.py                                                           
+-a----        2026/10/17      6:20          17480 measure4.py                                                          
+-a----        2026/10/17      2:50           3946 p0_audit_checks.py                                                   
+-a----        2026/10/17      2:50           1489 p0_results.json                                                      
+-a----        2026/10/17      4:59           5897 p10_nnrel_throughput.py                                              
+-a----        2026/10/17      5:03           2531 p10_results.json                                                     
+-a----        2026/10/17      5:03           1604 p10_stderr.txt                                                       
+-a----        2026/10/17      5:03            586 p10_stdout.txt                                                       
+-a----        2026/10/17      5:08           6540 p11_rel_kernel.py                                                    
+-a----        2026/10/17      5:09            905 p11_results.json                                                     
+-a----        2026/10/17      5:09            757 p11_stderr.txt                                                       
+-a----        2026/10/17      5:09            907 p11_stdout.txt                                                       
+-a----        2026/10/17      5:11           2792 p12_bf16_equiv.py                                                    
+-a----        2026/10/17      5:26           4870 p12_results.json                                                     
+-a----        2026/10/17      5:26            176 p12_stderr.txt                                                       
+-a----        2026/10/17      5:26           4877 p12_stdout.txt                                                       
+-a----        2026/10/17     10:17            278 p13_ckpt_chunk.py                                                    
+-a----        2026/10/17     16:19            207 p13_ckpt_early.json                                                  
+-a----        2026/10/17     16:15           1216 p13_ckpt_early.py                                                    
+-a----        2026/10/17     10:34           6369 p13_results.json                                                     
+-a----        2026/10/17      5:44           5174 p13_sim4_sanity.py                                                   
+-a----        2026/10/17      6:05           3981 p13_stderr.txt                                                       
+-a----        2026/10/17      5:44              0 p13_stdout.txt                                                       
+-a----        2026/10/17     10:17           2774 p14_kappa_check.py                                                   
+-a----        2026/10/17     13:49           4307 p14_results.json                                                     
+-a----        2026/10/17      6:45              0 p14_stderr.txt                                                       
+-a----        2026/10/17     21:40         172253 p15_cells_krr_IH.json                                                
+-a----        2026/10/17     22:29          50117 p15_cells_nn0_IH.json                                                
+-a----        2026/10/17     19:56         203286 p15_cells_set_I0.json                                                
+-a----        2026/10/17     17:04         309274 p15_cells_set_IH.json                                                
+-a----        2026/10/17     22:35          58492 p15_judge.json                                                       
+-a----        2026/10/17      9:38           2021 p15_lr.json                                                          
+-a----        2026/10/17      9:37            600 p15_lr_0.0001.json                                                   
+-a----        2026/10/17      9:35            598 p15_lr_0.0003.json                                                   
+-a----        2026/10/17      9:35            596 p15_lr_0.001.json                                                    
+-a----        2026/10/17      6:45              0 p15_lr_1e-3.err                                                      
+-a----        2026/10/17      6:45              0 p15_lr_1e-4.err                                                      
+-a----        2026/10/17      6:45              0 p15_lr_3e-4.err                                                      
+-a----        2026/10/17      6:29            621 p15_pregate_lr_0.0001.json                                           
+-a----        2026/10/17      6:31            614 p15_pregate_lr_0.0003.json                                           
+-a----        2026/10/17      6:29            622 p15_pregate_lr_0.001.json                                            
+-a----        2026/10/17      6:31            110 p15_pregate_stderr.txt                                               
+-a----        2026/10/17      9:38           3059 p15_prod.py                                                          
+-a----        2026/10/17     21:40           2171 p15_stderr.txt                                                       
+-a----        2026/10/17     15:20           1398 p15_summarize.py                                                     
+-a----        2026/10/17      6:36            125 p16_base_mid.err                                                     
+-a----        2026/10/17      7:07            713 p16_gate_mid.err                                                     
+-a----        2026/10/17      9:41           1321 p16_gate_rel_mid.err                                                 
+-a----        2026/10/17      6:36            493 p16_krr_mid.err                                                      
+-a----        2026/10/17      6:41            718 p16_krr_p05_mid.err                                                  
+-a----        2026/10/17      6:41            712 p16_krr_p0_mid.err                                                   
+-a----        2026/10/17      7:20            720 p16_krr_p1_mid.err                                                   
+-a----        2026/10/17      7:16            724 p16_lin_p05_mid.err                                                  
+-a----        2026/10/17      7:15            721 p16_lin_p0_mid.err                                                   
+-a----        2026/10/17      7:27            721 p16_lin_p1_mid.err                                                   
+-a----        2026/10/17      6:36            129 p16_nent320_mid.err                                                  
+-a----        2026/10/17      8:17            730 p16_nn0_p05_mid.err                                                  
+-a----        2026/10/17      8:16            719 p16_nn0_p0_mid.err                                                   
+-a----        2026/10/17      8:17            750 p16_nn0_p1_mid.err                                                   
+-a----        2026/10/17     19:14           4046 p16_nn_learnability.py                                               
+-a----        2026/10/17      6:39           1431 p16_nopartner_mid.err                                                
+-a----        2026/10/17     10:50            271 p16_pscale.json                                                      
+-a----        2026/10/17     16:14           1007 p16_rel_choose.py                                                    
+-a----        2026/10/17     17:22            182 p16_rel_lr.json                                                      
+-a----        2026/10/17      7:07           4810 p16_results.json                                                     
+-a----        2026/10/17     16:28           1292 p16_results_gate_rel_lr1e-3_mid.json                                 
+-a----        2026/10/17     17:22           1283 p16_results_gate_rel_lr1e-4_mid.json                                 
+-a----        2026/10/17     15:41           1263 p16_results_gate_rel_mid.json                                        
+-a----        2026/10/17      7:20           1288 p16_results_krr_p1_mid.json                                          
+-a----        2026/10/17      7:16           1288 p16_results_lin_p05_mid.json                                         
+-a----        2026/10/17      7:15           1288 p16_results_lin_p0_mid.json                                          
+-a----        2026/10/17      7:27           1288 p16_results_lin_p1_mid.json                                          
+-a----        2026/10/17      8:17           1294 p16_results_nn0_p05_mid.json                                         
+-a----        2026/10/17      8:16           1286 p16_results_nn0_p0_mid.json                                          
+-a----        2026/10/17      8:17           1318 p16_results_nn0_p1_mid.json                                          
+-a----        2026/10/17      8:20           1284 p16_results_rf_p05_mid.json                                          
+-a----        2026/10/17     10:49           1291 p16_results_rf_p0_mid.json                                           
+-a----        2026/10/17      8:58           1292 p16_results_rf_p1_mid.json                                           
+-a----        2026/10/17      6:35            123 p16_rf_mid.err                                                       
+-a----        2026/10/17      8:20            717 p16_rf_p05_mid.err                                                   
+-a----        2026/10/17      9:41           1290 p16_rf_p0_mid.err                                                    
+-a----        2026/10/17      8:58            723 p16_rf_p1_mid.err                                                    
+-a----        2026/10/17      6:36            130 p16_wd1e-2_mid.err                                                   
+-a----        2026/10/17     14:49        2856285 p17_cells.json                                                       
+-a----        2026/10/17     18:16         631542 p17_cells_lr.json                                                    
+-a----        2026/10/17     12:10            378 p17_ckpt.json                                                        
+-a----        2026/10/17     14:49         940048 p17_judge.json                                                       
+-a----        2026/10/17     14:04         462486 p17_judge_partial.json                                               
+-a----        2026/10/17     19:35           7943 p17_rehearsal.py                                                     
+-a----        2026/10/17     14:49          31188 p17_report_skeleton.md                                               
+-a----        2026/10/17     18:16           1989 p17_stderr.txt                                                       
+-a----        2026/10/17     14:51           2590 p18_noise_decomp.py                                                  
+-a----        2026/10/17     15:05          19595 p18_results.json                                                     
+-a----        2026/10/17     16:49           2880 p19_power.py                                                         
+-a----        2026/10/17     15:41          15284 p19_results.json                                                     
+-a----        2026/10/17      3:09          10647 p1_interaction_world.py                                              
+-a----        2026/10/17      3:18          12167 p1_results.json                                                      
+-a----        2026/10/17      3:18            105 p1_stderr.txt                                                        
+-a----        2026/10/17      3:18           2445 p1_stdout.txt                                                        
+-a----        2026/10/17     16:33            918 p20_mem.json                                                         
+-a----        2026/10/17     18:29           1693 p20_mem.py                                                           
+-a----        2026/10/17     18:29           4561 p21_cloud_equiv.py                                                   
+-a----        2026/10/17     16:50           2719 p21_compare_selftest_local.json                                      
+-a----        2026/10/17     16:41          25690 p21_local_rtx3050.json                                               
+-a----        2026/10/17     16:46          25689 p21_local_rtx3050_rerun.json                                         
+-a----        2026/10/17     16:49          25766 p21_local_rtx3050_retest.json                                        
+-a----        2026/10/17     18:30           3602 p22_power_seeds.py                                                   
+-a----        2026/10/17     18:30           3386 p22_results.json                                                     
+-a----        2026/10/17     20:07          42976 p23_equiv_base.json                                                  
+-a----        2026/10/17     19:56           8875 p23_rel_speedup.py                                                   
+-a----        2026/10/17     21:05           2118 p23_speed.json                                                       
+-a----        2026/10/17     21:05          10373 p24_compute_plan.py                                                  
+-a----        2026/10/17     20:50           4526 p24_results.json                                                     
+-a----        2026/10/17     21:53           4908 p25_calib_slp.json                                                   
+-a----        2026/10/17     20:50           3742 p25_min_dev.py                                                       
+-a----        2026/10/17      3:31          18840 p2_cycle_world.py                                                    
+-a----        2026/10/17      3:34          22607 p2_results.json                                                      
+-a----        2026/10/17      3:34            116 p2_stderr.txt                                                        
+-a----        2026/10/17      3:34           2466 p2_stdout.txt                                                        
+-a----        2026/10/17     21:26           3595 p30_calib_coff.json                                                  
+-a----        2026/10/17     21:26           5803 p30_eval_main.py                                                     
+-a----        2026/10/17     20:55              0 p30_stderr.txt                                                       
+-a----        2026/10/17     21:37           4301 p31_eval_job.py                                                      
+-a----        2026/10/17     22:48           4266 p31_eval_merge.py                                                    
+-a----        2026/10/17     22:46          28744 p31_eval_set_F1_77100.json                                           
+-a----        2026/10/17     22:47          28731 p31_eval_set_F1_77105.json                                           
+-a----        2026/10/17     23:02          28697 p31_eval_set_F1_77110.json                                           
+-a----        2026/10/17     23:03          28694 p31_eval_set_F1_77115.json                                           
+-a----        2026/10/17      3:42           3509 p3_diagnose.py                                                       
+-a----        2026/10/17      4:00         232556 p3_results.json                                                      
+-a----        2026/10/17      4:00            455 p3_stderr.txt                                                        
+-a----        2026/10/17      4:00          17061 p3_stdout.txt                                                        
+-a----        2026/10/17      4:14         340262 p4_results.json                                                      
+-a----        2026/10/17      4:01           3809 p4_stabilise.py                                                      
+-a----        2026/10/17      4:14            426 p4_stderr.txt                                                        
+-a----        2026/10/17      4:14          17009 p4_stdout.txt                                                        
+-a----        2026/10/17      4:16           3922 p5_memory_mc.py                                                      
+-a----        2026/10/17      4:30         237601 p5_results.json                                                      
+-a----        2026/10/17      4:30            283 p5_stderr.txt                                                        
+-a----        2026/10/17      4:30          11851 p5_stdout.txt                                                        
+-a----        2026/10/17      4:31           3921 p6_evalayer.py                                                       
+-a----        2026/10/17      4:37         136043 p6_results.json                                                      
+-a----        2026/10/17      4:37            157 p6_stderr.txt                                                        
+-a----        2026/10/17      4:37           6662 p6_stdout.txt                                                        
+-a----        2026/10/17      4:38           4110 p7_hcx.py                                                            
+-a----        2026/10/17      4:42         134345 p7_results.json                                                      
+-a----        2026/10/17      4:42            409 p7_stderr.txt                                                        
+-a----        2026/10/17      4:42           6660 p7_stdout.txt                                                        
+-a----        2026/10/17      4:43           4184 p8_das.py                                                            
+-a----        2026/10/17      4:48          78757 p8_results.json                                                      
+-a----        2026/10/17      4:48            329 p8_stderr.txt                                                        
+-a----        2026/10/17      4:48           3944 p8_stdout.txt                                                        
+-a----        2026/10/17      4:49            427 p9_results.json                                                      
+-a----        2026/10/17      4:48           1386 p9_throughput.py                                                     
+-a----        2026/10/17     22:29           1082 queue4.log                                                           
+-a----        2026/10/17     10:17            551 queue4.sh                                                            
+-a----        2026/10/17     20:39            266 queue4.txt                                                           
+-a----        2026/10/17     20:07           2043 queue4b.log                                                          
+-a----        2026/10/17     10:18            555 queue4b.sh                                                           
+-a----        2026/10/17     19:55            955 queue4b.txt                                                          
+-a----        2026/10/17     17:22           2960 queue4b_jobs.err                                                     
+-a----        2026/10/17     20:07            145 queue4b_jobs.out                                                     
+-a----        2026/10/17     15:05            478 queue4c.log                                                          
+-a----        2026/10/17     14:51            556 queue4c.sh                                                           
+-a----        2026/10/17     14:51            129 queue4c.txt                                                          
+-a----        2026/10/17     14:51              0 queue4c_jobs.err                                                     
+-a----        2026/10/17     15:05           3725 queue4c_jobs.out                                                     
+-a----        2026/10/17     15:41             81 queue4d.log                                                          
+-a----        2026/10/17     15:22            556 queue4d.sh                                                           
+-a----        2026/10/17     15:22             13 queue4d.txt                                                          
+-a----        2026/10/17     15:22              0 queue4d_jobs.err                                                     
+-a----        2026/10/17     15:41           3555 queue4d_jobs.out                                                     
+-a----        2026/10/17     20:07             51 queue4f.log                                                          
+-a----        2026/10/17     19:56            556 queue4f.sh                                                           
+-a----        2026/10/17     20:38             25 queue4f.txt                                                          
+-a----        2026/10/17     20:07              0 queue4f_jobs.err                                                     
+-a----        2026/10/17     21:05           1791 queue4f_jobs.out                                                     
+-a----        2026/10/17     19:56            386 queue4f_start.sh                                                     
+-a----        2026/10/17     22:29           4100 queue4_jobs.err                                                      
+-a----        2026/10/17     21:53           1084 queue4_jobs.out                                                      
+-a----        2026/10/17     18:29            628 queue_cloud.example.txt                                              
+-a----        2026/10/17     18:29           1273 queue_cloud.sh                                                       
+-a----        2026/10/17     21:37            410 queue_eval.txt                                                       
+-a----        2026/10/17      5:06           9721 README-probes.md                                                     
+-a----        2026/10/17      5:10          14377 sim.py                                                               
+-a----        2026/10/17     18:22          37101 sim4.py
+> build · deepseek-v4.1-flash-free
+Let me look at the diag5 and sched directories, and existing scripts for data format reference.
+[0m→ [0mRead frontalis-v3-lab/proposals/probes/p15_summarize.py 
+[0m$ [0mGet-ChildItem "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5" -Force -ErrorAction SilentlyContinue; Write-Output "---SCHED---"; Get-ChildItem "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\sched" -Force -ErrorAction SilentlyContinue
+�f�B���N�g��: C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\d
+    iag5
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+-a----        2026/10/17     23:07           2208 ds1_out.txt                                                          
+-a----        2026/10/17     23:07           1626 ds1_prompt.txt                                                       
+-a----        2026/10/17     23:07              0 ds2_out.txt                                                          
+-a----        2026/10/17     23:07           1711 ds2_prompt.txt                                                       
+---SCHED---
+
+
+    �f�B���N�g��: C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\s
+    ched
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----        2026/10/17     19:38                colab_win                                                            
+d-----        2026/10/17     23:02                sched_logs                                                           
+-a----        2026/10/17     19:20             42 .gitignore                                                           
+-a----        2026/10/17     22:30              0 .run.lock                                                            
+-a----        2026/10/17     19:27            220 colab.cmd                                                            
+-a----        2026/10/17     21:34           3203 colab_runner.py                                                      
+-a----        2026/10/17     21:35           4452 kaggle_runner.py                                                     
+-a----        2026/10/17     21:37           2156 modal_runner.py                                                      
+-a----        2026/10/17     20:14           1570 providers.json                                                       
+-a----        2026/10/17     21:37          11364 sched.py                                                             
+-a----        2026/10/17     23:03           2806 sched_state.json
+> build · deepseek-v4.1-flash-free
+[0m→ [0mRead frontalis-v3-lab/proposals/probes/diag5/ds1_prompt.txt 
+[0m→ [0mRead frontalis-v3-lab/proposals/probes/diag5/ds1_out.txt 
+> build · deepseek-v4.1-flash-free
+Now let me inspect the data schema. I'll use a Python one-liner (not writing files outside diag5).
+[0m$ [0mpython -c "import json,sys; d=json.load(open(r'C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\p15_cells_set_IH.json',encoding='utf-8')); ks=list(d.keys()); print('ncells',len(ks)); print('keys sample',ks[:5]); k=ks[0]; c=d[k]; print('cell keys',list(c.keys())); print('meta',json.dumps(c['meta'])[:500]); print('nrows',len(c['rows'])); r=c['rows'][0]; print('row keys',list(r.keys())); print('row sample',{kk:r[kk] for kk in r})"
+ncells 2
+keys sample ['set_IH_C-off_prod', 'set_IH_C-SLp_prod']
+cell keys ['meta', 'rows']
+meta {"learner": "set", "innate": "IH", "conds": ["C-off"], "scale": "prod", "P": 240, "train_secs": 4756.2551810741425, "meas_secs": 485.9514763355255, "nonfinite": 0, "pers_steps_per_sec": 1596.345838453875, "kappa_final": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+nrows 40
+row keys ['D_AB_un', 'D_AA_un', 'Dc_AB_un', 'Dc_AA_un', 'repro_un', 'D_AB_nc', 'D_AA_nc', 'Dc_AB_nc', 'Dc_AA_nc', 'repro_nc', 'Drho_AB_un', 'Drho_AA_un', 'Drho_AB_nc', 'Drho_AA_nc', 'swap_AB', 'swap_AA', 'swap_identical', 'swapd_AB', 'swapd_AA', 'r2_un', 'r2_nc', 'xp_other_un', 'xp_same_un', 'xp_other_nc', 'xp_same_nc', 'c_AB_un', 'c_sh_un', 'c_AA_un', 'c_AB_nc', 'c_sh_nc', 'c_AA_nc', 'p_AB', 'p_sh', 'conflict_A', 'conflict_B', 'inter_AB', 'inter_AA', 'kappa', 'w_A', 'w_B', 'scale', 'learner', 'innate', 'cond', 'seed', 'fam', 'tag', 'calib', 'r2_rm', 'r2_rm_fresh']
+row sample {'D_AB_un': 0.642437756061554, 'D_AA_un': 0.5984312295913696, 'Dc_AB_un': 0.6509591937065125, 'Dc_AA_un': 0.6049807071685791, 'repro_un': 0.05654604136945717, 'D_AB_nc': 0.6215887069702148, 'D_AA_nc': 0.7189103364944458, 'Dc_AB_nc': 0.6333975791931152, 'Dc_AA_nc': 0.731540322303772, 'repro_nc': 0.030857318932072452, 'Drho_AB_un': 0.6745050057315286, 'Drho_AA_un': 0.6299060156380422, 'Drho_AB_nc': 0.6676889528271357, 'Drho_AA_nc': 0.7713929477638078, 'swap_AB': 0.0, 'swap_AA': 0.0, 'swap_identical': 1, 'swapd_AB': 0.0, 'swapd_AA': 0.0, 'r2_un': 0.8457287549972534, 'r2_nc': 0.6311694979667664, 'xp_other_un': 2.0341540104641087, 'xp_same_un': 2.0179947305137462, 'xp_other_nc': 2.1888022781662815, 'xp_same_nc': 2.2487375862336654, 'c_AB_un': 0.48013609647750854, 'c_sh_un': 0.487729012966156, 'c_AA_un': 0.5409966707229614, 'c_AB_nc': 0.5151809453964233, 'c_sh_nc': 0.5123739242553711, 'c_AA_nc': 0.552652895450592, 'p_AB': 0.6110164523124695, 'p_sh': 0.6071406602859497, 'conflict_A': 0.04791666666666667, 'conflict_B': 0.0671875, 'inter_AB': 0.7857491374015808, 'inter_AA': 0.7712587118148804, 'kappa': [0.0, 0.0, 0.0, 0.0], 'w_A': [1.0, 1.0, 1.0, 1.0, 1.0], 'w_B': [1.0, 1.0, 1.0, 1.0, 1.0], 'scale': 'prod', 'learner': 'set', 'innate': 'IH', 'cond': 'C-off', 'seed': 77380, 'fam': 'F1', 'tag': '', 'calib': {'PL-struct': {'D_AB_un': 0.8179615139961243, 'D_AA_un': 0.5307746529579163, 'Dc_AB_un': 0.8163671493530273, 'Dc_AA_un': 0.536583662033081, 'repro_un': 0.2902855110354422, 'D_AB_nc': 0.8715150952339172, 'D_AA_nc': 0.6376327276229858, 'Dc_AB_nc': 0.8641892671585083, 'Dc_AA_nc': 0.6488348245620728, 'repro_nc': 0.19339469460739925, 'Drho_AB_un': 0.8391919216245993, 'Drho_AA_un': 0.5586909820842263, 'Drho_AB_nc': 0.9038764050906755, 'Drho_AA_nc': 0.6841818824709448, 'swap_AB': 5.960464477539063e-08, 'swap_AA': 5.960464477539063e-08, 'swap_identical': 1, 'swapd_AB': 0.0, 'swapd_AA': 0.0, 'r2_un': 0.8457287549972534, 'r2_nc': 0.6311694979667664, 'xp_other_un': 2.061150729657932, 'xp_same_un': 1.7834489234638309, 'xp_other_nc': 2.116787161175171, 'xp_same_nc': 2.040146936092354, 'c_AB_un': 0.5948924422264099, 'c_sh_un': 0.6088516712188721, 'c_AA_un': 0.5409966707229614, 'c_AB_nc': 0.5782643556594849, 'c_sh_nc': 0.5964531898498535, 'c_AA_nc': 0.552652895450592, 'p_AB': 0.4021885097026825, 'p_sh': 0.41714251041412354, 'conflict_A': 0.046875, 'conflict_B': 0.23958333333333334, 'inter_AB': 0.7747195959091187, 'inter_AA': 0.7712587118148804, 'kappa': [0.0, 0.0, 0.0, 0.0], 'w_A': [1.0, 1.0, 1.0, 1.0, 1.0], 'w_B': [1.0, 1.0, 1.0, 1.0, 1.0], 'scale': 0.5552284717559814}, 'PL-rand': {'D_AB_un': 0.7950911521911621, 'D_AA_un': 0.4987228512763977, 'Dc_AB_un': 0.7616648077964783, 'Dc_AA_un': 0.5041810870170593, 'repro_un': 0.22406962305088068, 'D_AB_nc': 0.858037531375885, 'D_AA_nc': 0.5991281270980835, 'Dc_AB_nc': 0.809427797794342, 'Dc_AA_nc': 0.6096537709236145, 'repro_nc': 0.1079230131221572, 'Drho_AB_un': 0.7681558672775041, 'Drho_AA_un': 0.5249534169072089, 'Drho_AB_nc': 0.8062647861219145, 'Drho_AA_nc': 0.6428663223616926, 'swap_AB': 5.960464477539063e-08, 'swap_AA': 5.960464477539063e-08, 'swap_identical': 1, 'swapd_AB': 0.0, 'swapd_AA': 0.0, 'r2_un': 0.8457287549972534, 'r2_nc': 0.6311694979667664, 'xp_other_un': 2.0622479795212403, 'xp_same_un': 1.80743269643864, 'xp_other_nc': 2.1450682334804476, 'xp_same_nc': 2.0457308027999, 'c_AB_un': 0.5986652970314026, 'c_sh_un': 0.6025536060333252, 'c_AA_un': 0.5409966707229614, 'c_AB_nc': 0.5828276872634888, 'c_sh_nc': 0.5947532653808594, 'c_AA_nc': 0.552652895450592, 'p_AB': 0.3918822109699249, 'p_sh': 0.4078120291233063, 'conflict_A': 0.046875, 'conflict_B': 0.1796875, 'inter_AB': 0.6459218263626099, 'inter_AA': 0.7712587118148804, 'kappa': [0.0, 0.0, 0.0, 0.0], 'w_A': [1.0, 1.0, 1.0, 1.0, 1.0], 'w_B': [1.0, 1.0, 1.0, 1.0, 1.0], 'scale': 0.5909117460250854}, 'PL-global': {'D_AB_un': 0.6997115612030029, 'D_AA_un': 0.4591120183467865, 'Dc_AB_un': 0.5421831607818604, 'Dc_AA_un': 0.4641367197036743, 'repro_un': 0.04468837786985031, 'D_AB_nc': 0.7889460921287537, 'D_AA_nc': 0.5515426993370056, 'Dc_AB_nc': 0.6172870993614197, 'Dc_AA_nc': 0.561232328414917, 'repro_nc': -0.07283202303416092, 'Drho_AB_un': 0.5646555970352911, 'Drho_AA_un': 0.4832592391350437, 'Drho_AB_nc': 0.6397076033447698, 'Drho_AA_nc': 0.5918069676360822, 'swap_AB': 5.960464477539063e-08, 'swap_AA': 5.960464477539063e-08, 'swap_identical': 1, 'swapd_AB': 0.0, 'swapd_AA': 0.0, 'r2_un': 0.8457287549972534, 'r2_nc': 0.6311694979667664, 'xp_other_un': 2.0680537697305716, 'xp_same_un': 2.098418263632337, 'xp_other_nc': 2.141734230979269, 'xp_same_nc': 2.2675719040083937, 'c_AB_un': 0.4700949788093567, 'c_sh_un': 0.49013078212738037, 'c_AA_un': 0.5409966707229614, 'c_AB_nc': 0.4545697569847107, 'c_sh_nc': 0.4765353798866272, 'c_AA_nc': 0.552652895450592, 'p_AB': 0.17734864354133606, 'p_sh': 0.2185216248035431, 'conflict_A': 0.04635416666666667, 'conflict_B': 0.0078125, 'inter_AB': 0.7686401605606079, 'inter_AA': 0.7712587118148804, 'kappa': [0.0, 0.0, 0.0, 0.0], 'w_A': [1.0, 1.0, 1.0, 1.0, 1.0], 'w_B': [1.0, 1.0, 1.0, 1.0, 1.0], 'scale': 0.6418938636779785}, 'PL-noise': {'D_AB_un': 0.663337230682373, 'D_AA_un': 0.5614191293716431, 'Dc_AB_un': 0.6630016565322876, 'Dc_AA_un': 0.567563533782959, 'repro_un': 0.04468837953395132, 'D_AB_nc': 0.7508860230445862, 'D_AA_nc': 0.6744467616081238, 'Dc_AB_nc': 0.7548418045043945, 'Dc_AA_nc': 0.6862955689430237, 'repro_nc': -0.07283203041183062, 'Drho_AB_un': 0.6904464270164057, 'Drho_AA_un': 0.5909472317095747, 'Drho_AB_nc': 0.7823294062085208, 'Drho_AA_nc': 0.7236833999427206, 'swap_AB': 5.960464477539063e-08, 'swap_AA': 5.960464477539063e-08, 'swap_identical': 1, 'swapd_AB': 0.0, 'swapd_AA': 0.0, 'r2_un': 0.8457287549972534, 'r2_nc': 0.6311694979667664, 'xp_other_un': 2.0680546510133127, 'xp_same_un': 2.0984191408119175, 'xp_other_nc': 2.141733824557451, 'xp_same_nc': 2.2675716411517355, 'c_AB_un': 0.4691274166107178, 'c_sh_un': 0.49028122425079346, 'c_AA_un': 0.5409966707229614, 'c_AB_nc': 0.4563610553741455, 'c_sh_nc': 0.476060152053833, 'c_AA_nc': 0.552652895450592, 'p_AB': 0.7623292207717896, 'p_sh': 0.7649329900741577, 'conflict_A': 0.04739583333333333, 'conflict_B': 0.07708333333333334, 'inter_AB': 0.7686401605606079, 'inter_AA': 0.7712587118148804, 'kappa': [0.0, 0.0, 0.0, 0.0], 'w_A': [1.0, 1.0, 1.0, 1.0, 1.0], 'w_B': [1.0, 1.0, 1.0, 1.0, 1.0], 'scale': 0.5249218940734863}, 'PL-state': {'D_AB_un': 0.6837758421897888, 'D_AA_un': 0.5787174105644226, 'Dc_AB_un': 0.6834299564361572, 'Dc_AA_un': 0.5850511789321899, 'repro_un': 0.0042570761827176555, 'D_AB_nc': 0.7740221619606018, 'D_AA_nc': 0.6952276229858398, 'Dc_AB_nc': 0.7780998349189758, 'Dc_AA_nc': 0.7074415683746338, 'repro_nc': -0.0635272402176416, 'Drho_AB_un': 0.7117203045530509, 'Drho_AA_un': 0.6091553627767956, 'Drho_AB_nc': 0.8064343611040308, 'Drho_AA_nc': 0.7459813674942548, 'swap_AB': 0.0, 'swap_AA': 0.0, 'swap_identical': 1, 'swapd_AB': 0.0, 'swapd_AA': 0.0, 'r2_un': 0.8457287549972534, 'r2_nc': 0.6311694979667664, 'xp_other_un': 2.0680546510133127, 'xp_same_un': 2.02643433825591, 'xp_other_nc': 2.141733824557451, 'xp_same_nc': 2.239723690492074, 'c_AB_un': 0.4691274166107178, 'c_sh_un': 0.49028122425079346, 'c_AA_un': 0.5409966707229614, 'c_AB_nc': 0.4563610553741455, 'c_sh_nc': 0.476060152053833, 'c_AA_nc': 0.552652895450592, 'p_AB': 0.7623292207717896, 'p_sh': 0.7649329900741577, 'conflict_A': 0.04791666666666667, 'conflict_B': 0.078125, 'inter_AB': 0.7686401605606079, 'inter_AA': 0.7712587118148804, 'kappa': [0.0, 0.0, 0.0, 0.0], 'w_A': [1.0, 1.0, 1.0, 1.0, 1.0], 'w_B': [1.0, 1.0, 1.0, 1.0, 1.0], 'scale': 0.5092315673828125}, 'PL-state0': {'D_AB_un': 0.6837758421897888, 'D_AA_un': 0.5787174105644226, 'Dc_AB_un': 0.6834299564361572, 'Dc_AA_un': 0.5850511789321899, 'repro_un': 0.0042570761827176555, 'D_AB_nc': 0.7740221619606018, 'D_AA_nc': 0.6952276229858398, 'Dc_AB_nc': 0.7780998349189758, 'Dc_AA_nc': 0.7074415683746338, 'repro_nc': -0.0635272402176416, 'Drho_AB_un': 0.7117203045530509, 'Drho_AA_un': 0.6091553627767956, 'Drho_AB_nc': 0.8064343611040308, 'Drho_AA_nc': 0.7459813674942548, 'swap_AB': 0.0, 'swap_AA': 0.0, 'swap_identical': 1, 'swapd_AB': 0.0, 'swapd_AA': 0.0, 'r2_un': 0.8457287549972534, 'r2_nc': 0.6311694979667664, 'xp_other_un': 2.0680546510133127, 'xp_same_un': 2.02643433825591, 'xp_other_nc': 2.141733824557451, 'xp_same_nc': 2.239723690492074, 'c_AB_un': 0.4691274166107178, 'c_sh_un': 0.49028122425079346, 'c_AA_un': 0.5409966707229614, 'c_AB_nc': 0.4563610553741455, 'c_sh_nc': 0.476060152053833, 'c_AA_nc': 0.552652895450592, 'p_AB': 0.7623292207717896, 'p_sh': 0.7649329900741577, 'conflict_A': 0.04791666666666667, 'conflict_B': 0.078125, 'inter_AB': 0.7686401605606079, 'inter_AA': 0.7712587118148804, 'kappa': [0.0, 0.0, 0.0, 0.0], 'w_A': [1.0, 1.0, 1.0, 1.0, 1.0], 'w_B': [1.0, 1.0, 1.0, 1.0, 1.0], 'scale': 0.5092315673828125}}, 'r2_rm': 0.5437444448471069, 'r2_rm_fresh': 0.5537245273590088}
+> build · deepseek-v4.1-flash-free
+[0m$ [0mpython -c "
+import json
+base=r'C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes'
+for f in ['p15_cells_set_IH.json','p15_cells_krr_IH.json','p15_cells_nn0_IH.json','p17_cells.json']:
+    d=json.load(open(base+'\\\\'+f,encoding='utf-8'))
+    print('====',f,'ncells',len(d))
+    for k,c in d.items():
+        rows=c['rows']
+        m=c.get('meta',{})
+        fams=sorted(set(r.get('fam') for r in rows))
+        conds=sorted(set(r.get('cond') for r in rows))
+        scales=sorted(set(str(r.get('scale')) for r in rows))
+        learners=sorted(set(r.get('learner') for r in rows))
+        seeds=sorted(set(r.get('seed') for r in rows))
+        print(' ',k,'n=',len(rows),'meta(l,i,scale)=',m.get('learner'),m.get('innate'),m.get('scale'),'| rows learner',learners,'conds',conds,'fams',fams,'scales',scales,'nseeds',len(seeds))
+    print()
+"
+==== p15_cells_set_IH.json ncells 2
+  set_IH_C-off_prod n= 40 meta(l,i,scale)= set IH prod | rows learner ['set'] conds ['C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['prod'] nseeds 10
+  set_IH_C-SLp_prod n= 40 meta(l,i,scale)= set IH prod | rows learner ['set'] conds ['C-SLp'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['prod'] nseeds 10
+
+==== p15_cells_krr_IH.json ncells 2
+  krr_IH_C-off_prod n= 40 meta(l,i,scale)= krr IH prod | rows learner ['krr'] conds ['C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['prod'] nseeds 10
+  krr_IH_C-SLp_prod n= 40 meta(l,i,scale)= krr IH prod | rows learner ['krr'] conds ['C-SLp'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['prod'] nseeds 10
+
+==== p15_cells_nn0_IH.json ncells 1
+  nn0_IH_C-off+C-SLp_prod n= 20 meta(l,i,scale)= nn0 IH prod | rows learner ['nn0'] conds ['C-SLp', 'C-off'] fams ['F1'] scales ['prod'] nseeds 10
+
+==== p17_cells.json ncells 17
+  set_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= set IH rehearsal | rows learner ['set'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  set_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= set I0 rehearsal | rows learner ['set'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  set_IHE_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= set IHE rehearsal | rows learner ['set'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  krr_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= krr IH rehearsal | rows learner ['krr'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  krr_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= krr I0 rehearsal | rows learner ['krr'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  hb_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= hb IH rehearsal | rows learner ['hb'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  hb_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= hb I0 rehearsal | rows learner ['hb'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  rf_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= rf IH rehearsal | rows learner ['rf'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  rf_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= rf I0 rehearsal | rows learner ['rf'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  nn0_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= nn0 IH rehearsal | rows learner ['nn0'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  nn0_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= nn0 I0 rehearsal | rows learner ['nn0'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  fixk_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= fixk IH rehearsal | rows learner ['fixk'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  fixk_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= fixk I0 rehearsal | rows learner ['fixk'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  lin_IH_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= lin IH rehearsal | rows learner ['lin'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  lin_I0_C-off+C-S0+C-H0+C-SLp+C-SLh+C-SLn_rehearsal n= 72 meta(l,i,scale)= lin I0 rehearsal | rows learner ['lin'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  pre_IH n= 72 meta(l,i,scale)= None None None | rows learner ['pre'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+  pre_I0 n= 72 meta(l,i,scale)= None None None | rows learner ['pre'] conds ['C-H0', 'C-S0', 'C-SLh', 'C-SLn', 'C-SLp', 'C-off'] fams ['F1', 'F2', 'F5', 'F6m'] scales ['rehearsal'] nseeds 3
+> build · deepseek-v4.1-flash-free
+Let me verify row fields exist consistently, especially in nn0 and p17.
+[0m$ [0mpython -c "
+import json
+base=r'C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes'
+d=json.load(open(base+r'\\p15_cells_nn0_IH.json',encoding='utf-8'))
+r=list(d.values())[0]['rows'][0]
+print('nn0 keys ok:', {k:r.get(k) for k in ['learner','innate','cond','fam','scale','seed','r2_un','r2_nc','swapd_AB','swapd_AA','kappa','w_A','w_B']})
+d2=json.load(open(base+r'\\p17_cells.json',encoding='utf-8'))
+r2=list(d2.values())[0]['rows'][0]
+print('p17 sample:', {k:r2.get(k) for k in ['learner','innate','cond','fam','scale','seed','r2_un','r2_nc','swapd_AB','swapd_AA','kappa','w_A','w_B']})
+# check kappa lengths and w lengths across all
+bad=0; lens=set()
+for f in ['p15_cells_set_IH.json','p15_cells_krr_IH.json','p15_cells_nn0_IH.json','p17_cells.json']:
+    dd=json.load(open(base+'\\\\'+f,encoding='utf-8'))
+    for c in dd.values():
+        for rr in c['rows']:
+            lens.add((len(rr['kappa']),len(rr['w_A']),len(rr['w_B'])))
+print('lens(kappa,wA,wB):',lens)
+# seeds sets for set vs krr prod
+import collections
+def seedmap(f):
+    dd=json.load(open(base+'\\\\'+f,encoding='utf-8')); m=collections.defaultdict(set)
+    for c in dd.values():
+        for rr in c['rows']: m[(rr['learner'],rr['innate'],rr['cond'],rr['fam'],rr['scale'])].add(rr['seed'])
+    return m
+ms=seedmap('p15_cells_set_IH.json'); mk=seedmap('p15_cells_krr_IH.json')
+print('set seeds C-off F1', sorted(ms[('set','IH','C-off','F1','prod')]))
+print('krr seeds C-off F1', sorted(mk[('krr','IH','C-off','F1','prod')]))
+"
+nn0 keys ok: {'learner': 'nn0', 'innate': 'IH', 'cond': 'C-off', 'fam': 'F1', 'scale': 'prod', 'seed': 77380, 'r2_un': 0.6292300224304199, 'r2_nc': 0.5601069331169128, 'swapd_AB': 0.0, 'swapd_AA': 0.0, 'kappa': [0.0, 0.0, 0.0, 0.0], 'w_A': [1.0, 1.0, 1.0, 1.0, 1.0], 'w_B': [1.0, 1.0, 1.0, 1.0, 1.0]}
+p17 sample: {'learner': 'set', 'innate': 'IH', 'cond': 'C-off', 'fam': 'F1', 'scale': 'rehearsal', 'seed': 77340, 'r2_un': 0.7890873551368713, 'r2_nc': 0.5606673359870911, 'swapd_AB': 0.0, 'swapd_AA': 0.0, 'kappa': [0.0, 0.0, 0.0, 0.0], 'w_A': [1.0, 1.0, 1.0, 1.0, 1.0], 'w_B': [1.0, 1.0, 1.0, 1.0, 1.0]}
+lens(kappa,wA,wB): {(4, 5, 5)}
+set seeds C-off F1 [77380, 77381, 77382, 77383, 77384, 77385, 77386, 77387, 77388, 77389]
+krr seeds C-off F1 [77380, 77381, 77382, 77383, 77384, 77385, 77386, 77387, 77388, 77389]
+> build · deepseek-v4.1-flash-free
+Data schema confirmed. Now I'll write the tabulation script.
+[0m← [0mWrite frontalis-v3-lab/proposals/probes/diag5/ds1_tab.py
+Created file successfully: frontalis-v3-lab/proposals/probes/diag5/ds1_tab.py
+> build · deepseek-v4.1-flash-free
+Now let me run it.
+[0m$ [0mpython "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5\ds1_tab.py"
+Traceback (most recent call last):
+  File "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5\ds1_tab.py", line 15, in <module>
+    import numpy as np
+ModuleNotFoundError: No module named 'numpy'
+> build · deepseek-v4.1-flash-free
+numpy isn't in the default Python. Let me find the right interpreter.
+[0m✱ [0mGlob "**/python.exe" [90m0 matches[0m
+[0m$ [0mWrite-Output "--- py -0 ---"; py -0 2>&1; Write-Output "--- where python ---"; where.exe python 2>&1; Write-Output "--- python version ---"; python --version 2>&1; Write-Output "--- pip list numpy ---"; python -m pip show numpy 2>&1 | Select-Object -First 5
+--- py -0 ---
+ -V:3.14[-64] *   Python 3.14.7
+--- where python ---
+C:\Users\sakur\AppData\Local\Microsoft\WindowsApps\python.exe
+--- python version ---
+Python 3.14.7
+--- pip list numpy ---
+python : WARNING: Package(s) not found: numpy
+�����ꏊ �s:1 ����:204
++ ... utput "--- pip list numpy ---"; python -m pip show numpy 2>&1 | Selec ...
++                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING: Package(s) not found: numpy:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+> build · deepseek-v4.1-flash-free
+[0m✱ [0mGlob "**/{pyvenv.cfg,*.venv,venv}" [90m0 matches[0m
+[0m$ [0mWrite-Output "--- conda ---"; Get-Command conda -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source; Write-Output "--- py launcher list ---"; py -0p 2>&1; Write-Output "--- common dirs ---"; Get-ChildItem "C:\Users\sakur\AppData\Local\Programs" -ErrorAction SilentlyContinue | Select-Object Name; Get-ChildItem "C:\" -Filter "*conda*" -ErrorAction SilentlyContinue | Select-Object Name; Get-ChildItem "C:\Users\sakur" -Filter "*conda*" -ErrorAction SilentlyContinue | Select-Object Name; Get-ChildItem "C:\Users\sakur\anaconda3","C:\Users\sakur\miniconda3","C:\ProgramData\anaconda3","C:\ProgramData\miniconda3" -ErrorAction SilentlyContinue | Select-Object -First 3 FullName
+--- conda ---
+--- py launcher list ---
+ -V:3.14[-64] *   C:\Users\sakur\AppData\Local\Python\pythoncore-3.14-64\python.exe
+--- common dirs ---
+
+Name             
+----             
+@opencodedesktop 
+Common           
+Microsoft VS Code
+speech.cpp       
+TakyuPractice    
+VOICEVOX
+> build · deepseek-v4.1-flash-free
+numpy isn't installed. Let me try installing it.
+[0m$ [0mpython -m pip install numpy 2>&1 | Select-Object -Last 15
+Collecting numpy
+  Downloading numpy-2.5.4-cp314-cp314-win_amd64.whl.metadata (6.6 kB)
+Downloading numpy-2.5.4-cp314-cp314-win_amd64.whl (12.7 MB)
+   ---------------------------------------- 12.7/12.7 MB 5.6 MB/s  0:00:02
+Installing collected packages: numpy
+python :   WARNING: The scripts f2py.exe and numpy-config.exe are installed in 'C:\Users\sakur\AppData\Local\Python\pyt
+honcore-3.14-64\Scripts' which is not on PATH.
+�����ꏊ �s:1 ����:1
++ python -m pip install numpy 2>&1 | Select-Object -Last 15
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (  WARNING: The ...is not on PATH.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+Successfully installed numpy-2.5.4
+> build · deepseek-v4.1-flash-free
+numpy installed. Now let me run the script.
+[0m$ [0mpython "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5\ds1_tab.py"
+C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5\ds1_table.json
+C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5\ds1_table.md
+> build · deepseek-v4.1-flash-free
+Let me verify the outputs.
+[0m$ [0m$f="C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5\ds1_table.md"; Write-Output ("lines: " + (Get-Content $f).Count); Get-Content $f -TotalCount 30
+lines: 730
+# ds1 diagnostic table
+
+Values are medians unless stated; markdown shows 3 significant digits.
+
+## 1. Per-cell medians  (learner|innate|cond|fam|scale)
+
+| learner | innate | cond | fam | scale | n | r2_un | r2_nc | swapd_AB | swapd_AA | J3diff | J3diff>0 | mean|kappa| | wCV | L1(wA-wB) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fixk | I0 | C-H0 | F1 | rehearsal | 3 | -0.0234 | -0.018 | 0.841 | 0.453 | 0.388 | 3 | 0 | 0.113 | 0.254 |
+| fixk | I0 | C-H0 | F2 | rehearsal | 3 | 0.00228 | -0.00877 | 0.517 | 0.444 | 0.0728 | 3 | 0 | 0.0331 | 0.153 |
+| fixk | I0 | C-H0 | F5 | rehearsal | 3 | -0.0151 | -0.0101 | 0.69 | 0.436 | 0.242 | 3 | 0 | 0.116 | 0.084 |
+| fixk | I0 | C-H0 | F6m | rehearsal | 3 | 0.301 | -0.0731 | 0.295 | 0.242 | 0.0534 | 3 | 0 | 0.0507 | 0.197 |
+| fixk | I0 | C-S0 | F1 | rehearsal | 3 | -0.0228 | -0.0181 | 0.835 | 0.478 | 0.356 | 3 | 0 | 0.108 | 0.256 |
+| fixk | I0 | C-S0 | F2 | rehearsal | 3 | 0.00185 | -0.00853 | 0.563 | 0.448 | 0.116 | 3 | 0 | 0.0305 | 0.152 |
+| fixk | I0 | C-S0 | F5 | rehearsal | 3 | -0.0157 | -0.0105 | 0.678 | 0.373 | 0.287 | 3 | 0 | 0.114 | 0.075 |
+| fixk | I0 | C-S0 | F6m | rehearsal | 3 | 0.301 | -0.0734 | 0.306 | 0.256 | 0.0555 | 3 | 0 | 0.0496 | 0.156 |
+| fixk | I0 | C-SLh | F1 | rehearsal | 3 | -0.0227 | -0.0184 | 0.767 | 0.531 | 0.325 | 3 | 0.5 | 0.109 | 0.226 |
+| fixk | I0 | C-SLh | F2 | rehearsal | 3 | 0.00167 | -0.00875 | 0.546 | 0.512 | -0.0273 | 1 | 1.75 | 0.0307 | 0.136 |
+| fixk | I0 | C-SLh | F5 | rehearsal | 3 | -0.0158 | -0.0102 | 0.825 | 0.588 | 0.202 | 3 | 1.75 | 0.112 | 0.115 |
+| fixk | I0 | C-SLh | F6m | rehearsal | 3 | 0.301 | -0.0734 | 0.328 | 0.238 | 0.0926 | 3 | 0.75 | 0.0501 | 0.179 |
+| fixk | I0 | C-SLn | F1 | rehearsal | 3 | -0.0226 | -0.0183 | 0.837 | 0.472 | 0.366 | 3 | 0.381 | 0.108 | 0.253 |
+| fixk | I0 | C-SLn | F2 | rehearsal | 3 | 0.00181 | -0.00857 | 0.561 | 0.445 | 0.116 | 3 | 0.381 | 0.0312 | 0.152 |
+| fixk | I0 | C-SLn | F5 | rehearsal | 3 | -0.0157 | -0.0103 | 0.677 | 0.373 | 0.288 | 3 | 0.381 | 0.114 | 0.078 |
+| fixk | I0 | C-SLn | F6m | rehearsal | 3 | 0.301 | -0.0734 | 0.307 | 0.256 | 0.0561 | 3 | 0.381 | 0.0496 | 0.156 |
+| fixk | I0 | C-SLp | F1 | rehearsal | 3 | -0.0228 | -0.0181 | 0.834 | 0.478 | 0.356 | 3 | 0.0343 | 0.108 | 0.256 |
+| fixk | I0 | C-SLp | F2 | rehearsal | 3 | 0.00185 | -0.00853 | 0.563 | 0.448 | 0.115 | 3 | 0.0426 | 0.0305 | 0.152 |
+| fixk | I0 | C-SLp | F5 | rehearsal | 3 | -0.0157 | -0.0105 | 0.678 | 0.373 | 0.287 | 3 | 0.0239 | 0.114 | 0.075 |
+| fixk | I0 | C-SLp | F6m | rehearsal | 3 | 0.301 | -0.0734 | 0.306 | 0.251 | 0.0544 | 3 | 0.439 | 0.0496 | 0.156 |
+| fixk | I0 | C-off | F1 | rehearsal | 3 | -0.0155 | -0.0242 | 0.693 | 0.519 | 0.168 | 3 | 0 | 0 | 0 |
+| fixk | I0 | C-off | F2 | rehearsal | 3 | 0.00357 | -0.00996 | 0.417 | 0.45 | -0.0334 | 0 | 0 | 0 | 0 |
+[0m$ [0mpython -c "
+import json
+p=r'C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5\ds1_table.json'
+d=json.load(open(p,encoding='utf-8'))
+print('sections',list(d.keys()))
+print('per_cell',len(d['per_cell']))
+print('pairs',{k:len(v) for k,v in d['pairs'].items()})
+print('spearman',len(d['spearman']))
+print('--- example per_cell set|IH|C-off|F1|prod ---')
+print(json.dumps(d['per_cell']['set|IH|C-off|F1|prod'],indent=0))
+print('--- example per_cell nn0|IH|C-SLp|F1|prod ---')
+print(json.dumps(d['per_cell']['nn0|IH|C-SLp|F1|prod'],indent=0))
+print('--- spearman all ---')
+for k,v in d['spearman'].items(): print(k,v)
+"
+sections ['per_cell', 'pairs', 'spearman']
+per_cell 426
+pairs {'r2_nc_krr_minus_set': 56, 'r2_nc_set_minus_nn0': 50, 'r2_nc_C-SLp_minus_C-off_within_learner': 77, 'r2_un_C-SLp_minus_C-off_within_learner': 77}
+spearman 9
+--- example per_cell set|IH|C-off|F1|prod ---
+{
+"learner": "set",
+"innate": "IH",
+"cond": "C-off",
+"fam": "F1",
+"scale": "prod",
+"n": 10,
+"r2_un_med": 0.8256385028362274,
+"r2_nc_med": 0.6087558269500732,
+"swapd_AB_med": 0.0,
+"swapd_AA_med": 0.0,
+"J3diff_med": 0.0,
+"J3diff_gt0": 0,
+"abs_kappa_mean_med": 0.0,
+"wCV_med": 0.0,
+"wL1_med": 0.0
+}
+--- example per_cell nn0|IH|C-SLp|F1|prod ---
+{
+"learner": "nn0",
+"innate": "IH",
+"cond": "C-SLp",
+"fam": "F1",
+"scale": "prod",
+"n": 10,
+"r2_un_med": 0.6018120646476746,
+"r2_nc_med": 0.4750131368637085,
+"swapd_AB_med": 0.05551435798406601,
+"swapd_AA_med": 0.04706159979104996,
+"J3diff_med": 0.007308902218937874,
+"J3diff_gt0": 7,
+"abs_kappa_mean_med": 0.8650015667080879,
+"wCV_med": 0.2203062867565536,
+"wL1_med": 0.5985000133514404
+}
+--- spearman all ---
+krr|IH|C-SLp|F1|prod {'learner': 'krr', 'innate': 'IH', 'cond': 'C-SLp', 'fam': 'F1', 'scale': 'prod', 'n': 10, 'rho_J3diff_wL1': 0.6969696969696969, 'rho_J3diff_kappaDiff': 0.5515151515151515}
+krr|IH|C-SLp|F2|prod {'learner': 'krr', 'innate': 'IH', 'cond': 'C-SLp', 'fam': 'F2', 'scale': 'prod', 'n': 10, 'rho_J3diff_wL1': -0.3696969696969697, 'rho_J3diff_kappaDiff': -0.33333333333333326}
+krr|IH|C-SLp|F5|prod {'learner': 'krr', 'innate': 'IH', 'cond': 'C-SLp', 'fam': 'F5', 'scale': 'prod', 'n': 10, 'rho_J3diff_wL1': -0.6, 'rho_J3diff_kappaDiff': -0.13939393939393938}
+krr|IH|C-SLp|F6m|prod {'learner': 'krr', 'innate': 'IH', 'cond': 'C-SLp', 'fam': 'F6m', 'scale': 'prod', 'n': 10, 'rho_J3diff_wL1': 0.01818181818181818, 'rho_J3diff_kappaDiff': 0.3939393939393939}
+nn0|IH|C-SLp|F1|prod {'learner': 'nn0', 'innate': 'IH', 'cond': 'C-SLp', 'fam': 'F1', 'scale': 'prod', 'n': 10, 'rho_J3diff_wL1': 0.16363636363636364, 'rho_J3diff_kappaDiff': 0.07878787878787878}
+set|IH|C-SLp|F1|prod {'learner': 'set', 'innate': 'IH', 'cond': 'C-SLp', 'fam': 'F1', 'scale': 'prod', 'n': 10, 'rho_J3diff_wL1': 0.13939393939393938, 'rho_J3diff_kappaDiff': 0.1515151515151515}
+set|IH|C-SLp|F2|prod {'learner': 'set', 'innate': 'IH', 'cond': 'C-SLp', 'fam': 'F2', 'scale': 'prod', 'n': 10, 'rho_J3diff_wL1': 0.23636363636363633, 'rho_J3diff_kappaDiff': -0.4545454545454545}
+set|IH|C-SLp|F5|prod {'learner': 'set', 'innate': 'IH', 'cond': 'C-SLp', 'fam': 'F5', 'scale': 'prod', 'n': 10, 'rho_J3diff_wL1': 0.11515151515151514, 'rho_J3diff_kappaDiff': 0.07878787878787878}
+set|IH|C-SLp|F6m|prod {'learner': 'set', 'innate': 'IH', 'cond': 'C-SLp', 'fam': 'F6m', 'scale': 'prod', 'n': 10, 'rho_J3diff_wL1': -0.17575757575757575, 'rho_J3diff_kappaDiff': 0.33333333333333326}
+> build · deepseek-v4.1-flash-free
+Let me check the later sections of the markdown and confirm only new files were created.
+[0m$ [0mGet-ChildItem "C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5" | Sort-Object Name | Format-Table Name,Length,LastWriteTime -AutoSize
+Name           Length LastWriteTime      
+----           ------ -------------      
+d1_finish.log       0 2026/10/17 23:08:19
+d1_finish.py     1368 2026/10/17 23:08:11
+d2_diag.py       6807 2026/10/17 23:09:27
+d3_exp.py        3820 2026/10/17 23:11:04
+ds1_out.txt     66443 2026/10/17 23:11:49
+ds1_prompt.txt   1626 2026/10/17 23:07:31
+ds1_tab.py      12351 2026/10/17 23:09:51
+ds1_table.json 228542 2026/10/17 23:11:34
+ds1_table.md    60726 2026/10/17 23:11:34
+ds2_out.txt       994 2026/10/17 23:08:00
+ds2_prompt.txt   1711 2026/10/17 23:07:31
+make_sim5.py     1917 2026/10/17 23:10:04
+sim5.py         37489 2026/10/17 23:10:18
+[0m$ [0m$f="C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5\ds1_table.md"; $c=Get-Content $f; $i=($c | Select-String -Pattern '^## 2\.' | Select-Object -First 1).LineNumber; $c[($i-1)..($i+12)]; Write-Output "..."; $j=($c | Select-String -Pattern '^## 3\.' | Select-Object -First 1).LineNumber; $c[($j-1)..($c.Count-1)]
+## 2. Paired-by-seed differences
+
+### 2a. r2_nc(krr) - r2_nc(set)   [paired within innate|cond|fam|scale]
+
+| innate | cond | fam | scale | n | >0 | median |
+|---|---|---|---|---|---|---|
+| I0 | C-H0 | F1 | rehearsal | 3 | 3 | 0.0162 |
+| I0 | C-H0 | F2 | rehearsal | 3 | 3 | 0.196 |
+| I0 | C-H0 | F5 | rehearsal | 3 | 3 | 0.43 |
+| I0 | C-H0 | F6m | rehearsal | 3 | 3 | 0.142 |
+| I0 | C-S0 | F1 | rehearsal | 3 | 2 | 0.00754 |
+| I0 | C-S0 | F2 | rehearsal | 3 | 3 | 0.217 |
+| I0 | C-S0 | F5 | rehearsal | 3 | 3 | 0.407 |
+| I0 | C-S0 | F6m | rehearsal | 3 | 3 | 0.16 |
+...
+## 3. Spearman across seeds within C-SLp cells (n >= 8)
+
+| learner | innate | cond | fam | scale | n | rho(J3diff, L1(wA-wB)) | rho(J3diff, |kappa_A-kappa_B|) |
+|---|---|---|---|---|---|---|---|
+| krr | IH | C-SLp | F1 | prod | 10 | 0.697 | 0.552 |
+| krr | IH | C-SLp | F2 | prod | 10 | -0.37 | -0.333 |
+| krr | IH | C-SLp | F5 | prod | 10 | -0.6 | -0.139 |
+| krr | IH | C-SLp | F6m | prod | 10 | 0.0182 | 0.394 |
+| nn0 | IH | C-SLp | F1 | prod | 10 | 0.164 | 0.0788 |
+| set | IH | C-SLp | F1 | prod | 10 | 0.139 | 0.152 |
+| set | IH | C-SLp | F2 | prod | 10 | 0.236 | -0.455 |
+| set | IH | C-SLp | F5 | prod | 10 | 0.115 | 0.0788 |
+| set | IH | C-SLp | F6m | prod | 10 | -0.176 | 0.333 |
+> build · deepseek-v4.1-flash-free
+The outputs look correct. Let me run an independent verification of a few values using a different computation path.
+[0m$ [0mpython -c "
+import json, numpy as np
+base=r'C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes'
+out=json.load(open(base+r'\\diag5\\ds1_table.json',encoding='utf-8'))
+rows=[]
+for fn in ['p15_cells_set_IH.json','p15_cells_krr_IH.json','p15_cells_nn0_IH.json','p17_cells.json']:
+    for c in json.load(open(base+'\\\\'+fn,encoding='utf-8')).values():
+        rows+=c['rows']
+def sel(**kw):
+    return [r for r in rows if all(r[k]==v for k,v in kw.items())]
+def rank(x):
+    x=np.asarray(x,float); 
+    # average ranks via double argsort
+    o=np.argsort(x,kind='mergesort'); r=np.empty(len(x)); r[o]=(np.arange(len(x))+1.0)
+    # tie average: group equal values
+    ux=np.unique(x); 
+    for u in ux:
+        m=x==u
+        if m.sum()>1: r[m]=r[m].mean()
+    return r
+def spear(a,b):
+    ra,rb=rank(a),rank(b); return np.corrcoef(ra,rb)[0,1]
+# check set|IH|C-SLp|F1|prod
+g=sorted(sel(learner='set',innate='IH',cond='C-SLp',fam='F1',scale='prod'),key=lambda r:r['seed'])
+print('set IH C-SLp F1 prod n=',len(g))
+print('  r2_un med',np.median([r['r2_un'] for r in g]))
+print('  r2_nc med',np.median([r['r2_nc'] for r in g]))
+print('  J3diff med',np.median([r['swapd_AB']-r['swapd_AA'] for r in g]),'gt0',int(np.sum([r['swapd_AB']-r['swapd_AA']>0 for r in g])))
+print('  JSON:',out['per_cell']['set|IH|C-SLp|F1|prod']['r2_un_med'],out['per_cell']['set|IH|C-SLp|F1|prod']['r2_nc_med'],out['per_cell']['set|IH|C-SLp|F1|prod']['J3diff_med'],out['per_cell']['set|IH|C-SLp|F1|prod']['J3diff_gt0'])
+# independent spearman for krr F1
+g=sorted(sel(learner='krr',innate='IH',cond='C-SLp',fam='F1',scale='prod'),key=lambda r:r['seed'])
+j3=[r['swapd_AB']-r['swapd_AA'] for r in g]
+wl1=[sum(abs(a-b) for a,b in zip(r['w_A'],r['w_B'])) for r in g]
+kd=[abs(r['kappa'][0]-r['kappa'][2]) for r in g]
+print('indep krr F1 rho wL1',spear(j3,wl1),'rho kd',spear(j3,kd))
+print('json  krr F1',out['spearman']['krr|IH|C-SLp|F1|prod']['rho_J3diff_wL1'],out['spearman']['krr|IH|C-SLp|F1|prod']['rho_J3diff_kappaDiff'])
+# independent krr-set pair for I0|C-H0|F1|rehearsal
+K={r['seed']:r['r2_nc'] for r in sel(learner='krr',innate='I0',cond='C-H0',fam='F1',scale='rehearsal')}
+S={r['seed']:r['r2_nc'] for r in sel(learner='set',innate='I0',cond='C-H0',fam='F1',scale='rehearsal')}
+d=[K[s]-S[s] for s in sorted(set(K)&set(S))]
+print('indep krr-set I0 C-H0 F1 med',np.median(d),'gt0',int(np.sum(np.array(d)>0)),'n',len(d))
+print('json ',out['pairs']['r2_nc_krr_minus_set']['I0|C-H0|F1|rehearsal'])
+"
+set IH C-SLp F1 prod n= 10
+  r2_un med 0.8268330991268158
+  r2_nc med 0.5921494364738464
+  J3diff med 0.031835734844207764 gt0 7
+  JSON: 0.8268330991268158 0.5921494364738464 0.031835734844207764 7
+indep krr F1 rho wL1 0.6969696969696969 rho kd 0.5515151515151515
+json  krr F1 0.6969696969696969 0.5515151515151515
+indep krr-set I0 C-H0 F1 med 0.01616448163986206 gt0 3 n 3
+json  {'n': 3, 'gt0': 3, 'med': 0.01616448163986206}
+> build · deepseek-v4.1-flash-free
+Done. The script `diag5/ds1_tab.py` loads the four input files, groups rows by `(learner, innate, cond, fam, scale)`, and produces all three requested tabulations. I verified key values (per-cell medians, paired diffs, Spearman rhos) against an independent recomputation — they match.
+
+Inputs and outputs are all under `frontalis-v3-lab/proposals/probes/`. Only three new files were created in `diag5/` (`ds1_tab.py`, `ds1_table.json`, `ds1_table.md`); no existing file was modified, and no sealed (`p31_eval_*`, `p30_cells*`, `p30_judgment*`) file was opened or read.
+
+Outputs written:
+- `C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5\ds1_table.json`
+- `C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\diag5\ds1_table.md`
+
+Notes on scope/counts (from the data as provided):
+- Per-cell groups: 426 (400 rehearsal with n=3, plus prod cells with n=10), each keyed `learner|innate|cond|fam|scale`.
+- `r2_nc(krr)-r2_nc(set)`: 56 pairs; `r2_nc(set)-r2_nc(nn0)`: 50 pairs; within-learner `C-SLp-C-off`: 77 pairs (both `r2_nc` and `r2_un`).
+- Spearman step applied to the 9 `C-SLp` cells with `n >= 8` (all `prod`, `n=10`); rehearsal cells have `n=3` so they are excluded. Undefined correlations (constant input) would be stored as `null`; none occurred here.

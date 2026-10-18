@@ -1,0 +1,9 @@
+{
+  "frozen_on": "2026-10-16",
+  "spec_file": "frontalis-v3-lab/SPEC-v3.4.md",
+  "spec_sha256": "9b93bea98ce37cf2122b1f79eccbb4f72b6cbded2861a52badfe9be67dc44b90",
+  "plan_file": "frontalis-v3-lab/PLAN-v3.4.md",
+  "plan_sha256": "9e0e0c3025f0989a339e61e68274e1da76be6eabc05e6f2bd7c3472d377d25f9",
+  "base_commit": "27d65c7",
+  "note": "Criteria frozen before implementation. Later changes go to CHANGELOG-v3.4.md; original criteria and results are never deleted."
+}

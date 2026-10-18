@@ -1,0 +1,83 @@
+{
+ "conclusion": "(ii) どの条件でも mlp は最良でない: NN 固有の役割は確認されなかった。既定のヘッドから mlp を外す（設定は残す）",
+ "mlp_best_conditions": [],
+ "mlp_rows": {
+  "linear|5": {
+   "ce": 0.6116506240186969,
+   "second_best_head": "linear",
+   "second_best_ce": 0.5687233131736558,
+   "relative_gap_to_second": -0.07548013216742097,
+   "seeds_mlp_best": 0,
+   "mlp_is_best": false,
+   "relative_gap_kl_to_second": -1.0040184353500412
+  },
+  "linear|20": {
+   "ce": 0.5435775717986807,
+   "second_best_head": "linear",
+   "second_best_ce": 0.543769399672683,
+   "relative_gap_to_second": 0.00035277430859066683,
+   "seeds_mlp_best": 12,
+   "mlp_is_best": true,
+   "relative_gap_kl_to_second": 0.010775886027070207
+  },
+  "nonlinear|5": {
+   "ce": 0.6982595574068753,
+   "second_best_head": "linear",
+   "second_best_ce": 0.654476688686197,
+   "relative_gap_to_second": -0.06689752206234943,
+   "seeds_mlp_best": 1,
+   "mlp_is_best": false,
+   "relative_gap_kl_to_second": -0.37205501928541157
+  },
+  "nonlinear|20": {
+   "ce": 0.6498641390611974,
+   "second_best_head": "linear",
+   "second_best_ce": 0.633522006023146,
+   "relative_gap_to_second": -0.0257956833112035,
+   "seeds_mlp_best": 2,
+   "mlp_is_best": false,
+   "relative_gap_kl_to_second": -0.16895669608806038
+  },
+  "group|5": {
+   "ce": 0.6211547339723376,
+   "second_best_head": "linear",
+   "second_best_ce": 0.6087997319478149,
+   "relative_gap_to_second": -0.020294033285779618,
+   "seeds_mlp_best": 0,
+   "mlp_is_best": false,
+   "relative_gap_kl_to_second": -0.591850582666538
+  },
+  "group|20": {
+   "ce": 0.5980205226901446,
+   "second_best_head": "knnk",
+   "second_best_ce": 0.5951372148661933,
+   "relative_gap_to_second": -0.004844778232528379,
+   "seeds_mlp_best": 0,
+   "mlp_is_best": false,
+   "relative_gap_kl_to_second": -0.3997549878535491
+  },
+  "unrelated|5": {
+   "ce": 0.8824789044182172,
+   "second_best_head": "none",
+   "second_best_ce": 0.7004248589069615,
+   "relative_gap_to_second": -0.25991945202424377,
+   "seeds_mlp_best": 0,
+   "mlp_is_best": false,
+   "relative_gap_kl_to_second": -1.0635245278735643
+  },
+  "unrelated|20": {
+   "ce": 0.8266681564445386,
+   "second_best_head": "none",
+   "second_best_ce": 0.6969177648854481,
+   "relative_gap_to_second": -0.1861774775972564,
+   "seeds_mlp_best": 0,
+   "mlp_is_best": false,
+   "relative_gap_kl_to_second": -0.7738307588653548
+  }
+ },
+ "default_mixture_heads": [
+  "linear",
+  "knn1",
+  "none"
+ ]
+}

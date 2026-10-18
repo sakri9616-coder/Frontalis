@@ -1,0 +1,20 @@
+2026-10-17 10:17:43 START p13_ckpt_chunk.py
+2026-10-17 10:34:03 END rc=0 p13_ckpt_chunk.py
+2026-10-17 10:34:03 START p14_kappa_check.py
+2026-10-17 13:49:59 END rc=0 p14_kappa_check.py
+2026-10-17 13:49:59 START p15_prod.py cells set IH C-off
+2026-10-17 15:19:38 END rc=0 p15_prod.py cells set IH C-off
+2026-10-17 15:19:38 START p15_prod.py cells set IH C-SLp
+2026-10-17 17:04:16 END rc=0 p15_prod.py cells set IH C-SLp
+2026-10-17 17:04:16 START p15_prod.py cells krr IH C-off
+2026-10-17 17:31:22 END rc=0 p15_prod.py cells krr IH C-off
+2026-10-17 17:31:22 START p15_prod.py cells set I0 C-off
+2026-10-17 19:56:11 END rc=0 p15_prod.py cells set I0 C-off
+2026-10-17 19:56:11 START p15_prod.py cells set IH C-S0
+2026-10-17 20:39:47 END rc=0 p15_prod.py cells set IH C-S0
+2026-10-17 20:39:48 START p15_prod.py cells krr IH C-SLp
+2026-10-17 21:40:54 END rc=0 p15_prod.py cells krr IH C-SLp
+2026-10-17 21:40:54 START p25_min_dev.py calib_slp
+2026-10-17 21:53:24 END rc=0 p25_min_dev.py calib_slp
+2026-10-17 21:53:24 START p25_min_dev.py nn0
+2026-10-17 22:29:22 END rc=0 p25_min_dev.py nn0

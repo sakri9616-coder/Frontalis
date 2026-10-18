@@ -1,0 +1,4 @@
+C:\Users\sakur\AppData\Local\ASIST-She-necheia\Frontalis-v4design\frontalis-v3-lab\proposals\probes\measure.py:169: RuntimeWarning: Mean of empty slice
+  s[f] = {k: round(float(np.nanmean([r.get(k, np.nan) for r in sel])), 3) for k in keys}
+D_MCA_on train 43s total 142s nonfinite 0
+D_MC_off train 45s total 123s nonfinite 0

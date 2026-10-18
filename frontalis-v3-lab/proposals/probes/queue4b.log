@@ -1,0 +1,38 @@
+2026-10-17 10:18:12 START p16_nn_learnability.py rf_p0_mid
+2026-10-17 10:49:57 END rc=0 p16_nn_learnability.py rf_p0_mid
+2026-10-17 10:49:58 START p17_rehearsal.py ckpt
+2026-10-17 12:10:56 END rc=0 p17_rehearsal.py ckpt
+2026-10-17 12:10:56 START p17_rehearsal.py set
+2026-10-17 13:32:59 END rc=0 p17_rehearsal.py set
+2026-10-17 13:32:59 START p17_rehearsal.py krr
+2026-10-17 13:38:51 END rc=0 p17_rehearsal.py krr
+2026-10-17 13:38:51 START p17_rehearsal.py hb
+2026-10-17 13:42:51 END rc=0 p17_rehearsal.py hb
+2026-10-17 13:42:51 START p17_rehearsal.py rf
+2026-10-17 14:05:10 END rc=0 p17_rehearsal.py rf
+2026-10-17 14:05:10 START p17_rehearsal.py nn0
+2026-10-17 14:32:04 END rc=0 p17_rehearsal.py nn0
+2026-10-17 14:32:04 START p17_rehearsal.py fixk
+2026-10-17 14:36:03 END rc=0 p17_rehearsal.py fixk
+2026-10-17 14:36:03 START p17_rehearsal.py lin
+2026-10-17 14:39:02 END rc=0 p17_rehearsal.py lin
+2026-10-17 14:39:02 START p17_rehearsal.py pre
+2026-10-17 14:49:37 END rc=0 p17_rehearsal.py pre
+2026-10-17 14:49:37 START p17_rehearsal.py report
+2026-10-17 14:49:45 END rc=0 p17_rehearsal.py report
+2026-10-17 14:49:45 START p16_nn_learnability.py gate_rel_mid
+2026-10-17 15:41:31 END rc=0 p16_nn_learnability.py gate_rel_mid
+2026-10-17 15:41:31 START p16_nn_learnability.py gate_rel_lr1e-3_mid
+2026-10-17 16:28:53 END rc=0 p16_nn_learnability.py gate_rel_lr1e-3_mid
+2026-10-17 16:28:53 START p16_nn_learnability.py gate_rel_lr1e-4_mid
+2026-10-17 17:22:53 END rc=0 p16_nn_learnability.py gate_rel_lr1e-4_mid
+2026-10-17 17:22:53 START p16_rel_choose.py
+2026-10-17 17:22:53 END rc=0 p16_rel_choose.py
+2026-10-17 17:22:53 START p17_rehearsal.py set lr
+2026-10-17 18:16:08 END rc=0 p17_rehearsal.py set lr
+2026-10-17 18:16:08 START p17_rehearsal.py rel lr
+2026-10-17 19:55:15 END rc=0 p17_rehearsal.py rel lr
+2026-10-17 19:55:16 START p23_rel_speedup.py speed
+2026-10-17 19:56:05 END rc=0 p23_rel_speedup.py speed
+2026-10-17 19:56:05 START p23_rel_speedup.py equiv base
+2026-10-17 20:07:20 queue B's last job (equiv base) finished; starting queue F
