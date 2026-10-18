@@ -1,0 +1,26 @@
+START 2026-10-18 02:19:58 p34_local_dev.py j3v5base C:/Users/sakur/AppData/Local/Temp/claude/C--Users-sakur-AppData-Local-ASIST-She-necheia/512780de-422b-4ef6-a34c-e3a52504368d/scratchpad/slp_32000.pt
+{
+ "real": {
+  "n_pos": 10,
+  "median": 0.17382947978330776,
+  "AA_median": 0.006860150257125497,
+  "max": 0.4535205429419875
+ },
+ "PL-state": {
+  "n_pos": 10,
+  "median": 0.24454047717154026,
+  "AA_median": 0.006860150257125497,
+  "max": 0.6614599087042734
+ },
+ "PL-state0": {
+  "n_pos": 8,
+  "median": 0.0027299599605612457,
+  "AA_median": 0.006860150257125497,
+  "max": 0.020152087323367596
+ }
+}
+END 2026-10-18 02:20:15 rc=0 p34_local_dev.py j3v5base C:/Users/sakur/AppData/Local/Temp/claude/C--Users-sakur-AppData-Local-ASIST-She-necheia/512780de-422b-4ef6-a34c-e3a52504368d/scratchpad/slp_32000.pt
+START 2026-10-18 02:20:15 p34_local_dev.py relgate
+{"passed": true, "median_r2_un": {"F1": 0.5909843444824219, "F6m": 0.8619017601013184, "F2": 0.3412313163280487}, "median_r2_nc": {"F1": 0.6236547827720642, "F6m": 0.41065704822540283, "F2": 0.16009724140167236}, "secs_this_run": 5177.120464086533}
+END 2026-10-18 03:46:38 rc=0 p34_local_dev.py relgate
+QUEUE DONE 2026-10-18 03:46:38
