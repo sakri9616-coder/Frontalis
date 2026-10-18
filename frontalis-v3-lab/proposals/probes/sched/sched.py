@@ -47,6 +47,13 @@ def load_queue(path, allow_eval=False):
 
 def load():
     cfg = json.loads(CFG.read_text(encoding="utf-8"))
+    loc = HERE / "providers.local.json"  # private values (paths, user names); git-ignored, see providers.local.example.json
+    vars_ = json.loads(loc.read_text(encoding="utf-8")).get("vars", {}) if loc.exists() else {}
+    for p in cfg["providers"]:
+        for k, v in vars_.items():
+            p["cmd"] = p["cmd"].replace("{" + k + "}", v)
+        if "{local_python}" in p["cmd"] and p.get("enabled", True):
+            sys.exit(f"provider {p['name']}: set local_python in sched/providers.local.json (copy providers.local.example.json)")
     st = json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {}
     st.setdefault("jobs", {}); st.setdefault("spend", {}); st.setdefault("approved", {}); st.setdefault("reserved", {})
     return cfg["providers"], st

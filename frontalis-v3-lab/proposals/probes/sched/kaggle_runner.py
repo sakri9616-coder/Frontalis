@@ -8,7 +8,17 @@ from pathlib import Path
 
 PROBES = Path(__file__).resolve().parent.parent
 BRANCH = "claude/value-representation-design"
-USER = "sakuri9616"
+def _user():
+    """Kaggle user name: KAGGLE_USERNAME, else sched/providers.local.json vars.kaggle_user (git-ignored)."""
+    if os.environ.get("KAGGLE_USERNAME"):
+        return os.environ["KAGGLE_USERNAME"]
+    loc = Path(__file__).resolve().parent / "providers.local.json"
+    if loc.exists():
+        return json.loads(loc.read_text(encoding="utf-8")).get("vars", {}).get("kaggle_user", "")
+    sys.exit("set KAGGLE_USERNAME or kaggle_user in sched/providers.local.json")
+
+
+USER = _user()
 SCRIPT = '''import subprocess, os, tarfile
 sh = lambda c: subprocess.run(c, shell=True, capture_output=True, text=True)
 r = sh("git clone -q --branch %(branch)s --single-branch https://github.com/sakri9616-coder/Frontalis.git /kaggle/working/F")

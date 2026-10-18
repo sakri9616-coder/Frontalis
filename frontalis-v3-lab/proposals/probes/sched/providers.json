@@ -4,7 +4,7 @@
    "name": "local",
    "enabled": true,
    "gpu": "RTX 3050 8GB (shared)",
-   "cmd": "C:/Users/sakur/AppData/Local/ASIST-She-necheia/Frontalis/frontalis-phase3d-lab/.venv/Scripts/python.exe -B {line}",
+   "cmd": "{local_python} -B {line}",
    "concurrency": 1,
    "min_free_vram_mb": 3000,
    "price_per_hour": 0,
