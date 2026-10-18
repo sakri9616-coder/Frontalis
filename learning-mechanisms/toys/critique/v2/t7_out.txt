@@ -1,0 +1,30 @@
+Delta h (all personas) [rel, comp, aut, stim, safe] = [ 0.3   0.24 -0.24  0.18  0.  ]
+per-need hedonic r_k = s e^{-h_k/s} (1-e^{-D_k/s}) for growth needs (sign = sign(D_k) always); only magnitude depends on h
+| persona | h at end of history | r_k for NEW | V_A (a=1) | V_A (section-6 attribution) | V_MF(A) after NEW (Kalman, no attribution) |
+|---|---|---|---|---|---|
+| R | [3.2  2.63 0.49 1.   0.91] | [ 0.098  0.096 -0.212  0.125  0.   ] | +0.107 | +0.194 | +0.033 |
+| K | [1.   2.53 4.62 1.   0.75] | [ 0.205  0.099 -0.054  0.125  0.   ] | +0.376 | +0.151 | +0.368 |
+| X | [1.93 1.77 0.54 1.28 1.  ] | [ 0.15   0.128 -0.209  0.114  0.   ] | +0.183 | +0.264 | -0.016 |
+
+Analytic condition (small D): V_A = sum_k a_k m_k D_k with m_k = e^{-h_k/s}. K's V_A<0 needs a_aut m_aut |D_aut| > a_rel m_rel D_rel (+ other attributed gains).
+   D_rel=0.30, D_aut=-0.24 -> need m_aut/m_rel > 1.25*(a_rel/a_aut), i.e. h_rel - h_aut > s*ln(...) = 0.67 (small-D); concave loss amplification lowers it slightly
+   R: h_rel-h_aut = +2.71
+   K: h_rel-h_aut = -3.62
+   X: h_rel-h_aut = +1.39
+   exact (K attribution: rel gain + aut loss to A; h_aut=1): V_A<0 iff h_rel - h_aut >= 0.40
+   equivalently with h_rel=1: V_A<0 iff h_aut <=  0.6  (autonomy depleted below this level)
+
+What produces the section-6 sign pattern under v2 (R:+, K:-, X:+) with a = section-6 attribution:
+   R: V_A = +0.194  (parts: [ 0.098  0.096 -0.     0.     0.   ])
+   K: V_A = +0.151  (parts: [ 0.205  0.    -0.054  0.     0.   ])
+   X: V_A = +0.264  (parts: [ 0.15   0.    -0.     0.114  0.   ])
+
+Same h = baseline for everyone; only attribution differs:
+   R: V_A=+0.370 parts [ 0.205  0.165 -0.     0.     0.   ]
+   K: V_A=+0.026 parts [ 0.205  0.    -0.179  0.     0.   ]
+   X: V_A=+0.330 parts [ 0.205  0.    -0.     0.125  0.   ]
+   -> with baseline h, the K negative requires a_aut=1 AND a_rel,a_comp,a_stim such that the aut loss outweighs the attributed gains; K attributing rel (+0.3 gain) to A too gives: +0.026
+
+K with history order reversed (solo-success first, then credit-stolen: autonomy ends DEPLETED) vs the prototype order:
+   prototype order (stolen x8, then solo-success x12): h=[1.   2.53 4.62 1.   0.75] r=[ 0.205  0.099 -0.054  0.125  0.   ] V_A(a=1)=+0.376 V_A(section-6 attribution)=+0.151
+   reversed order: h=[1.   0.98 1.13 1.   0.1 ] r=[ 0.205  0.166 -0.171  0.125  0.   ] V_A(a=1)=+0.325 V_A(section-6 attribution)=+0.033

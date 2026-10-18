@@ -1,0 +1,138 @@
+{
+ "A_Z4_by_mode": {
+  "orig": {
+   "reversed_at": [
+    1,
+    6,
+    4,
+    null,
+    null,
+    1,
+    1,
+    6,
+    3,
+    null,
+    2,
+    9,
+    null,
+    6,
+    null,
+    2,
+    2,
+    1,
+    7,
+    4
+   ],
+   "within_5": 10,
+   "never_within_10": 5,
+   "J_pref_mean": 0.042772010819709314,
+   "gap_before_mean": 0.10652229397768351
+  },
+  "persist": {
+   "reversed_at": [
+    2,
+    null,
+    null,
+    null,
+    null,
+    null,
+    1,
+    null,
+    null,
+    null,
+    3,
+    null,
+    null,
+    null,
+    null,
+    null,
+    3,
+    null,
+    null,
+    null
+   ],
+   "within_5": 4,
+   "never_within_10": 16,
+   "J_pref_mean": 0.11012689847106287,
+   "gap_before_mean": 0.15301125700963614
+  },
+  "persist_with_decay": {
+   "reversed_at": [
+    2,
+    10,
+    7,
+    null,
+    null,
+    2,
+    1,
+    10,
+    6,
+    null,
+    3,
+    null,
+    null,
+    null,
+    null,
+    3,
+    3,
+    null,
+    null,
+    6
+   ],
+   "within_5": 6,
+   "never_within_10": 9,
+   "J_pref_mean": 0.08466095446248094,
+   "gap_before_mean": 0.1389711502836717
+  }
+ },
+ "B_eta_ov": {
+  "eta_ov=0.1 harm=0.8": {
+   "peak": 0.3027583580156807,
+   "residual": 0.24531326547763324,
+   "fraction": 0.8114656464718906,
+   "after_first": 0.9566666334519045,
+   "reaffirm": 0.43561882393060375,
+   "overwhelm": -0.24563983746265325
+  },
+  "eta_ov=0.1 harm=0.3": {
+   "peak": 0.3027583580156807,
+   "residual": 0.2538565636516518,
+   "fraction": 0.8397123940023743,
+   "after_first": 0.9625688802060713,
+   "reaffirm": 0.4351806236041858,
+   "overwhelm": -0.23665833896221677
+  },
+  "eta_ov=0.3 harm=0.8": {
+   "peak": 0.22522989336142815,
+   "residual": 0.08341183530990057,
+   "fraction": 0.3708069683865909,
+   "after_first": 0.729780121493816,
+   "reaffirm": 0.44952442487775,
+   "overwhelm": -0.42144552691590836
+  },
+  "eta_ov=0.3 harm=0.3": {
+   "peak": 0.22522989336142815,
+   "residual": 0.08886815761859532,
+   "fraction": 0.3950237848141424,
+   "after_first": 0.7516631183182614,
+   "reaffirm": 0.44874938374085616,
+   "overwhelm": -0.4152141634703196
+  },
+  "eta_ov=1.0 harm=0.8": {
+   "peak": 0.11232261439976568,
+   "residual": 0.029556650183824813,
+   "fraction": 0.2631663219105649,
+   "after_first": 0.2521138173037865,
+   "reaffirm": 0.46370036857875513,
+   "overwhelm": -0.48947140542572665
+  },
+  "eta_ov=1.0 harm=0.3": {
+   "peak": 0.11232261439976568,
+   "residual": 0.02955665018345501,
+   "fraction": 0.26316632190725164,
+   "after_first": 0.2521138173037865,
+   "reaffirm": 0.4637003685787553,
+   "overwhelm": -0.48947140542571105
+  }
+ }
+}

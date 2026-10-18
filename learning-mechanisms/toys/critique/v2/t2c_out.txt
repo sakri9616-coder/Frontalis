@@ -1,0 +1,9 @@
+T2c full readout, p_alone=0.3 (true marginal: friend 0.5 / music 0.3; the marginal belief gives friend ~0.71 / music 0.8)
+   RB=0.004: music V_MF=0.300 V_MB=0.526 omega=0.147 -> U_val=0.493 | friend V_MF=0.500 V_MB=0.476 omega=0.159 U_val=0.480
+   RB=0.04: music V_MF=0.300 V_MB=0.526 omega=0.633 -> U_val=0.383 | friend V_MF=0.500 V_MB=0.476 omega=0.654 U_val=0.492
+   RB=0.4: music V_MF=0.300 V_MB=0.526 omega=0.945 -> U_val=0.312 | friend V_MF=0.500 V_MB=0.476 omega=0.950 U_val=0.499
+   always together (p_alone=0), no friend pre-training, q=1e-4:
+   RB=0.004: music V_MF=0.400 V_MB=0.526 omega=0.001 U_val=0.526
+   RB=0.4: music V_MF=0.400 V_MB=0.526 omega=0.130 U_val=0.510
+T2e EC ON, RB=0.4:
+   Q(music)=0.440 = U_val 0.312 + lam_EC*vEC 0.128

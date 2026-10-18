@@ -1,0 +1,16 @@
+{
+ "approach_rate_K": 0.2975,
+ "approach_rate_R": 0.77125,
+ "difference_R_minus_K": 0.47375,
+ "first20": [
+  0.31250000000000006,
+  0.7500000000000001
+ ],
+ "last20": [
+  0.28250000000000003,
+  0.7925000000000001
+ ],
+ "avoided_offers_total": 745,
+ "belief_changes_after_avoidance": 0,
+ "seeds_R_minus_K_ge_0.15": 20
+}

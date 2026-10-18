@@ -1,0 +1,27 @@
+V5a retention of V(song1) after m removal events (m=20 / 100), training n=100; stable: r~0.20+-0.06; noisy: 0.20+-0.25 (same mean); switch: mean alternates 0.0/0.4 per 5 events
+| q rule | stable m=20 | m=100 | noisy m=20 | m=100 | switch m=20 | m=100 |
+|---|---|---|---|---|---|---|
+| q fixed (q0 by layer) | 0.01 | 0.01 | -0.04 | -0.07 | -0.32 | -0.15 |
+| q learned, spec literal (eta=.05) | 0.01 | 0.02 | -0.05 | 0.29 | 0.15 | 0.25 |
+| q learned, EMA (eta=.01) | 0.01 | 0.00 | -0.05 | 0.08 | 2.73 | -4.60 |
+
+V5b stationary q and steady gain in a stable noise-only world (r=0.2+-0.063, R=0.004) after 500 events
+   q fixed (q0 by layer): q (gen,cls,ind) = [5.e-05 2.e-04 1.e-03] ; layer ordering q_ind>q_cls>q_gen kept: True ; summed gain on the (1,1,1) sum = 0.51 per event
+   q learned, spec literal (eta=.05): q (gen,cls,ind) = [0.00207 0.00207 0.00207] ; layer ordering q_ind>q_cls>q_gen kept: True ; summed gain on the (1,1,1) sum = 0.79 per event
+   q learned, EMA (eta=.01): q (gen,cls,ind) = [0.00013 0.00013 0.00013] ; layer ordering q_ind>q_cls>q_gen kept: False ; summed gain on the (1,1,1) sum = 0.33 per event
+
+V5c G1' elasticities on retention at m=20. evidence = history volatility (stable -> switch or noisy). E_evid = ln(ret_stable/ret_vol)/ln(sd_vol/sd_stable)
+-- q learned, spec literal (eta=.05)
+   evidence noisy: ret stable 0.008 vs noisy 0.001  E_evid=+1.416
+   evidence switch: ret stable 0.008 vs switch 0.266  E_evid=-2.957
+   coef eta_q  : ret(x/2)=0.008 ret(2x)=0.007  E_coef=-0.024; |E_coef|/|E_evid(switch)|=0.01  G1' PASS
+   coef R      : ret(x/2)=0.005 ret(2x)=0.006  E_coef=+0.126; |E_coef|/|E_evid(switch)|=0.04  G1' PASS
+   coef var_ind: ret(x/2)=0.008 ret(2x)=0.008  E_coef=+0.000; |E_coef|/|E_evid(switch)|=0.00  G1' PASS
+   coef var_cls: ret(x/2)=0.008 ret(2x)=0.008  E_coef=+0.000; |E_coef|/|E_evid(switch)|=0.00  G1' PASS
+-- q learned, EMA (eta=.01)
+   evidence noisy: ret stable 0.008 vs noisy 0.001  E_evid=+1.445
+   evidence switch: ret stable 0.008 vs switch 4.162  E_evid=-5.209
+   coef eta_q  : ret(x/2)=0.008 ret(2x)=0.007  E_coef=-0.120; |E_coef|/|E_evid(switch)|=0.02  G1' PASS
+   coef R      : ret(x/2)=0.006 ret(2x)=0.021  E_coef=+0.905; |E_coef|/|E_evid(switch)|=0.17  G1' PASS
+   coef var_ind: ret(x/2)=0.008 ret(2x)=0.008  E_coef=+0.000; |E_coef|/|E_evid(switch)|=0.00  G1' PASS
+   coef var_cls: ret(x/2)=0.008 ret(2x)=0.008  E_coef=+0.000; |E_coef|/|E_evid(switch)|=0.00  G1' PASS

@@ -1,0 +1,106 @@
+[
+ {
+  "kind": "same_partner_same_context",
+  "n_events": 30,
+  "pi_person_start": 0.5,
+  "pi_person_by_sweep": {
+   "1": 0.5,
+   "10": 0.5,
+   "100": 0.5,
+   "600": 0.5
+  },
+  "pi_person_after_600": 0.5,
+  "mean_phi_person": 0.5
+ },
+ {
+  "kind": "new_partner_same_context",
+  "n_events": 30,
+  "pi_person_start": 0.04204151637225193,
+  "pi_person_by_sweep": {
+   "1": 0.04011802557115067,
+   "10": 0.03956099288130188,
+   "100": 0.03956099210488529,
+   "600": 0.03956099210488529
+  },
+  "pi_person_after_600": 0.03956099210488529,
+  "mean_phi_person": 0.008865058245210998
+ },
+ {
+  "kind": "same_partner_new_context",
+  "n_events": 30,
+  "pi_person_start": 0.8692603691524481,
+  "pi_person_by_sweep": {
+   "1": 0.8950314132218747,
+   "10": 0.9567028392854321,
+   "100": 0.956975858937439,
+   "600": 0.956975858937439
+  },
+  "pi_person_after_600": 0.956975858937439,
+  "mean_phi_person": 0.9874409161999346
+ },
+ {
+  "kind": "independent",
+  "n_events": 30,
+  "pi_person_start": 0.04647434768531952,
+  "pi_person_by_sweep": {
+   "1": 0.04182906208115157,
+   "10": 0.040334809063981916,
+   "100": 0.04033480503300581,
+   "600": 0.04033480503300581
+  },
+  "pi_person_after_600": 0.04033480503300581,
+  "mean_phi_person": 0.009690458701872844
+ },
+ {
+  "kind": "same_partner_same_context",
+  "n_events": 100,
+  "pi_person_start": 0.5,
+  "pi_person_by_sweep": {
+   "1": 0.5,
+   "10": 0.5,
+   "100": 0.5,
+   "600": 0.5
+  },
+  "pi_person_after_600": 0.5,
+  "mean_phi_person": 0.5
+ },
+ {
+  "kind": "new_partner_same_context",
+  "n_events": 100,
+  "pi_person_start": 0.01240803315923045,
+  "pi_person_by_sweep": {
+   "1": 0.012346182332491313,
+   "10": 0.012329053077041494,
+   "100": 0.012329053058908098,
+   "600": 0.012329053058908086
+  },
+  "pi_person_after_600": 0.012329053058908086,
+  "mean_phi_person": 0.0025756341200862264
+ },
+ {
+  "kind": "same_partner_new_context",
+  "n_events": 100,
+  "pi_person_start": 0.9824024896248404,
+  "pi_person_by_sweep": {
+   "1": 0.9843246964951373,
+   "10": 0.9865886998030681,
+   "100": 0.9865932904608729,
+   "600": 0.9865932904608729
+  },
+  "pi_person_after_600": 0.9865932904608729,
+  "mean_phi_person": 0.9963251562700903
+ },
+ {
+  "kind": "independent",
+  "n_events": 100,
+  "pi_person_start": 0.012479465899332218,
+  "pi_person_by_sweep": {
+   "1": 0.012412492257397633,
+   "10": 0.012393452990265494,
+   "100": 0.012393452966051755,
+   "600": 0.012393452966051743
+  },
+  "pi_person_after_600": 0.012393452966051743,
+  "mean_phi_person": 0.002641322025372785
+ }
+]

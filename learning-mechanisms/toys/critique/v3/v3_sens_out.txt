@@ -1,0 +1,6 @@
+open-loop 1e-3 perturbation of W after the K history, 128 shared events (fresh individual for each 'others' event); ratio ||dW_final||/||dW_0|| over the weights present at the start; unseen-collaborator value ratio. 10 seeds.
+| q rule | weight-space ratio (mean/max) | unseen-collaborator value ratio |
+|---|---|---|
+| fixed | 1.548 / 1.900 | 0.193 |
+| literal (eta=.05) | 1.536 / 1.872 | 0.190 |
+| EMA (eta=.01) | 1.601 / 1.975 | 0.182 |

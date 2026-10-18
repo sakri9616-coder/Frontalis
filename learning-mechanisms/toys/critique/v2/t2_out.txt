@@ -1,0 +1,20 @@
+T2a  friend established (0.5, 150 pre-trials), music new; together->0.8, friend alone->0.5.  V_MF(friend), V_MF(music) [true 0.5 / 0.3]
+   p_alone=0.0 q=0: V_MF friend=0.500 music=0.300  sigma2_MF(friend)=0.0000 (music)=0.0000  omega(music)=0.856
+   p_alone=0.0 q=0.0001: V_MF friend=0.501 music=0.299  sigma2_MF(friend)=0.0211 (music)=0.0211  omega(music)=0.010
+   p_alone=0.0 q=0.001: V_MF friend=0.504 music=0.296  sigma2_MF(friend)=0.2040 (music)=0.2040  omega(music)=0.001
+   p_alone=0.3 q=0: V_MF friend=0.500 music=0.300  sigma2_MF(friend)=0.0000 (music)=0.0000  omega(music)=0.881
+   p_alone=0.3 q=0.0001: V_MF friend=0.500 music=0.300  sigma2_MF(friend)=0.0011 (music)=0.0013  omega(music)=0.147
+   p_alone=0.3 q=0.001: V_MF friend=0.500 music=0.300  sigma2_MF(friend)=0.0043 (music)=0.0045  omega(music)=0.046
+T2b  always together, both NEW (equal prior variance) -> split; and with prior-variance ratio (friend established)
+   pre-trials of friend alone=0: V_MF friend=0.400 music=0.400 (sum 0.800, target 0.8)
+   pre-trials of friend alone=150: V_MF friend=0.501 music=0.299 (sum 0.800, target 0.8)
+T2c  full readout with belief-MB (event-level marginal belief), p_alone=0.3, q=1e-4: U_val vs V_MF vs V_MB for music, and omega; RB sweep
+   RB=0.004: music V_MF=0.300 V_MB=0.000 omega=0.147 U_val=0.044   friend V_MF=0.500 V_MB=0.000 U_val=0.080
+   RB=0.04: music V_MF=0.300 V_MB=0.000 omega=0.633 U_val=0.190   friend V_MF=0.500 V_MB=0.000 U_val=0.327
+   RB=0.4: music V_MF=0.300 V_MB=0.000 omega=0.945 U_val=0.284   friend V_MF=0.500 V_MB=0.000 U_val=0.475
+T2d  omega for always-co-occurring concepts as time grows (null-direction variance grows by q per step): sigma2_MF(music), omega
+   always together T=100: sigma2_MF(music)=0.1302  omega=0.0017  V_MF music=0.400 friend=0.400
+   always together T=400: sigma2_MF(music)=0.1452  omega=0.0015  V_MF music=0.400 friend=0.400
+   always together T=1600: sigma2_MF(music)=0.2052  omega=0.0011  V_MF music=0.400 friend=0.400
+T2e  EC ON (gamma_EC=.5, lam_EC=.5): music readout Q with p_alone=0.3
+   V_MF music=0.300, vEC music=0.042 (=gamma*V_dir(friend)~0.040), Q(music)=0.065

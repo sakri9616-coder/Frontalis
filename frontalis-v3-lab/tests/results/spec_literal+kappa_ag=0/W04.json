@@ -1,0 +1,17 @@
+{
+ "corr_taken_rate_vs_taken_interpretation_weight": 0.39798907418902096,
+ "corr_mean_utility_vs_approach_rate": 0.7561401262900033,
+ "spearman_a": 0.37185741088180113,
+ "spearman_b": 0.6454033771106943,
+ "reference_corr_collab_only_mean_utility_vs_approach": 0.8718587123951047,
+ "reference_corr_taken_over_taken_plus_shared_vs_weight": 0.7747925192932071,
+ "reference_corr_true_p_taken_vs_weight": 0.4508041788210958,
+ "mean_collab_events": 30.0,
+ "mean_taken_rate": 0.33768528714172596,
+ "std_taken_rate": 0.21831309310422548,
+ "mean_w_taken": 0.6286186750704865,
+ "std_w_taken": 0.2028207261202401,
+ "mean_approach_rate": 0.441875,
+ "std_approach_rate": 0.1735104013452796,
+ "std_mean_utility": 0.07327919953648176
+}

@@ -1,0 +1,21 @@
+{
+ "rank_agreement": 0.7,
+ "sign_agreement": 1.0,
+ "original_ranking_counts": {
+  "K < R < X": 1,
+  "X < K < R": 5,
+  "K < X < R": 14
+ },
+ "perturbed_ranking_counts": {
+  "R < K < X": 1,
+  "X < R < K": 1,
+  "X < K < R": 2,
+  "K < X < R": 16
+ },
+ "sign_patterns_orig": {
+  "(-1, 1)": 20
+ },
+ "sign_patterns_pert": {
+  "(-1, 1)": 20
+ }
+}

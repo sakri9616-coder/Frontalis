@@ -1,0 +1,29 @@
+V1c reversal at the CLASS level: P1 (history: 8 collaborators who took credit) meets k NEW distinct collaborators (true r=+0.20); fraction of the class gap closed on an unseen collaborator
+| k distinct individuals x events each | v3 fixed q | v3 q literal | v2 core |
+|---|---|---|---|
+| 1x8 | 0.07 | 0.07 | 0.74 |
+| 2x4 | 0.14 | 0.14 | 0.74 |
+| 4x2 | 0.24 | 0.25 | 0.74 |
+| 8x1 | 0.38 | 0.39 | 0.74 |
+| 16x1 | 0.55 | 0.56 | 0.92 |
+| 32x1 | 0.72 | 0.72 | 1.00 |
+| 8x8 | 0.39 | 0.62 | 0.99 |
+| 32x8 | 0.76 | 0.97 | 1.00 |
+
+V1d coefficient sensitivity (prior variances; q fixed), history 8x1, m=8: persistence P / plasticity L
+| var_ind \ var_cls | 0.01 | 0.04 | 0.16 |
+|---|---|---|---|
+| 0.06 | 0.91 / 0.99 | 0.89 / 0.99 | 0.89 / 0.99 |
+| 0.25 | 0.95 / 1.00 | 0.93 / 1.00 | 0.90 / 1.00 |
+| 1.0 | 0.98 / 1.00 | 0.96 / 1.00 | 0.93 / 1.00 |
+
+V1e LLM class errors. True classes: 'taker' individuals (r=-0.30) and 'friend' individuals (r=+0.20). Persona history: 8 takers + 8 friends, each 1 event; the LLM assigns the wrong class with prob p.
+Unseen new TAKER (true -0.30) and unseen new FRIEND (+0.20) are assigned their (possibly wrong) class; inherited prior vs truth; 200 seeds. Also over-split (every individual its own class) and over-merge (one class for all).
+| LLM class assignment | prior for a new TAKER (true -0.30) | prior for a new FRIEND (true +0.20) | separation |
+|---|---|---|---|
+| correct | -0.172 | +0.106 | +0.278 |
+| 10% wrong | -0.146 | +0.080 | +0.226 |
+| 25% wrong | -0.103 | +0.039 | +0.142 |
+| 50% wrong (random) | -0.029 | -0.034 | -0.005 |
+| over-split (class per individual) | -0.018 | -0.018 | +0.000 |
+| over-merge (one class) | -0.038 | -0.038 | +0.000 |

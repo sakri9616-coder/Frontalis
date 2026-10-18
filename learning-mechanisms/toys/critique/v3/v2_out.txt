@@ -1,0 +1,19 @@
+| persona | inherited V(A) before | update direction sign(V_after - V_before) | V(A) after | class (others+people) before -> after | residual sum_k e_k | individual deviation of A (sum over needs) |
+|---|---|---|---|---|---|---|
+| R | +0.098 | - (-0.065) | +0.033 | +0.098 -> +0.098 | -0.073 | -0.064 |
+| K | -0.102 | + (+0.618) | +0.516 | -0.102 -> -0.078 | +0.686 | +0.594 |
+| X | +0.119 | - (-0.067) | +0.052 | +0.119 -> +0.114 | -0.079 | -0.062 |
+
+per-need r (same for the persona's state), r-hat before, residual e (R, K, X):
+  R: r=[ 0.098  0.096 -0.212  0.125  0.   ] rhat=[ 0.123  0.093 -0.028  0.    -0.007] e=[-0.025  0.003 -0.184  0.125  0.007]  V(A) by need after = [ 0.034  0.089 -0.212  0.111  0.012]
+  K: r=[ 0.205  0.099 -0.054  0.125  0.   ] rhat=[ 0.    -0.091 -0.131  0.    -0.089] e=[0.205 0.19  0.078 0.125 0.089]  V(A) by need after = [0.19  0.146 0.008 0.116 0.055]
+  X: r=[ 0.15   0.128 -0.209  0.114  0.   ] rhat=[ 0.106  0.147 -0.049  0.058  0.   ] e=[ 0.044 -0.019 -0.16   0.056  0.   ]  V(A) by need after = [ 0.096 -0.016 -0.136  0.107  0.   ]
+
+What would flip K negative? scale the authorship loss of the NEW event (out authorship = -0.8*s) and the number of credit-stolen events in K's history
+  authorship loss x1: V(A) before -0.102 after +0.516
+  authorship loss x2: V(A) before -0.102 after +0.522
+  authorship loss x4: V(A) before -0.102 after +0.412
+  authorship loss x8: V(A) before -0.102 after +0.161
+K history variants (stolen events only, no later solo success):
+  8 stolen events: V(A) before -0.102 after +0.618
+  24 stolen events: V(A) before -0.093 after +0.636

@@ -1,0 +1,8 @@
+v2 core          beta=  10: runs whose choice sequence diverged 0/40; if not diverged ||dW||/1e-3 mean=0.90, probe ratio 0.00; if diverged ||dW||=nan
+v2 core          beta=  30: runs whose choice sequence diverged 0/40; if not diverged ||dW||/1e-3 mean=0.90, probe ratio 0.01; if diverged ||dW||=nan
+v2 + c           beta=  10: runs whose choice sequence diverged 11/40; if not diverged ||dW||/1e-3 mean=0.91, probe ratio 4.35; if diverged ||dW||=0.005
+v2 + c           beta=  30: runs whose choice sequence diverged 10/40; if not diverged ||dW||/1e-3 mean=0.92, probe ratio 3.36; if diverged ||dW||=0.019
+v2 core RB=0.1   beta=  10: runs whose choice sequence diverged 0/40; if not diverged ||dW||/1e-3 mean=0.90, probe ratio 0.05; if diverged ||dW||=nan
+v2 core RB=0.1   beta=  30: runs whose choice sequence diverged 0/40; if not diverged ||dW||/1e-3 mean=0.90, probe ratio 0.10; if diverged ||dW||=nan
+v2 + c, RB=0.1   beta=  10: runs whose choice sequence diverged 15/40; if not diverged ||dW||/1e-3 mean=0.92, probe ratio 2.93; if diverged ||dW||=0.007
+v2 + c, RB=0.1   beta=  30: runs whose choice sequence diverged 10/40; if not diverged ||dW||/1e-3 mean=0.90, probe ratio 3.60; if diverged ||dW||=0.040

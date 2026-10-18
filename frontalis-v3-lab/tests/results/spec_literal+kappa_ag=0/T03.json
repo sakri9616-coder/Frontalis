@@ -1,0 +1,9 @@
+{
+ "delta_like_friendA_seed0": {
+  "R": -0.11823663183663825,
+  "K": 0.14682285373194154,
+  "X": -0.13028973667150034
+ },
+ "seeds_with_sign_disagreement": 20,
+ "n_seeds": 20
+}
