@@ -108,7 +108,7 @@ In order of importance:
 ## 6. Technology and compute
 
 - **Language and numerics**: Python 3.12, numpy (v3.x and the Y-series), PyTorch 2.7+ (GPU learners).
-- **Compute**: a local GPU (NVIDIA RTX 3050, 8 GB VRAM, shared) plus, **within free tiers only**, GPUs on Google Colab, Kaggle and Modal. A lightweight scheduler (`frontalis-v3-lab/proposals/probes/sched/`) splits experiments into jobs and dispatches them to free capacity. Any operation that would incur cost beyond a free budget requires human approval. Before using a machine we check that the same computation gives results within the retry noise of the local run.
+- **Compute**: a local GPU (NVIDIA RTX 3050, 8 GB VRAM, shared) plus, **within free tiers only**, GPUs on Google Colab, Kaggle and Modal. Nothing that incurs cost beyond a free budget is done without human approval. Before using another machine we check that the same computation gives results within the retry noise of the local run.
 - **Memory limits**: GPU memory (VRAM) and host RAM are treated as separate constraints.
 - **LLM use**: Claude models and free models via OpenCode (DeepSeek etc.) for design, critique, implementation and literature collection. No paid API is used.
 - **Workflow**: git worktrees for isolation.
@@ -121,7 +121,7 @@ In order of importance:
 | [`claude/project-thread-1vq8ai`](https://github.com/sakri9616-coder/Frontalis/blob/4fecbad/FRONTALIS_PHILOSOPHY.md) | Philosophy `FRONTALIS_PHILOSOPHY.md` |
 | [`claude/charming-galileo-wawr7u`](https://github.com/sakri9616-coder/Frontalis/tree/claude/charming-galileo-wawr7u/frontalis-v3-lab) | Minimal NPN implementation v3.0 to v3.3 (PR #2) |
 | [`claude/v3.4-prereg`](https://github.com/sakri9616-coder/Frontalis/tree/claude/v3.4-prereg/frontalis-v3-lab) | v3.4 Y-series: preregistration, implementation, evaluation (comparison baseline) |
-| [`claude/value-representation-design`](https://github.com/sakri9616-coder/Frontalis/tree/claude/value-representation-design/frontalis-v3-lab/proposals) | **The main research.** Design (`DESIGN.md`), preregistrations (`PREREG-DRAFT.md`, `PREREG-v5-DRAFT.md`), freeze records (`FREEZE.md`, `FREEZE-v5.md`), independent critiques, development log (`probes/LOG-dev.md`), GPU learners and the scheduler |
+| [`claude/value-representation-design`](https://github.com/sakri9616-coder/Frontalis/tree/claude/value-representation-design/frontalis-v3-lab/proposals) | **The main research.** Design (`DESIGN.md`), preregistrations (`PREREG-DRAFT.md`, `PREREG-v5-DRAFT.md`), freeze records (`FREEZE.md`, `FREEZE-v5.md`), independent critiques, development log (`probes/LOG-dev.md`), GPU learners |
 
 ## 8. Reproduction
 

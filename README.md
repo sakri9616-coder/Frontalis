@@ -108,7 +108,7 @@ English: [README.en.md](README.en.md)
 ## 6. 使っている技術と計算資源
 
 - **言語・数値計算**: Python 3.12、numpy（v3.x と Y 系）、PyTorch 2.7 以降（GPU の学習器）。
-- **計算資源**: 手元の GPU（NVIDIA RTX 3050、VRAM 8GB、共有）に加え、**無料枠の範囲で**、Google Colab、Kaggle、Modal の GPU を使います。実験を小分けにして、空いている資源へ自動で振り分ける軽量なスケジューラ（`frontalis-v3-lab/proposals/probes/sched/`）を作りました。無料枠を超える費用が出る操作は、人間の承認が要る設計です。同じ計算を、別の GPU で走らせても、結果が再試行の揺れの範囲で一致することを確認してから使っています。
+- **計算資源**: 手元の GPU（NVIDIA RTX 3050、VRAM 8GB、共有）に加え、**無料枠の範囲で**、Google Colab、Kaggle、Modal の GPU を使います。無料枠を超える費用が出る操作は、人間の承認なしには行いません。別の GPU で走らせる計算は、結果が再試行の揺れの範囲で一致することを確認してから使っています。
 - **メモリの制約**: GPU のメモリ（VRAM）と、PC 本体のメモリ（RAM）は、別の制約として扱っています。
 - **LLM の利用**: 設計、批評、実装、文献の収集に、Claude の各モデルと、OpenCode 経由の無料モデル（DeepSeek など）を使っています。有料の API は使っていません。
 - **作業管理**: git worktree による作業の分離。
@@ -121,7 +121,7 @@ English: [README.en.md](README.en.md)
 | [`claude/project-thread-1vq8ai`](https://github.com/sakri9616-coder/Frontalis/blob/4fecbad/FRONTALIS_PHILOSOPHY.md) | 研究思想 `FRONTALIS_PHILOSOPHY.md` |
 | [`claude/charming-galileo-wawr7u`](https://github.com/sakri9616-coder/Frontalis/tree/claude/charming-galileo-wawr7u/frontalis-v3-lab) | v3.0〜v3.3 の NPN の最小実装（PR #2） |
 | [`claude/v3.4-prereg`](https://github.com/sakri9616-coder/Frontalis/tree/claude/v3.4-prereg/frontalis-v3-lab) | v3.4 Y 系の事前登録、実装、評価（比較対象） |
-| [`claude/value-representation-design`](https://github.com/sakri9616-coder/Frontalis/tree/claude/value-representation-design/frontalis-v3-lab/proposals) | **本命の研究**。設計（`DESIGN.md`）、事前登録（`PREREG-DRAFT.md`、`PREREG-v5-DRAFT.md`）、凍結の記録（`FREEZE.md`、`FREEZE-v5.md`）、独立批評、開発の記録（`probes/LOG-dev.md`）、GPU の学習器とスケジューラ |
+| [`claude/value-representation-design`](https://github.com/sakri9616-coder/Frontalis/tree/claude/value-representation-design/frontalis-v3-lab/proposals) | **本命の研究**。設計（`DESIGN.md`）、事前登録（`PREREG-DRAFT.md`、`PREREG-v5-DRAFT.md`）、凍結の記録（`FREEZE.md`、`FREEZE-v5.md`）、独立批評、開発の記録（`probes/LOG-dev.md`）、GPU の学習器 |
 
 ## 8. 再現
 
