@@ -1,6 +1,0 @@
-{
-  "vars": {
-    "local_python": "/path/to/a/python/with/torch",
-    "kaggle_user": "your-kaggle-username"
-  }
-}

@@ -62,3 +62,5 @@ b0a243319cdad973f3d7ad5395367a108c8799ebc57839050720b7cca1065346  probes/sched/s
 ## 追記（2026-10-18。草案 4 の評価のジョブ 32 件がすべて終わった後。判定の規則は変えていない。評価の結果は開いていない）
 - `probes/sched/sched.py` の評価の種の拒否に、v5 の評価の種 77300〜77339 を加えた（v5 の凍結の門の査読 C5）。
 - 草案 4 の評価は、上の記録のハッシュ（b0a2433…）の版で実行された。この版の後の `sched.py` は、草案 4 の評価には使っていない。
+
+- 2026-10-18: ユーザーの指示で、分散実行の仕組みの関連文書（`offload_note.md`、`probes/queue_cloud.example.txt`、`probes/queue_cloud.sh`、`probes/sched/providers.local.example.json`）をブランチの先端から削除した。**基準・判定・上のハッシュは変えていない。** 上の同等性の規則（`offload_note.md` 第 4 節）の本文は、git の履歴（commit e1036ff）に残っている。ハッシュ一覧にある `probes/sched/sched.py` と `probes/sched/modal_runner.py` は、記録の検証に要るので残した。

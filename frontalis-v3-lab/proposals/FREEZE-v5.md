@@ -46,3 +46,5 @@ f105e72cbb6f0fa71b12268444949ede2e23482fe2d731d08cf51035c6e89685 probes/p16_psca
 - 実行器: `python sched/sched.py run <queue> --allow-eval --only=modal`（Modal T4 だけ）。
 - 待ち行列: `p33_eval_v5.py job {set,krr,nn0} {77300,77305,...,77335}`（24 ジョブ。各 1 つの結果ファイル）。
 - 併合と判定: `p33_eval_v5.py judge`。結果はまずリーダーに報告し、commit しない。
+
+- 2026-10-18: ユーザーの指示で、分散実行の仕組みの関連文書を、ブランチの先端から削除した（詳細は `FREEZE.md` の同日の注記）。**基準・判定・上のハッシュは変えていない。** ハッシュ一覧の `probes/sched/sched.py` と `probes/sched/modal_runner.py` は残した。
