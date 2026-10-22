@@ -57,3 +57,19 @@ for beta in (0, 2, 4):
         wins = [run_corr(beta, partner, [1, -1, 1], seed=s)[1] for s in range(20)]
         res[name] = (sum(w[0] > w[2] for w in wins) / 20, sum(w[2] > w[0] for w in wins) / 20)
     print(f"{beta:4} | {res['a']} | {res['b']} | {run_corr(beta, 2, [1,-1,1])[0]} / {run_corr(beta, 0, [1,-1,1])[0]}")
+
+# ---- part 4 (CRITIQUE-dyad-5.1 cond. 2): the SAME new events (coop + novelty, o = 2) given right after the early phase ----
+def same_events(beta, partner, seed, n_new=100, eta=0.02):
+    ce, _ = run_corr(beta, partner, [1, 1, 1], n_late=0, seed=seed)
+    c = np.array(ce, float); c0 = c.copy(); r = np.random.default_rng(10_000 + seed)   # identical new-event noise for Pa and Pb
+    pres = np.array([1, 0, 1])
+    for _ in range(n_new):
+        o = 2 + r.normal(0, .1)
+        z = np.where(pres == 1, beta * c, -np.inf); a = np.exp(z - z[pres == 1].max()); a /= a.sum()
+        c = c + eta * pres * (a * o - c)
+    d = c - c0
+    return d[0] - d[2]          # >0: the new events taught "coop" more than "novelty"
+print("\nsame new events after the early phase: share of seeds where they taught coop more than novelty (20 seeds)")
+for beta in (0, 2, 4):
+    a = [same_events(beta, 2, s) for s in range(20)]; b = [same_events(beta, 0, s) for s in range(20)]
+    print(f"beta={beta}: Pa {np.mean(np.array(a) > 0):.2f} (mean {np.mean(a):+.3f}) | Pb {np.mean(np.array(b) > 0):.2f} (mean {np.mean(b):+.3f})")
