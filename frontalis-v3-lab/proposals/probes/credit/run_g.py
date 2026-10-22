@@ -58,8 +58,12 @@ def run(seeds):
             res[f"G3b_K{K}_b{beta:g}"] = {"not_blocked": int(sum(nb)), "n": len(nb)}
         for beta in (2.0, 4.0):
             g, b0 = res[f"G3a_K{K}_b{beta:g}"], res[f"G3b_K{K}_b0"]
-            g["pass"] = bool(g["opposite"] >= 0.75 * g["n"] and g["p_retest"] >= 0.01
-                             and res[f"G3a_K{K}_b0"]["p_retest"] >= 0.01)
+            g0 = res[f"G3a_K{K}_b0"]
+            g["p_vs_retest"] = two_prop_p(g["opposite"], g["n"], g["retest_opposite"], g["n"])
+            # PREREG-v10.1: main >= 75 %, retest <= 25 %, main > retest (p < 0.01), beta = 0 Pa-vs-Pb within chance (p >= 0.01)
+            g["pass"] = bool(g["opposite"] >= 0.75 * g["n"] and g["retest_opposite"] <= 0.25 * g["n"]
+                             and g["opposite"] > g["retest_opposite"] and g["p_vs_retest"] < 0.01
+                             and binom_two_sided(g0["opposite"], g0["n"]) >= 0.01)
             b = res[f"G3b_K{K}_b{beta:g}"]
             b["p_vs_beta0"] = two_prop_p(b["not_blocked"], b["n"], b0["not_blocked"], b0["n"])
             b["pass"] = bool(b["p_vs_beta0"] < 0.01 and b["not_blocked"] / b["n"] > b0["not_blocked"] / b0["n"])

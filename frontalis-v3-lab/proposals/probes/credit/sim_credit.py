@@ -115,10 +115,10 @@ def g3b(K, beta, seed):
     lead, pa, pb = pick_structure(K, np.random.default_rng([seed, 1]))
     o_late = np.ones(K); o_late[lead] = -1.0
     out = []
-    for partner in (pa, pb):
+    for partner, (se, sl) in ((pa, (2, 5)), (pb, (7, 6))):   # separate streams: the 2 runs are independent
         ag = Agent(K, beta, ETA)
-        live(ag, early_world(K, lead, partner), N_EARLY, np.random.default_rng([seed, 2]))
-        live(ag, late_world(K, o_late), N_LATE, np.random.default_rng([seed, 5]))
+        live(ag, early_world(K, lead, partner), N_EARLY, np.random.default_rng([seed, se]))
+        live(ag, late_world(K, o_late), N_LATE, np.random.default_rng([seed, sl]))
         out.append(successor(ag.c, o_late) != partner)
     return out
 
