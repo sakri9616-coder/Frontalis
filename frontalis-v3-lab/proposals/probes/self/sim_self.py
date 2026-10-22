@@ -80,7 +80,7 @@ def life(form, advice, seed, gamma=4.0, tau=3.0, mech="self", harm=False,
         if k == adv and mech == "self":
             T = float(np.clip(T + ETA_T * (c @ p - own), -T_CLIP, T_CLIP))
         followed.append(k == adv); trust.append(T); chosen.append(k)
-        if t % 100 == 99:
+        if t % 10 == 9:
             tops.append(int(np.argmax(c)))
     life.tops = tops
     return c, np.array(followed), np.array(trust), chosen

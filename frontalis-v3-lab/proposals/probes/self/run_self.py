@@ -48,7 +48,7 @@ def per_seed(s):
         c, f, T, _ = S.life(0, "Q", s, gamma=g, coop_bad_at=1000)
         tops = S.life.tops
         first = next((i for i, x in enumerate(tops) if x != 0), len(tops))
-        out[f"reason_g{g:g}"] = {"late": follow(f, -1000, None), "top": int(np.argmax(c)), "change_time": first * 100}
+        out[f"reason_g{g:g}"] = {"late": follow(f, -1000, None), "top": int(np.argmax(c)), "change_time": first * 10}
     return out
 
 
