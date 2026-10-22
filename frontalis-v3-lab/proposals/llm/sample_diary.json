@@ -9,8 +9,8 @@
   "図書館": "図書館の受付、昼、静か"
  },
  "events": [
-  {"pair": ["佐藤", "田中"], "place": "駅", "body": {"energy": -1, "contact": 1}},
-  {"pair": ["田中", "鈴木"], "place": "図書館", "body": {"knowing": 2, "progress": 1}},
-  {"pair": ["佐藤", "鈴木"], "place": "駅", "body": {"safety": -1}}
+  {"pair": ["佐藤", "田中"], "place": "駅", "inner": {"energy": -1, "contact": 1}},
+  {"pair": ["田中", "鈴木"], "place": "図書館", "inner": {"knowing": 2, "progress": 1}},
+  {"pair": ["佐藤", "鈴木"], "place": "駅", "inner": {"safety": -1}}
  ]
 }

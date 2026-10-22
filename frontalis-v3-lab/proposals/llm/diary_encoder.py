@@ -2,7 +2,8 @@
 
 The LLM writes what happened, WITHOUT good/bad words. This module turns those descriptions into the NPN's input format
 (sim4.rows_np): entity tokens (48 = 32 feature dims + 16 identity dims, the identity dims are masked by the learner), context
-tokens (16), and the outcome delta-b on the KB = 5 body channels.
+tokens (16), and the outcome delta-b on the KB = 5 internal-state channels (内的状態: quantities the agent keeps within a
+tolerance band; sim4 calls them body channels, the code name is kept for the frozen records).
 
 Design choices (each one is meant to keep evaluation OUT of the converter):
 - Text features use a hashing encoder (word and character-3-gram hashes -> fixed random signed projection -> tanh). It has no
@@ -10,8 +11,10 @@ Design choices (each one is meant to keep evaluation OUT of the converter):
   A pretrained embedding can replace it later only after the leakage check below passes.
 - Descriptions are screened for evaluative words (a small Japanese/English lexicon). An entry that contains one is refused, not
   silently cleaned, so that the diary prompt can be fixed.
-- The outcome is NOT a judgement of the event. It is the change of the agent's own body channels, read from observable facts
+- The outcome is NOT a judgement of the event. It is the change of the agent's own internal state, read from observable facts
   with a fixed table (`CHANNELS`). This is the innate part, like pain or hunger: designed once, the same for every individual.
+  The innate signal is homeostatic (sim4: -(|b| - TOL)^2 outside the band), so a channel that moves too far in EITHER
+  direction becomes unpleasant; + and - mark the direction of the change, not good and bad.
   Which persons and places predict those changes is what the NPN learns; that learned part is the evaluation.
 - Who acted is often unknown in a diary; the converter keeps the pair and leaves attribution to the NPN.
 
@@ -23,7 +26,7 @@ import numpy as np
 
 D_FEAT, D_ID, D_CTX = 32, 16, 16           # sim4: D_E = 48 (32 features + 16 identity), D_C = 16
 TOL = 0.4                                   # sim4 tolerance of the body channels (for reference: one level = 0.5 > TOL)
-CHANNELS = (                                # KB = 5 body channels and the observable facts that move them (level -2..+2)
+CHANNELS = (                                # KB = 5 internal-state channels (内的状態) and the observable facts that move them (level -2..+2)
     ("energy", "体力・時間の余裕。長く待たされた、急かされた（−）／休めた（＋）"),
     ("safety", "身の安全。大声を向けられた、ぶつかられた（−）／守られた（＋）"),
     ("contact", "人とのつながり。話しかけられた、名前を呼ばれた（＋）／無視された、会話を切られた（−）"),
@@ -70,7 +73,7 @@ def encode_context(place):
 
 
 def encode_outcome(levels):
-    """levels: {channel name: integer -2..2} for the agent's own body; missing channels are 0."""
+    """levels: {channel name: integer -2..2} for the agent's own internal state; missing channels are 0."""
     bad = [k for k in levels if k not in [c for c, _ in CHANNELS]]
     if bad:
         raise ValueError(f"unknown channels {bad}")
@@ -78,7 +81,7 @@ def encode_outcome(levels):
 
 
 def encode_diary(diary):
-    """diary: {"people": {name: looks}, "places": {name: description}, "events": [{"pair": [a, b], "place": p, "body": {...}}]}
+    """diary: {"people": {name: looks}, "places": {name: description}, "events": [{"pair": [a, b], "place": p, "inner": {...}}]}
     -> dict(world=dict(Xe, Xc), names, places, e1, e2, c, db, report)."""
     report = []
     for kind, table in (("people", diary["people"]), ("places", diary["places"])):
@@ -94,7 +97,7 @@ def encode_diary(diary):
         a, b = ev["pair"]
         if a not in names or b not in names or ev["place"] not in places:
             report.append(f"REFUSED event {i}: unknown person or place"); continue
-        e1.append(names.index(a)); e2.append(names.index(b)); c.append(places.index(ev["place"])); db.append(encode_outcome(ev.get("body", {})))
+        e1.append(names.index(a)); e2.append(names.index(b)); c.append(places.index(ev["place"])); db.append(encode_outcome(ev.get("inner", {})))
     return dict(world=dict(Xe=Xe, Xc=Xc), names=names, places=places, e1=np.array(e1), e2=np.array(e2), c=np.array(c),
                 db=np.stack(db) if db else np.zeros((0, len(CHANNELS)), np.float32), report=report, ok=not report)
 
