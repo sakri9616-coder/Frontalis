@@ -21,7 +21,7 @@ FREEZE = HERE.parent / "FREEZE-v9.md"
 HASHED = ["PREREG-v9-DRAFT.md", "LADDER.md", "probes/sim4.py", "probes/measure4.py", "probes/cells.py", "probes/diag5/make_sim5.py",
           "probes/diag5/sim5.py", "probes/diag5/make_sim6.py", "probes/diag5/sim6.py", "probes/diag5/make_sim7.py", "probes/diag5/sim7.py",
           "probes/p37_imprint.py", "probes/p39_ladder_dev.py", "probes/p41_ladder2_dev.py", "probes/p43_fog_calib.py", "probes/p44_rung5_dev.py",
-          "probes/p45_rung5_diag.py", "probes/p46_amb_dev.py", "probes/p47_eval_v9.py", "probes/p15_lr.json"]
+          "probes/p45_rung5_diag.py", "probes/p46_amb_dev.py", "probes/p46_amb_dev.json", "probes/p47_eval_v9.py", "probes/p15_lr.json"]
 
 
 def frozen_paths():
@@ -157,10 +157,10 @@ def judge_all():
         o["met"] = bool(o["H"] >= 2 * o["S"] and o["n_H_gt_S"] >= need and o["n_H_gt_E"] >= need)
         return o
     r1 = pattern("H_un", "S_un", "E_un"); r1["r2_mixed_A"] = med("r2_mixed_A"); r1["passed"] = bool(r1["met"] and r1["r2_mixed_A"] >= 0.5)
-    r5 = pattern("H_rV", "S_rV", "E_rV"); r5["passed"] = r5["met"]
+    r5 = pattern("H_rV", "S_rV", "E_rV"); r5["passed"] = r5["met"] if r1["passed"] else "not judged (rung 1 failed)"   # review C1
     out = dict(n=n, rung1=r1, rung5=r5, report_only=dict(rung5_full=pattern("H_rfull", "S_rfull", "E_rfull"), features_un=pattern("Hf_un", "Sf_un", "Ef_un"),
                shift=med("shift"), diag={k[5:]: med(k) for k in A[0] if k.startswith("diag_")}))
-    out["ladder"] = dict(rung1=r1["passed"], rung5=r5["passed"] if r1["passed"] else "not judged (rung 1 failed)")
+    out["ladder"] = dict(rung1=r1["passed"], rung5=r5["passed"])
     out["frozen_now"] = frozen_ok()
     (HERE / "p47_judgment.json").write_text(json.dumps(out, indent=1, default=float), encoding="utf-8")
     print(json.dumps(out, indent=1, default=float))
