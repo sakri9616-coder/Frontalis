@@ -1,0 +1,6 @@
+7 {(0, 0.0): (np.float64(0.34), 0.34), (0, 4.0): (np.float64(0.8), 1.51), (1, 0.0): (np.float64(0.34), 0.21), (1, 4.0): (np.float64(0.87), 1.86), 'reason': (np.float64(0.99), 1)}
+B1 interaction >0: 5 / 8  mean 0.032
+trust sign coop<0 & qual>0: 0
+reason: top changed to quality: 8  | no reason (coop-raised, g4) top=quality: 8
+
+[exited with code 0]
