@@ -82,7 +82,7 @@ def devcheck():
     out = dict(max_abs_diff=diff, nonfinite=nf, ref_commit=ref["commit"])
     (HERE / "p42_devcheck.json").write_text(json.dumps(out, indent=1, default=float), encoding="utf-8")
     print(json.dumps(out, indent=1, default=float))
-    return 0
+    return 0 if diff <= 1e-6 else 1      # review C1: a mismatch is a failure
 
 
 def job(first):
