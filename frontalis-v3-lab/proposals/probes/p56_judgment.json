@@ -1,0 +1,15 @@
+{
+ "prereg": "PREREG-v12 (+ pre-freeze addendum)",
+ "freeze_sha_match": true,
+ "seeds": [
+  78600,
+  78640
+ ],
+ "P1": true,
+ "P2": false,
+ "P2_failure_reason": "mixed: 11/40 zero (0/1 perception did not separate variants) and the non-zero pairs 13 vs 16 (no consistent direction)",
+ "predictions": {
+  "P1": "likely pass (held: 36/40)",
+  "P2": "not fixed"
+ }
+}
