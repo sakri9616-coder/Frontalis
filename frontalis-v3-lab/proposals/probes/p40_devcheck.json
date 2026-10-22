@@ -1,0 +1,12 @@
+{
+ "max_abs_diff": {
+  "ada": 0.0,
+  "o3": 0.0
+ },
+ "nonfinite": {
+  "pretrain": 0,
+  "ada": 0,
+  "o3": 0
+ },
+ "ref_commit": "5bb8838"
+}

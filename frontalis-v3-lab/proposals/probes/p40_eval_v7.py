@@ -152,6 +152,7 @@ def judge_all():
     r1 = ratio_rung("H", "S", "E"); r1["r2_un_A"] = med(A, "r2_un_A")
     r1["passed"] = bool(r1["H"] >= 2 * r1["S"] and r1["n_H_gt_S"] >= need and r1["n_H_gt_E"] >= need and r1["r2_un_A"] >= 0.5)
     r2 = ratio_rung("Hf", "Sf", "Ef")
+    r2["dphi_abs_median"] = med(A, "dphi_abs")   # absolute size of the feature change (report only; review A3)
     r2["passed"] = bool(r2["H"] >= 2 * r2["S"] and r2["n_H_gt_S"] >= need and r2["n_H_gt_E"] >= need)
     d3 = [r["r2_nc_A"] - O[r["seed"]]["r2_nc_A"] for r in A]
     r3 = dict(median=float(np.median(d3)), n_pos=sum(x > 0 for x in d3), passed=bool(sum(x > 0 for x in d3) >= need and np.median(d3) >= 0.02))
