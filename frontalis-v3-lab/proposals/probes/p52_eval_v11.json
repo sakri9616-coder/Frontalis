@@ -1,0 +1,46 @@
+{
+ "seeds": [
+  78400,
+  78440
+ ],
+ "b0": {
+  "opposite": 15,
+  "zeros": 0,
+  "retest_opposite": 9,
+  "retest_zeros": 0,
+  "n": 40
+ },
+ "b2": {
+  "opposite": 32,
+  "zeros": 0,
+  "retest_opposite": 3,
+  "retest_zeros": 0,
+  "n": 40,
+  "p_vs_retest": 6.32452380512856e-11,
+  "pass": true
+ },
+ "b4": {
+  "opposite": 35,
+  "zeros": 0,
+  "retest_opposite": 1,
+  "retest_zeros": 0,
+  "n": 40,
+  "p_vs_retest": 2.1565532003552837e-14,
+  "pass": true
+ },
+ "units_at_calibration_floor": 114,
+ "align_best_corr_per_aspect": {
+  "median": [
+   0.952,
+   0.912,
+   0.956,
+   0.937
+  ],
+  "min": [
+   0.635,
+   0.424,
+   0.707,
+   0.471
+  ]
+ }
+}
