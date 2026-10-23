@@ -5,19 +5,17 @@ Consolidation as in v14 (importance Omega, relative per tensor, LAM = 10), but t
   prediction p = sum of the current token values (before learning), error e = o - p,
   expected surprise m <- (1 - RHO_S) m + RHO_S e^2   (the network's running record of how wrong it usually is),
   surprise s = e^2 / (m + eps)  (computed before m is updated),
-  touch  phi = sum(Omega/mean(Omega) * g^2) / sum(g^2)  over the loss gradient g of this experience (how much this
-         experience's error falls on the weights that carry what the network holds; > 1 when it falls on protected ones),
-  plasticity factor  f = 1 / (1 + LAM * Omega / mean(Omega) * exp(-s * phi / KAPPA)).
-When an experience is about as predictable as usual, or its error falls on weights that hold nothing yet (a new thing),
-the protection stays; when it is far more wrong than usual AND the error falls on what the network holds (the world
-contradicts a held valuation), the protection is released for that step.
-Prototype history (seeds 0-7): a first gate exp(-s / KAPPA) without phi also released the protection when a new good
-thing was met (quality for the coop-raised), and the coop valuation was lost without reason in 3-4 of 8; phi was added
-after seeing that (disclosed in the design).
+  plasticity factor  f = 1 / (1 + LAM * Omega / mean(Omega) * exp(-s / KAPPA)).
+When an experience is about as predictable as usual, the weights that carried recent valuations stay protected; when it
+is far more wrong than usual, the protection is released for that step.
+Prototype history (seeds 0-7, disclosed in the design): KAPPA 1, 4, 16 were tried; a second gate multiplied s by the
+share of the error gradient on protected weights (phi) and was dropped because it released the protection more often.
 Modes:
   gated  - the mechanism above
-  gshuf  - the same, but s * phi is replaced by a value drawn at random from the agent's own past s * phi [s,17]
+  gshuf  - the same, but s is replaced by a value drawn at random from the agent's own past s [s,17]
            (same distribution of loosening, unrelated to the present experience)
+  match  - plain network (no consolidation) with the learning rate LR_MATCH chosen on the dev seeds so that its median
+           change time after a reason equals that of gated (speed-matched control; --calib looks at change times only)
   consol - v14 (no gate), slow - v14 slow (LAM = 0, LR_SLOW), none - plain network
 usage:
   python npn_gate.py --smoke
@@ -38,18 +36,32 @@ import torch
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import npn_consol as C  # noqa: E402
 
-KAPPA = float(os.environ.get("NPN_GATE_KAPPA", "4.0"))
+KAPPA = float(os.environ.get("NPN_GATE_KAPPA", "1.0"))
 RHO_S = 0.01
-MODES = ("gated", "gshuf", "consol", "slow", "none")
+LR_MATCH = float(os.environ.get("NPN_GATE_LR_MATCH", "nan"))
+MODES = ("gated", "gshuf", "match", "consol", "slow", "none")
 
 
 class GAgent(C.Agent):
     def __init__(self, seed, mode):
-        super().__init__(seed, "consol" if mode in ("gated", "gshuf") else mode)
+        super().__init__(seed, {"gated": "consol", "gshuf": "consol", "match": "none"}.get(mode, mode))
         self.gmode, self.m, self.past = mode, None, []
         self.rs = np.random.default_rng([seed, 17])
 
     def learn(self, toks, o):
+        if self.gmode == "match":
+            if len(toks) == 0:
+                return
+            v = self.tv(toks)
+            a = torch.softmax(C.BETA * v.detach(), 0)
+            loss = ((v - a * o) ** 2).sum()
+            self.ov.zero_grad()
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(self.val.parameters(), 1.0)
+            with torch.no_grad():
+                for p in self.val.parameters():
+                    p.add_(-LR_MATCH * p.grad)
+            return
         if self.gmode not in ("gated", "gshuf"):
             return super().learn(toks, o)
         if len(toks) == 0:
@@ -58,20 +70,15 @@ class GAgent(C.Agent):
         e2 = (o - float(v.detach().sum())) ** 2
         s = e2 / (self.m + 1e-4) if self.m is not None else 0.0
         self.m = e2 if self.m is None else (1 - RHO_S) * self.m + RHO_S * e2
+        self.past.append(s)
+        if self.gmode == "gshuf":
+            s = self.past[int(self.rs.integers(len(self.past)))]
+        h = math.exp(-s / KAPPA)
         a = torch.softmax(C.BETA * v.detach(), 0)
         gv = torch.autograd.grad(v.sum(), list(self.val.parameters()), retain_graph=True)
         loss = ((v - a * o) ** 2).sum()
         self.ov.zero_grad()
         loss.backward()
-        with torch.no_grad():
-            w = sum(float((om / (om.mean() + 1e-8) * p.grad ** 2).sum()) for p, om in zip(self.val.parameters(), self.omega))
-            z = sum(float((p.grad ** 2).sum()) for p in self.val.parameters())
-        phi = w / z if z > 0 and self.omega[0].abs().sum() > 0 else 0.0
-        x = s * phi
-        self.past.append(x)
-        if self.gmode == "gshuf":
-            x = self.past[int(self.rs.integers(len(self.past)))]
-        h = math.exp(-x / KAPPA)
         torch.nn.utils.clip_grad_norm_(self.val.parameters(), 1.0)
         num = den = 0.0
         with torch.no_grad():
@@ -140,10 +147,12 @@ if __name__ == "__main__":
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--proto", nargs=2, type=int)
     ap.add_argument("--dev", nargs=2, type=int)
+    ap.add_argument("--calib", nargs=3)            # A B LR: change times of gated and of match at LR (one seed range)
     ap.add_argument("--seeds", nargs=2, type=int)
     ap.add_argument("--out")
     a = ap.parse_args()
     if a.smoke:
+        LR_MATCH = 0.005 if math.isnan(LR_MATCH) else LR_MATCH
         for mode in MODES:
             row = life(0, "Q", 1, mode, n_dyad=50, coop_bad_at=20)
             assert np.isfinite(row["coop"]) and len(row["series10"]) == 5
@@ -151,13 +160,19 @@ if __name__ == "__main__":
     elif a.proto:
         for s in range(*a.proto):
             row = {}
-            for mode in ("gated", "gshuf", "slow", "consol", "none"):
+            for mode in ("gated", "gshuf", "slow", "consol", "none"):     # match needs LR_MATCH
                 n = life(0, "Q", s, mode)
                 rr = life(0, "Q", s, mode, gamma=0.0, coop_bad_at=C.COOP_BAD_AT)
                 row[mode] = (round(n["coop"], 2), round(n["qual"], 2), round(n["late"], 2),
                              change_time(rr["series10"], C.COOP_BAD_AT), round(rr["coop"], 2),
                              round(n["h_mean_first100"], 2), round(n["h_mean_dyad"], 2), round(n["step_ratio"], 3))
             print(s, "KAPPA", KAPPA, json.dumps(row), flush=True)
+    elif a.calib:
+        LR_MATCH = float(a.calib[2])
+        for s in range(int(a.calib[0]), int(a.calib[1])):
+            ct = {m: change_time(life(0, "Q", s, m, gamma=0.0, coop_bad_at=C.COOP_BAD_AT)["series10"], C.COOP_BAD_AT)
+                  for m in ("gated", "match")}
+            print(s, "LR", LR_MATCH, "KAPPA", KAPPA, json.dumps(ct), flush=True)
     elif a.dev:
         t0, mx = time.time(), []
         for s in range(*a.dev):

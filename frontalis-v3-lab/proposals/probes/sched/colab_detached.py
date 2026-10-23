@@ -39,10 +39,19 @@ print("RC", open("/content/job.rc").read().strip())
 
 
 def colab(*a, timeout=900):
+    """On timeout kill the whole process tree (cmd -> uvx -> colab.exe -> python); killing only cmd left the call hanging
+    for two hours on 2026-10-23 because the grandchildren kept the output pipes open."""
+    p = subprocess.Popen(["cmd", "/c", str(HERE / "colab.cmd"), *a], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                         text=True, encoding="utf-8", errors="replace")
     try:
-        return subprocess.run(["cmd", "/c", str(HERE / "colab.cmd"), *a], capture_output=True, text=True,
-                              encoding="utf-8", errors="replace", timeout=timeout)
+        out, err = p.communicate(timeout=timeout)
+        return subprocess.CompletedProcess(a, p.returncode, out, err)
     except subprocess.TimeoutExpired:
+        subprocess.run(["taskkill", "/T", "/F", "/PID", str(p.pid)], capture_output=True)
+        try:
+            p.communicate(timeout=30)
+        except subprocess.TimeoutExpired:
+            pass
         return subprocess.CompletedProcess(a, 124, "", "timeout")
 
 
