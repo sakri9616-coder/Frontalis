@@ -1,0 +1,1 @@
+79005 LR 0.01 KAPPA 1.0 {"gated": 50, "match": 50}

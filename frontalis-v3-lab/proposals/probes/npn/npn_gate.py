@@ -36,23 +36,26 @@ import torch
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import npn_consol as C  # noqa: E402
 
-KAPPA = float(os.environ.get("NPN_GATE_KAPPA", "1.0"))
+KAPPA = 1.0   # prototype runs used KAPPA 1, 4, 16 through an environment variable (commits 08bb332, 57191ff)
 RHO_S = 0.01
-LR_MATCH = float(os.environ.get("NPN_GATE_LR_MATCH", "0.01"))
+LR_MATCH = 0.01
 # Calibrated on dev seeds 79000-79007 (change times only): median change time gated 65, plain network at 0.003 / 0.005 /
 # 0.01: 175 / 105 / 60 (the 0.007 machine's result was lost in transfer). LR_MATCH = 0.01 = the plain network itself, so
 # the evaluation uses "none" as match and does not run match separately.
 MODES = ("gated", "gshuf", "consol", "slow", "none")
+PLAIN = ("plain0.003", "plain0.005", "plain0.007")   # plain networks at smaller learning rates (description D1 only)
 
 
 class GAgent(C.Agent):
     def __init__(self, seed, mode):
-        super().__init__(seed, {"gated": "consol", "gshuf": "consol", "match": "none"}.get(mode, mode))
-        self.gmode, self.m, self.past = mode, None, []
+        plain = mode == "match" or mode.startswith("plain")
+        super().__init__(seed, "consol" if mode in ("gated", "gshuf") else ("none" if plain else mode))
+        self.gmode, self.m, self.past = ("plain" if plain else mode), None, []
+        self.plain_lr = LR_MATCH if mode == "match" else (float(mode[5:]) if plain else None)
         self.rs = np.random.default_rng([seed, 17])
 
     def learn(self, toks, o):
-        if self.gmode == "match":
+        if self.gmode == "plain":
             if len(toks) == 0:
                 return
             v = self.tv(toks)
@@ -63,7 +66,7 @@ class GAgent(C.Agent):
             torch.nn.utils.clip_grad_norm_(self.val.parameters(), 1.0)
             with torch.no_grad():
                 for p in self.val.parameters():
-                    p.add_(-LR_MATCH * p.grad)
+                    p.add_(-self.plain_lr * p.grad)
             return
         if self.gmode not in ("gated", "gshuf"):
             return super().learn(toks, o)
@@ -135,12 +138,14 @@ def change_time(series10, start, k=0):
 
 def per_seed(s):
     out = {}
-    for mode in MODES:
+    for mode in MODES + PLAIN:
         out[f"{mode}_f0_g4"] = life(0, "Q", s, mode)
-        out[f"{mode}_f1_g4"] = life(1, "Q", s, mode)
         out[f"{mode}_f1_advC_g4"] = life(1, "C", s, mode)
-        for g in (0.0, C.GAMMA):
-            out[f"{mode}_reason_g{g:g}"] = life(0, "Q", s, mode, gamma=g, coop_bad_at=C.COOP_BAD_AT)
+        out[f"{mode}_reason_g0"] = life(0, "Q", s, mode, gamma=0.0, coop_bad_at=C.COOP_BAD_AT)
+        if mode in PLAIN:                                   # description D1 only
+            continue
+        out[f"{mode}_f1_g4"] = life(1, "Q", s, mode)
+        out[f"{mode}_reason_g4"] = life(0, "Q", s, mode, coop_bad_at=C.COOP_BAD_AT)
     print(s, "done", flush=True)
     return out
 
@@ -155,7 +160,7 @@ if __name__ == "__main__":
     ap.add_argument("--out")
     a = ap.parse_args()
     if a.smoke:
-        for mode in MODES + ("match",):
+        for mode in MODES + PLAIN + ("match",):
             row = life(0, "Q", 1, mode, n_dyad=50, coop_bad_at=20)
             assert np.isfinite(row["coop"]) and len(row["series10"]) == 5
         print("smoke ok")
