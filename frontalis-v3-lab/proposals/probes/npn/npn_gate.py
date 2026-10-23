@@ -5,12 +5,18 @@ Consolidation as in v14 (importance Omega, relative per tensor, LAM = 10), but t
   prediction p = sum of the current token values (before learning), error e = o - p,
   expected surprise m <- (1 - RHO_S) m + RHO_S e^2   (the network's running record of how wrong it usually is),
   surprise s = e^2 / (m + eps)  (computed before m is updated),
-  plasticity factor  f = 1 / (1 + LAM * Omega / mean(Omega) * exp(-s / KAPPA)).
-When an experience is about as predictable as usual, the weights that carried recent valuations stay protected; when it
-is far more wrong than usual (the world contradicts what the network holds), the protection is released for that step.
+  touch  phi = sum(Omega/mean(Omega) * g^2) / sum(g^2)  over the loss gradient g of this experience (how much this
+         experience's error falls on the weights that carry what the network holds; > 1 when it falls on protected ones),
+  plasticity factor  f = 1 / (1 + LAM * Omega / mean(Omega) * exp(-s * phi / KAPPA)).
+When an experience is about as predictable as usual, or its error falls on weights that hold nothing yet (a new thing),
+the protection stays; when it is far more wrong than usual AND the error falls on what the network holds (the world
+contradicts a held valuation), the protection is released for that step.
+Prototype history (seeds 0-7): a first gate exp(-s / KAPPA) without phi also released the protection when a new good
+thing was met (quality for the coop-raised), and the coop valuation was lost without reason in 3-4 of 8; phi was added
+after seeing that (disclosed in the design).
 Modes:
   gated  - the mechanism above
-  gshuf  - the same, but s is replaced by a surprise drawn at random from the agent's own past surprises [s,17]
+  gshuf  - the same, but s * phi is replaced by a value drawn at random from the agent's own past s * phi [s,17]
            (same distribution of loosening, unrelated to the present experience)
   consol - v14 (no gate), slow - v14 slow (LAM = 0, LR_SLOW), none - plain network
 usage:
@@ -52,15 +58,20 @@ class GAgent(C.Agent):
         e2 = (o - float(v.detach().sum())) ** 2
         s = e2 / (self.m + 1e-4) if self.m is not None else 0.0
         self.m = e2 if self.m is None else (1 - RHO_S) * self.m + RHO_S * e2
-        self.past.append(s)
-        if self.gmode == "gshuf":
-            s = self.past[int(self.rs.integers(len(self.past)))]
-        h = math.exp(-s / KAPPA)
         a = torch.softmax(C.BETA * v.detach(), 0)
         gv = torch.autograd.grad(v.sum(), list(self.val.parameters()), retain_graph=True)
         loss = ((v - a * o) ** 2).sum()
         self.ov.zero_grad()
         loss.backward()
+        with torch.no_grad():
+            w = sum(float((om / (om.mean() + 1e-8) * p.grad ** 2).sum()) for p, om in zip(self.val.parameters(), self.omega))
+            z = sum(float((p.grad ** 2).sum()) for p in self.val.parameters())
+        phi = w / z if z > 0 and self.omega[0].abs().sum() > 0 else 0.0
+        x = s * phi
+        self.past.append(x)
+        if self.gmode == "gshuf":
+            x = self.past[int(self.rs.integers(len(self.past)))]
+        h = math.exp(-x / KAPPA)
         torch.nn.utils.clip_grad_norm_(self.val.parameters(), 1.0)
         num = den = 0.0
         with torch.no_grad():
