@@ -38,8 +38,11 @@ import npn_consol as C  # noqa: E402
 
 KAPPA = float(os.environ.get("NPN_GATE_KAPPA", "1.0"))
 RHO_S = 0.01
-LR_MATCH = float(os.environ.get("NPN_GATE_LR_MATCH", "nan"))
-MODES = ("gated", "gshuf", "match", "consol", "slow", "none")
+LR_MATCH = float(os.environ.get("NPN_GATE_LR_MATCH", "0.01"))
+# Calibrated on dev seeds 79000-79007 (change times only): median change time gated 65, plain network at 0.003 / 0.005 /
+# 0.01: 175 / 105 / 60 (the 0.007 machine's result was lost in transfer). LR_MATCH = 0.01 = the plain network itself, so
+# the evaluation uses "none" as match and does not run match separately.
+MODES = ("gated", "gshuf", "consol", "slow", "none")
 
 
 class GAgent(C.Agent):
@@ -152,8 +155,7 @@ if __name__ == "__main__":
     ap.add_argument("--out")
     a = ap.parse_args()
     if a.smoke:
-        LR_MATCH = 0.005 if math.isnan(LR_MATCH) else LR_MATCH
-        for mode in MODES:
+        for mode in MODES + ("match",):
             row = life(0, "Q", 1, mode, n_dyad=50, coop_bad_at=20)
             assert np.isfinite(row["coop"]) and len(row["series10"]) == 5
         print("smoke ok")
@@ -184,5 +186,5 @@ if __name__ == "__main__":
     else:
         rows = {s: per_seed(s) for s in range(*a.seeds)}
         with open(a.out, "w", encoding="utf-8") as fh:
-            json.dump({"seeds": a.seeds, "kappa": KAPPA, "rows": rows}, fh, indent=1)
+            json.dump({"seeds": a.seeds, "kappa": KAPPA, "lr_match": LR_MATCH, "match_mode": "none", "rows": rows}, fh, indent=1)
         print("written", a.out)
