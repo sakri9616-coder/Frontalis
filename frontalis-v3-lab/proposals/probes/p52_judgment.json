@@ -1,0 +1,21 @@
+{
+ "prereg": "PREREG-v11 (+ pre-freeze addendum)",
+ "freeze_sha_match": true,
+ "seeds": [
+  78400,
+  78440
+ ],
+ "F-G3a": {
+  "b2": true,
+  "b4": true
+ },
+ "beta0_opposite": 15,
+ "beta0_binom_p": 0.154,
+ "predictions": {
+  "b4": "pass (held)",
+  "b2": "fail (FAILED: passed 32/40)",
+  "b0": "chance (held)"
+ },
+ "units_at_calibration_floor": 114,
+ "zeros": 0
+}

@@ -1,0 +1,8 @@
+{
+ "max_abs_diff": 0.0,
+ "nonfinite": {
+  "pretrain": 0,
+  "ada": 0
+ },
+ "ref_commit": "9d6cd7f"
+}

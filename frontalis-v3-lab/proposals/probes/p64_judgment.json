@@ -1,0 +1,147 @@
+{
+ "n": 40,
+ "match_mode": "none",
+ "S1": {
+  "coop": {
+   "pos": 30,
+   "neg": 10,
+   "p": 0.0022214337732293643,
+   "mean": 0.33448669555364174,
+   "pass": true
+  },
+  "qual_sym": {
+   "pos": 36,
+   "neg": 4,
+   "p": 1.8570244719740003e-07,
+   "mean": 0.381729169562459,
+   "pass": true
+  },
+  "pass": true
+ },
+ "S2": {
+  "median_change_time": {
+   "gated": 100.0,
+   "gshuf": 415.0,
+   "consol": 1035.0,
+   "slow": 470.0,
+   "none": 60.0
+  },
+  "ratio_gated_over_match": 1.6666666666666667,
+  "pass": false
+ },
+ "S3": {
+  "pos": 40,
+  "neg": 0,
+  "p": 1.8189894035458565e-12,
+  "mean": 297.5,
+  "pass": true
+ },
+ "S4": {
+  "pos": 20,
+  "neg": 20,
+  "p": 1.0,
+  "mean": -0.0036670774221420287,
+  "pass": false,
+  "gshuf_ge_gated": 20,
+  "reading": "timing does not contribute to keeping (speed only)"
+ },
+ "sanity": {
+  "formed_coop": 40,
+  "qual_learned": 40,
+  "ok": true
+ },
+ "describe": {
+  "D1_plane": {
+   "gated": {
+    "keep_coop_mean": 0.63596106544137,
+    "keep_qual_sym_mean": 0.7015302162617445,
+    "change_time_median_g0": 100.0
+   },
+   "gshuf": {
+    "keep_coop_mean": 0.639628142863512,
+    "keep_qual_sym_mean": 0.6387313986197114,
+    "change_time_median_g0": 415.0
+   },
+   "consol": {
+    "keep_coop_mean": 0.8656484872102738,
+    "keep_qual_sym_mean": 0.8982516579329968,
+    "change_time_median_g0": 1035.0
+   },
+   "slow": {
+    "keep_coop_mean": 0.7634948585182428,
+    "keep_qual_sym_mean": 0.8262785848230123,
+    "change_time_median_g0": 470.0
+   },
+   "none": {
+    "keep_coop_mean": 0.30147436988772824,
+    "keep_qual_sym_mean": 0.3198010466992855,
+    "change_time_median_g0": 60.0
+   },
+   "plain0.003": {
+    "keep_coop_mean": 0.5371124967932701,
+    "keep_qual_sym_mean": 0.4915132414549589,
+    "change_time_median_g0": 190.0
+   },
+   "plain0.005": {
+    "keep_coop_mean": 0.396004356443882,
+    "keep_qual_sym_mean": 0.3931950466707349,
+    "change_time_median_g0": 120.0
+   },
+   "plain0.007": {
+    "keep_coop_mean": 0.3645634869113564,
+    "keep_qual_sym_mean": 0.32232954604551195,
+    "change_time_median_g0": 90.0
+   }
+  },
+  "D2_follow_diff": {
+   "gated": {
+    "mean": 0.005949999999999997,
+    "pos": 20
+   },
+   "gshuf": {
+    "mean": 0.059499999999999977,
+    "pos": 30
+   },
+   "consol": {
+    "mean": 0.075125,
+    "pos": 32
+   },
+   "slow": {
+    "mean": 0.08272499999999998,
+    "pos": 30
+   },
+   "none": {
+    "mean": 0.01225,
+    "pos": 23
+   }
+  },
+  "D3_change_time_median_g4": {
+   "gated": 265.0,
+   "gshuf": 1475.0,
+   "consol": 2500.0,
+   "slow": 1975.0,
+   "none": 230.0
+  },
+  "D4_gate_mean": {
+   "gated": {
+    "first100": 0.5840920255684321,
+    "dyad": 0.6092826218232771
+   },
+   "gshuf": {
+    "first100": 0.7090428812402358,
+    "dyad": 0.692250371935051
+   }
+  },
+  "D5_step_ratio": {
+   "gated": 0.17090541897418907,
+   "gshuf": 0.16368230985421633,
+   "consol": 0.08882573234898405,
+   "slow": 1.0,
+   "none": 1.0
+  }
+ },
+ "seeds": [
+  79100,
+  79139
+ ]
+}

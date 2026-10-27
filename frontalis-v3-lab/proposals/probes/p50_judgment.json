@@ -1,0 +1,28 @@
+{
+ "prereg": "PREREG-v10 + PREREG-v10.1",
+ "freeze": "FREEZE-v10 (all SHA-256 match at judgment)",
+ "seeds": [
+  78100,
+  78140
+ ],
+ "G3a": {
+  "K3_b2": true,
+  "K3_b4": true,
+  "K5_b2": true,
+  "K5_b4": true
+ },
+ "G3b": {
+  "K3_b2": false,
+  "K3_b4": true,
+  "K5_b2": false,
+  "K5_b4": false
+ },
+ "predictions": {
+  "G3a_K3": "pass (held)",
+  "G3a_K5": "open (passed)",
+  "G3b_K3_b4": "pass (held)",
+  "G3b_K3_b2": "fail (held)",
+  "G3b_K5_b4": "pass (FAILED)",
+  "G3b_K5_b2": "open (failed)"
+ }
+}

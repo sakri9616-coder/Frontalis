@@ -1,0 +1,7 @@
+{
+ "max_abs_diff": 0.0,
+ "nonfinite": {
+  "ada": 0
+ },
+ "ref_commit": "3c7b671"
+}

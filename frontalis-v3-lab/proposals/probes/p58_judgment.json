@@ -1,0 +1,29 @@
+{
+ "prereg": "PREREG-v13 (+ pre-freeze addendum, 10-step grid)",
+ "freeze_sha_match": true,
+ "seeds": [
+  78700,
+  78740
+ ],
+ "B1": true,
+ "B2": false,
+ "B3": false,
+ "B6": true,
+ "B6b": false,
+ "B2_count": 35,
+ "B3_ctrl_pos": 28,
+ "B3_ctrl_neg": 11,
+ "B3_ctrl_mean": 0.031,
+ "B6b_earlier_later_tie": [
+  29,
+  0,
+  11
+ ],
+ "predictions": {
+  "B1": "pass (held)",
+  "B2": "pass (FAILED 35/40 < 36)",
+  "B3": "pass (FAILED by control clause)",
+  "B6": "pass (held)",
+  "B6b": "pass (FAILED 29/40 < 30, 0 later, 11 ties)"
+ }
+}
