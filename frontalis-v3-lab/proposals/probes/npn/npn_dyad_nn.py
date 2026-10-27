@@ -36,7 +36,7 @@ NEUTRAL = [(c, s, t) for c in (BLUE, GREEN) for s in (SQUARE, TRI) for t in (HIG
 ROUNDS = [(c, ROUND, t) for c in (BLUE, GREEN) for t in (HIGH, LOW)]
 REDS = [(RED, s, t) for s in (SQUARE, TRI) for t in (HIGH, LOW)]
 MEAS_T = (0, 500, 1000, 1500)
-assert (LR, CLIP) == (0.01, 1.0)
+assert (LR, CLIP, P, P_PARTNER) == (0.01, 1.0, 0.8, 0.2)
 
 
 def upbringing(seed, form):
