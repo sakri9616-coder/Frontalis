@@ -1,0 +1,10 @@
+# FREEZE-v16（2026-10-27、凍結前の批評の文言の 6 点を入れた後、評価の前）
+
+評価の種は 79300〜79339。
+
+- `DESIGN-acquire.md`: 39d1880d4ce785ba5c6e4ea33f7f08c69861b9a0d60134c008d7dd29149b078f
+- `PREREG-v16.md`: 7517a845b248b6ad79f01ff5eb905dd3bbe0122f459bb642eb8d3198544dcb3a
+- `probes/npn/npn_acquire.py`: 8101aeef085c744c303741824a2f77b4489651014a9f25f9e09d54f6500486bb
+- `probes/npn/judge_acquire.py`: ebcb236f601b3227dea6d2b9173b132d203fa0fc82a3ed1f41e0b125918e2aa7
+- `probes/credit/run_g.py`: 1651b766811602b722a70e7840eb2b64c69512480b1ef0270e9a2827d03b7876
+- `probes/p66_colab_eval.py`: 215bf45db23201b5f89571fd5d1bfe150060171af25517bde09958a52ba94460
